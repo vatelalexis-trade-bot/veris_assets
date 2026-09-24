@@ -1,0 +1,1 @@
+# virtus_assets
