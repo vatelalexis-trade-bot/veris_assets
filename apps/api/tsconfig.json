@@ -1,0 +1,14 @@
+{
+  "extends": "@virtus/config/tsconfig/node-library.json",
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
+    "removeComments": true,
+    "declaration": false,
+    "incremental": true,
+    "rootDir": ".",
+    "outDir": "./dist"
+  },
+  "include": ["src", "*.config.ts"]
+}

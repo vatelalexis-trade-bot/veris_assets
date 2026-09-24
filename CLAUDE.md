@@ -27,7 +27,7 @@ Le porteur de projet n'est pas développeur. Il travaille sur un Chromebook, dan
 - Secrets hors du code et hors de git (`.env` ignoré, `.env.example` commité).
 
 ## Environnement
-- Tout doit fonctionner dans Codespaces : `.devcontainer/` + `docker compose` pour PostgreSQL, Redis, MinIO et Mailpit.
+- Tout doit fonctionner dans Codespaces : `.devcontainer/` + `docker compose` pour PostgreSQL, Redis, Garage (stockage compatible S3, remplace MinIO : D-005) et Mailpit.
 - Une commande pour démarrer la démo, une commande pour réinitialiser les données de démo.
 
 ## Marque

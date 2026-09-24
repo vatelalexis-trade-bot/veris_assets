@@ -35,7 +35,7 @@ Les décisions référencées `D-xxx` sont dans `docs/DECISIONS.md`. Modèle de 
 | Authentification | Better Auth (dans l'API) + Argon2id | Sessions, mots de passe, TOTP, réinitialisation |
 | Asynchrone | pg-boss (file de jobs dans PostgreSQL) + table `outbox_event` | Notifications, jobs quotidiens, exports |
 | Cache / limitation de débit | Redis | Rate limiting, cache préfixé par tenant |
-| Documents | Stockage compatible S3 (MinIO en dev, D-005) + `@aws-sdk/client-s3` | Fichiers, URL temporaires |
+| Documents | Stockage compatible S3 (Garage en dev, D-005) + `@aws-sdk/client-s3` | Fichiers, URL temporaires |
 | Emails | Mailpit (dev) derrière `EmailProvider` | Emails capturés localement |
 | PDF | Bibliothèque de génération PDF légère côté serveur (choix vérifié en phase 11) | Confirmations d'allocation, avis de coupon |
 | Observabilité | pino (logs JSON), OpenTelemetry, Sentry (région UE) | Logs, traces, erreurs |
@@ -76,6 +76,8 @@ virtus_assets/
 │  ├─ shared/                Catalogue d'erreurs, statuts→couleur/libellé, helpers décimaux,
 │  │                         codes de règles d'éligibilité, types générés depuis OpenAPI
 │  └─ config/                Configurations ESLint, TypeScript, Prettier partagées
+├─ infra/                    Configuration des services Docker (Garage…)
+├─ scripts/                  Démarrage, initialisation du stockage, contrôle des mentions interdites
 ├─ tests/e2e/                Playwright : les six scénarios de la section 29
 ├─ brand/                    Logo source (déplacé vers apps/web/public/brand en phase 4)
 └─ docs/                     SPEC, DECISIONS, ARCHITECTURE, DATA_MODEL, API, BACKLOG
@@ -93,7 +95,7 @@ Pas de dossier `packages/contracts` (nom réservé par la spec aux contrats bloc
 | `pnpm test:e2e` | Scénarios Playwright |
 | `pnpm lint` | Lint, format, frontières entre modules, mots interdits |
 
-**Ports** : web 3000 ; API 4000 (non exposée publiquement, appelée via le proxy du front) ; Mailpit 8025 (interface) ; console du stockage S3 9001 ; PostgreSQL 5432 et Redis 6379 internes.
+**Ports** : web 3000 ; API 4000 (non exposée publiquement, appelée via le proxy du front) ; Mailpit 8025 (interface) ; stockage S3 (Garage) 3900 ; PostgreSQL 5432 et Redis 6379 internes.
 
 ---
 

@@ -1,0 +1,38 @@
+{
+  "name": "Virtus Assets",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:24-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:4": {}
+  },
+  // Decision D-008: 4 cores recommended (PostgreSQL, Redis, Garage, Mailpit, API, web app, tests).
+  "hostRequirements": {
+    "cpus": 4
+  },
+  "containerEnv": {
+    "COREPACK_ENABLE_DOWNLOAD_PROMPT": "0"
+  },
+  // pnpm is provided by Corepack at the exact version declared in package.json ("packageManager").
+  "postCreateCommand": "sudo corepack enable && pnpm install",
+  "forwardPorts": [3000, 8025],
+  "portsAttributes": {
+    "3000": { "label": "Virtus Assets (web)", "onAutoForward": "notify" },
+    "8025": { "label": "Mailpit (test emails)", "onAutoForward": "silent" }
+  },
+  "otherPortsAttributes": {
+    "onAutoForward": "silent"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "anthropic.claude-code",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "files.eol": "\n"
+      }
+    }
+  }
+}

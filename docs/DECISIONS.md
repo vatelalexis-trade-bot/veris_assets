@@ -27,7 +27,7 @@ Les versions exactes sont figées en phase 1.
 
 **D-004 — Acceptée.** Next.js relaie `/api/*` vers l'API NestJS : le navigateur ne parle qu'à une seule adresse (indispensable dans Codespaces, où chaque port a sa propre adresse). Next.js ne contient aucune logique métier et n'accède jamais à la base.
 
-**D-005 — Proposée (à vérifier en phase 1).** Si l'image Docker communautaire de MinIO n'est plus disponible ou plus maintenue, la remplacer par un autre serveur compatible S3 (Garage ou SeaweedFS). *Modifierait la rubrique « Environnement » de CLAUDE.md.* Claude vérifie en phase 1 et demande l'accord avant tout changement.
+**D-005 — Acceptée (phase 1, 2026-09-24).** Vérification faite : l'image Docker `minio/minio` n'existe plus sur Docker Hub (« repository does not exist »). Le stockage compatible S3 de développement est **Garage** (image `dxflrs/garage`, version figée en phase 1), choisi par le porteur de projet face à RustFS (version 1.0 trop récente). Garage n'a pas de console web ; les fichiers se consultent depuis l'application. En production, le stockage reste un service S3 géré européen (inchangé). *Modifie la rubrique « Environnement » de CLAUDE.md (MinIO → Garage) et la spec (section 16 : « MinIO dans Codespaces »).*
 
 ### Plan
 
@@ -67,6 +67,8 @@ Les versions exactes sont figées en phase 1.
 
 ## 2026-09-24 — Phase 0 bis (documents d'architecture)
 
-**D-021 — Proposée. Couleurs de texte accessibles.** Contrastes mesurés (WCAG) : l'indigo primaire `#4F52D6` passe en fond de bouton avec texte blanc (5,98:1) mais échoue comme couleur de texte ou de lien sur les fonds sombres (3,17:1 sur `#0A1020`, AA exige 4,5:1). Le rouge d'erreur `#EF4444` échoue avec du texte blanc dessus (3,76:1) et en texte sur Secondary Surface (4,29:1). Proposition : garder toutes les couleurs de marque inchangées et ajouter deux jetons réservés au texte, `primary-text` `#8B8EF0` (6,52:1 sur le fond) et `error-text` `#F87171` (6,85:1) ; les boutons destructifs utilisent un texte sombre sur fond rouge. *Ajoute des jetons à la section 23.1.*
+Validées par le porteur de projet (« OK je valide »).
 
-**D-022 — Proposée. Noyau technique partagé.** En plus des six modules métier, le back-end comporte une couche technique `core` : contexte tenant, transactions, idempotence, écriture de l'audit, outbox, transitions de workflow, documents, notifications, référentiels, interfaces des fournisseurs. Elle ne contient aucune règle métier. *Précise les sections 5 et 30.2.*
+**D-021 — Acceptée. Couleurs de texte accessibles.** Contrastes mesurés (WCAG) : l'indigo primaire `#4F52D6` passe en fond de bouton avec texte blanc (5,98:1) mais échoue comme couleur de texte ou de lien sur les fonds sombres (3,17:1 sur `#0A1020`, AA exige 4,5:1). Le rouge d'erreur `#EF4444` échoue avec du texte blanc dessus (3,76:1) et en texte sur Secondary Surface (4,29:1). Proposition : garder toutes les couleurs de marque inchangées et ajouter deux jetons réservés au texte, `primary-text` `#8B8EF0` (6,52:1 sur le fond) et `error-text` `#F87171` (6,85:1) ; les boutons destructifs utilisent un texte sombre sur fond rouge. *Ajoute des jetons à la section 23.1.*
+
+**D-022 — Acceptée. Noyau technique partagé.** En plus des six modules métier, le back-end comporte une couche technique `core` : contexte tenant, transactions, idempotence, écriture de l'audit, outbox, transitions de workflow, documents, notifications, référentiels, interfaces des fournisseurs. Elle ne contient aucune règle métier. *Précise les sections 5 et 30.2.*

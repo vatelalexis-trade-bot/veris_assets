@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "//": "Used only by dependency-cruiser to resolve TypeScript imports across the cruised packages.",
+  "extends": "./packages/config/tsconfig/node-library.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "experimentalDecorators": true
+  },
+  "include": ["apps/api/src", "packages/shared/src"]
+}

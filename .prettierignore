@@ -1,0 +1,10 @@
+pnpm-lock.yaml
+dist/
+.next/
+coverage/
+brand/
+# Specification and project documents are written by hand; do not reformat.
+docs/
+CLAUDE.md
+apps/web/AGENTS.md
+apps/web/CLAUDE.md

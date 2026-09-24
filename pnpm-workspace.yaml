@@ -1,0 +1,8 @@
+packages:
+  - apps/*
+  - packages/*
+
+# Install scripts of dependencies are refused unless explicitly allowed here (pnpm supply-chain safety).
+allowBuilds:
+  # Not needed: its prebuilt binary is installed as an optional dependency (same choice as create-next-app).
+  unrs-resolver: false

@@ -13,7 +13,7 @@ Vérifiable par : `pnpm dev` démarre ; CI verte.
 |---|---|:-:|
 | P1-1 | Monorepo pnpm (`apps/web`, `apps/api`, `packages/shared`, `packages/config`), TypeScript strict, versions figées | M |
 | P1-2 | `.devcontainer/` (Node LTS, pnpm, extensions, 4 cœurs, ports) | M |
-| P1-3 | `docker-compose.yml` : PostgreSQL, Redis, stockage S3 (vérification MinIO, D-005), Mailpit ; profil `observability` | M |
+| P1-3 | `docker-compose.yml` : PostgreSQL, Redis, stockage S3 (Garage, D-005), Mailpit ; profil `observability` | M |
 | P1-4 | `.env.example`, `.gitignore` (`.env` exclu), validation des variables d'environnement au démarrage | M |
 | P1-5 | ESLint, Prettier, dependency-cruiser (règles vides mais actives), contrôle des mots interdits (D-018) | M |
 | P1-6 | GitHub Actions : install, lint, typecheck, tests ; Dependabot ; rappel pour activer le secret scanning | M |
