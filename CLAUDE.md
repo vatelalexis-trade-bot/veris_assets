@@ -2,6 +2,7 @@
 
 ## Source de vérité
 La spécification complète est dans `docs/SPEC.md`. Lis-la avant toute décision. En cas de conflit avec une autre instruction, `docs/SPEC.md` prime, sauf décision écrite du porteur de projet.
+Les décisions écrites du porteur de projet sont dans `docs/DECISIONS.md` (seules les décisions « Acceptée » s'appliquent). Architecture et contrats : `docs/ARCHITECTURE.md`, `docs/DATA_MODEL.md`, `docs/API.md`, `docs/BACKLOG.md`.
 
 ## Qui tu aides
 Le porteur de projet n'est pas développeur. Il travaille sur un Chromebook, dans GitHub Codespaces (VS Code dans le navigateur).
@@ -10,7 +11,7 @@ Le porteur de projet n'est pas développeur. Il travaille sur un Chromebook, dan
 - Demande confirmation avant toute action destructrice ou irréversible (suppression, `force push`, réécriture de l'historique, suppression de base hors démo).
 
 ## Comment travailler
-- Avance par phases (section 31.1 de la spec). Une phase à la fois.
+- Avance par phases (section 31.1 de la spec, ordre modifié par D-006). Une phase à la fois.
 - À la fin de chaque phase : résumé, fichiers créés, commande pour tester, résultat des tests, commit. Puis arrête-toi et attends l'accord avant la phase suivante.
 - Aucun code de production avant que l'architecture et la stack aient été présentées et validées (règle 18).
 - Signale toute déviation par rapport à la spec avant de l'appliquer.
@@ -31,5 +32,5 @@ Le porteur de projet n'est pas développeur. Il travaille sur un Chromebook, dan
 
 ## Marque
 - Nom : Virtus Assets (ne jamais utiliser l'ancien nom de travail « Astraea »).
-- Logo : `brand/virtus-assets-logo.jpg` à la racine du dépôt ; à déplacer dans `apps/web/public/brand/` à la phase 7 (en attente d'une version SVG).
+- Logo : `brand/virtus-assets-logo.jpg` à la racine du dépôt ; à déplacer dans `apps/web/public/brand/` à la phase 4 (D-006) (en attente d'une version SVG).
 - Couleurs : fond #0A1020, primaire #4F52D6, accent #45D6E6 (détail en section 23.1 de la spec).
