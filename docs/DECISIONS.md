@@ -77,4 +77,6 @@ Validées par le porteur de projet (« OK je valide »).
 
 ## 2026-09-25 — Phase 2 (squelette back-end)
 
-**D-023 — Proposée. Report de l'instrumentation OpenTelemetry (P2-8, priorité « S ») à la phase 16.** L'API NestJS 12 est au format « ES module » : l'instrumentation automatique des traces exige un mécanisme de chargement spécifique, à vérifier et à maintenir. Avant les phases 3 (base de données) et 7 (jobs), il n'y aurait presque rien à tracer. En attendant, le correlation ID relie déjà toutes les lignes de log d'une même requête. *Décale un élément « S » de la phase 2 vers la phase 16, comme le prévoit `docs/BACKLOG.md`.*
+Validée par le porteur de projet (« ok pour tous les points »).
+
+**D-023 — Acceptée. Report de l'instrumentation OpenTelemetry (P2-8, priorité « S ») à la phase 16.** L'API NestJS 12 est au format « ES module » : l'instrumentation automatique des traces exige un mécanisme de chargement spécifique, à vérifier et à maintenir. Avant les phases 3 (base de données) et 7 (jobs), il n'y aurait presque rien à tracer. En attendant, le correlation ID relie déjà toutes les lignes de log d'une même requête. *Décale un élément « S » de la phase 2 vers la phase 16, comme le prévoit `docs/BACKLOG.md`.*

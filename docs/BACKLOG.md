@@ -32,7 +32,7 @@ Vérifiable par : `GET /health` répond.
 | P2-5 | `/health`, `/health/ready` ; OpenAPI sur `/api/v1/docs` en dev | M |
 | P2-6 | Proxy `/api` dans Next.js (D-004) | M |
 | P2-7 | Règle ESLint anti-flottants sur montants et quantités ; helpers `Decimal` et `Money` dans `packages/shared` | M |
-| P2-8 | Instrumentation OpenTelemetry de base — report proposé en phase 16 (D-023) | S |
+| P2-8 | Instrumentation OpenTelemetry de base — reporté en phase 16 (D-023) | S |
 
 ## Phase 3 — Base de données
 Vérifiable par : migrations rejouables (`pnpm db:reset` deux fois de suite sans erreur).
