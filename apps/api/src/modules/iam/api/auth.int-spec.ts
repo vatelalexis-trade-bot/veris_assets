@@ -14,18 +14,7 @@ const ADMIN = 'northwind.admin1@example.com';
 const server = () => ctx.app.getHttpServer();
 const errorCode = (response: request.Response) => (response.body as ErrorResponseBody).error.code;
 
-/** Signs in a demo account, answering the second factor when needed; returns a cookie-keeping agent. */
-async function signedIn(email: string) {
-  const agent = request.agent(server());
-  const first = await agent.post('/api/v1/auth/sign-in').send({ email, password }).expect(200);
-  if (first.body.status === 'MFA_REQUIRED') {
-    await agent
-      .post('/api/v1/auth/mfa/verify')
-      .send({ code: await ctx.totpCode(email) })
-      .expect(200);
-  }
-  return agent;
-}
+const signedIn = (email: string) => ctx.signIn(email);
 
 beforeAll(async () => {
   ctx = await startIntegrationApp();
@@ -195,21 +184,40 @@ describe('invitations', () => {
     expect(errorCode(reused)).toBe('INVITATION_INVALID_OR_EXPIRED');
   });
 
-  it('keeps the invitation in the inviter’s tenant even if another tenant is sent (SPEC §20)', async () => {
+  it('answers 404 and audits a request that forces another tenant (SPEC §20, scenario 5)', async () => {
     const adminAgent = await signedIn(ADMIN);
     const email = `tenant.check.${Date.now()}@example.com`;
-    const contosoId = (
-      await ctx.admin.query(`SELECT id FROM iam.tenant WHERE legal_name LIKE 'Contoso%'`)
-    ).rows[0].id;
-    await adminAgent
+    const tenants = await ctx.admin.query<{ id: string; legal_name: string }>(
+      `SELECT id, legal_name FROM iam.tenant`,
+    );
+    const contosoId = tenants.rows.find((row) => row.legal_name.startsWith('Contoso'))!.id;
+    const northwindId = tenants.rows.find((row) => row.legal_name.startsWith('Northwind'))!.id;
+
+    const forced = await adminAgent
       .post('/api/v1/users/invitations')
       .send({ email, name: 'Tenant Check (demo)', roleCode: 'AUDITOR', tenantId: contosoId })
+      .expect(404);
+    expect(errorCode(forced)).toBe('RESOURCE_NOT_FOUND');
+    expect(
+      (await ctx.admin.query(`SELECT 1 FROM iam.user_invitation WHERE email = $1`, [email]))
+        .rowCount,
+    ).toBe(0);
+    await expect
+      .poll(
+        async () =>
+          (
+            await ctx.admin.query(
+              `SELECT 1 FROM audit.audit_event WHERE action = 'TENANT_OVERRIDE_ATTEMPT'`,
+            )
+          ).rowCount,
+      )
+      .toBeGreaterThan(0);
+
+    // Sending one's own tenant is harmless: it is ignored.
+    await adminAgent
+      .post('/api/v1/users/invitations')
+      .send({ email, name: 'Tenant Check (demo)', roleCode: 'AUDITOR', tenantId: northwindId })
       .expect(201);
-    const { rows } = await ctx.admin.query(
-      `SELECT t.legal_name FROM iam.user_invitation i JOIN iam.tenant t ON t.id = i.tenant_id WHERE i.email = $1`,
-      [email],
-    );
-    expect(rows[0].legal_name).toMatch(/^Northwind/);
   });
 
   it('refuses invitations from users who are not administrators', async () => {

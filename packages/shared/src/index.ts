@@ -5,3 +5,4 @@ export * from './decimal/money.js';
 export * from './errors/error-codes.js';
 export * from './errors/rule-codes.js';
 export * from './status/status-map.js';
+export * from './permissions/permissions.js';

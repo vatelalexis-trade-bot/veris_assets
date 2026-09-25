@@ -81,7 +81,9 @@ describe('roles', () => {
     expect(rows.map((row) => row.table).sort()).toEqual([
       'iam."user"',
       'iam.account',
+      'iam.permission',
       'iam.role',
+      'iam.role_permission',
       'iam.session',
       'iam.two_factor',
       'iam.user_invitation',

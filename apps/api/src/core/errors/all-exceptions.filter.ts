@@ -13,6 +13,7 @@ import {
   type ErrorDetail,
   type ErrorResponseBody,
 } from '@virtus/shared';
+import type { AuditWriter } from '../audit/audit-writer.js';
 import { getRequestContext } from '../context/request-context.js';
 import { AppError } from './app-error.js';
 
@@ -36,6 +37,15 @@ const CODE_BY_HTTP_STATUS: Partial<Record<number, ErrorCode>> = {
 export class AllExceptionsFilter implements ExceptionFilter {
   private readonly logger = new Logger(AllExceptionsFilter.name);
 
+  /** Denials of a signed-in user are audited (SPEC §17.1 "refus d'autorisation", scenario 5). */
+  private static readonly AUDITED_DENIALS: ReadonlySet<ErrorCode> = new Set([
+    'PERMISSION_DENIED',
+    'RESOURCE_NOT_FOUND',
+    'FOUR_EYES_VIOLATION',
+  ]);
+
+  constructor(private readonly audit?: AuditWriter) {}
+
   catch(exception: unknown, host: ArgumentsHost): void {
     const http = host.switchToHttp();
     const response = http.getResponse<Response>();
@@ -43,6 +53,28 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     const { code, details } = this.classify(exception);
     const { status, message } = ERROR_CATALOG[code];
+
+    const user = getRequestContext()?.user;
+    if (this.audit && user && AllExceptionsFilter.AUDITED_DENIALS.has(code)) {
+      this.audit
+        .record({
+          tenantId: user.tenantId,
+          actorUserId: user.userId,
+          actorRole: user.roles.join(','),
+          action:
+            exception instanceof AppError
+              ? (exception.auditAction ?? 'ACCESS_DENIED')
+              : 'ACCESS_DENIED',
+          resourceType: 'route',
+          result: 'DENIED',
+          reason: `${code} ${request.method} ${request.path}`,
+          ipAddress: request.ip ?? null,
+          userAgent: request.headers['user-agent'] ?? null,
+        })
+        .catch((error: unknown) =>
+          this.logger.error({ err: error }, 'Access denial could not be audited'),
+        );
+    }
 
     if (code === 'INTERNAL_ERROR') {
       this.logger.error(exception instanceof Error ? exception : String(exception));

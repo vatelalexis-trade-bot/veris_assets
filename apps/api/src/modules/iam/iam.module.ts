@@ -4,14 +4,17 @@ import type pg from 'pg';
 import { ENV, type Env } from '../../core/config/env.js';
 import { AuthController } from './api/auth.controller.js';
 import { AuthGuard } from './api/auth.guard.js';
-import {
-  InvitationAcceptanceController,
-  UserInvitationsController,
-} from './api/invitations.controller.js';
+import { InvitationAcceptanceController } from './api/invitations.controller.js';
+import { SettingsController } from './api/settings.controller.js';
+import { TenantsController } from './api/tenants.controller.js';
+import { RolesController, UsersController } from './api/users.controller.js';
 import { AuthenticationService } from './application/authentication.service.js';
 import { DemoAccountsService } from './application/demo-accounts.service.js';
 import { InvitationService } from './application/invitation.service.js';
 import { PasswordResetMailer } from './application/password-reset-mailer.js';
+import { TenantManagementService } from './application/tenant-management.service.js';
+import { TenantSettingsService } from './application/tenant-settings.service.js';
+import { UserManagementService } from './application/user-management.service.js';
 import {
   AUTH_DATABASE,
   AUTH_POOL,
@@ -26,7 +29,14 @@ import { IdentityRepository } from './infrastructure/identity.repository.js';
  * Its guard protects every route of the API.
  */
 @Module({
-  controllers: [AuthController, InvitationAcceptanceController, UserInvitationsController],
+  controllers: [
+    AuthController,
+    InvitationAcceptanceController,
+    TenantsController,
+    UsersController,
+    RolesController,
+    SettingsController,
+  ],
   providers: [
     { provide: AUTH_POOL, inject: [ENV], useFactory: (env: Env) => createAuthPool(env) },
     {
@@ -54,6 +64,9 @@ import { IdentityRepository } from './infrastructure/identity.repository.js';
     AuthenticationService,
     InvitationService,
     DemoAccountsService,
+    TenantManagementService,
+    UserManagementService,
+    TenantSettingsService,
     { provide: APP_GUARD, useClass: AuthGuard },
   ],
 })

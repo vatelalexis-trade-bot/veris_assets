@@ -6,6 +6,7 @@ import { Test } from '@nestjs/testing';
 import { createOTP } from '@better-auth/utils/otp';
 import { symmetricDecrypt } from 'better-auth/crypto';
 import pg from 'pg';
+import request from 'supertest';
 import { connectionConfig } from '../../scripts/db/admin.js';
 import { loadToolsEnv } from '../../scripts/db/tools-env.js';
 import { AppModule } from '../app.module.js';
@@ -42,6 +43,8 @@ export interface IntegrationApp {
   admin: pg.Client;
   /** Current authenticator code of a user who has set up two-factor authentication. */
   totpCode: (email: string) => Promise<string>;
+  /** Signs a demo account in (answering the second factor if needed); the agent keeps cookies. */
+  signIn: (email: string, password?: string) => Promise<ReturnType<typeof request.agent>>;
   close: () => Promise<void>;
 }
 
@@ -78,18 +81,32 @@ export async function startIntegrationApp(): Promise<IntegrationApp> {
   const admin = new pg.Client(connectionConfig(tools, tools.POSTGRES_TEST_DB, 'admin'));
   await admin.connect();
 
+  async function totpCode(email: string): Promise<string> {
+    const { rows } = await admin.query<{ secret: string }>(
+      `SELECT t.secret FROM iam.two_factor t JOIN iam.user u ON u.id = t.user_id WHERE u.email = $1`,
+      [email],
+    );
+    const secret = await symmetricDecrypt({ key: env.BETTER_AUTH_SECRET, data: rows[0]!.secret });
+    return createOTP(secret).totp();
+  }
+
   return {
     app,
     env,
     emails,
     admin,
-    async totpCode(email) {
-      const { rows } = await admin.query<{ secret: string }>(
-        `SELECT t.secret FROM iam.two_factor t JOIN iam.user u ON u.id = t.user_id WHERE u.email = $1`,
-        [email],
-      );
-      const secret = await symmetricDecrypt({ key: env.BETTER_AUTH_SECRET, data: rows[0]!.secret });
-      return createOTP(secret).totp();
+    totpCode,
+    async signIn(email, password = env.DEMO_ACCOUNTS_PASSWORD) {
+      const agent = request.agent(app.getHttpServer());
+      const first = await agent.post('/api/v1/auth/sign-in').send({ email, password });
+      if (first.status !== 200) throw new Error(`Sign-in of ${email} failed: ${first.status}`);
+      if ((first.body as { status: string }).status === 'MFA_REQUIRED') {
+        const code = await totpCode(email);
+        const second = await agent.post('/api/v1/auth/mfa/verify').send({ code });
+        if (second.status !== 200)
+          throw new Error(`Second factor of ${email} failed: ${second.status}`);
+      }
+      return agent;
     },
     async close() {
       await admin.end();

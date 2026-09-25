@@ -1,8 +1,19 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { and, eq, gt, isNull } from 'drizzle-orm';
+import { and, eq, gt, inArray, isNull } from 'drizzle-orm';
+import type { Permission, PermissionScope } from '@virtus/shared';
 import type { RoleCode } from '../domain/roles.js';
 import { AUTH_DATABASE, type AuthDatabase } from './auth-database.js';
-import { account, role, twoFactor, user, userInvitation, userRole } from './schema.js';
+import {
+  account,
+  role,
+  rolePermission,
+  session,
+  tenant,
+  twoFactor,
+  user,
+  userInvitation,
+  userRole,
+} from './schema.js';
 
 export interface IdentityUser {
   id: string;
@@ -14,6 +25,8 @@ export interface IdentityUser {
   twoFactorEnabled: boolean;
   failedLoginCount: number;
   lockedUntil: Date | null;
+  /** False when the user's tenant is deactivated: no sign-in, no session. */
+  tenantActive: boolean;
 }
 
 export interface PendingInvitation {
@@ -35,7 +48,14 @@ const userColumns = {
   twoFactorEnabled: user.twoFactorEnabled,
   failedLoginCount: user.failedLoginCount,
   lockedUntil: user.lockedUntil,
+  tenantStatus: tenant.status,
 };
+
+type UserRow = Omit<IdentityUser, 'tenantActive'> & { tenantStatus: string | null };
+
+function toIdentity({ tenantStatus, ...row }: UserRow): IdentityUser {
+  return { ...row, tenantActive: row.tenantId === null || tenantStatus === 'ACTIVE' };
+}
 
 /**
  * Identity data read and written by the authentication component, with the va_auth role
@@ -49,13 +69,29 @@ export class IdentityRepository {
     const [found] = await this.db
       .select(userColumns)
       .from(user)
+      .leftJoin(tenant, eq(tenant.id, user.tenantId))
       .where(eq(user.email, email.toLowerCase()));
-    return found;
+    return found && toIdentity(found);
   }
 
   async findUserById(id: string): Promise<IdentityUser | undefined> {
-    const [found] = await this.db.select(userColumns).from(user).where(eq(user.id, id));
-    return found;
+    const [found] = await this.db
+      .select(userColumns)
+      .from(user)
+      .leftJoin(tenant, eq(tenant.id, user.tenantId))
+      .where(eq(user.id, id));
+    return found && toIdentity(found);
+  }
+
+  /** Ends every session of a user (deactivation, change of roles: decision D-003). */
+  async revokeSessionsOfUser(userId: string): Promise<void> {
+    await this.db.delete(session).where(eq(session.userId, userId));
+  }
+
+  /** Ends every session of a tenant's users (tenant deactivation). */
+  async revokeSessionsOfTenant(tenantId: string): Promise<void> {
+    const users = this.db.select({ id: user.id }).from(user).where(eq(user.tenantId, tenantId));
+    await this.db.delete(session).where(inArray(session.userId, users));
   }
 
   async rolesOf(userId: string): Promise<RoleCode[]> {
@@ -65,6 +101,22 @@ export class IdentityRepository {
       .innerJoin(role, eq(role.id, userRole.roleId))
       .where(eq(userRole.userId, userId));
     return rows.map((row) => row.code as RoleCode);
+  }
+
+  /** Permissions granted by the user's roles, read from the database (SPEC §4.7). */
+  async permissionsOf(userId: string): Promise<Map<Permission, PermissionScope>> {
+    const rows = await this.db
+      .select({ code: rolePermission.permissionCode, scope: rolePermission.scope })
+      .from(userRole)
+      .innerJoin(rolePermission, eq(rolePermission.roleId, userRole.roleId))
+      .where(eq(userRole.userId, userId));
+    const granted = new Map<Permission, PermissionScope>();
+    for (const row of rows) {
+      if (granted.get(row.code as Permission) !== 'all') {
+        granted.set(row.code as Permission, row.scope as PermissionScope);
+      }
+    }
+    return granted;
   }
 
   async saveSignInFailure(

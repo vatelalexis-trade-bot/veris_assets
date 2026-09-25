@@ -1,14 +1,8 @@
-// Roles of SPEC §4. Permissions attached to them arrive in phase 6.
+// Roles of SPEC §4; the role × permission matrix is in @virtus/shared.
 
-export const ROLE_CODES = [
-  'PLATFORM_ADMIN',
-  'ISSUER_ADMIN',
-  'ISSUER_OPERATOR',
-  'COMPLIANCE_OFFICER',
-  'AUDITOR',
-  'INVESTOR',
-] as const;
-export type RoleCode = (typeof ROLE_CODES)[number];
+import type { RoleCode } from '@virtus/shared';
+
+export { ROLE_CODES, type RoleCode } from '@virtus/shared';
 
 /** Roles for which two-factor authentication is mandatory (SPEC §24, decision D-001). */
 export const MFA_REQUIRED_ROLES: readonly RoleCode[] = [
@@ -49,3 +43,11 @@ export function invitableRoles(inviterRoles: readonly RoleCode[]): RoleCode[] {
   }
   return [];
 }
+
+/** Roles that an Issuer Administrator gives to the staff of the organisation (SPEC §4.2 to §4.6). */
+export const TENANT_STAFF_ROLES: readonly RoleCode[] = [
+  'ISSUER_ADMIN',
+  'ISSUER_OPERATOR',
+  'COMPLIANCE_OFFICER',
+  'AUDITOR',
+];

@@ -1,4 +1,5 @@
 import type { NestExpressApplication } from '@nestjs/platform-express';
+import { AuditWriter } from './audit/audit-writer.js';
 import type { Env } from './config/env.js';
 import { correlationIdMiddleware } from './context/correlation-id.middleware.js';
 import { AllExceptionsFilter } from './errors/all-exceptions.filter.js';
@@ -17,7 +18,7 @@ export function configureApp(app: NestExpressApplication, env: Env): void {
   app.set('trust proxy', 'loopback');
   app.use(createOriginCheck([env.WEB_ORIGIN]));
   app.setGlobalPrefix(API_PREFIX, { exclude: ['health', 'health/ready'] });
-  app.useGlobalFilters(new AllExceptionsFilter());
+  app.useGlobalFilters(new AllExceptionsFilter(app.get(AuditWriter)));
   app.enableShutdownHooks();
   if (env.NODE_ENV !== 'production') setupOpenApi(app);
 }

@@ -211,3 +211,27 @@ export const userInvitation = iamSchema.table(
     check('user_invitation_email_lower_case', sql`${table.email} = lower(${table.email})`),
   ],
 );
+
+/** Permission catalogue (SPEC §4.7), kept equal to @virtus/shared by `pnpm db:migrate`. */
+export const permission = iamSchema.table('permission', {
+  code: text().primaryKey(),
+  description: text().notNull(),
+});
+
+export const rolePermission = iamSchema.table(
+  'role_permission',
+  {
+    roleId: uuid()
+      .notNull()
+      .references(() => role.id),
+    permissionCode: text()
+      .notNull()
+      .references(() => permission.code),
+    // 'own': restricted to the investor's own data ("P" in the matrix).
+    scope: text().notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.roleId, table.permissionCode] }),
+    check('role_permission_scope', sql`${table.scope} IN ('all', 'own')`),
+  ],
+);

@@ -212,7 +212,39 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/api/v1/users/invitations': {
+  '/api/v1/tenants': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['TenantsController_list'];
+    put?: never;
+    post: operations['TenantsController_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/tenants/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['TenantsController_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch: operations['TenantsController_update'];
+    trace?: never;
+  };
+  '/api/v1/tenants/{id}/activate': {
     parameters: {
       query?: never;
       header?: never;
@@ -221,11 +253,171 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['UserInvitationsController_create'];
+    post: operations['TenantsController_activate'];
     delete?: never;
     options?: never;
     head?: never;
     patch?: never;
+    trace?: never;
+  };
+  '/api/v1/tenants/{id}/deactivate': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['TenantsController_deactivate'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/tenants/{id}/administrators': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['TenantsController_inviteAdministrator'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/users/invitations': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['UsersController_invitations'];
+    put?: never;
+    post: operations['UsersController_invite'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/users': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['UsersController_list'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/users/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['UsersController_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch: operations['UsersController_update'];
+    trace?: never;
+  };
+  '/api/v1/users/{id}/deactivate': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['UsersController_deactivate'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/users/{id}/reactivate': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['UsersController_reactivate'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/users/{id}/roles': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put: operations['UsersController_setRoles'];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/roles': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['RolesController_list'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/settings': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['SettingsController_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch: operations['SettingsController_update'];
     trace?: never;
   };
 }
@@ -404,6 +596,9 @@ export interface operations {
               | 'AUDITOR'
               | 'INVESTOR'
             )[];
+            permissions: {
+              [key: string]: 'all' | 'own';
+            };
             portals: ('platform' | 'issuer' | 'investor')[];
             /** @enum {string} */
             homePortal: 'platform' | 'issuer' | 'investor';
@@ -639,7 +834,50 @@ export interface operations {
       };
     };
   };
-  UserInvitationsController_create: {
+  TenantsController_list: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            data: {
+              /** Format: uuid */
+              id: string;
+              legalName: string;
+              tradeName: string | null;
+              countryCode: string;
+              baseCurrency: string;
+              /** @enum {string} */
+              defaultLocale: 'en-GB' | 'fr-FR';
+              timezone: string;
+              /** @enum {string} */
+              organizationType: 'ISSUER' | 'ASSET_MANAGER' | 'FUND';
+              /** @enum {string} */
+              status: 'ACTIVE' | 'INACTIVE';
+              version: number;
+              /** Format: date-time */
+              createdAt: string;
+            }[];
+            meta: {
+              page: number;
+              pageSize: number;
+              total: number;
+            };
+          };
+        };
+      };
+    };
+  };
+  TenantsController_create: {
     parameters: {
       query?: never;
       header?: never;
@@ -649,24 +887,244 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          legalName: string;
+          tradeName?: string | null;
+          countryCode: string;
+          baseCurrency: string;
+          /**
+           * @default en-GB
+           * @enum {string}
+           */
+          defaultLocale: 'en-GB' | 'fr-FR';
+          /** @default Europe/Paris */
+          timezone: string;
+          /** @enum {string} */
+          organizationType: 'ISSUER' | 'ASSET_MANAGER' | 'FUND';
+          firstAdministrator: {
+            /** Format: email */
+            email: string;
+            name: string;
+            /**
+             * @default en-GB
+             * @enum {string}
+             */
+            locale: 'en-GB' | 'fr-FR';
+          };
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            legalName: string;
+            tradeName: string | null;
+            countryCode: string;
+            baseCurrency: string;
+            /** @enum {string} */
+            defaultLocale: 'en-GB' | 'fr-FR';
+            timezone: string;
+            /** @enum {string} */
+            organizationType: 'ISSUER' | 'ASSET_MANAGER' | 'FUND';
+            /** @enum {string} */
+            status: 'ACTIVE' | 'INACTIVE';
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+          };
+        };
+      };
+    };
+  };
+  TenantsController_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            legalName: string;
+            tradeName: string | null;
+            countryCode: string;
+            baseCurrency: string;
+            /** @enum {string} */
+            defaultLocale: 'en-GB' | 'fr-FR';
+            timezone: string;
+            /** @enum {string} */
+            organizationType: 'ISSUER' | 'ASSET_MANAGER' | 'FUND';
+            /** @enum {string} */
+            status: 'ACTIVE' | 'INACTIVE';
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+          };
+        };
+      };
+    };
+  };
+  TenantsController_update: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          legalName?: string;
+          tradeName?: string | null;
+          /** @enum {string} */
+          defaultLocale?: 'en-GB' | 'fr-FR';
+          timezone?: string;
+          /** @enum {string} */
+          organizationType?: 'ISSUER' | 'ASSET_MANAGER' | 'FUND';
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            legalName: string;
+            tradeName: string | null;
+            countryCode: string;
+            baseCurrency: string;
+            /** @enum {string} */
+            defaultLocale: 'en-GB' | 'fr-FR';
+            timezone: string;
+            /** @enum {string} */
+            organizationType: 'ISSUER' | 'ASSET_MANAGER' | 'FUND';
+            /** @enum {string} */
+            status: 'ACTIVE' | 'INACTIVE';
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+          };
+        };
+      };
+    };
+  };
+  TenantsController_activate: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            legalName: string;
+            tradeName: string | null;
+            countryCode: string;
+            baseCurrency: string;
+            /** @enum {string} */
+            defaultLocale: 'en-GB' | 'fr-FR';
+            timezone: string;
+            /** @enum {string} */
+            organizationType: 'ISSUER' | 'ASSET_MANAGER' | 'FUND';
+            /** @enum {string} */
+            status: 'ACTIVE' | 'INACTIVE';
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+          };
+        };
+      };
+    };
+  };
+  TenantsController_deactivate: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            legalName: string;
+            tradeName: string | null;
+            countryCode: string;
+            baseCurrency: string;
+            /** @enum {string} */
+            defaultLocale: 'en-GB' | 'fr-FR';
+            timezone: string;
+            /** @enum {string} */
+            organizationType: 'ISSUER' | 'ASSET_MANAGER' | 'FUND';
+            /** @enum {string} */
+            status: 'ACTIVE' | 'INACTIVE';
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+          };
+        };
+      };
+    };
+  };
+  TenantsController_inviteAdministrator: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
           /** Format: email */
           email: string;
           name: string;
-          /** @enum {string} */
-          roleCode:
-            | 'PLATFORM_ADMIN'
-            | 'ISSUER_ADMIN'
-            | 'ISSUER_OPERATOR'
-            | 'COMPLIANCE_OFFICER'
-            | 'AUDITOR'
-            | 'INVESTOR';
           /**
            * @default en-GB
            * @enum {string}
            */
           locale: 'en-GB' | 'fr-FR';
-          /** Format: uuid */
-          tenantId?: string;
         };
       };
     };
@@ -681,6 +1139,485 @@ export interface operations {
             id: string;
             /** Format: date-time */
             expiresAt: string;
+          };
+        };
+      };
+    };
+  };
+  UsersController_invitations: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: email */
+            email: string;
+            name: string;
+            /** @enum {string} */
+            roleCode:
+              | 'PLATFORM_ADMIN'
+              | 'ISSUER_ADMIN'
+              | 'ISSUER_OPERATOR'
+              | 'COMPLIANCE_OFFICER'
+              | 'AUDITOR'
+              | 'INVESTOR';
+            /** Format: date-time */
+            expiresAt: string;
+            /** Format: date-time */
+            createdAt: string;
+          }[];
+        };
+      };
+    };
+  };
+  UsersController_invite: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: email */
+          email: string;
+          name: string;
+          /**
+           * @default en-GB
+           * @enum {string}
+           */
+          locale: 'en-GB' | 'fr-FR';
+          /** @enum {string} */
+          roleCode:
+            | 'PLATFORM_ADMIN'
+            | 'ISSUER_ADMIN'
+            | 'ISSUER_OPERATOR'
+            | 'COMPLIANCE_OFFICER'
+            | 'AUDITOR'
+            | 'INVESTOR';
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: date-time */
+            expiresAt: string;
+          };
+        };
+      };
+    };
+  };
+  UsersController_list: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            /** Format: email */
+            email: string;
+            /** @enum {string} */
+            locale: 'en-GB' | 'fr-FR';
+            /** @enum {string} */
+            status: 'ACTIVE' | 'INACTIVE';
+            roles: (
+              | 'PLATFORM_ADMIN'
+              | 'ISSUER_ADMIN'
+              | 'ISSUER_OPERATOR'
+              | 'COMPLIANCE_OFFICER'
+              | 'AUDITOR'
+              | 'INVESTOR'
+            )[];
+            mfaEnabled: boolean;
+            /** Format: date-time */
+            lastLoginAt: string | null;
+            /** Format: date-time */
+            createdAt: string;
+          }[];
+        };
+      };
+    };
+  };
+  UsersController_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            /** Format: email */
+            email: string;
+            /** @enum {string} */
+            locale: 'en-GB' | 'fr-FR';
+            /** @enum {string} */
+            status: 'ACTIVE' | 'INACTIVE';
+            roles: (
+              | 'PLATFORM_ADMIN'
+              | 'ISSUER_ADMIN'
+              | 'ISSUER_OPERATOR'
+              | 'COMPLIANCE_OFFICER'
+              | 'AUDITOR'
+              | 'INVESTOR'
+            )[];
+            mfaEnabled: boolean;
+            /** Format: date-time */
+            lastLoginAt: string | null;
+            /** Format: date-time */
+            createdAt: string;
+          };
+        };
+      };
+    };
+  };
+  UsersController_update: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          name?: string;
+          /** @enum {string} */
+          locale?: 'en-GB' | 'fr-FR';
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            /** Format: email */
+            email: string;
+            /** @enum {string} */
+            locale: 'en-GB' | 'fr-FR';
+            /** @enum {string} */
+            status: 'ACTIVE' | 'INACTIVE';
+            roles: (
+              | 'PLATFORM_ADMIN'
+              | 'ISSUER_ADMIN'
+              | 'ISSUER_OPERATOR'
+              | 'COMPLIANCE_OFFICER'
+              | 'AUDITOR'
+              | 'INVESTOR'
+            )[];
+            mfaEnabled: boolean;
+            /** Format: date-time */
+            lastLoginAt: string | null;
+            /** Format: date-time */
+            createdAt: string;
+          };
+        };
+      };
+    };
+  };
+  UsersController_deactivate: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            /** Format: email */
+            email: string;
+            /** @enum {string} */
+            locale: 'en-GB' | 'fr-FR';
+            /** @enum {string} */
+            status: 'ACTIVE' | 'INACTIVE';
+            roles: (
+              | 'PLATFORM_ADMIN'
+              | 'ISSUER_ADMIN'
+              | 'ISSUER_OPERATOR'
+              | 'COMPLIANCE_OFFICER'
+              | 'AUDITOR'
+              | 'INVESTOR'
+            )[];
+            mfaEnabled: boolean;
+            /** Format: date-time */
+            lastLoginAt: string | null;
+            /** Format: date-time */
+            createdAt: string;
+          };
+        };
+      };
+    };
+  };
+  UsersController_reactivate: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            /** Format: email */
+            email: string;
+            /** @enum {string} */
+            locale: 'en-GB' | 'fr-FR';
+            /** @enum {string} */
+            status: 'ACTIVE' | 'INACTIVE';
+            roles: (
+              | 'PLATFORM_ADMIN'
+              | 'ISSUER_ADMIN'
+              | 'ISSUER_OPERATOR'
+              | 'COMPLIANCE_OFFICER'
+              | 'AUDITOR'
+              | 'INVESTOR'
+            )[];
+            mfaEnabled: boolean;
+            /** Format: date-time */
+            lastLoginAt: string | null;
+            /** Format: date-time */
+            createdAt: string;
+          };
+        };
+      };
+    };
+  };
+  UsersController_setRoles: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          roles: (
+            | 'PLATFORM_ADMIN'
+            | 'ISSUER_ADMIN'
+            | 'ISSUER_OPERATOR'
+            | 'COMPLIANCE_OFFICER'
+            | 'AUDITOR'
+            | 'INVESTOR'
+          )[];
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            /** Format: email */
+            email: string;
+            /** @enum {string} */
+            locale: 'en-GB' | 'fr-FR';
+            /** @enum {string} */
+            status: 'ACTIVE' | 'INACTIVE';
+            roles: (
+              | 'PLATFORM_ADMIN'
+              | 'ISSUER_ADMIN'
+              | 'ISSUER_OPERATOR'
+              | 'COMPLIANCE_OFFICER'
+              | 'AUDITOR'
+              | 'INVESTOR'
+            )[];
+            mfaEnabled: boolean;
+            /** Format: date-time */
+            lastLoginAt: string | null;
+            /** Format: date-time */
+            createdAt: string;
+          };
+        };
+      };
+    };
+  };
+  RolesController_list: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @enum {string} */
+            code:
+              | 'PLATFORM_ADMIN'
+              | 'ISSUER_ADMIN'
+              | 'ISSUER_OPERATOR'
+              | 'COMPLIANCE_OFFICER'
+              | 'AUDITOR'
+              | 'INVESTOR';
+            permissions: {
+              code: string;
+              /** @enum {string} */
+              scope: 'all' | 'own';
+            }[];
+          }[];
+        };
+      };
+    };
+  };
+  SettingsController_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            legalName: string;
+            tradeName: string | null;
+            countryCode: string;
+            baseCurrency: string;
+            /** @enum {string} */
+            defaultLocale: 'en-GB' | 'fr-FR';
+            timezone: string;
+            /** @enum {string} */
+            organizationType: 'ISSUER' | 'ASSET_MANAGER' | 'FUND';
+            /** @enum {string} */
+            status: 'ACTIVE' | 'INACTIVE';
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+          };
+        };
+      };
+    };
+  };
+  SettingsController_update: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          tradeName?: string | null;
+          /** @enum {string} */
+          defaultLocale?: 'en-GB' | 'fr-FR';
+          timezone?: string;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            legalName: string;
+            tradeName: string | null;
+            countryCode: string;
+            baseCurrency: string;
+            /** @enum {string} */
+            defaultLocale: 'en-GB' | 'fr-FR';
+            timezone: string;
+            /** @enum {string} */
+            organizationType: 'ISSUER' | 'ASSET_MANAGER' | 'FUND';
+            /** @enum {string} */
+            status: 'ACTIVE' | 'INACTIVE';
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
           };
         };
       };

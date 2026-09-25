@@ -39,6 +39,8 @@ export const meResult = z.object({
   user: z.object({ id: z.uuid(), name: z.string(), email: z.email(), locale }),
   tenant: z.object({ id: z.uuid(), legalName: z.string() }).nullable(),
   roles: z.array(z.enum(ROLE_CODES)),
+  /** Granted permissions and their scope ('own' = the investor's own data only). */
+  permissions: z.record(z.string(), z.enum(['all', 'own'])),
   portals: z.array(portal),
   homePortal: portal,
   mfa: z.object({ enabled: z.boolean(), required: z.boolean() }),

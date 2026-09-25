@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import type { ErrorDetail } from '@virtus/shared';
+import type { ErrorDetail, Permission, PermissionScope } from '@virtus/shared';
 import { AuditWriter } from '../../../core/audit/audit-writer.js';
 import { AppError } from '../../../core/errors/app-error.js';
 import { RateLimiter, type RateLimit } from '../../../core/security/rate-limiter.js';
@@ -25,6 +25,7 @@ export interface AuthContext {
   tenantId: string | null;
   locale: string;
   roles: RoleCode[];
+  permissions: Map<Permission, PermissionScope>;
   mfaEnabled: boolean;
   mfaRequired: boolean;
   homePortal: Portal;
@@ -131,7 +132,7 @@ export class AuthenticationService {
     }
 
     const cookies = signIn.headers.getSetCookie();
-    if (identity?.status !== 'ACTIVE') {
+    if (identity?.status !== 'ACTIVE' || !identity.tenantActive) {
       await this.auth.api
         .signOut({ headers: withCookies(request.headers, cookies) })
         .catch(() => undefined);
@@ -210,8 +211,9 @@ export class AuthenticationService {
       return null;
     }
     const identity = await this.identities.findUserById(found.user.id);
-    if (!identity || identity.status !== 'ACTIVE') return null;
+    if (!identity || identity.status !== 'ACTIVE' || !identity.tenantActive) return null;
     const roles = await this.identities.rolesOf(identity.id);
+    const permissions = await this.identities.permissionsOf(identity.id);
     return {
       userId: identity.id,
       email: identity.email,
@@ -219,6 +221,7 @@ export class AuthenticationService {
       tenantId: identity.tenantId,
       locale: identity.locale,
       roles,
+      permissions,
       mfaEnabled: identity.twoFactorEnabled,
       mfaRequired: requiresMfa(roles),
       homePortal: homePortal(roles),

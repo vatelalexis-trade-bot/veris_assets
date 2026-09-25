@@ -78,6 +78,16 @@ describe('migrations and seed', () => {
   });
 
   it('loads the deterministic reference data and the two demo tenants', async () => {
-    expect(await counts()).toMatchObject({ currencies: '4', reference_data: '7', tenants: '2' });
+    expect(await counts()).toMatchObject({ currencies: '4', reference_data: '7' });
+    // Other test files may create tenants: only the two seeded ones are checked here.
+    const ids = tenants.map((row) => row.id);
+    const admin = new pg.Client(connectionConfig(env, env.POSTGRES_TEST_DB, 'admin'));
+    await admin.connect();
+    try {
+      const { rowCount } = await admin.query('SELECT 1 FROM iam.tenant WHERE id = ANY($1)', [ids]);
+      expect(rowCount).toBe(2);
+    } finally {
+      await admin.end();
+    }
   });
 });

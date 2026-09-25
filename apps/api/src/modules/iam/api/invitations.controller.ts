@@ -5,16 +5,9 @@ import { z } from 'zod';
 import { toOpenApiSchema } from '../../../core/openapi/zod-openapi.js';
 import { Public } from '../../../core/security/public.decorator.js';
 import { ZodValidationPipe } from '../../../core/validation/zod-validation.pipe.js';
-import type { AuthContext } from '../application/authentication.service.js';
 import { InvitationService } from '../application/invitation.service.js';
-import {
-  invitationBody,
-  invitationCreated,
-  invitationPreview,
-  passwordBody,
-  signInResult,
-} from './dto.js';
-import { CurrentAuth, requestInfo, sendCookies } from './http.js';
+import { invitationPreview, passwordBody, signInResult } from './dto.js';
+import { requestInfo, sendCookies } from './http.js';
 
 const tokenParam = new ZodValidationPipe(z.string().min(20).max(128));
 
@@ -47,23 +40,5 @@ export class InvitationAcceptanceController {
     const outcome = await this.invitations.accept(token, body.password, requestInfo(req));
     sendCookies(res, outcome.cookies);
     return outcome.result;
-  }
-}
-
-/** Invitation of a new user by an administrator (docs/API.md §2.4). Permissions: phase 6. */
-@ApiTags('users')
-@Controller('users/invitations')
-export class UserInvitationsController {
-  constructor(private readonly invitations: InvitationService) {}
-
-  @Post()
-  @ApiBody({ schema: toOpenApiSchema(invitationBody) })
-  @ApiOkResponse({ schema: toOpenApiSchema(invitationCreated) })
-  async create(
-    @CurrentAuth() auth: AuthContext,
-    @Body(new ZodValidationPipe(invitationBody)) body: z.infer<typeof invitationBody>,
-  ): Promise<z.infer<typeof invitationCreated>> {
-    const created = await this.invitations.invite(auth, body);
-    return { id: created.id, expiresAt: created.expiresAt.toISOString() };
   }
 }

@@ -7,7 +7,7 @@ import { DATABASE, type Database, withTenantTransaction } from '../../../core/da
 import { EMAIL_PROVIDER, type EmailProvider } from '../../../core/email/email.provider.js';
 import { AppError } from '../../../core/errors/app-error.js';
 import { RateLimiter, type RateLimit } from '../../../core/security/rate-limiter.js';
-import { invitableRoles, type RoleCode } from '../domain/roles.js';
+import type { RoleCode } from '../domain/roles.js';
 import { invitationEmail, LOCALE_PATH, type EmailLocale } from '../infrastructure/emails.js';
 import { IdentityRepository } from '../infrastructure/identity.repository.js';
 import { hashPassword } from '../infrastructure/password-hashing.js';
@@ -15,7 +15,6 @@ import { role, tenant, userInvitation } from '../infrastructure/schema.js';
 import {
   AuthenticationService,
   passwordRuleDetails,
-  type AuthContext,
   type AuthOutcome,
   type RequestInfo,
 } from './authentication.service.js';
@@ -36,11 +35,18 @@ export interface InvitationRequest {
   name: string;
   roleCode: RoleCode;
   locale: EmailLocale;
-  /** Only read for platform administrators inviting the first administrator of a tenant (SPEC §6.1). */
-  tenantId?: string;
+  /**
+   * Tenant of the new user, decided by the calling route and never read from the request body:
+   * the session's tenant for an Issuer Administrator, the tenant of the URL for the Platform
+   * Administrator (first administrator of a tenant, SPEC §6.1), null for a platform user.
+   */
+  tenantId: string | null;
 }
 
-/** User invitations (SPEC §6.1). Phase 6 replaces the role checks by permissions. */
+/**
+ * User invitations (SPEC §6.1). Who may invite which role is decided by the route permissions
+ * (user:manage, tenant:manage, platform-settings:manage).
+ */
 @Injectable()
 export class InvitationService {
   constructor(
@@ -54,21 +60,10 @@ export class InvitationService {
   ) {}
 
   async invite(
-    inviter: AuthContext,
+    inviter: { userId: string; roles: readonly string[] },
     request: InvitationRequest,
   ): Promise<{ id: string; expiresAt: Date }> {
-    if (!invitableRoles(inviter.roles).includes(request.roleCode))
-      throw new AppError('PERMISSION_DENIED');
-    // The tenant always comes from the inviter's session, except for the platform administrator
-    // creating a tenant's first administrator (SPEC §20: never trust a tenant sent by the client).
-    const tenantId = inviter.roles.includes('PLATFORM_ADMIN')
-      ? request.roleCode === 'PLATFORM_ADMIN'
-        ? null
-        : (request.tenantId ?? null)
-      : inviter.tenantId;
-    if (request.roleCode !== 'PLATFORM_ADMIN' && tenantId === null) {
-      throw new AppError('VALIDATION_FAILED', [{ code: 'TENANT_REQUIRED', field: 'tenantId' }]);
-    }
+    const { tenantId } = request;
     const email = request.email.trim().toLowerCase();
     if (await this.identities.findUserByEmail(email)) {
       throw new AppError('VALIDATION_FAILED', [

@@ -29,6 +29,20 @@
       "when": 1790327997928,
       "tag": "0003_identity_security",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1790340390175,
+      "tag": "0004_permissions",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1790340405743,
+      "tag": "0005_user_and_tenant_management",
+      "breakpoints": true
     }
   ]
 }

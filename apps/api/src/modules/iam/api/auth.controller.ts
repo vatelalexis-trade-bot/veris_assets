@@ -97,6 +97,7 @@ export class AuthController {
       },
       tenant: tenantInfo,
       roles: auth.roles,
+      permissions: Object.fromEntries(auth.permissions),
       portals: auth.portals,
       homePortal: auth.homePortal,
       mfa: { enabled: auth.mfaEnabled, required: auth.mfaRequired },
