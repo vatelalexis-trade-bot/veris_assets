@@ -3,7 +3,7 @@ import { fireEvent, screen } from '@testing-library/react';
 import type { ReactElement } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { renderWithIntl } from '@/test/render';
-import { ApiError } from './api-error';
+import { ApiError } from '@/components/app/api-error';
 import { ResetPasswordForm } from './password-forms';
 
 // The forms only need a router for redirections, which these tests do not reach.

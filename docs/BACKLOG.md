@@ -82,7 +82,7 @@ Vérifiable par : scénario 5 vert.
 | P6-3 | Gestion des tenants (PA) ; gestion des utilisateurs et rôles (IA) ; écrans correspondants | M |
 | P6-4 | Tenant issu de la session ; `tenantId` client ignoré et tracé ; 404 en accès croisé | M |
 | P6-5 | Tests d'autorisation générés (endpoint × rôle) ; scénario 5 automatisé sur tous les endpoints existants | M |
-| P6-6 | Accès break-glass (1 h, motif, lecture seule, audit du tenant) | S |
+| P6-6 | Accès break-glass (1 h, motif, lecture seule, audit du tenant) — reporté en phase 16 (D-034) | S |
 
 ## Phase 7 — Journal d'audit et outbox
 Vérifiable par : actions visibles dans l'audit.
@@ -202,6 +202,7 @@ Vérifiable par : checklist de la section 24 cochée.
 | P16-3 | Images Docker ; déploiement sur l'hébergement choisi ; Sentry | M |
 | P16-4 | Sauvegardes et restauration testées | M |
 | P16-5 | Documentation d'exploitation et guide de démo en français | M |
+| P16-6 | Accès break-glass (ex-P6-6, D-034) | S |
 
 ---
 

@@ -8,6 +8,7 @@ import { EmailModule } from './email/email.module.js';
 import { HealthModule } from './health/health.module.js';
 import { buildPinoHttpOptions } from './logging/logger.options.js';
 import { RedisModule } from './redis/redis.module.js';
+import { ReferenceController } from './reference/reference.controller.js';
 import { SecurityModule } from './security/security.module.js';
 
 /**
@@ -28,5 +29,6 @@ import { SecurityModule } from './security/security.module.js';
     EmailModule,
     HealthModule,
   ],
+  controllers: [ReferenceController],
 })
 export class CoreModule {}

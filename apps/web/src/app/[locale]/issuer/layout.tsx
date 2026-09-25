@@ -9,7 +9,11 @@ export default async function Layout({ children, params }: LayoutProps<'/[locale
   return (
     <AppShell
       portalId="issuer"
-      user={{ name: user.user.name, tenantName: user.tenant?.legalName ?? null }}
+      user={{
+        name: user.user.name,
+        tenantName: user.tenant?.legalName ?? null,
+        permissions: Object.keys(user.permissions),
+      }}
     >
       {children}
     </AppShell>

@@ -4,6 +4,38 @@
  */
 
 export interface paths {
+  '/api/v1/reference/countries': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['ReferenceController_countries'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/reference/currencies': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['ReferenceController_currencies'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/health': {
     parameters: {
       query?: never;
@@ -432,6 +464,51 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+  ReferenceController_countries: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            code: string;
+            nameEn: string;
+            nameFr: string;
+          }[];
+        };
+      };
+    };
+  };
+  ReferenceController_currencies: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            code: string;
+            minorUnits: number;
+          }[];
+        };
+      };
+    };
+  };
   HealthController_liveness: {
     parameters: {
       query?: never;
@@ -836,7 +913,11 @@ export interface operations {
   };
   TenantsController_list: {
     parameters: {
-      query?: never;
+      query?: {
+        q?: string;
+        pageSize?: number;
+        page?: number;
+      };
       header?: never;
       path?: never;
       cookie?: never;

@@ -4,12 +4,18 @@ import { Menu, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { PORTALS, type PortalId } from '@/features/navigation/portals';
+import { PORTALS, visibleItems, type PortalId } from '@/features/navigation/portals';
 import { Link, usePathname } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
 
 /** Portal menu: always visible on large screens, behind a toggle button on small ones. */
-export function PortalNavigation({ portalId }: { portalId: PortalId }) {
+export function PortalNavigation({
+  portalId,
+  permissions,
+}: {
+  portalId: PortalId;
+  permissions: string[];
+}) {
   const t = useTranslations();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -34,7 +40,7 @@ export function PortalNavigation({ portalId }: { portalId: PortalId }) {
         className={cn('w-full md:block', open ? 'block' : 'hidden')}
       >
         <ul className="flex flex-col gap-0.5 p-3">
-          {portal.items.map(({ section, icon: Icon }) => {
+          {visibleItems(portal, permissions).map(({ section, icon: Icon }) => {
             const href = `${portal.path}/${section}`;
             const active = pathname === href || pathname.startsWith(`${href}/`);
             return (

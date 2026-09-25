@@ -8,7 +8,17 @@
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "mainNavigation": "Main navigation",
-    "backToHome": "Back to home"
+    "backToHome": "Back to home",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saved": "Changes saved.",
+    "search": "Search",
+    "never": "Never",
+    "actions": "Actions",
+    "userStatus": {
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive"
+    }
   },
   "demoBanner": {
     "text": "Demonstration environment — fictitious data"
@@ -302,5 +312,104 @@
     "passwordHint": "At least 12 characters. A passphrase of a few words is easy to remember.",
     "signOut": "Sign out",
     "signedInAs": "Signed in as {name}"
+  },
+  "validationDetails": {
+    "OWN_ACCOUNT": "You cannot change your own account.",
+    "LAST_ADMINISTRATOR": "The organisation must keep at least one active administrator.",
+    "ROLE_NOT_ASSIGNABLE": "This role cannot be given here.",
+    "EMAIL_ALREADY_REGISTERED": "An account already exists with this email.",
+    "TENANT_UNKNOWN": "This organisation does not exist."
+  },
+  "organizationTypes": {
+    "ISSUER": "Issuer",
+    "ASSET_MANAGER": "Asset manager",
+    "FUND": "Fund"
+  },
+  "tenants": {
+    "title": "Organisations",
+    "description": "Organisations using the platform. Their business data stays out of your reach.",
+    "new": "New organisation",
+    "caption": "List of organisations",
+    "columns": {
+      "legalName": "Legal name",
+      "country": "Country",
+      "type": "Type",
+      "status": "Status",
+      "createdAt": "Created on"
+    },
+    "status": {
+      "ACTIVE": "Active",
+      "INACTIVE": "Deactivated"
+    },
+    "form": {
+      "organisation": "Organisation",
+      "legalName": "Legal name",
+      "tradeName": "Trade name",
+      "country": "Country",
+      "currency": "Main currency",
+      "defaultLocale": "Default language",
+      "timezone": "Time zone",
+      "type": "Type of organisation",
+      "firstAdministrator": "First administrator",
+      "firstAdministratorHelp": "This person receives an invitation by email to activate the account.",
+      "adminName": "Full name",
+      "adminEmail": "Email",
+      "adminLocale": "Language of the invitation",
+      "create": "Create the organisation"
+    },
+    "detail": {
+      "back": "All organisations",
+      "deactivate": "Deactivate",
+      "activate": "Reactivate",
+      "deactivateTitle": "Deactivate {name}?",
+      "deactivateDescription": "Every user of this organisation is signed out at once and cannot sign in until it is reactivated. No data is deleted.",
+      "activateTitle": "Reactivate {name}?",
+      "activateDescription": "The users of this organisation will be able to sign in again.",
+      "inviteAdministrator": "Invite another administrator",
+      "invite": "Send the invitation",
+      "invitationSent": "Invitation sent to {email}."
+    }
+  },
+  "users": {
+    "title": "Users",
+    "caption": "Users of the organisation",
+    "columns": {
+      "name": "Name",
+      "email": "Email",
+      "roles": "Roles",
+      "status": "Status",
+      "mfa": "Two-factor",
+      "lastLogin": "Last sign-in"
+    },
+    "mfaOn": "On",
+    "mfaOff": "Off",
+    "invite": {
+      "title": "Invite a user",
+      "role": "Role",
+      "submit": "Send the invitation",
+      "sent": "Invitation sent to {email}."
+    },
+    "pending": {
+      "title": "Pending invitations",
+      "expires": "Expires on {date}",
+      "none": "No pending invitation."
+    },
+    "roles": {
+      "edit": "Roles",
+      "title": "Roles of {name}",
+      "help": "The user is signed out and gets the new rights at the next sign-in.",
+      "save": "Save the roles"
+    },
+    "deactivate": "Deactivate",
+    "reactivate": "Reactivate",
+    "deactivateTitle": "Deactivate {name}?",
+    "deactivateDescription": "{name} is signed out at once and can no longer sign in. The history is kept.",
+    "reactivateTitle": "Reactivate {name}?",
+    "reactivateDescription": "{name} will be able to sign in again with the same roles."
+  },
+  "settings": {
+    "title": "Settings",
+    "organisation": "Organisation",
+    "legalName": "Legal name: {name}"
   }
 }

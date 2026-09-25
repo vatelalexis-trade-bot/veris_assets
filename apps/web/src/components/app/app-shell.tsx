@@ -12,6 +12,8 @@ import { PortalNavigation } from './portal-navigation';
 export interface ShellUser {
   name: string;
   tenantName: string | null;
+  /** Permissions of the user, to show only the menu entries it may use. */
+  permissions: string[];
 }
 
 export function AppShell({
@@ -42,7 +44,7 @@ export function AppShell({
           >
             <Logo />
           </Link>
-          <PortalNavigation portalId={portalId} />
+          <PortalNavigation portalId={portalId} permissions={user.permissions} />
         </aside>
         <div className="flex flex-1 flex-col">
           <header className="flex items-center justify-between gap-4 border-b border-border px-6 py-3">

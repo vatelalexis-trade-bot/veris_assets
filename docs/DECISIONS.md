@@ -121,3 +121,26 @@ Validées par le porteur de projet (« ok pour tout »).
 **D-032 — Acceptée. Rôles dès la phase 5, permissions en phase 6.** Les tables des rôles et des rôles attribués sont créées dès maintenant, car la MFA obligatoire et le choix du portail dépendent du rôle. En attendant les permissions (phase 6), la création d'invitations est réservée par rôle : Issuer Administrator (rôles de son organisation, hors investisseurs) et Platform Administrator (premier administrateur d'une organisation, ou autre administrateur plateforme). L'en-tête `Idempotency-Key` (prévu sur cette route) arrive avec l'idempotence en phase 7.
 
 **D-033 — Acceptée. Liste de mots de passe courants.** La vérification de la spec (24) utilise la liste « passwords-common » du projet zxcvbn-ts (49 233 mots de passe, licence MIT), sans tenir compte des majuscules, et refuse aussi un mot de passe courant suivi seulement de chiffres ou de symboles (« Password2026! »).
+
+---
+
+## 2026-09-25 — Phase 6 (tenants, utilisateurs, rôles, permissions, isolation)
+
+Proposées, en attente de validation par le porteur de projet.
+
+**D-034 — Proposée. Accès break-glass reporté à la phase 16.** P6-6 (priorité « S ») a besoin du journal d'audit complet et de l'outbox (phase 7) pour tracer l'accès dans l'audit du tenant concerné. Il est reporté à la phase 16 (durcissement). L'entrée de menu « Break-glass » de la console plateforme reste un écran « bientôt disponible ». *Décale P6-6.*
+
+**D-035 — Proposée. Tenant imposé par le client : refus 404 plutôt que simple ignorance.** `docs/ARCHITECTURE.md` §4.4 dit « ignoré et tracé ». Un `tenantId` **d'un autre tenant** dans la query ou le corps d'une requête est refusé avec **404** `RESOURCE_NOT_FOUND` (comme un accès croisé, rien n'est révélé) et tracé dans l'audit (action `TENANT_OVERRIDE_ATTEMPT`). Le `tenantId` de l'utilisateur lui-même est toléré et retiré du corps. Une route qui aurait besoin d'un tenant venant de la requête devra être marquée explicitement (`@AcceptsTenantParameter`) ; aucune ne l'est aujourd'hui (les routes `/tenants/{id}` désignent l'organisation par le chemin, pas par un paramètre `tenantId`). Refuser est plus sûr que continuer en silence : le scénario 5 vérifie qu'aucune donnée de l'autre tenant ne sort. *Modifie `docs/ARCHITECTURE.md` §4.4.*
+
+**D-036 — Proposée. « Portée plateforme » pour la table des organisations.** Le Platform Administrator n'a pas de tenant courant ; pour gérer les organisations sans rôle PostgreSQL de plus, `va_app` reçoit une politique RLS sur `iam.tenant` active **uniquement** quand la transaction positionne `app.platform_scope = 'on'` (fonction `withPlatformTransaction`, utilisée par les seules routes `/tenants`, protégées par `tenant:read` / `tenant:manage`). Les tables métier n'ont pas cette politique : le Platform Administrator n'y voit toujours rien. Par ailleurs `va_auth` lit l'identifiant et le statut des organisations, pour refuser la connexion (et couper les sessions) des utilisateurs d'une organisation désactivée. *Complète `docs/ARCHITECTURE.md` §4.5.*
+
+**D-037 — Proposée. Routes ajoutées ou précisées.**
+1. `POST /tenants/{id}/administrators` : inviter un autre administrateur d'une organisation existante (Platform Administrator).
+2. `GET /users/invitations` : invitations en attente de l'organisation (`user:read`).
+3. `GET /reference/countries` et `/reference/currencies` : listes de référence pour les formulaires (toute session valide, aucune donnée de tenant).
+4. `GET /settings` demande `tenant-settings:manage`, comme `PATCH`.
+5. Refus métier de la gestion des utilisateurs, en détail de `VALIDATION_FAILED` : `OWN_ACCOUNT` (on ne désactive pas son propre compte et on ne change pas ses propres rôles), `LAST_ADMINISTRATOR` (l'organisation garde au moins un administrateur actif), `ROLE_NOT_ASSIGNABLE` (un administrateur émetteur ne donne ni le rôle investisseur ni le rôle plateforme).
+6. L'en-tête `Idempotency-Key` des routes marquées IK est exigé à partir de la phase 7 (idempotence), comme prévu par D-032.
+*Complète `docs/API.md` §2.3 et §2.4.*
+
+**D-038 — Proposée. Menus filtrés par permission.** Chaque entrée de menu est associée à une permission (`apps/web/src/features/navigation/portals.ts`) ; une entrée n'apparaît que si `/auth/me` renvoie cette permission, et la page ouverte directement par son adresse affiche « accès refusé ». Choix notables : « Paramètres » (émetteur) demande `user:read` (l'auditeur et le responsable conformité y voient les utilisateurs en lecture seule ; les formulaires n'apparaissent qu'avec `tenant-settings:manage`, `user:manage` ou `role:assign`) ; « Tableau de bord » demande `report:read`. L'API reste seule juge : le front ne fait que masquer.

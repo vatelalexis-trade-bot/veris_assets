@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Link, useRouter } from '@/i18n/navigation';
 import { api } from '@/lib/api/client';
 import type { operations } from '@/lib/api/schema';
-import { ApiError } from './api-error';
+import { ApiError } from '@/components/app/api-error';
 import { useAfterSignIn } from './use-after-sign-in';
 
 export type DemoAccounts =

@@ -11,7 +11,7 @@ import {
   Query,
   Res,
 } from '@nestjs/common';
-import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import type { Response } from 'express';
 import type { z } from 'zod';
 import { etagOf, expectedVersion } from '../../../core/http/if-match.js';
@@ -42,6 +42,13 @@ export class TenantsController {
 
   @Get()
   @RequirePermission('tenant:read')
+  @ApiQuery({ name: 'page', required: false, schema: { type: 'integer', minimum: 1, default: 1 } })
+  @ApiQuery({
+    name: 'pageSize',
+    required: false,
+    schema: { type: 'integer', minimum: 1, maximum: 100, default: 25 },
+  })
+  @ApiQuery({ name: 'q', required: false, schema: { type: 'string', maxLength: 100 } })
   @ApiOkResponse({ schema: toOpenApiSchema(pageSchema(tenantView)) })
   async list(@Query(new ZodValidationPipe(listQuery)) query: z.infer<typeof listQuery>) {
     const page = await this.tenants.list({ page: query.page, pageSize: query.pageSize }, query.q);

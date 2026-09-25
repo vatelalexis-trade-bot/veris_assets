@@ -171,7 +171,7 @@ sequenceDiagram
 ```
 
 - Le **contexte de requête** (tenant, utilisateur, rôles, permissions, correlation ID, transaction) circule via `AsyncLocalStorage` : aucun service ne reçoit de `tenant_id` en paramètre venant du client.
-- Tout `tenant_id` présent dans le corps ou la query d'une requête est **ignoré** et la tentative est tracée (scénario 5).
+- Un `tenantId` d'un **autre** tenant présent dans le corps ou la query est refusé en **404** et la tentative est tracée (`TENANT_OVERRIDE_ATTEMPT`, D-035) ; celui de l'utilisateur est retiré du corps. Une route qui aurait besoin d'un tenant venant de la requête doit être marquée `@AcceptsTenantParameter` (aucune aujourd'hui).
 - Une ressource d'un autre tenant est invisible (RLS) → **404** `RESOURCE_NOT_FOUND`, et le refus est tracé dans l'audit via une transaction séparée.
 - Les lectures s'exécutent aussi dans une transaction courte (lecture seule) pour bénéficier de la RLS.
 
@@ -188,7 +188,7 @@ sequenceDiagram
 6. **Cache Redis** : clés préfixées `t:{tenantId}:`.
 7. **Tests** : un test vérifie que la RLS est active sur chaque table portant `tenant_id` ; le scénario 5 appelle chaque endpoint avec des identifiants de l'autre tenant.
 
-**Platform Administrator** : n'a pas de tenant courant, donc ne voit aucune donnée métier. Ses indicateurs de plateforme proviennent de vues agrégées sans donnée métier. L'accès break-glass crée une autorisation temporaire (1 heure, motif obligatoire, lecture seule), tracée dans l'audit du tenant concerné.
+**Platform Administrator** : n'a pas de tenant courant, donc ne voit aucune donnée métier. Pour gérer les organisations, les routes `/tenants` ouvrent une transaction « portée plateforme » (`app.platform_scope = 'on'`) qui active une politique RLS dédiée sur `iam.tenant` seulement (D-036). Ses indicateurs de plateforme proviennent de vues agrégées sans donnée métier. L'accès break-glass (phase 16, D-034) crée une autorisation temporaire (1 heure, motif obligatoire, lecture seule), tracée dans l'audit du tenant concerné.
 
 ### 4.6 Registre et ledger
 

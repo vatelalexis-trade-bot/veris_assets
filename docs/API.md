@@ -108,7 +108,7 @@ Sauf mention contraire, les chemins sont relatifs à `/api/v1` (par exemple `/is
 | GET | `/auth/me` | Utilisateur, tenant, rôles, portails autorisés, état de la MFA, expiration de la session |
 | GET | `/auth/demo-accounts` | Comptes de démo et code TOTP courant — **uniquement si `DEMO_MODE=true`** (D-016), 404 sinon |
 
-Ces routes sont celles de l'API ; Better Auth n'est pas exposé directement (D-031). Les permissions sont renvoyées par `/auth/me` à partir de la phase 6.
+Ces routes sont celles de l'API ; Better Auth n'est pas exposé directement (D-031). `/auth/me` renvoie aussi les permissions de l'utilisateur (`{ "user:read": "all", … }`, portée `all` ou `own`).
 
 ### 2.3 `/tenants` (plateforme)
 
@@ -117,8 +117,9 @@ Ces routes sont celles de l'API ; Better Auth n'est pas exposé directement (D-0
 | GET | `/tenants` · `/tenants/{id}` | `tenant:read` | |
 | POST | `/tenants` (+ premier Issuer Administrator invité) | `tenant:manage` | ✓ |
 | PATCH | `/tenants/{id}` | `tenant:manage` | |
-| POST | `/tenants/{id}/activate` · `/deactivate` | `tenant:manage` | ✓ |
-| POST | `/tenants/{id}/break-glass` (motif obligatoire) | `break-glass:request` | ✓ |
+| POST | `/tenants/{id}/activate` · `/deactivate` (la désactivation coupe les sessions) | `tenant:manage` | ✓ |
+| POST | `/tenants/{id}/administrators` (inviter un autre Issuer Administrator, D-037) | `tenant:manage` | ✓ |
+| POST | `/tenants/{id}/break-glass` (motif obligatoire ; phase 16, D-034) | `break-glass:request` | ✓ |
 | GET | `/platform/metrics` | `platform-metrics:read` | |
 | GET / PUT | `/platform/notification-templates` | `notification-template:manage` | |
 | GET / PUT | `/platform/reference-data` | `reference-data:manage` | |
@@ -128,12 +129,16 @@ Ces routes sont celles de l'API ; Better Auth n'est pas exposé directement (D-0
 | Méthode | Chemin | Permission | IK |
 |---|---|---|---|
 | GET | `/users` · `/users/{id}` | `user:read` | |
+| GET | `/users/invitations` (invitations en attente) | `user:read` | |
 | POST | `/users/invitations` | `user:manage` | ✓ |
 | PATCH | `/users/{id}` | `user:manage` | |
 | POST | `/users/{id}/deactivate` · `/reactivate` | `user:manage` | ✓ |
 | PUT | `/users/{id}/roles` | `role:assign` | ✓ |
 | GET | `/roles` (avec leurs permissions) | `user:read` | |
-| GET / PATCH | `/settings` (paramètres de l'organisation) | `tenant-settings:manage` | |
+| GET / PATCH | `/settings` (paramètres de l'organisation, `If-Match`) | `tenant-settings:manage` | |
+| GET | `/reference/countries` · `/reference/currencies` (listes de référence, D-037) | Session valide | |
+
+Refus métier (détails de `VALIDATION_FAILED`) : `OWN_ACCOUNT`, `LAST_ADMINISTRATOR`, `ROLE_NOT_ASSIGNABLE`. Changer les rôles d'un utilisateur ou le désactiver coupe ses sessions. L'en-tête IK est exigé à partir de la phase 7.
 
 ### 2.5 `/investors`, `/kyc-cases`, `/eligibility-assessments`
 

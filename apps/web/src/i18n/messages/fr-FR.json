@@ -8,7 +8,17 @@
     "openMenu": "Ouvrir le menu",
     "closeMenu": "Fermer le menu",
     "mainNavigation": "Navigation principale",
-    "backToHome": "Retour à l’accueil"
+    "backToHome": "Retour à l’accueil",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "saved": "Modifications enregistrées.",
+    "search": "Rechercher",
+    "never": "Jamais",
+    "actions": "Actions",
+    "userStatus": {
+      "ACTIVE": "Actif",
+      "INACTIVE": "Inactif"
+    }
   },
   "demoBanner": {
     "text": "Environnement de démonstration — données fictives"
@@ -302,5 +312,104 @@
     "passwordHint": "Au moins 12 caractères. Une phrase de quelques mots est facile à retenir.",
     "signOut": "Se déconnecter",
     "signedInAs": "Connecté(e) : {name}"
+  },
+  "validationDetails": {
+    "OWN_ACCOUNT": "Vous ne pouvez pas modifier votre propre compte.",
+    "LAST_ADMINISTRATOR": "L’organisation doit garder au moins un administrateur actif.",
+    "ROLE_NOT_ASSIGNABLE": "Ce rôle ne peut pas être attribué ici.",
+    "EMAIL_ALREADY_REGISTERED": "Un compte existe déjà avec cet email.",
+    "TENANT_UNKNOWN": "Cette organisation n’existe pas."
+  },
+  "organizationTypes": {
+    "ISSUER": "Émetteur",
+    "ASSET_MANAGER": "Société de gestion",
+    "FUND": "Fonds"
+  },
+  "tenants": {
+    "title": "Organisations",
+    "description": "Organisations utilisant la plateforme. Leurs données métier restent hors de votre portée.",
+    "new": "Nouvelle organisation",
+    "caption": "Liste des organisations",
+    "columns": {
+      "legalName": "Raison sociale",
+      "country": "Pays",
+      "type": "Type",
+      "status": "Statut",
+      "createdAt": "Créée le"
+    },
+    "status": {
+      "ACTIVE": "Active",
+      "INACTIVE": "Désactivée"
+    },
+    "form": {
+      "organisation": "Organisation",
+      "legalName": "Raison sociale",
+      "tradeName": "Nom commercial",
+      "country": "Pays",
+      "currency": "Devise principale",
+      "defaultLocale": "Langue par défaut",
+      "timezone": "Fuseau horaire",
+      "type": "Type d’organisation",
+      "firstAdministrator": "Premier administrateur",
+      "firstAdministratorHelp": "Cette personne reçoit une invitation par email pour activer son compte.",
+      "adminName": "Nom complet",
+      "adminEmail": "Email",
+      "adminLocale": "Langue de l’invitation",
+      "create": "Créer l’organisation"
+    },
+    "detail": {
+      "back": "Toutes les organisations",
+      "deactivate": "Désactiver",
+      "activate": "Réactiver",
+      "deactivateTitle": "Désactiver {name} ?",
+      "deactivateDescription": "Tous les utilisateurs de cette organisation sont déconnectés immédiatement et ne peuvent plus se connecter jusqu’à sa réactivation. Aucune donnée n’est supprimée.",
+      "activateTitle": "Réactiver {name} ?",
+      "activateDescription": "Les utilisateurs de cette organisation pourront de nouveau se connecter.",
+      "inviteAdministrator": "Inviter un autre administrateur",
+      "invite": "Envoyer l’invitation",
+      "invitationSent": "Invitation envoyée à {email}."
+    }
+  },
+  "users": {
+    "title": "Utilisateurs",
+    "caption": "Utilisateurs de l’organisation",
+    "columns": {
+      "name": "Nom",
+      "email": "Email",
+      "roles": "Rôles",
+      "status": "Statut",
+      "mfa": "Double authentification",
+      "lastLogin": "Dernière connexion"
+    },
+    "mfaOn": "Activée",
+    "mfaOff": "Désactivée",
+    "invite": {
+      "title": "Inviter un utilisateur",
+      "role": "Rôle",
+      "submit": "Envoyer l’invitation",
+      "sent": "Invitation envoyée à {email}."
+    },
+    "pending": {
+      "title": "Invitations en attente",
+      "expires": "Expire le {date}",
+      "none": "Aucune invitation en attente."
+    },
+    "roles": {
+      "edit": "Rôles",
+      "title": "Rôles de {name}",
+      "help": "L’utilisateur est déconnecté et obtient ses nouveaux droits à la prochaine connexion.",
+      "save": "Enregistrer les rôles"
+    },
+    "deactivate": "Désactiver",
+    "reactivate": "Réactiver",
+    "deactivateTitle": "Désactiver {name} ?",
+    "deactivateDescription": "{name} est déconnecté(e) immédiatement et ne peut plus se connecter. L’historique est conservé.",
+    "reactivateTitle": "Réactiver {name} ?",
+    "reactivateDescription": "{name} pourra de nouveau se connecter avec les mêmes rôles."
+  },
+  "settings": {
+    "title": "Paramètres",
+    "organisation": "Organisation",
+    "legalName": "Raison sociale : {name}"
   }
 }

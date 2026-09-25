@@ -8,7 +8,7 @@ import { FormField } from '@/components/app/form-field';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { api } from '@/lib/api/client';
-import { ApiError } from './api-error';
+import { ApiError } from '@/components/app/api-error';
 import { useAfterSignIn } from './use-after-sign-in';
 
 interface Enrollment {
