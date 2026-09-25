@@ -9,7 +9,11 @@ import {
   withCurrentTenant,
 } from '../../../core/database/database.js';
 import { AppError } from '../../../core/errors/app-error.js';
+import { Outbox } from '../../../core/outbox/outbox.js';
+import { Workflow } from '../../../core/workflow/workflow.js';
+import { IAM_EVENTS } from './iam-events.js';
 import { TENANT_STAFF_ROLES, type RoleCode } from '../domain/roles.js';
+import { userStatusMachine, type AccountStatus } from '../domain/statuses.js';
 import type { EmailLocale } from '../infrastructure/emails.js';
 import { IdentityRepository } from '../infrastructure/identity.repository.js';
 import { role, user, userInvitation, userRole } from '../infrastructure/schema.js';
@@ -29,7 +33,8 @@ export interface ManagedUser {
 
 /**
  * Users of the signed-in administrator's tenant (SPEC §4.2). Every query runs in a transaction
- * bound to the session's tenant: users of other tenants are invisible (404).
+ * bound to the session's tenant: users of other tenants are invisible (404). Each change is
+ * audited, and its events published, in the same transaction.
  */
 @Injectable()
 export class UserManagementService {
@@ -38,6 +43,8 @@ export class UserManagementService {
     private readonly identities: IdentityRepository,
     private readonly invitations: InvitationService,
     private readonly audit: AuditWriter,
+    private readonly outbox: Outbox,
+    private readonly workflow: Workflow,
   ) {}
 
   list(): Promise<ManagedUser[]> {
@@ -52,37 +59,64 @@ export class UserManagementService {
   }
 
   get(id: string): Promise<ManagedUser> {
-    return withCurrentTenant(this.db, async (tx) => {
-      const [found] = await tx.select().from(user).where(eq(user.id, id));
-      if (!found) throw new AppError('RESOURCE_NOT_FOUND');
-      return toManaged(found, (await this.rolesByUser(tx, [id])).get(id) ?? []);
-    });
+    return withCurrentTenant(this.db, (tx) => this.find(tx, id));
+  }
+
+  private async find(tx: Transaction, id: string): Promise<ManagedUser> {
+    const [found] = await tx.select().from(user).where(eq(user.id, id));
+    if (!found) throw new AppError('RESOURCE_NOT_FOUND');
+    return toManaged(found, (await this.rolesByUser(tx, [id])).get(id) ?? []);
   }
 
   async update(id: string, changes: { name?: string; locale?: EmailLocale }): Promise<ManagedUser> {
-    await withCurrentTenant(this.db, async (tx) => {
-      const updated = await tx
+    return withCurrentTenant(this.db, async (tx, tenantId) => {
+      const before = await this.find(tx, id);
+      await tx
         .update(user)
         .set({ ...changes, updatedAt: new Date() })
-        .where(eq(user.id, id))
-        .returning({ id: user.id });
-      if (updated.length === 0) throw new AppError('RESOURCE_NOT_FOUND');
+        .where(eq(user.id, id));
+      const fields = Object.keys(changes) as (keyof typeof changes)[];
+      await this.audit.recordIn(tx, {
+        tenantId,
+        action: 'USER_UPDATED',
+        resourceType: 'user',
+        resourceId: id,
+        oldValue: Object.fromEntries(fields.map((field) => [field, before[field]])),
+        newValue: changes,
+        personalKeys: ['name'],
+        result: 'SUCCESS',
+      });
+      return this.find(tx, id);
     });
-    await this.record('USER_UPDATED', id, Object.keys(changes).join(','));
-    return this.get(id);
   }
 
-  async setStatus(id: string, status: 'ACTIVE' | 'INACTIVE'): Promise<ManagedUser> {
+  async setStatus(id: string, status: AccountStatus): Promise<ManagedUser> {
     this.refuseOwnAccount(id);
-    await withCurrentTenant(this.db, async (tx) => {
-      const target = await this.get(id);
+    const updated = await withCurrentTenant(this.db, async (tx, tenantId) => {
+      const target = await this.find(tx, id);
+      const from = target.status as AccountStatus;
+      await this.workflow.transition(tx, userStatusMachine, {
+        tenantId,
+        resourceId: id,
+        from,
+        to: status,
+      });
       if (status === 'INACTIVE' && target.roles.includes('ISSUER_ADMIN'))
         await this.keepOneAdministrator(tx, id);
       await tx.update(user).set({ status, updatedAt: new Date() }).where(eq(user.id, id));
+      await this.audit.recordIn(tx, {
+        tenantId,
+        action: status === 'ACTIVE' ? 'USER_REACTIVATED' : 'USER_DEACTIVATED',
+        resourceType: 'user',
+        resourceId: id,
+        oldValue: { status: from },
+        newValue: { status },
+        result: 'SUCCESS',
+      });
+      return this.find(tx, id);
     });
     if (status === 'INACTIVE') await this.identities.revokeSessionsOfUser(id);
-    await this.record(status === 'ACTIVE' ? 'USER_REACTIVATED' : 'USER_DEACTIVATED', id);
-    return this.get(id);
+    return updated;
   }
 
   /** Replaces the roles of a user; the user's sessions end (new rights at next sign-in, D-003). */
@@ -95,8 +129,8 @@ export class UserManagementService {
         { code: 'ROLE_NOT_ASSIGNABLE', field: 'roles', meta: { roles: invalid } },
       ]);
     }
-    const before = (await this.get(id)).roles;
-    await withCurrentTenant(this.db, async (tx, tenantId) => {
+    const updated = await withCurrentTenant(this.db, async (tx, tenantId) => {
+      const before = (await this.find(tx, id)).roles;
       if (before.includes('ISSUER_ADMIN') && !wanted.includes('ISSUER_ADMIN'))
         await this.keepOneAdministrator(tx, id);
       const roleRows = await tx
@@ -112,10 +146,25 @@ export class UserManagementService {
           grantedBy: currentUser().userId,
         })),
       );
+      await this.audit.recordIn(tx, {
+        tenantId,
+        action: 'USER_ROLES_CHANGED',
+        resourceType: 'user',
+        resourceId: id,
+        oldValue: { roles: before },
+        newValue: { roles: wanted },
+        result: 'SUCCESS',
+      });
+      await this.outbox.publish(tx, {
+        tenantId,
+        eventType: IAM_EVENTS.rolesChanged,
+        aggregateType: 'user',
+        aggregateId: id,
+      });
+      return this.find(tx, id);
     });
     await this.identities.revokeSessionsOfUser(id);
-    await this.record('USER_ROLES_CHANGED', id, `${before.join(',')} -> ${wanted.join(',')}`);
-    return this.get(id);
+    return updated;
   }
 
   async invite(invitee: { email: string; name: string; roleCode: RoleCode; locale: EmailLocale }) {
@@ -177,20 +226,6 @@ export class UserManagementService {
     for (const row of rows)
       byUser.set(row.userId, [...(byUser.get(row.userId) ?? []), row.code as RoleCode]);
     return byUser;
-  }
-
-  private record(action: string, userId: string, reason?: string): Promise<void> {
-    const actor = currentUser();
-    return this.audit.record({
-      tenantId: actor.tenantId,
-      actorUserId: actor.userId,
-      actorRole: actor.roles.join(','),
-      action,
-      resourceType: 'user',
-      resourceId: userId,
-      result: 'SUCCESS',
-      reason,
-    });
   }
 }
 

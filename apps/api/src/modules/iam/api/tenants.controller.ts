@@ -15,8 +15,9 @@ import { ApiBody, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import type { Response } from 'express';
 import type { z } from 'zod';
 import { etagOf, expectedVersion } from '../../../core/http/if-match.js';
-import { pageSchema } from '../../../core/http/pagination.js';
+import { ApiPageQuery, pageSchema } from '../../../core/http/pagination.js';
 import { toOpenApiSchema } from '../../../core/openapi/zod-openapi.js';
+import { Idempotent } from '../../../core/idempotency/idempotent.decorator.js';
 import { RequirePermission } from '../../../core/security/public.decorator.js';
 import { ZodValidationPipe } from '../../../core/validation/zod-validation.pipe.js';
 import { TenantManagementService } from '../application/tenant-management.service.js';
@@ -42,12 +43,7 @@ export class TenantsController {
 
   @Get()
   @RequirePermission('tenant:read')
-  @ApiQuery({ name: 'page', required: false, schema: { type: 'integer', minimum: 1, default: 1 } })
-  @ApiQuery({
-    name: 'pageSize',
-    required: false,
-    schema: { type: 'integer', minimum: 1, maximum: 100, default: 25 },
-  })
+  @ApiPageQuery()
   @ApiQuery({ name: 'q', required: false, schema: { type: 'string', maxLength: 100 } })
   @ApiOkResponse({ schema: toOpenApiSchema(pageSchema(tenantView)) })
   async list(@Query(new ZodValidationPipe(listQuery)) query: z.infer<typeof listQuery>) {
@@ -68,6 +64,7 @@ export class TenantsController {
   }
 
   @Post()
+  @Idempotent()
   @RequirePermission('tenant:manage')
   @ApiBody({ schema: toOpenApiSchema(tenantCreateBody) })
   @ApiOkResponse({ schema: toOpenApiSchema(tenantView) })
@@ -94,6 +91,7 @@ export class TenantsController {
   }
 
   @Post(':id/activate')
+  @Idempotent()
   @HttpCode(HttpStatus.OK)
   @RequirePermission('tenant:manage')
   @ApiOkResponse({ schema: toOpenApiSchema(tenantView) })
@@ -102,6 +100,7 @@ export class TenantsController {
   }
 
   @Post(':id/deactivate')
+  @Idempotent()
   @HttpCode(HttpStatus.OK)
   @RequirePermission('tenant:manage')
   @ApiOkResponse({ schema: toOpenApiSchema(tenantView) })
@@ -111,6 +110,7 @@ export class TenantsController {
 
   /** Another Issuer Administrator for an existing tenant. */
   @Post(':id/administrators')
+  @Idempotent()
   @RequirePermission('tenant:manage')
   @ApiBody({ schema: toOpenApiSchema(person) })
   @ApiOkResponse({ schema: toOpenApiSchema(invitationCreated) })

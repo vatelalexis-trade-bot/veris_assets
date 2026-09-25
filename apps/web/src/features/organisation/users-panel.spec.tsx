@@ -75,7 +75,11 @@ describe('UsersPanel', () => {
     fireEvent.click(within(dialog).getByRole('button', { name: 'Deactivate' }));
     await waitFor(() =>
       expect(api.POST).toHaveBeenCalledWith('/api/v1/users/{id}/deactivate', {
-        params: { path: { id: OTHER } },
+        params: {
+          path: { id: OTHER },
+          // A fresh Idempotency-Key protects the action against duplicates.
+          header: { 'Idempotency-Key': expect.stringMatching(/^[0-9a-f-]{36}$/) },
+        },
       }),
     );
   });

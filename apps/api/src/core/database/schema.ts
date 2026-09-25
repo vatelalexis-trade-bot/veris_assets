@@ -5,10 +5,12 @@ import {
   boolean,
   char,
   check,
+  index,
   inet,
   integer,
   jsonb,
   pgSchema,
+  primaryKey,
   smallint,
   text,
   unique,
@@ -71,23 +73,33 @@ export const idempotencyKey = coreSchema.table(
   (table) => [
     unique('idempotency_key_user_key').on(table.userId, table.key),
     check('idempotency_key_status', sql`${table.status} IN ('IN_PROGRESS', 'COMPLETED')`),
+    index('idempotency_key_expires_at').on(table.expiresAt),
   ],
 );
 
-export const outboxEvent = coreSchema.table('outbox_event', {
-  id: id(),
-  tenantId: tenantId(),
-  eventType: text().notNull(),
-  aggregateType: text().notNull(),
-  aggregateId: uuid().notNull(),
-  // Identifiers only, never personal data (SPEC §8.5).
-  payload: jsonb().notNull(),
-  correlationId: uuid(),
-  occurredAt: utcTimestamp().notNull().defaultNow(),
-  processedAt: utcTimestamp(),
-  attempts: integer().notNull().default(0),
-  lastError: text(),
-});
+/** Business events written in the transaction of the operation (outbox pattern, SPEC §15). */
+export const outboxEvent = coreSchema.table(
+  'outbox_event',
+  {
+    id: id(),
+    tenantId: tenantId(),
+    eventType: text().notNull(),
+    aggregateType: text().notNull(),
+    aggregateId: uuid().notNull(),
+    // Identifiers only, never personal data (SPEC §8.5).
+    payload: jsonb().notNull(),
+    correlationId: uuid(),
+    occurredAt: utcTimestamp().notNull().defaultNow(),
+    processedAt: utcTimestamp(),
+    attempts: integer().notNull().default(0),
+    lastError: text(),
+  },
+  (table) => [
+    index('outbox_event_pending')
+      .on(table.tenantId, table.occurredAt)
+      .where(sql`${table.processedAt} IS NULL`),
+  ],
+);
 
 /** Every state machine transition (SPEC §7). Append-only. */
 export const workflowTransition = coreSchema.table('workflow_transition', {
@@ -130,5 +142,50 @@ export const auditEvent = auditSchema.table(
   (table) => [
     check('audit_event_source', sql`${table.source} IN ('WEB', 'API', 'JOB', 'SYSTEM')`),
     check('audit_event_result', sql`${table.result} IN ('SUCCESS', 'DENIED', 'FAILED')`),
+    index('audit_event_tenant_occurred_at').on(table.tenantId, table.occurredAt),
   ],
+);
+
+// Notifications (SPEC §15)
+
+/** In-app notification of one user. Texts come from the catalogue of @virtus/shared. */
+export const notification = coreSchema.table(
+  'notification',
+  {
+    id: id(),
+    // Null for platform users, who have no tenant.
+    tenantId: uuid(),
+    userId: uuid().notNull(),
+    category: text().notNull(),
+    /** Business event that caused it, e.g. `iam.user.roles-changed`. */
+    eventType: text().notNull(),
+    /** Notification type of the catalogue (title and body), e.g. `ROLES_CHANGED`. */
+    titleKey: text().notNull(),
+    /** Placeholder values: identifiers and codes only, never personal data. */
+    params: jsonb().notNull().default({}),
+    resourceType: text(),
+    resourceId: uuid(),
+    /** Outbox event that created it: delivering an event twice creates one notification only. */
+    sourceEventId: uuid(),
+    readAt: utcTimestamp(),
+    createdAt: utcTimestamp().notNull().defaultNow(),
+  },
+  (table) => [
+    unique('notification_source_event_user').on(table.sourceEventId, table.userId),
+    index('notification_user_created_at').on(table.userId, table.createdAt),
+  ],
+);
+
+/** Channels chosen by a user for one category; mandatory categories are forced by the code. */
+export const notificationPreference = coreSchema.table(
+  'notification_preference',
+  {
+    tenantId: uuid(),
+    userId: uuid().notNull(),
+    category: text().notNull(),
+    inApp: boolean().notNull(),
+    email: boolean().notNull(),
+    updatedAt: utcTimestamp().notNull().defaultNow(),
+  },
+  (table) => [primaryKey({ columns: [table.userId, table.category] })],
 );

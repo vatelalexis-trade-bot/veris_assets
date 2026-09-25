@@ -138,7 +138,7 @@ Ces routes sont celles de l'API ; Better Auth n'est pas exposé directement (D-0
 | GET / PATCH | `/settings` (paramètres de l'organisation, `If-Match`) | `tenant-settings:manage` | |
 | GET | `/reference/countries` · `/reference/currencies` (listes de référence, D-037) | Session valide | |
 
-Refus métier (détails de `VALIDATION_FAILED`) : `OWN_ACCOUNT`, `LAST_ADMINISTRATOR`, `ROLE_NOT_ASSIGNABLE`. Changer les rôles d'un utilisateur ou le désactiver coupe ses sessions. L'en-tête IK est exigé à partir de la phase 7.
+Refus métier (détails de `VALIDATION_FAILED`) : `OWN_ACCOUNT`, `LAST_ADMINISTRATOR`, `ROLE_NOT_ASSIGNABLE`. Changer les rôles d'un utilisateur ou le désactiver coupe ses sessions. L'en-tête IK est exigé depuis la phase 7 (`428` s'il manque, détail `INVALID_IDEMPOTENCY_KEY` s'il n'est pas un UUID, D-042).
 
 ### 2.5 `/investors`, `/kyc-cases`, `/eligibility-assessments`
 
@@ -243,15 +243,16 @@ Refus métier (détails de `VALIDATION_FAILED`) : `OWN_ACCOUNT`, `LAST_ADMINISTR
 
 | Méthode | Chemin | Permission |
 |---|---|---|
-| GET | `/notifications` · `/notifications/unread-count` | `notification:read` |
+| GET | `/notifications` (filtre `unreadOnly`) · `/notifications/unread-count` | `notification:read` |
 | POST | `/notifications/{id}/read` · `/notifications/read-all` | `notification:read` |
-| GET / PUT | `/notifications/preferences` | `notification:read` |
+| GET / PUT | `/notifications/preferences` (désactiver une catégorie obligatoire : détail `MANDATORY_CATEGORY`) | `notification:read` |
 
 ### 2.13 `/audit-events` et `/reports`
 
 | Méthode | Chemin | Permission | IK |
 |---|---|---|---|
-| GET | `/audit-events` (filtres : action, ressource, utilisateur, période, résultat) · `/{id}` | `audit:read` | |
+| GET | `/audit-events` (filtres : `action`, `resourceType`, `resourceId`, `actorUserId`, `result`, `from`, `to`) · `/{id}` (avec valeurs avant/après masquées) | `audit:read` | |
+| GET | `/audit-events/actions` (actions présentes, pour le filtre, D-044) | `audit:read` | |
 | GET | `/reports/issuer-dashboard` | `report:read` | |
 | GET | `/reports/investor-dashboard` | (P) | |
 | GET | `/reports/tasks` (file « À traiter » de l'utilisateur) | `task:read` | |

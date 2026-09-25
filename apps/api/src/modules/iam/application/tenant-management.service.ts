@@ -5,9 +5,14 @@ import { currentUser } from '../../../core/context/request-context.js';
 import {
   DATABASE,
   type Database,
+  actOnTenant,
+  type Transaction,
   withPlatformTransaction,
 } from '../../../core/database/database.js';
+import { changedValues } from '../../../core/audit/changed-values.js';
 import { AppError } from '../../../core/errors/app-error.js';
+import { Workflow } from '../../../core/workflow/workflow.js';
+import { tenantStatusMachine, type AccountStatus } from '../domain/statuses.js';
 import { offsetOf, type Page, type Pagination } from '../../../core/http/pagination.js';
 import type { EmailLocale } from '../infrastructure/emails.js';
 import { IdentityRepository } from '../infrastructure/identity.repository.js';
@@ -40,6 +45,7 @@ export class TenantManagementService {
     private readonly invitations: InvitationService,
     private readonly identities: IdentityRepository,
     private readonly audit: AuditWriter,
+    private readonly workflow: Workflow,
   ) {}
 
   async list(pagination: Pagination, search?: string): Promise<Page<TenantRow>> {
@@ -65,9 +71,11 @@ export class TenantManagementService {
   }
 
   async get(id: string): Promise<TenantRow> {
-    const [found] = await withPlatformTransaction(this.db, (tx) =>
-      tx.select().from(tenant).where(eq(tenant.id, id)),
-    );
+    return withPlatformTransaction(this.db, (tx) => this.find(tx, id));
+  }
+
+  private async find(tx: Transaction, id: string): Promise<TenantRow> {
+    const [found] = await tx.select().from(tenant).where(eq(tenant.id, id));
     if (!found) throw new AppError('RESOURCE_NOT_FOUND');
     return found;
   }
@@ -80,76 +88,83 @@ export class TenantManagementService {
         { code: 'EMAIL_ALREADY_REGISTERED', field: 'firstAdministrator.email' },
       ]);
     }
-    const [created] = await withPlatformTransaction(this.db, (tx) =>
-      tx
+    const created = await withPlatformTransaction(this.db, async (tx) => {
+      const [row] = await tx
         .insert(tenant)
         .values({ ...input, createdBy: actor.userId })
-        .returning(),
-    );
+        .returning();
+      // Recorded in the new tenant's own audit log.
+      await actOnTenant(tx, row!.id);
+      await this.audit.recordIn(tx, {
+        tenantId: row!.id,
+        action: 'TENANT_CREATED',
+        resourceType: 'tenant',
+        resourceId: row!.id,
+        newValue: { ...input },
+        result: 'SUCCESS',
+      });
+      return row!;
+    });
     await this.invitations.invite(actor, {
       ...firstAdministrator,
       roleCode: 'ISSUER_ADMIN',
-      tenantId: created!.id,
+      tenantId: created.id,
     });
-    await this.audit.record({
-      tenantId: created!.id,
-      actorUserId: actor.userId,
-      actorRole: actor.roles.join(','),
-      action: 'TENANT_CREATED',
-      resourceType: 'tenant',
-      resourceId: created!.id,
-      result: 'SUCCESS',
-    });
-    return created!;
+    return created;
   }
 
   async update(id: string, version: number, changes: Partial<TenantInput>): Promise<TenantRow> {
-    const actor = currentUser();
-    const [updated] = await withPlatformTransaction(this.db, (tx) =>
-      tx
+    return withPlatformTransaction(this.db, async (tx) => {
+      const before = await this.find(tx, id);
+      if (before.version !== version) throw new AppError('VERSION_CONFLICT');
+      const [updated] = await tx
         .update(tenant)
         .set({ ...changes, version: sql`${tenant.version} + 1`, updatedAt: new Date() })
         .where(and(eq(tenant.id, id), eq(tenant.version, version)))
-        .returning(),
-    );
-    if (!updated) {
-      await this.get(id); // 404 when the tenant does not exist
-      throw new AppError('VERSION_CONFLICT');
-    }
-    await this.audit.record({
-      tenantId: id,
-      actorUserId: actor.userId,
-      actorRole: actor.roles.join(','),
-      action: 'TENANT_UPDATED',
-      resourceType: 'tenant',
-      resourceId: id,
-      result: 'SUCCESS',
-      reason: Object.keys(changes).join(','),
+        .returning();
+      if (!updated) throw new AppError('VERSION_CONFLICT');
+      await actOnTenant(tx, id);
+      await this.audit.recordIn(tx, {
+        tenantId: id,
+        action: 'TENANT_UPDATED',
+        resourceType: 'tenant',
+        resourceId: id,
+        ...changedValues(before, changes),
+        result: 'SUCCESS',
+      });
+      return updated;
     });
-    return updated;
   }
 
   /** Deactivating a tenant ends at once every session of its users. */
-  async setStatus(id: string, status: 'ACTIVE' | 'INACTIVE'): Promise<TenantRow> {
-    const actor = currentUser();
-    const [updated] = await withPlatformTransaction(this.db, (tx) =>
-      tx
+  async setStatus(id: string, status: AccountStatus): Promise<TenantRow> {
+    const updated = await withPlatformTransaction(this.db, async (tx) => {
+      const before = await this.find(tx, id);
+      const from = before.status as AccountStatus;
+      await actOnTenant(tx, id);
+      await this.workflow.transition(tx, tenantStatusMachine, {
+        tenantId: id,
+        resourceId: id,
+        from,
+        to: status,
+      });
+      const [row] = await tx
         .update(tenant)
         .set({ status, version: sql`${tenant.version} + 1`, updatedAt: new Date() })
         .where(eq(tenant.id, id))
-        .returning(),
-    );
-    if (!updated) throw new AppError('RESOURCE_NOT_FOUND');
-    if (status === 'INACTIVE') await this.identities.revokeSessionsOfTenant(id);
-    await this.audit.record({
-      tenantId: id,
-      actorUserId: actor.userId,
-      actorRole: actor.roles.join(','),
-      action: status === 'ACTIVE' ? 'TENANT_ACTIVATED' : 'TENANT_DEACTIVATED',
-      resourceType: 'tenant',
-      resourceId: id,
-      result: 'SUCCESS',
+        .returning();
+      await this.audit.recordIn(tx, {
+        tenantId: id,
+        action: status === 'ACTIVE' ? 'TENANT_ACTIVATED' : 'TENANT_DEACTIVATED',
+        resourceType: 'tenant',
+        resourceId: id,
+        oldValue: { status: from },
+        newValue: { status },
+        result: 'SUCCESS',
+      });
+      return row!;
     });
+    if (status === 'INACTIVE') await this.identities.revokeSessionsOfTenant(id);
     return updated;
   }
 

@@ -13,6 +13,7 @@ import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ROLE_PERMISSIONS } from '@virtus/shared';
 import { z } from 'zod';
 import { toOpenApiSchema } from '../../../core/openapi/zod-openapi.js';
+import { Idempotent } from '../../../core/idempotency/idempotent.decorator.js';
 import { RequirePermission } from '../../../core/security/public.decorator.js';
 import { ZodValidationPipe } from '../../../core/validation/zod-validation.pipe.js';
 import { ROLE_CODES, type RoleCode } from '../domain/roles.js';
@@ -53,6 +54,7 @@ export class UsersController {
   }
 
   @Post('invitations')
+  @Idempotent()
   @RequirePermission('user:manage')
   @ApiBody({ schema: toOpenApiSchema(staffInvitationBody) })
   @ApiOkResponse({ schema: toOpenApiSchema(invitationCreated) })
@@ -89,6 +91,7 @@ export class UsersController {
   }
 
   @Post(':id/deactivate')
+  @Idempotent()
   @HttpCode(HttpStatus.OK)
   @RequirePermission('user:manage')
   @ApiOkResponse({ schema: toOpenApiSchema(userView) })
@@ -97,6 +100,7 @@ export class UsersController {
   }
 
   @Post(':id/reactivate')
+  @Idempotent()
   @HttpCode(HttpStatus.OK)
   @RequirePermission('user:manage')
   @ApiOkResponse({ schema: toOpenApiSchema(userView) })
@@ -105,6 +109,7 @@ export class UsersController {
   }
 
   @Put(':id/roles')
+  @Idempotent()
   @RequirePermission('role:assign')
   @ApiBody({ schema: toOpenApiSchema(rolesBody) })
   @ApiOkResponse({ schema: toOpenApiSchema(userView) })

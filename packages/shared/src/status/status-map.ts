@@ -61,6 +61,12 @@ export const STATUS_TONES = {
     FAILED: 'error',
     CANCELLED: 'error',
   },
+  /** Result of an audit log entry (SPEC §17.2). */
+  auditResult: {
+    SUCCESS: 'success',
+    DENIED: 'warning',
+    FAILED: 'error',
+  },
 } as const satisfies Record<string, Record<string, StatusTone>>;
 
 export type StatusDomain = keyof typeof STATUS_TONES;

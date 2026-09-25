@@ -151,6 +151,11 @@
       "PAID": "Payée",
       "FAILED": "Échouée",
       "CANCELLED": "Annulée"
+    },
+    "auditResult": {
+      "SUCCESS": "Réussie",
+      "DENIED": "Refusée",
+      "FAILED": "Échouée"
     }
   },
   "errors": {
@@ -318,7 +323,9 @@
     "LAST_ADMINISTRATOR": "L’organisation doit garder au moins un administrateur actif.",
     "ROLE_NOT_ASSIGNABLE": "Ce rôle ne peut pas être attribué ici.",
     "EMAIL_ALREADY_REGISTERED": "Un compte existe déjà avec cet email.",
-    "TENANT_UNKNOWN": "Cette organisation n’existe pas."
+    "TENANT_UNKNOWN": "Cette organisation n’existe pas.",
+    "MANDATORY_CATEGORY": "Les notifications de sécurité et de workflow ne peuvent pas être désactivées.",
+    "INVALID_IDEMPOTENCY_KEY": "Cette action n’a pas pu être protégée contre les doublons. Réessayez."
   },
   "organizationTypes": {
     "ISSUER": "Émetteur",
@@ -411,5 +418,109 @@
     "title": "Paramètres",
     "organisation": "Organisation",
     "legalName": "Raison sociale : {name}"
+  },
+  "notifications": {
+    "bell": "Notifications",
+    "bellUnread": "Notifications, {count} non lues",
+    "title": "Notifications",
+    "markAllRead": "Tout marquer comme lu",
+    "empty": "Aucune notification pour l’instant.",
+    "unread": "(non lue)",
+    "preferences": {
+      "open": "Préférences de notification",
+      "title": "Préférences de notification",
+      "description": "Choisissez comment être prévenu de chaque type d’événement. Les notifications de sécurité et de workflow sont toujours envoyées.",
+      "category": "Catégorie",
+      "inApp": "Dans l’application",
+      "email": "Par email",
+      "mandatory": "Toujours activée"
+    },
+    "categories": {
+      "SECURITY": "Sécurité",
+      "WORKFLOW": "Tâches et validations",
+      "ORGANISATION": "Organisation",
+      "ISSUANCE": "Émissions",
+      "INVESTMENT": "Souscriptions et transferts",
+      "DISTRIBUTION": "Distributions",
+      "DOCUMENT": "Documents",
+      "COMPLIANCE": "Conformité"
+    }
+  },
+  "audit": {
+    "title": "Journal d’audit",
+    "description": "Chaque action sensible de l’organisation, qui l’a faite et quand. Le journal ne peut pas être modifié.",
+    "caption": "Entrées du journal d’audit, les plus récentes d’abord",
+    "empty": "Aucune entrée ne correspond à ces filtres.",
+    "system": "Système",
+    "unknownActor": "Utilisateur inconnu",
+    "open": "Détail",
+    "filters": {
+      "title": "Filtres",
+      "action": "Action",
+      "result": "Résultat",
+      "from": "Du",
+      "to": "Au",
+      "all": "Toutes",
+      "apply": "Filtrer",
+      "reset": "Réinitialiser"
+    },
+    "results": {
+      "SUCCESS": "Réussie",
+      "DENIED": "Refusée",
+      "FAILED": "Échouée"
+    },
+    "columns": {
+      "occurredAt": "Date",
+      "actor": "Utilisateur",
+      "action": "Action",
+      "resource": "Ressource",
+      "result": "Résultat",
+      "details": "Détail"
+    },
+    "resources": {
+      "user": "Utilisateur",
+      "tenant": "Organisation",
+      "user_invitation": "Invitation"
+    },
+    "sources": {
+      "WEB": "Application web",
+      "API": "API",
+      "JOB": "Tâche de fond",
+      "SYSTEM": "Système"
+    },
+    "detail": {
+      "title": "Entrée du journal d’audit",
+      "source": "Origine",
+      "ipAddress": "Adresse IP",
+      "userAgent": "Navigateur",
+      "correlationId": "Référence support",
+      "changes": "Modifications",
+      "field": "Champ",
+      "before": "Avant",
+      "after": "Après",
+      "masked": "Les données personnelles et sensibles sont masquées dans le journal d’audit.",
+      "close": "Fermer"
+    },
+    "actions": {
+      "ACCESS_DENIED": "Accès refusé",
+      "TENANT_OVERRIDE_ATTEMPT": "Tentative d’accès à une autre organisation",
+      "AUTH_SIGN_IN": "Connexion",
+      "AUTH_SECOND_FACTOR": "Vérification du second facteur",
+      "AUTH_SIGN_OUT": "Déconnexion",
+      "AUTH_MFA_ENABLED": "Double authentification activée",
+      "AUTH_PASSWORD_RESET_REQUESTED": "Réinitialisation du mot de passe demandée",
+      "AUTH_PASSWORD_RESET": "Mot de passe réinitialisé",
+      "USER_INVITED": "Utilisateur invité",
+      "USER_INVITATION_ACCEPTED": "Invitation acceptée",
+      "USER_UPDATED": "Utilisateur modifié",
+      "USER_DEACTIVATED": "Utilisateur désactivé",
+      "USER_REACTIVATED": "Utilisateur réactivé",
+      "USER_ROLES_CHANGED": "Rôles modifiés",
+      "TENANT_CREATED": "Organisation créée",
+      "TENANT_UPDATED": "Organisation modifiée",
+      "TENANT_ACTIVATED": "Organisation activée",
+      "TENANT_DEACTIVATED": "Organisation désactivée",
+      "TENANT_SETTINGS_UPDATED": "Paramètres modifiés"
+    }
   }
 }

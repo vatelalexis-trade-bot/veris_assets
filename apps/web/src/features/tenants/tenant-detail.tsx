@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Link } from '@/i18n/navigation';
 import { api } from '@/lib/api/client';
+import { useIdempotencyKey } from '@/lib/api/idempotency';
 import { LocaleSelect, OrganizationTypeSelect, TimezoneSelect } from './tenant-fields';
 import type { TenantView } from './types';
 
@@ -58,11 +59,15 @@ export function TenantDetail({
     void queryClient.invalidateQueries({ queryKey: ['tenants'] });
   };
 
+  const statusKey = useIdempotencyKey();
   const setStatus = useMutation({
     mutationFn: async (action: 'activate' | 'deactivate') => {
       const path =
         action === 'activate' ? '/api/v1/tenants/{id}/activate' : '/api/v1/tenants/{id}/deactivate';
-      const { data, error } = await api.POST(path, { params: { path: { id } } });
+      const { data, error } = await api.POST(path, {
+        params: { path: { id }, header: statusKey.header() },
+      });
+      statusKey.answered();
       if (error) throw error;
       return data;
     },
@@ -206,12 +211,14 @@ function InviteAdministrator({ id }: { id: string }) {
     email: '',
     locale: 'en-GB' as 'en-GB' | 'fr-FR',
   });
+  const idempotency = useIdempotencyKey();
   const invite = useMutation({
     mutationFn: async () => {
       const { data, error } = await api.POST('/api/v1/tenants/{id}/administrators', {
-        params: { path: { id } },
+        params: { path: { id }, header: idempotency.header() },
         body: person,
       });
+      idempotency.answered();
       if (error) throw error;
       return data;
     },

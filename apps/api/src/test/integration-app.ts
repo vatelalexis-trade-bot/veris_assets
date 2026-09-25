@@ -63,6 +63,7 @@ export async function startIntegrationApp(): Promise<IntegrationApp> {
     LOG_LEVEL: 'silent',
     POSTGRES_DB: tools.POSTGRES_TEST_DB,
     DEMO_MODE: 'true',
+    JOBS_ENABLED: 'false',
     REDIS_KEY_PREFIX: `va-test:${randomUUID()}:`,
   });
   const emails = new CapturedEmails();

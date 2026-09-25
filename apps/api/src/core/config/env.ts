@@ -19,6 +19,8 @@ const envSchema = z.object({
   DB_APP_PASSWORD: required,
   // Authentication component (decision D-030).
   DB_AUTH_PASSWORD: required,
+  // Job queue (pg-boss), which owns its own schema only (decision D-039).
+  DB_JOBS_PASSWORD: required,
   BETTER_AUTH_SECRET: z.string().min(32),
   WEB_ORIGIN: z.url().default('http://localhost:3000'),
   DEMO_MODE: z
@@ -26,6 +28,12 @@ const envSchema = z.object({
     .default('false')
     .transform((value) => value === 'true'),
   DEMO_ACCOUNTS_PASSWORD: z.string().min(12).optional(),
+  // Background workers (outbox relay, daily jobs) run in the API process (docs/ARCHITECTURE.md
+  // §4.9). Off in automated tests, which run the jobs explicitly.
+  JOBS_ENABLED: z
+    .enum(['true', 'false'])
+    .default('true')
+    .transform((value) => value === 'true'),
 
   SMTP_HOST: required.default('127.0.0.1'),
   SMTP_PORT: port.default(1025),

@@ -9,4 +9,9 @@ export const DB_ROLES = {
    * owns sessions, credentials and TOTP secrets, and has no right on business tables.
    */
   auth: 'va_auth',
+  /**
+   * Owner of the job queue schema `pgboss` (decision D-039): pg-boss creates tables there at run
+   * time. No right on the business schemas.
+   */
+  jobs: 'va_jobs',
 } as const;

@@ -36,6 +36,86 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/notifications': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['NotificationsController_list'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/notifications/unread-count': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['NotificationsController_unreadCount'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/notifications/read-all': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['NotificationsController_markAllRead'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/notifications/preferences': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['NotificationsController_preferences'];
+    put: operations['NotificationsController_updatePreferences'];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/notifications/{id}/read': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['NotificationsController_markRead'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/health': {
     parameters: {
       query?: never;
@@ -452,6 +532,54 @@ export interface paths {
     patch: operations['SettingsController_update'];
     trace?: never;
   };
+  '/api/v1/audit-events': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['AuditEventsController_list'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/audit-events/actions': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['AuditEventsController_actions'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/audit-events/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['AuditEventsController_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -506,6 +634,203 @@ export interface operations {
             minorUnits: number;
           }[];
         };
+      };
+    };
+  };
+  NotificationsController_list: {
+    parameters: {
+      query?: {
+        unreadOnly?: boolean;
+        page?: number;
+        pageSize?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            data: {
+              /** Format: uuid */
+              id: string;
+              /** @enum {string} */
+              category:
+                | 'SECURITY'
+                | 'WORKFLOW'
+                | 'ORGANISATION'
+                | 'ISSUANCE'
+                | 'INVESTMENT'
+                | 'DISTRIBUTION'
+                | 'DOCUMENT'
+                | 'COMPLIANCE';
+              /** @enum {string} */
+              type: 'ROLES_CHANGED' | 'INVITATION_ACCEPTED';
+              params: {
+                [key: string]: string;
+              };
+              resourceType: string | null;
+              /** Format: uuid */
+              resourceId: string | null;
+              /** Format: date-time */
+              readAt: string | null;
+              /** Format: date-time */
+              createdAt: string;
+            }[];
+            meta: {
+              page: number;
+              pageSize: number;
+              total: number;
+            };
+          };
+        };
+      };
+    };
+  };
+  NotificationsController_unreadCount: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            count: number;
+          };
+        };
+      };
+    };
+  };
+  NotificationsController_markAllRead: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  NotificationsController_preferences: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @enum {string} */
+            category:
+              | 'SECURITY'
+              | 'WORKFLOW'
+              | 'ORGANISATION'
+              | 'ISSUANCE'
+              | 'INVESTMENT'
+              | 'DISTRIBUTION'
+              | 'DOCUMENT'
+              | 'COMPLIANCE';
+            inApp: boolean;
+            email: boolean;
+            mandatory: boolean;
+          }[];
+        };
+      };
+    };
+  };
+  NotificationsController_updatePreferences: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          preferences: {
+            /** @enum {string} */
+            category:
+              | 'SECURITY'
+              | 'WORKFLOW'
+              | 'ORGANISATION'
+              | 'ISSUANCE'
+              | 'INVESTMENT'
+              | 'DISTRIBUTION'
+              | 'DOCUMENT'
+              | 'COMPLIANCE';
+            inApp: boolean;
+            email: boolean;
+          }[];
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @enum {string} */
+            category:
+              | 'SECURITY'
+              | 'WORKFLOW'
+              | 'ORGANISATION'
+              | 'ISSUANCE'
+              | 'INVESTMENT'
+              | 'DISTRIBUTION'
+              | 'DOCUMENT'
+              | 'COMPLIANCE';
+            inApp: boolean;
+            email: boolean;
+            mandatory: boolean;
+          }[];
+        };
+      };
+    };
+  };
+  NotificationsController_markRead: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
       };
     };
   };
@@ -915,8 +1240,8 @@ export interface operations {
     parameters: {
       query?: {
         q?: string;
-        pageSize?: number;
         page?: number;
+        pageSize?: number;
       };
       header?: never;
       path?: never;
@@ -961,7 +1286,10 @@ export interface operations {
   TenantsController_create: {
     parameters: {
       query?: never;
-      header?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
       path?: never;
       cookie?: never;
     };
@@ -1113,7 +1441,10 @@ export interface operations {
   TenantsController_activate: {
     parameters: {
       query?: never;
-      header?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
       path: {
         id: string;
       };
@@ -1151,7 +1482,10 @@ export interface operations {
   TenantsController_deactivate: {
     parameters: {
       query?: never;
-      header?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
       path: {
         id: string;
       };
@@ -1189,7 +1523,10 @@ export interface operations {
   TenantsController_inviteAdministrator: {
     parameters: {
       query?: never;
-      header?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
       path: {
         id: string;
       };
@@ -1265,7 +1602,10 @@ export interface operations {
   UsersController_invite: {
     parameters: {
       query?: never;
-      header?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
       path?: never;
       cookie?: never;
     };
@@ -1448,7 +1788,10 @@ export interface operations {
   UsersController_deactivate: {
     parameters: {
       query?: never;
-      header?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
       path: {
         id: string;
       };
@@ -1492,7 +1835,10 @@ export interface operations {
   UsersController_reactivate: {
     parameters: {
       query?: never;
-      header?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
       path: {
         id: string;
       };
@@ -1536,7 +1882,10 @@ export interface operations {
   UsersController_setRoles: {
     parameters: {
       query?: never;
-      header?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
       path: {
         id: string;
       };
@@ -1699,6 +2048,130 @@ export interface operations {
             version: number;
             /** Format: date-time */
             createdAt: string;
+          };
+        };
+      };
+    };
+  };
+  AuditEventsController_list: {
+    parameters: {
+      query?: {
+        to?: string;
+        from?: string;
+        result?: 'SUCCESS' | 'DENIED' | 'FAILED';
+        actorUserId?: string;
+        resourceId?: string;
+        resourceType?: string;
+        action?: string;
+        page?: number;
+        pageSize?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            data: {
+              /** Format: uuid */
+              id: string;
+              /** Format: date-time */
+              occurredAt: string;
+              /** Format: uuid */
+              actorUserId: string | null;
+              actorName: string | null;
+              actorRole: string | null;
+              action: string;
+              resourceType: string | null;
+              /** Format: uuid */
+              resourceId: string | null;
+              /** @enum {string} */
+              result: 'SUCCESS' | 'DENIED' | 'FAILED';
+              reason: string | null;
+              /** @enum {string} */
+              source: 'WEB' | 'API' | 'JOB' | 'SYSTEM';
+              /** Format: uuid */
+              correlationId: string | null;
+            }[];
+            meta: {
+              page: number;
+              pageSize: number;
+              total: number;
+            };
+          };
+        };
+      };
+    };
+  };
+  AuditEventsController_actions: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': string[];
+        };
+      };
+    };
+  };
+  AuditEventsController_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: date-time */
+            occurredAt: string;
+            /** Format: uuid */
+            actorUserId: string | null;
+            actorName: string | null;
+            actorRole: string | null;
+            action: string;
+            resourceType: string | null;
+            /** Format: uuid */
+            resourceId: string | null;
+            /** @enum {string} */
+            result: 'SUCCESS' | 'DENIED' | 'FAILED';
+            reason: string | null;
+            /** @enum {string} */
+            source: 'WEB' | 'API' | 'JOB' | 'SYSTEM';
+            /** Format: uuid */
+            correlationId: string | null;
+            oldValue: {
+              [key: string]: unknown;
+            } | null;
+            newValue: {
+              [key: string]: unknown;
+            } | null;
+            ipAddress: string | null;
+            userAgent: string | null;
           };
         };
       };

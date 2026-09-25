@@ -19,6 +19,7 @@ const toolsEnvSchema = z.object({
   DB_MIGRATOR_PASSWORD: required,
   DB_APP_PASSWORD: required,
   DB_AUTH_PASSWORD: required,
+  DB_JOBS_PASSWORD: required,
   // Demonstration accounts are created only when their password is configured (decision D-017).
   DEMO_ACCOUNTS_PASSWORD: z.string().min(12).optional(),
   BETTER_AUTH_SECRET: z.string().min(32).optional(),

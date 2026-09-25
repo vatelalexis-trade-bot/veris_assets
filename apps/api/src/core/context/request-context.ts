@@ -16,6 +16,10 @@ export interface RequestUser {
  */
 export interface RequestContext {
   readonly correlationId: string;
+  /** Where the actions come from, recorded in the audit log (SPEC §17.2). */
+  readonly source: 'WEB' | 'API' | 'JOB' | 'SYSTEM';
+  readonly ipAddress?: string | null;
+  readonly userAgent?: string | null;
   user?: RequestUser;
 }
 

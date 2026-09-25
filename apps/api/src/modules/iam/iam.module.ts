@@ -10,6 +10,8 @@ import { TenantsController } from './api/tenants.controller.js';
 import { RolesController, UsersController } from './api/users.controller.js';
 import { AuthenticationService } from './application/authentication.service.js';
 import { DemoAccountsService } from './application/demo-accounts.service.js';
+import { IamEvents } from './application/iam-events.js';
+import { UserDirectory } from './application/user-directory.js';
 import { InvitationService } from './application/invitation.service.js';
 import { PasswordResetMailer } from './application/password-reset-mailer.js';
 import { TenantManagementService } from './application/tenant-management.service.js';
@@ -67,8 +69,11 @@ import { IdentityRepository } from './infrastructure/identity.repository.js';
     TenantManagementService,
     UserManagementService,
     TenantSettingsService,
+    IamEvents,
+    UserDirectory,
     { provide: APP_GUARD, useClass: AuthGuard },
   ],
+  exports: [UserDirectory],
 })
 export class IamModule implements OnApplicationShutdown {
   constructor(@Inject(AUTH_POOL) private readonly pool: pg.Pool) {}

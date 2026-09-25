@@ -1,3 +1,5 @@
+import { applyDecorators } from '@nestjs/common';
+import { ApiQuery } from '@nestjs/swagger';
 import { z } from 'zod';
 
 // Pagination of every list (docs/API.md §1): ?page=1&pageSize=25 (at most 100).
@@ -23,3 +25,18 @@ export function pageSchema<Item extends z.ZodType>(item: Item) {
 export function offsetOf({ page, pageSize }: Pagination): number {
   return (page - 1) * pageSize;
 }
+
+/** Documents the pagination parameters of a list route in OpenAPI. */
+export const ApiPageQuery = () =>
+  applyDecorators(
+    ApiQuery({
+      name: 'page',
+      required: false,
+      schema: { type: 'integer', minimum: 1, default: 1 },
+    }),
+    ApiQuery({
+      name: 'pageSize',
+      required: false,
+      schema: { type: 'integer', minimum: 1, maximum: 100, default: 25 },
+    }),
+  );

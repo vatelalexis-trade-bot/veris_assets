@@ -12,6 +12,7 @@ const PLACEHOLDERS: Record<string, string> = {
   POSTGRES_DB: 'unused',
   DB_APP_PASSWORD: 'unused',
   DB_AUTH_PASSWORD: 'unused',
+  DB_JOBS_PASSWORD: 'unused',
   BETTER_AUTH_SECRET: 'openapi-export-placeholder-secret-0123456789',
   S3_ENDPOINT: 'http://127.0.0.1:3900',
   S3_REGION: 'unused',

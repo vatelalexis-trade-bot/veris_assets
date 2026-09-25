@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { and, eq, sql } from 'drizzle-orm';
 import { AuditWriter } from '../../../core/audit/audit-writer.js';
-import { currentUser } from '../../../core/context/request-context.js';
 import { DATABASE, type Database, withCurrentTenant } from '../../../core/database/database.js';
+import { changedValues } from '../../../core/audit/changed-values.js';
 import { AppError } from '../../../core/errors/app-error.js';
 import { tenant } from '../infrastructure/schema.js';
 
@@ -24,25 +24,24 @@ export class TenantSettingsService {
     version: number,
     changes: { tradeName?: string | null; defaultLocale?: 'en-GB' | 'fr-FR'; timezone?: string },
   ) {
-    const [updated] = await withCurrentTenant(this.db, (tx, tenantId) =>
-      tx
+    return withCurrentTenant(this.db, async (tx, tenantId) => {
+      const [before] = await tx.select().from(tenant).where(eq(tenant.id, tenantId));
+      if (!before) throw new AppError('RESOURCE_NOT_FOUND');
+      const [updated] = await tx
         .update(tenant)
         .set({ ...changes, version: sql`${tenant.version} + 1`, updatedAt: new Date() })
         .where(and(eq(tenant.id, tenantId), eq(tenant.version, version)))
-        .returning(),
-    );
-    if (!updated) throw new AppError('VERSION_CONFLICT');
-    const actor = currentUser();
-    await this.audit.record({
-      tenantId: actor.tenantId,
-      actorUserId: actor.userId,
-      actorRole: actor.roles.join(','),
-      action: 'TENANT_SETTINGS_UPDATED',
-      resourceType: 'tenant',
-      resourceId: updated.id,
-      result: 'SUCCESS',
-      reason: Object.keys(changes).join(','),
+        .returning();
+      if (!updated) throw new AppError('VERSION_CONFLICT');
+      await this.audit.recordIn(tx, {
+        tenantId,
+        action: 'TENANT_SETTINGS_UPDATED',
+        resourceType: 'tenant',
+        resourceId: tenantId,
+        ...changedValues(before, changes),
+        result: 'SUCCESS',
+      });
+      return updated;
     });
-    return updated;
   }
 }

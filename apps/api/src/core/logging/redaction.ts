@@ -1,6 +1,6 @@
 // Values never written to logs (SPEC §8.5, §24, rule 15). Masked at the top level and one level deep;
 // log identifiers rather than whole objects to stay within these paths.
-const SENSITIVE_KEYS = [
+export const SENSITIVE_KEYS = [
   'password',
   'passwordHash',
   'token',
@@ -12,6 +12,8 @@ const SENSITIVE_KEYS = [
   'taxId',
   'fullName',
   'dateOfBirth',
+  'address',
+  'iban',
 ];
 
 export const REDACTED_PATHS: string[] = [

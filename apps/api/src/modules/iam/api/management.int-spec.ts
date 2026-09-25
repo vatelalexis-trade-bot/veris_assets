@@ -1,4 +1,5 @@
 // Tenant, user, role and settings management (phase 6, docs/BACKLOG.md P6-3).
+import { randomUUID } from 'node:crypto';
 import type { ErrorResponseBody } from '@virtus/shared';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
@@ -21,6 +22,7 @@ describe('tenants (Platform Administrator)', () => {
     const email = `first.admin.${Date.now()}@example.com`;
     const created = await platform
       .post('/api/v1/tenants')
+      .set('Idempotency-Key', randomUUID())
       .send({
         legalName: 'Fabrikam Capital SAS (demo)',
         countryCode: 'FR',
@@ -76,7 +78,10 @@ describe('tenants (Platform Administrator)', () => {
       )
     ).rows[0]!.id;
 
-    await platform.post(`/api/v1/tenants/${contosoId}/deactivate`).expect(200);
+    await platform
+      .post(`/api/v1/tenants/${contosoId}/deactivate`)
+      .set('Idempotency-Key', randomUUID())
+      .expect(200);
     await contosoOperator.get('/api/v1/auth/me').expect(401);
     const refused = await request(ctx.app.getHttpServer())
       .post('/api/v1/auth/sign-in')
@@ -84,7 +89,10 @@ describe('tenants (Platform Administrator)', () => {
       .expect(403);
     expect(errorOf(refused).code).toBe('ACCOUNT_INACTIVE');
 
-    await platform.post(`/api/v1/tenants/${contosoId}/activate`).expect(200);
+    await platform
+      .post(`/api/v1/tenants/${contosoId}/activate`)
+      .set('Idempotency-Key', randomUUID())
+      .expect(200);
     await ctx.signIn('contoso.operator@example.com');
   });
 
@@ -106,6 +114,7 @@ describe('users of the organisation (Issuer Administrator)', () => {
 
     const changed = await admin
       .put(`/api/v1/users/${auditorId}/roles`)
+      .set('Idempotency-Key', randomUUID())
       .send({ roles: ['AUDITOR', 'ISSUER_OPERATOR'] })
       .expect(200);
     expect(changed.body.roles.sort()).toEqual(['AUDITOR', 'ISSUER_OPERATOR']);
@@ -113,6 +122,7 @@ describe('users of the organisation (Issuer Administrator)', () => {
 
     await admin
       .put(`/api/v1/users/${auditorId}/roles`)
+      .set('Idempotency-Key', randomUUID())
       .send({ roles: ['AUDITOR'] })
       .expect(200);
   });
@@ -126,6 +136,7 @@ describe('users of the organisation (Issuer Administrator)', () => {
     const operatorId = users.find((user) => user.email === 'northwind.operator@example.com')!.id;
     const response = await admin
       .put(`/api/v1/users/${operatorId}/roles`)
+      .set('Idempotency-Key', randomUUID())
       .send({ roles: ['PLATFORM_ADMIN'] })
       .expect(400);
     expect(errorOf(response).details[0]).toMatchObject({ code: 'ROLE_NOT_ASSIGNABLE' });
@@ -134,7 +145,10 @@ describe('users of the organisation (Issuer Administrator)', () => {
   it('never lets administrators change their own account', async () => {
     const admin = await ctx.signIn('northwind.admin1@example.com');
     const me = (await admin.get('/api/v1/auth/me').expect(200)).body as { user: { id: string } };
-    const response = await admin.post(`/api/v1/users/${me.user.id}/deactivate`).expect(400);
+    const response = await admin
+      .post(`/api/v1/users/${me.user.id}/deactivate`)
+      .set('Idempotency-Key', randomUUID())
+      .expect(400);
     expect(errorOf(response).details[0]).toMatchObject({ code: 'OWN_ACCOUNT' });
   });
 
@@ -148,11 +162,21 @@ describe('users of the organisation (Issuer Administrator)', () => {
     const investor = await ctx.signIn('investor.b@example.com');
 
     expect(
-      (await admin.post(`/api/v1/users/${investorId}/deactivate`).expect(200)).body.status,
+      (
+        await admin
+          .post(`/api/v1/users/${investorId}/deactivate`)
+          .set('Idempotency-Key', randomUUID())
+          .expect(200)
+      ).body.status,
     ).toBe('INACTIVE');
     await investor.get('/api/v1/auth/me').expect(401);
     expect(
-      (await admin.post(`/api/v1/users/${investorId}/reactivate`).expect(200)).body.status,
+      (
+        await admin
+          .post(`/api/v1/users/${investorId}/reactivate`)
+          .set('Idempotency-Key', randomUUID())
+          .expect(200)
+      ).body.status,
     ).toBe('ACTIVE');
     await ctx.signIn('investor.b@example.com');
   });

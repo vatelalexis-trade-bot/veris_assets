@@ -43,6 +43,20 @@
       "when": 1790340405743,
       "tag": "0005_user_and_tenant_management",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1790344823625,
+      "tag": "0006_notifications",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1790344835631,
+      "tag": "0007_notifications_security",
+      "breakpoints": true
     }
   ]
 }

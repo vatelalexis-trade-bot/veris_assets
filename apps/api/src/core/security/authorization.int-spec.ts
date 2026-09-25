@@ -26,13 +26,15 @@ const errorCode = (response: request.Response) =>
 
 /**
  * Sends a request that can never change data: invalid body, unknown identifiers and a stale
- * version. Only the access decision is observed.
+ * version (and a fresh idempotency key). Only the access decision is observed.
  */
 function harmlessCall(agent: Agent, route: DiscoveredRoute, id: string, body: object = {}) {
   const path = route.path.replace(/:[A-Za-z]+/g, id);
   const call = agent[route.method.toLowerCase() as 'get' | 'post' | 'put' | 'patch' | 'delete'](
     path,
-  ).set('If-Match', '"999999"');
+  )
+    .set('If-Match', '"999999"')
+    .set('Idempotency-Key', randomUUID());
   return route.method === 'GET' ? call : call.send(body);
 }
 
@@ -99,6 +101,25 @@ describe('scenario 5 — tenant isolation (SPEC §20, §29)', () => {
     [
       /^\/api\/v1\/tenants\/:id/,
       () => idOf(`SELECT id FROM iam.tenant WHERE legal_name LIKE 'Contoso%'`),
+    ],
+    [
+      /^\/api\/v1\/audit-events\/:id/,
+      () =>
+        idOf(
+          `INSERT INTO audit.audit_event (tenant_id, action, source, result)
+           SELECT id, 'TEST_EVENT', 'SYSTEM', 'SUCCESS' FROM iam.tenant WHERE legal_name LIKE 'Contoso%'
+           RETURNING id`,
+        ),
+    ],
+    [
+      /^\/api\/v1\/notifications\/:id/,
+      () =>
+        idOf(
+          `INSERT INTO core.notification (tenant_id, user_id, category, event_type, title_key)
+           SELECT tenant_id, id, 'SECURITY', 'test', 'ROLES_CHANGED' FROM iam.user
+           WHERE email = 'contoso.operator@example.com'
+           RETURNING id`,
+        ),
     ],
   ];
   async function idOf(query: string): Promise<string> {

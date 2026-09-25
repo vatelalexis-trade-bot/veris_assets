@@ -179,10 +179,11 @@ sequenceDiagram
 
 1. **Applicatif** : le tenant vient de la session, jamais de la requête.
 2. **RLS PostgreSQL** sur toutes les tables métier : politique `tenant_id = core.current_tenant_id()` (lecture de `app.tenant_id`, positionné par `withTenantTransaction` pour la seule transaction), `FORCE ROW LEVEL SECURITY`. Chaque nouvelle table est enregistrée dans une migration « de sécurité » écrite à la main, via les fonctions `core.enable_tenant_isolation()` et `core.make_append_only()` ; les tests d'intégration échouent si une table portant `tenant_id` n'est pas protégée.
-3. **Trois rôles PostgreSQL** :
+3. **Quatre rôles PostgreSQL** :
    - `va_migrator` : propriétaire des schémas, utilisé uniquement par les migrations et le seed ;
    - `va_app` : utilisé par l'API et les workers ; pas propriétaire, pas `BYPASSRLS`, **aucun droit UPDATE ni DELETE** sur `registry.ledger_entry` et `audit.audit_event` ;
-   - `va_auth` (D-030) : réservé au composant d'authentification ; lit les utilisateurs avant que le tenant soit connu (politique RLS dédiée), seul à accéder aux sessions, mots de passe et secrets TOTP ; aucun droit sur les tables métier.
+   - `va_auth` (D-030) : réservé au composant d'authentification ; lit les utilisateurs avant que le tenant soit connu (politique RLS dédiée), seul à accéder aux sessions, mots de passe et secrets TOTP ; aucun droit sur les tables métier ;
+   - `va_jobs` (D-039) : utilisé par pg-boss ; propriétaire du seul schéma `pgboss` ; aucun droit sur les tables métier. `va_app` peut y lire les files et y ajouter des tâches, rien d'autre.
 4. **Triggers** refusant UPDATE et DELETE sur les tables append-only, même pour le propriétaire.
 5. **Stockage** : chemins `tenants/{tenantId}/…`, URL signées de courte durée (5 minutes).
 6. **Cache Redis** : clés préfixées `t:{tenantId}:`.
@@ -229,11 +230,11 @@ sequenceDiagram
 - En-tête `Idempotency-Key` (UUID) **obligatoire** sur les actions financières (liste dans `docs/API.md`), facultatif ailleurs.
 - Table `core.idempotency_key` : unique par (tenant, utilisateur, clé) ; stocke l'empreinte de la requête et la réponse ; durée de conservation 24 h.
 - Même clé + même requête → même réponse, sans nouvel effet. Même clé + requête différente → `422 IDEMPOTENCY_KEY_REUSED`. Requête encore en cours → `409 IDEMPOTENCY_IN_PROGRESS`.
-- L'enregistrement de la clé et l'opération métier sont dans la même transaction.
+- L'enregistrement de la clé et l'opération métier sont dans la même transaction : toute la requête s'exécute dans une transaction unique, dont les transactions du code métier deviennent des points de sauvegarde (D-042). Seules les réponses réussies sont mémorisées ; une requête concurrente avec la même clé attend 3 secondes au plus.
 
 ### 4.9 Outbox, notifications et jobs
 
-- Chaque cas d'usage écrit ses événements métier dans `core.outbox_event` **dans sa transaction**.
+- Chaque cas d'usage écrit ses événements métier dans `core.outbox_event` **dans sa transaction**, avec la tâche pg-boss qui les livre (D-040). Un filet de sécurité (`outbox-sweep`, chaque minute) relance les événements restés en attente.
 - Le worker `outbox-relay` (pg-boss, toutes les quelques secondes) lit les événements non traités, crée les notifications dans l'application et les emails, puis marque l'événement traité. Envoi « au moins une fois » ; les consommateurs sont idempotents (clé = identifiant de l'événement).
 - Jobs planifiés (pg-boss) :
 

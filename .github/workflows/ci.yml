@@ -87,6 +87,7 @@ jobs:
       DB_MIGRATOR_PASSWORD: ci-migrator-password
       DB_APP_PASSWORD: ci-app-password
       DB_AUTH_PASSWORD: ci-auth-password
+      DB_JOBS_PASSWORD: ci-jobs-password
       BETTER_AUTH_SECRET: ci-only-better-auth-secret-0123456789abcdef
       DEMO_ACCOUNTS_PASSWORD: ci-demo-accounts-password
       REDIS_HOST: 127.0.0.1

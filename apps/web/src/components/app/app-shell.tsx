@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 import type { PortalId } from '@/features/navigation/portals';
 import { SignOutButton } from '@/features/auth/sign-out-button';
+import { NotificationBell } from '@/features/notifications/notification-bell';
 import { Link } from '@/i18n/navigation';
 import { DemoBanner } from './demo-banner';
 import { LanguageSwitcher } from './language-switcher';
@@ -60,6 +61,7 @@ export function AppShell({
               <p className="hidden text-sm text-muted sm:block">
                 {t('auth.signedInAs', { name: user.name })}
               </p>
+              <NotificationBell />
               <LanguageSwitcher />
               <SignOutButton />
             </div>

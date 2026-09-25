@@ -151,6 +151,11 @@
       "PAID": "Paid",
       "FAILED": "Failed",
       "CANCELLED": "Cancelled"
+    },
+    "auditResult": {
+      "SUCCESS": "Succeeded",
+      "DENIED": "Denied",
+      "FAILED": "Failed"
     }
   },
   "errors": {
@@ -318,7 +323,9 @@
     "LAST_ADMINISTRATOR": "The organisation must keep at least one active administrator.",
     "ROLE_NOT_ASSIGNABLE": "This role cannot be given here.",
     "EMAIL_ALREADY_REGISTERED": "An account already exists with this email.",
-    "TENANT_UNKNOWN": "This organisation does not exist."
+    "TENANT_UNKNOWN": "This organisation does not exist.",
+    "MANDATORY_CATEGORY": "Security and workflow notifications cannot be switched off.",
+    "INVALID_IDEMPOTENCY_KEY": "This action could not be secured against duplicates. Please try again."
   },
   "organizationTypes": {
     "ISSUER": "Issuer",
@@ -411,5 +418,109 @@
     "title": "Settings",
     "organisation": "Organisation",
     "legalName": "Legal name: {name}"
+  },
+  "notifications": {
+    "bell": "Notifications",
+    "bellUnread": "Notifications, {count} unread",
+    "title": "Notifications",
+    "markAllRead": "Mark all as read",
+    "empty": "No notification yet.",
+    "unread": "(unread)",
+    "preferences": {
+      "open": "Notification preferences",
+      "title": "Notification preferences",
+      "description": "Choose how you are told about each kind of event. Security and workflow notifications are always sent.",
+      "category": "Category",
+      "inApp": "In the app",
+      "email": "By email",
+      "mandatory": "Always on"
+    },
+    "categories": {
+      "SECURITY": "Security",
+      "WORKFLOW": "Tasks and approvals",
+      "ORGANISATION": "Organisation",
+      "ISSUANCE": "Issuances",
+      "INVESTMENT": "Subscriptions and transfers",
+      "DISTRIBUTION": "Distributions",
+      "DOCUMENT": "Documents",
+      "COMPLIANCE": "Compliance"
+    }
+  },
+  "audit": {
+    "title": "Audit log",
+    "description": "Every sensitive action of the organisation, who did it and when. The log cannot be changed.",
+    "caption": "Audit log entries, newest first",
+    "empty": "No entry matches these filters.",
+    "system": "System",
+    "unknownActor": "Unknown user",
+    "open": "Details",
+    "filters": {
+      "title": "Filters",
+      "action": "Action",
+      "result": "Result",
+      "from": "From",
+      "to": "To",
+      "all": "All",
+      "apply": "Filter",
+      "reset": "Reset"
+    },
+    "results": {
+      "SUCCESS": "Succeeded",
+      "DENIED": "Denied",
+      "FAILED": "Failed"
+    },
+    "columns": {
+      "occurredAt": "Date",
+      "actor": "User",
+      "action": "Action",
+      "resource": "Resource",
+      "result": "Result",
+      "details": "Details"
+    },
+    "resources": {
+      "user": "User",
+      "tenant": "Organisation",
+      "user_invitation": "Invitation"
+    },
+    "sources": {
+      "WEB": "Web application",
+      "API": "API",
+      "JOB": "Background job",
+      "SYSTEM": "System"
+    },
+    "detail": {
+      "title": "Audit entry",
+      "source": "Source",
+      "ipAddress": "IP address",
+      "userAgent": "Browser",
+      "correlationId": "Support reference",
+      "changes": "Changes",
+      "field": "Field",
+      "before": "Before",
+      "after": "After",
+      "masked": "Personal and sensitive data is masked in the audit log.",
+      "close": "Close"
+    },
+    "actions": {
+      "ACCESS_DENIED": "Access denied",
+      "TENANT_OVERRIDE_ATTEMPT": "Attempt to reach another organisation",
+      "AUTH_SIGN_IN": "Sign-in",
+      "AUTH_SECOND_FACTOR": "Two-factor check",
+      "AUTH_SIGN_OUT": "Sign-out",
+      "AUTH_MFA_ENABLED": "Two-factor authentication set up",
+      "AUTH_PASSWORD_RESET_REQUESTED": "Password reset requested",
+      "AUTH_PASSWORD_RESET": "Password reset",
+      "USER_INVITED": "User invited",
+      "USER_INVITATION_ACCEPTED": "Invitation accepted",
+      "USER_UPDATED": "User updated",
+      "USER_DEACTIVATED": "User deactivated",
+      "USER_REACTIVATED": "User reactivated",
+      "USER_ROLES_CHANGED": "Roles changed",
+      "TENANT_CREATED": "Organisation created",
+      "TENANT_UPDATED": "Organisation updated",
+      "TENANT_ACTIVATED": "Organisation activated",
+      "TENANT_DEACTIVATED": "Organisation deactivated",
+      "TENANT_SETTINGS_UPDATED": "Settings changed"
+    }
   }
 }

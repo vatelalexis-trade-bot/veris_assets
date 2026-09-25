@@ -3,9 +3,16 @@ import { Inject, Injectable } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
 import { AuditWriter } from '../../../core/audit/audit-writer.js';
 import { ENV, type Env } from '../../../core/config/env.js';
-import { DATABASE, type Database, withTenantTransaction } from '../../../core/database/database.js';
+import {
+  DATABASE,
+  type Database,
+  type Transaction,
+  withoutTenantTransaction,
+  withTenantTransaction,
+} from '../../../core/database/database.js';
 import { EMAIL_PROVIDER, type EmailProvider } from '../../../core/email/email.provider.js';
 import { AppError } from '../../../core/errors/app-error.js';
+import { Outbox } from '../../../core/outbox/outbox.js';
 import { RateLimiter, type RateLimit } from '../../../core/security/rate-limiter.js';
 import type { RoleCode } from '../domain/roles.js';
 import { invitationEmail, LOCALE_PATH, type EmailLocale } from '../infrastructure/emails.js';
@@ -18,6 +25,7 @@ import {
   type AuthOutcome,
   type RequestInfo,
 } from './authentication.service.js';
+import { IAM_EVENTS } from './iam-events.js';
 
 const INVITATION_VALIDITY_DAYS = 7;
 const ACCEPT_PER_IP: RateLimit = {
@@ -57,6 +65,7 @@ export class InvitationService {
     private readonly authentication: AuthenticationService,
     private readonly audit: AuditWriter,
     private readonly rateLimiter: RateLimiter,
+    private readonly outbox: Outbox,
   ) {}
 
   async invite(
@@ -73,12 +82,12 @@ export class InvitationService {
 
     const token = randomBytes(32).toString('base64url');
     const expiresAt = new Date(Date.now() + INVITATION_VALIDITY_DAYS * 24 * 60 * 60 * 1000);
-    const insert = async (executor: Pick<Database, 'select' | 'insert'>) => {
-      const [roleRow] = await executor
+    const insert = async (tx: Transaction) => {
+      const [roleRow] = await tx
         .select({ id: role.id })
         .from(role)
         .where(eq(role.code, request.roleCode));
-      const [created] = await executor
+      const [created] = await tx
         .insert(userInvitation)
         .values({
           tenantId,
@@ -90,13 +99,24 @@ export class InvitationService {
           invitedBy: inviter.userId,
         })
         .returning({ id: userInvitation.id });
+      await this.audit.recordIn(tx, {
+        tenantId,
+        actorUserId: inviter.userId,
+        actorRole: inviter.roles.join(','),
+        action: 'USER_INVITED',
+        resourceType: 'user_invitation',
+        resourceId: created!.id,
+        newValue: { email, name: request.name, roleCode: request.roleCode },
+        personalKeys: ['name'],
+        result: 'SUCCESS',
+      });
       return created!.id;
     };
     let id: string;
     try {
       id = tenantId
         ? await withTenantTransaction(this.db, tenantId, insert)
-        : await insert(this.db);
+        : await withoutTenantTransaction(this.db, insert);
     } catch (error) {
       // Unknown tenant: the foreign key refuses the invitation.
       if ((error as { cause?: { code?: string } }).cause?.code === '23503') {
@@ -105,6 +125,8 @@ export class InvitationService {
       throw error;
     }
 
+    // Sent directly, not through the outbox: the link holds a single-use secret, and outbox
+    // events hold identifiers only (decision D-041).
     const url = `${this.env.WEB_ORIGIN}/${LOCALE_PATH[request.locale]}/invitation/${token}`;
     await this.email.send(
       invitationEmail(request.locale, {
@@ -114,16 +136,6 @@ export class InvitationService {
         validDays: INVITATION_VALIDITY_DAYS,
       }),
     );
-    await this.audit.record({
-      tenantId,
-      actorUserId: inviter.userId,
-      actorRole: inviter.roles.join(','),
-      action: 'USER_INVITED',
-      resourceType: 'user_invitation',
-      resourceId: id,
-      result: 'SUCCESS',
-      reason: request.roleCode,
-    });
     return { id, expiresAt };
   }
 
@@ -175,16 +187,34 @@ export class InvitationService {
     } catch {
       throw new AppError('INVITATION_INVALID_OR_EXPIRED');
     }
-    await this.audit.record({
+    // The account is created by the authentication component (va_auth); the audit entry and the
+    // event are then written together in the tenant's transaction.
+    const entry = {
       tenantId: invitation.tenantId,
       actorUserId: userId,
       action: 'USER_INVITATION_ACCEPTED',
       resourceType: 'user_invitation',
       resourceId: invitation.id,
-      result: 'SUCCESS',
+      newValue: { userId },
+      result: 'SUCCESS' as const,
       ipAddress: request.ip,
       userAgent: request.userAgent,
-    });
+    };
+    if (invitation.tenantId) {
+      const tenantId = invitation.tenantId;
+      await withTenantTransaction(this.db, tenantId, async (tx) => {
+        await this.audit.recordIn(tx, entry);
+        await this.outbox.publish(tx, {
+          tenantId,
+          eventType: IAM_EVENTS.invitationAccepted,
+          aggregateType: 'user_invitation',
+          aggregateId: invitation.id,
+          payload: { userId },
+        });
+      });
+    } else {
+      await this.audit.record(entry);
+    }
     return this.authentication.signIn(invitation.email, password, request);
   }
 }

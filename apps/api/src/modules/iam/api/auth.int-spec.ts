@@ -1,4 +1,5 @@
 // Authentication end to end against PostgreSQL and Redis (phase 5, docs/BACKLOG.md P5-1 to P5-7).
+import { randomUUID } from 'node:crypto';
 import type { ErrorResponseBody } from '@virtus/shared';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
@@ -145,6 +146,7 @@ describe('invitations', () => {
     const email = `new.operator.${Date.now()}@example.com`;
     await adminAgent
       .post('/api/v1/users/invitations')
+      .set('Idempotency-Key', randomUUID())
       .send({ email, name: 'New Operator (demo)', roleCode: 'ISSUER_OPERATOR', locale: 'fr-FR' })
       .expect(201);
     const link = ctx.emails.lastLinkTo(email);
@@ -195,6 +197,7 @@ describe('invitations', () => {
 
     const forced = await adminAgent
       .post('/api/v1/users/invitations')
+      .set('Idempotency-Key', randomUUID())
       .send({ email, name: 'Tenant Check (demo)', roleCode: 'AUDITOR', tenantId: contosoId })
       .expect(404);
     expect(errorCode(forced)).toBe('RESOURCE_NOT_FOUND');
@@ -216,6 +219,7 @@ describe('invitations', () => {
     // Sending one's own tenant is harmless: it is ignored.
     await adminAgent
       .post('/api/v1/users/invitations')
+      .set('Idempotency-Key', randomUUID())
       .send({ email, name: 'Tenant Check (demo)', roleCode: 'AUDITOR', tenantId: northwindId })
       .expect(201);
   });
@@ -224,6 +228,7 @@ describe('invitations', () => {
     const operator = await signedIn(OPERATOR);
     const response = await operator
       .post('/api/v1/users/invitations')
+      .set('Idempotency-Key', randomUUID())
       .send({ email: 'x@example.com', name: 'X', roleCode: 'AUDITOR' })
       .expect(403);
     expect(errorCode(response)).toBe('PERMISSION_DENIED');
@@ -234,6 +239,7 @@ describe('invitations', () => {
     const email = `new.compliance.${Date.now()}@example.com`;
     await adminAgent
       .post('/api/v1/users/invitations')
+      .set('Idempotency-Key', randomUUID())
       .send({ email, name: 'New Compliance (demo)', roleCode: 'COMPLIANCE_OFFICER' })
       .expect(201);
     const token = ctx.emails.lastLinkTo(email).split('/').at(-1)!;
@@ -248,6 +254,7 @@ describe('invitations', () => {
     expect(me.body.mfa).toEqual({ enabled: false, required: true });
     const blocked = await officer
       .post('/api/v1/users/invitations')
+      .set('Idempotency-Key', randomUUID())
       .send({ email: 'y@example.com', name: 'Y', roleCode: 'AUDITOR' })
       .expect(403);
     expect(errorCode(blocked)).toBe('MFA_ENROLLMENT_REQUIRED');

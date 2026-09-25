@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useRouter } from '@/i18n/navigation';
 import { api } from '@/lib/api/client';
+import { useIdempotencyKey } from '@/lib/api/idempotency';
 import {
   CountrySelect,
   CurrencySelect,
@@ -39,9 +40,11 @@ export function TenantCreateForm() {
   const set = (key: keyof typeof form) => (event: { target: { value: string } }) =>
     setForm((current) => ({ ...current, [key]: event.target.value }));
 
+  const idempotency = useIdempotencyKey();
   const create = useMutation({
     mutationFn: async () => {
       const { data, error } = await api.POST('/api/v1/tenants', {
+        params: { header: idempotency.header() },
         body: {
           legalName: form.legalName,
           tradeName: form.tradeName || null,
@@ -57,6 +60,7 @@ export function TenantCreateForm() {
           },
         },
       });
+      idempotency.answered();
       if (error) throw error;
       return data;
     },

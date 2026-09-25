@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
 import { LocaleSelect } from '@/features/tenants/tenant-fields';
 import { api } from '@/lib/api/client';
+import { useIdempotencyKey } from '@/lib/api/idempotency';
 import type { operations } from '@/lib/api/schema';
 
 type UserView = operations['UsersController_get']['responses'][200]['content']['application/json'];
@@ -49,11 +50,15 @@ export function UsersPanel({ currentUserId, rights }: { currentUserId: string; r
   });
   const refresh = () => queryClient.invalidateQueries({ queryKey: ['users'] });
 
+  const statusKey = useIdempotencyKey();
   const setStatus = useMutation({
     mutationFn: async ({ id, action }: { id: string; action: 'deactivate' | 'reactivate' }) => {
       const path =
         action === 'deactivate' ? '/api/v1/users/{id}/deactivate' : '/api/v1/users/{id}/reactivate';
-      const { error } = await api.POST(path, { params: { path: { id } } });
+      const { error } = await api.POST(path, {
+        params: { path: { id }, header: statusKey.header() },
+      });
+      statusKey.answered();
       if (error) throw error;
     },
     onSuccess: refresh,
@@ -152,12 +157,14 @@ function RolesDialog({ user, onSaved }: { user: UserView; onSaved: () => unknown
   const t = useTranslations();
   const [open, setOpen] = useState(false);
   const [roles, setRoles] = useState<RoleCode[]>(user.roles);
+  const idempotency = useIdempotencyKey();
   const save = useMutation({
     mutationFn: async () => {
       const { error } = await api.PUT('/api/v1/users/{id}/roles', {
-        params: { path: { id: user.id } },
+        params: { path: { id: user.id }, header: idempotency.header() },
         body: { roles },
       });
+      idempotency.answered();
       if (error) throw error;
     },
     onSuccess: async () => {
@@ -229,9 +236,14 @@ function InviteUserForm() {
     roleCode: 'ISSUER_OPERATOR' as RoleCode,
     locale: 'en-GB' as 'en-GB' | 'fr-FR',
   });
+  const idempotency = useIdempotencyKey();
   const invite = useMutation({
     mutationFn: async () => {
-      const { error } = await api.POST('/api/v1/users/invitations', { body: invitee });
+      const { error } = await api.POST('/api/v1/users/invitations', {
+        params: { header: idempotency.header() },
+        body: invitee,
+      });
+      idempotency.answered();
       if (error) throw error;
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['invitations'] }),

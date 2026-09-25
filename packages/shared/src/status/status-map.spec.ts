@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { STATUS_DOMAINS, STATUS_TONES, statusLabelKey, statusTone } from './status-map.js';
 
 describe('status map', () => {
-  it('covers the six business domains with statuses', () => {
+  it('covers the six business domains with statuses, and the audit results', () => {
     expect(STATUS_DOMAINS).toEqual([
       'issuance',
       'subscription',
@@ -10,6 +10,7 @@ describe('status map', () => {
       'eligibility',
       'transfer',
       'distribution',
+      'auditResult',
     ]);
   });
 
