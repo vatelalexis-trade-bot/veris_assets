@@ -99,16 +99,16 @@ Sauf mention contraire, les chemins sont relatifs à `/api/v1` (par exemple `/is
 
 | Méthode | Chemin | Rôle |
 |---|---|---|
-| POST | `/auth/sign-in` | Connexion (email + mot de passe) |
-| POST | `/auth/mfa/verify` | Code TOTP ou code de secours |
-| POST | `/auth/mfa/enroll` · `/auth/mfa/confirm` | Enrôlement TOTP |
-| POST | `/auth/sign-out` | Déconnexion |
-| POST | `/auth/password/forgot` · `/auth/password/reset` | Réinitialisation |
-| GET | `/auth/invitations/{token}` · POST `/auth/invitations/{token}/accept` | Acceptation d'invitation |
-| GET | `/auth/me` | Utilisateur, tenant, rôles, permissions, langue |
-| GET | `/auth/demo-accounts` | Comptes de démo et code TOTP courant — **uniquement si `DEMO_MODE=true`** (D-016) |
+| POST | `/auth/sign-in` | Connexion (email + mot de passe) → `SIGNED_IN` ou `MFA_REQUIRED` |
+| POST | `/auth/mfa/verify` | Code TOTP ou code de secours (`method`: `totp` ou `backup`) |
+| POST | `/auth/mfa/enroll` · `/auth/mfa/confirm` | Enrôlement TOTP (mot de passe, puis premier code) |
+| POST | `/auth/sign-out` | Déconnexion (204) |
+| POST | `/auth/password/forgot` · `/auth/password/reset` | Réinitialisation (202 toujours, pour ne rien révéler ; puis 204) |
+| GET | `/auth/invitations/{token}` · POST `/auth/invitations/{token}/accept` | Acceptation d'invitation (connexion automatique ensuite) |
+| GET | `/auth/me` | Utilisateur, tenant, rôles, portails autorisés, état de la MFA, expiration de la session |
+| GET | `/auth/demo-accounts` | Comptes de démo et code TOTP courant — **uniquement si `DEMO_MODE=true`** (D-016), 404 sinon |
 
-Les chemins exacts exposés par Better Auth sont confirmés en phase 5 ; ceux qui diffèrent seront listés ici.
+Ces routes sont celles de l'API ; Better Auth n'est pas exposé directement (D-031). Les permissions sont renvoyées par `/auth/me` à partir de la phase 6.
 
 ### 2.3 `/tenants` (plateforme)
 

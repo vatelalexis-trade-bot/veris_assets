@@ -1,20 +1,21 @@
-import { ArrowRight } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import { setRequestLocale } from 'next-intl/server';
-import { use } from 'react';
+import { ArrowRight, LogIn } from 'lucide-react';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { LanguageSwitcher } from '@/components/app/language-switcher';
 import { Logo } from '@/components/app/logo';
 import { Button } from '@/components/ui/button';
-import { PORTALS, type PortalId } from '@/features/navigation/portals';
+import { PORTAL_PATHS } from '@/features/auth/destination';
+import { type PortalId } from '@/features/navigation/portals';
 import { Link } from '@/i18n/navigation';
+import { getCurrentUser } from '@/lib/api/server';
 
 const PORTAL_ORDER: PortalId[] = ['issuer', 'investor', 'platform'];
 
 /** Temporary home page: the landing page and its calculator arrive in phase 15 (D-019). */
-export default function HomePage({ params }: PageProps<'/[locale]'>) {
-  const { locale } = use(params);
+export default async function HomePage({ params }: PageProps<'/[locale]'>) {
+  const { locale } = await params;
   setRequestLocale(locale);
-  const t = useTranslations();
+  const t = await getTranslations();
+  const user = await getCurrentUser();
   return (
     <div className="mx-auto flex min-h-dvh max-w-5xl flex-col gap-10 px-6 py-8">
       <header className="flex items-center justify-between">
@@ -36,28 +37,31 @@ export default function HomePage({ params }: PageProps<'/[locale]'>) {
           <h2 id="portals-title" className="text-xl font-semibold">
             {t('home.choosePortal')}
           </h2>
-          <p className="text-sm text-muted">{t('home.temporaryNavigation')}</p>
+          <div>
+            <Button asChild>
+              {user ? (
+                <Link href={PORTAL_PATHS[user.homePortal]}>
+                  {t('home.openPortal')}
+                  <ArrowRight aria-hidden="true" />
+                </Link>
+              ) : (
+                <Link href="/login">
+                  <LogIn aria-hidden="true" />
+                  {t('home.signIn')}
+                </Link>
+              )}
+            </Button>
+          </div>
           <ul className="grid gap-4 md:grid-cols-3">
-            {PORTAL_ORDER.map((portalId) => {
-              const portal = PORTALS[portalId];
-              return (
-                <li
-                  key={portalId}
-                  className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-5"
-                >
-                  <h3 className="font-semibold">{t(`portals.${portalId}`)}</h3>
-                  <p className="flex-1 text-sm text-muted">
-                    {t(`home.portalDescriptions.${portalId}`)}
-                  </p>
-                  <Button asChild variant="secondary" className="self-start">
-                    <Link href={`${portal.path}/${portal.items[0]!.section}`}>
-                      {t(`portals.${portalId}`)}
-                      <ArrowRight aria-hidden="true" />
-                    </Link>
-                  </Button>
-                </li>
-              );
-            })}
+            {PORTAL_ORDER.map((portalId) => (
+              <li
+                key={portalId}
+                className="flex flex-col gap-2 rounded-xl border border-border bg-surface p-5"
+              >
+                <h3 className="font-semibold">{t(`portals.${portalId}`)}</h3>
+                <p className="text-sm text-muted">{t(`home.portalDescriptions.${portalId}`)}</p>
+              </li>
+            ))}
           </ul>
         </section>
       </main>

@@ -46,6 +46,9 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Generated API client is up to date
+        run: pnpm api:generate && git diff --exit-code apps/web/src/lib/api
+
   integration:
     name: Database integration tests
     runs-on: ubuntu-latest

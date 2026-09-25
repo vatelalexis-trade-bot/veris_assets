@@ -5,6 +5,7 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { PRODUCT_NAME } from '@virtus/shared';
 import { routing } from '@/i18n/routing';
+import { Providers } from './providers';
 import '../globals.css';
 
 // Fonts are self-hosted by Next.js: browsers never contact Google (SPEC §2.4, typography).
@@ -32,7 +33,9 @@ export default async function LocaleLayout({ children, params }: LayoutProps<'/[
   return (
     <html lang={locale} className={`${inter.variable} ${montserrat.variable}`}>
       <body>
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+          <Providers>{children}</Providers>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

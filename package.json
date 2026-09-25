@@ -11,6 +11,7 @@
     "postinstall": "pnpm --filter @virtus/shared build",
     "dev": "bash scripts/dev.sh",
     "build": "pnpm -r build",
+    "api:generate": "pnpm --filter @virtus/api openapi:export && pnpm --filter @virtus/web api:generate && prettier --write apps/web/src/lib/api",
     "lint": "eslint . && pnpm -r lint && pnpm depcruise && pnpm check:claims && pnpm format:check",
     "typecheck": "pnpm -r typecheck",
     "test": "vitest run && pnpm -r test",

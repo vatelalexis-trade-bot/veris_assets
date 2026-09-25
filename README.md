@@ -24,6 +24,11 @@ Quand le terminal affiche `Virtus Assets — development environment`, ouvrez l'
 
 Pour arrêter l'application : **Ctrl + C** dans le terminal. Les services Docker continuent de tourner ; pour les arrêter aussi : `pnpm services:down`.
 
+## Se connecter à la démo
+
+La page de connexion (`/fr/login`) liste les comptes de démonstration, leur rôle et leur mot de passe commun (valeur `DEMO_ACCOUNTS_PASSWORD` du fichier `.env`). Le bouton **Utiliser** remplit le formulaire.
+Les comptes d'administration et de conformité ont la double authentification activée : leur code à 6 chiffres est affiché à côté du compte et change toutes les 30 secondes (mode démonstration uniquement).
+
 ## Commandes utiles
 
 | Commande                | Effet                                                                                                  |

@@ -58,12 +58,13 @@
     "subtitle": "Émettez, administrez et gérez vos actifs privés depuis une seule plateforme.",
     "demoNotice": "Ceci est un environnement de démonstration : toutes les données sont fictives et aucun paiement réel n’est effectué.",
     "choosePortal": "Découvrir les portails",
-    "temporaryNavigation": "La connexion arrive à la phase suivante ; d’ici là, les portails sont ouverts à la navigation.",
     "portalDescriptions": {
       "issuer": "Créez des émissions, intégrez les investisseurs, gérez souscriptions, registre et distributions.",
       "investor": "Suivez positions, souscriptions, transactions et distributions.",
       "platform": "Administrez les organisations et les paramètres de la plateforme."
-    }
+    },
+    "signIn": "Se connecter",
+    "openPortal": "Ouvrir mon portail"
   },
   "placeholder": {
     "title": "Bientôt disponible",
@@ -226,5 +227,80 @@
     "PASSWORD_TOO_SHORT": "Utilisez au moins 12 caractères.",
     "PASSWORD_TOO_LONG": "Utilisez au plus 128 caractères.",
     "PASSWORD_TOO_COMMON": "Ce mot de passe est trop courant. Choisissez-en un autre."
+  },
+  "auth": {
+    "signIn": {
+      "title": "Connexion",
+      "email": "Email",
+      "password": "Mot de passe",
+      "submit": "Se connecter",
+      "forgotPassword": "Mot de passe oublié ?"
+    },
+    "demo": {
+      "title": "Comptes de démonstration",
+      "description": "Tous les comptes utilisent le mot de passe ci-dessous. Les comptes avec double authentification affichent leur code actuel.",
+      "password": "Mot de passe : {password}",
+      "use": "Utiliser",
+      "useAccount": "Remplir le formulaire avec {name}",
+      "code": "Code : {code}",
+      "codeRenewal": "Les codes changent toutes les 30 secondes.",
+      "platform": "Plateforme"
+    },
+    "roles": {
+      "PLATFORM_ADMIN": "Administrateur plateforme",
+      "ISSUER_ADMIN": "Administrateur émetteur",
+      "ISSUER_OPERATOR": "Opérateur émetteur",
+      "COMPLIANCE_OFFICER": "Responsable conformité",
+      "AUDITOR": "Auditeur",
+      "INVESTOR": "Investisseur"
+    },
+    "mfa": {
+      "title": "Double authentification",
+      "description": "Saisissez le code à 6 chiffres affiché par votre application d’authentification.",
+      "backupDescription": "Saisissez l’un de vos codes de secours. Chaque code ne fonctionne qu’une fois.",
+      "code": "Code",
+      "submit": "Vérifier",
+      "useBackupCode": "Utiliser un code de secours",
+      "useAuthenticator": "Utiliser l’application d’authentification",
+      "backToSignIn": "Retour à la connexion"
+    },
+    "mfaSetup": {
+      "title": "Configurer la double authentification",
+      "intro": "Votre rôle exige un second facteur. Il vous faut une application d’authentification sur votre téléphone (application TOTP).",
+      "passwordStep": "Confirmez votre mot de passe pour commencer.",
+      "continue": "Continuer",
+      "scan": "Scannez ce QR code avec votre application d’authentification.",
+      "qrAlt": "QR code pour ajouter Virtus Assets à votre application d’authentification",
+      "manualKey": "Ou saisissez cette clé manuellement : {key}",
+      "backupCodes": "Codes de secours",
+      "backupCodesHelp": "Conservez ces codes en lieu sûr : chacun permet de se connecter une fois en cas de perte du téléphone. Ils ne seront plus affichés.",
+      "confirmStep": "Saisissez le code affiché par l’application pour terminer.",
+      "confirm": "Activer"
+    },
+    "forgot": {
+      "title": "Mot de passe oublié ?",
+      "description": "Saisissez votre email : si un compte existe, vous recevrez un lien pour choisir un nouveau mot de passe.",
+      "submit": "Envoyer le lien",
+      "sent": "Si un compte existe pour cet email, un lien a été envoyé. Il est valable une heure."
+    },
+    "reset": {
+      "title": "Choisir un nouveau mot de passe",
+      "newPassword": "Nouveau mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "submit": "Enregistrer le mot de passe",
+      "mismatch": "Les deux mots de passe sont différents.",
+      "done": "Votre mot de passe a été modifié. Vous pouvez maintenant vous connecter.",
+      "missingToken": "Ce lien est incomplet. Demandez-en un nouveau."
+    },
+    "invitation": {
+      "title": "Rejoindre Virtus Assets",
+      "tenantInvitation": "{name}, vous êtes invité(e) à rejoindre {tenant} en tant que {role}.",
+      "platformInvitation": "{name}, vous êtes invité(e) à rejoindre la plateforme en tant que {role}.",
+      "choosePassword": "Choisissez votre mot de passe pour activer votre compte ({email}).",
+      "submit": "Activer mon compte"
+    },
+    "passwordHint": "Au moins 12 caractères. Une phrase de quelques mots est facile à retenir.",
+    "signOut": "Se déconnecter",
+    "signedInAs": "Connecté(e) : {name}"
   }
 }

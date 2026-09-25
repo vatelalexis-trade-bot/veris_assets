@@ -179,9 +179,10 @@ sequenceDiagram
 
 1. **Applicatif** : le tenant vient de la session, jamais de la requête.
 2. **RLS PostgreSQL** sur toutes les tables métier : politique `tenant_id = core.current_tenant_id()` (lecture de `app.tenant_id`, positionné par `withTenantTransaction` pour la seule transaction), `FORCE ROW LEVEL SECURITY`. Chaque nouvelle table est enregistrée dans une migration « de sécurité » écrite à la main, via les fonctions `core.enable_tenant_isolation()` et `core.make_append_only()` ; les tests d'intégration échouent si une table portant `tenant_id` n'est pas protégée.
-3. **Deux rôles PostgreSQL** :
+3. **Trois rôles PostgreSQL** :
    - `va_migrator` : propriétaire des schémas, utilisé uniquement par les migrations et le seed ;
-   - `va_app` : utilisé par l'API et les workers ; pas propriétaire, pas `BYPASSRLS`, **aucun droit UPDATE ni DELETE** sur `registry.ledger_entry` et `audit.audit_event`.
+   - `va_app` : utilisé par l'API et les workers ; pas propriétaire, pas `BYPASSRLS`, **aucun droit UPDATE ni DELETE** sur `registry.ledger_entry` et `audit.audit_event` ;
+   - `va_auth` (D-030) : réservé au composant d'authentification ; lit les utilisateurs avant que le tenant soit connu (politique RLS dédiée), seul à accéder aux sessions, mots de passe et secrets TOTP ; aucun droit sur les tables métier.
 4. **Triggers** refusant UPDATE et DELETE sur les tables append-only, même pour le propriétaire.
 5. **Stockage** : chemins `tenants/{tenantId}/…`, URL signées de courte durée (5 minutes).
 6. **Cache Redis** : clés préfixées `t:{tenantId}:`.
@@ -257,11 +258,13 @@ Upload → contrôle de taille (10 Mo) → détection du type réel par le conte
 
 ### 4.12 Authentification et sessions
 
-- Better Auth, monté sous `/api/v1/auth/*` dans l'API NestJS.
-- Mots de passe : Argon2id (via le hachage personnalisable de Better Auth), 12 caractères minimum, vérification contre une liste de mots de passe courants.
-- MFA TOTP avec codes de secours ; obligatoire pour Platform Administrator, Issuer Administrator et Compliance Officer (enrôlement forcé à la première connexion). Démo : D-016.
-- Cookies `HttpOnly`, `Secure`, `SameSite=Lax` ; identifiant de session renouvelé à la connexion et au changement de droits (D-003) ; expiration après inactivité (30 minutes) et durée maximale (12 heures) — valeurs réglables.
-- Blocage progressif après échecs de connexion (5 échecs → blocage 15 minutes), fourni par la bibliothèque si disponible, sinon dans `iam` (vérifié en phase 5).
+- Better Auth (bibliothèque) dans le module `iam`, **jamais exposé directement** : les routes `/api/v1/auth/*` sont celles de l'API, qui appellent Better Auth côté serveur (D-031). Toutes les réponses suivent donc le format d'erreur de la spec, et l'API garde la main sur le blocage, la limitation de débit et l'audit. Inscription publique désactivée : les comptes naissent d'une invitation.
+- Accès base : rôle `va_auth` (D-030).
+- Mots de passe : Argon2id (19 Mio, 2 itérations), 12 à 128 caractères, refus des mots de passe courants (liste zxcvbn-ts, D-033), sans autre règle de complexité (spec 24).
+- MFA TOTP (6 chiffres, 30 s) avec 10 codes de secours ; obligatoire pour Platform Administrator, Issuer Administrator et Compliance Officer : tant qu'elle n'est pas configurée, seules les routes d'enrôlement, `me` et la déconnexion répondent (`MFA_ENROLLMENT_REQUIRED`). Démo : D-016.
+- Cookies `va.*` (`__Secure-va.*` en https), `HttpOnly`, `SameSite=Lax`, `Secure` en https ; nouvelle session à chaque connexion (D-003) ; expiration après 30 minutes d'inactivité (prolongée toutes les 5 minutes d'activité) et au plus tard après 12 heures.
+- Blocage après 5 échecs consécutifs pendant 15 minutes (implémenté dans `iam`) ; limitation de débit Redis par adresse IP et par compte ; journal d'audit de chaque connexion, échec, second facteur, déconnexion et invitation (sans email ni secret).
+- Garde global `AuthGuard` : toute route exige une session sauf celles marquées `@Public()`.
 - Protection CSRF : même origine + `SameSite=Lax` + contrôle de l'en-tête `Origin` sur toute requête modifiante.
 - Invitations (utilisateurs et investisseurs) : jeton à usage unique, haché en base, valable 7 jours.
 

@@ -100,15 +100,15 @@ Toutes les entités de la section 21 de la spec sont présentes. Correspondances
 
 **`iam.tenant`** — `id`, `legal_name`, `trade_name`, `country_code`, `base_currency`, `default_locale`, `timezone` (défaut `Europe/Paris`, D-015), `organization_type` (`ISSUER`, `ASSET_MANAGER`, `FUND`, D-025), `status` (`ACTIVE`, `INACTIVE`), `logo_document_id`, colonnes communes. RLS : lecture de son propre tenant ; gestion réservée au Platform Administrator.
 
-**`iam.user`** (table utilisateur de Better Auth, étendue) — `id`, `email` (unique), `name`, `email_verified`, `tenant_id` (null = utilisateur plateforme), `investor_id` (renseigné pour le rôle Investor), `status` (`INVITED`, `ACTIVE`, `INACTIVE`, `LOCKED`), `locale`, `failed_login_count`, `locked_until`, `last_login_at`, colonnes communes.
-Tables techniques de Better Auth (sessions, comptes/mots de passe, vérifications, TOTP) : noms exacts fixés en phase 5.
-RLS : les tables d'authentification sont lues avant que le tenant soit connu (connexion par email) ; leur politique autorise cet accès uniquement quand le contexte `app.auth_context` est positionné par le module `iam`. Toutes les autres lectures sont filtrées par tenant.
+**`iam.user`** (table utilisateur de Better Auth, étendue) — `id`, `name`, `email` (unique, en minuscules), `email_verified`, `image`, `two_factor_enabled`, `tenant_id` (null = utilisateur plateforme), `investor_id` (rôle Investor, phase 8), `status` (`ACTIVE`, `INACTIVE`), `locale`, `failed_login_count`, `locked_until`, `last_login_at`, `created_at`, `updated_at`.
+Tables de Better Auth (accès réservé à `va_auth`, D-030) : `iam.session` (jeton, expiration, IP, user agent), `iam.account` (mot de passe Argon2id, fournisseur `credential`), `iam.verification` (jetons de réinitialisation), `iam.two_factor` (secret TOTP et codes de secours chiffrés avec `BETTER_AUTH_SECRET`).
+RLS : `iam.user`, `iam.user_role` et `iam.user_invitation` sont filtrées par tenant pour `va_app` ; une politique dédiée laisse `va_auth` les lire toutes, car la connexion se fait par email avant de connaître le tenant.
 
 **`iam.permission`** (global) — `code` (PK, format `ressource:action`), `description`.
 **`iam.role`** — `id`, `code` (`PLATFORM_ADMIN`, `ISSUER_ADMIN`, `ISSUER_OPERATOR`, `COMPLIANCE_OFFICER`, `AUDITOR`, `INVESTOR`), `tenant_id` (null = rôle système), `is_system`. MVP : rôles système uniquement.
 **`iam.role_permission`** — `role_id`, `permission_code`. Rempli depuis la matrice de la section 5 (source unique, testée).
 **`iam.user_role`** — `user_id`, `role_id`, `tenant_id`, `granted_by`, `granted_at`.
-**`iam.user_invitation`** [DP] — `id`, `tenant_id`, `email`, `role_id`, `token_hash`, `expires_at` (7 jours), `accepted_at`, `invited_by`, `created_at`.
+**`iam.user_invitation`** [DP] — `id`, `tenant_id` (null pour une invitation de Platform Administrator), `email`, `name`, `role_id`, `token_hash` (SHA-256 du jeton), `expires_at` (7 jours), `accepted_at`, `invited_by`, `created_at`.
 **`iam.break_glass_grant`** — `id`, `tenant_id`, `platform_user_id`, `reason`, `granted_at`, `expires_at` (1 heure), `revoked_at`.
 
 ### 3.3 `investor` (Investor & Compliance)

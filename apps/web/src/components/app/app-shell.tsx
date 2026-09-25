@@ -1,6 +1,7 @@
 import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 import type { PortalId } from '@/features/navigation/portals';
+import { SignOutButton } from '@/features/auth/sign-out-button';
 import { Link } from '@/i18n/navigation';
 import { DemoBanner } from './demo-banner';
 import { LanguageSwitcher } from './language-switcher';
@@ -8,7 +9,20 @@ import { Logo } from './logo';
 import { PortalNavigation } from './portal-navigation';
 
 /** Common frame of the three portals (SPEC §23.2): banner, sidebar, header and content. */
-export function AppShell({ portalId, children }: { portalId: PortalId; children: ReactNode }) {
+export interface ShellUser {
+  name: string;
+  tenantName: string | null;
+}
+
+export function AppShell({
+  portalId,
+  user,
+  children,
+}: {
+  portalId: PortalId;
+  user: ShellUser;
+  children: ReactNode;
+}) {
   const t = useTranslations();
   return (
     <div className="flex min-h-dvh flex-col">
@@ -32,10 +46,21 @@ export function AppShell({ portalId, children }: { portalId: PortalId; children:
         </aside>
         <div className="flex flex-1 flex-col">
           <header className="flex items-center justify-between gap-4 border-b border-border px-6 py-3">
-            <p className="font-heading text-sm font-semibold text-foreground">
-              {t(`portals.${portalId}`)}
-            </p>
-            <LanguageSwitcher />
+            <div className="min-w-0">
+              <p className="font-heading text-sm font-semibold text-foreground">
+                {t(`portals.${portalId}`)}
+              </p>
+              {user.tenantName ? (
+                <p className="truncate text-xs text-muted">{user.tenantName}</p>
+              ) : null}
+            </div>
+            <div className="flex items-center gap-3">
+              <p className="hidden text-sm text-muted sm:block">
+                {t('auth.signedInAs', { name: user.name })}
+              </p>
+              <LanguageSwitcher />
+              <SignOutButton />
+            </div>
           </header>
           <main id="main-content" tabIndex={-1} className="flex-1 px-6 py-6">
             {children}

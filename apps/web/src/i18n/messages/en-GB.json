@@ -58,12 +58,13 @@
     "subtitle": "Issue, administer and service private assets from a single platform.",
     "demoNotice": "This is a demonstration environment: all data is fictitious and no real payment is made.",
     "choosePortal": "Explore the portals",
-    "temporaryNavigation": "Sign-in arrives in the next phase; until then, the portals are open for navigation.",
     "portalDescriptions": {
       "issuer": "Create issuances, onboard investors, run subscriptions, the registry and distributions.",
       "investor": "Follow positions, subscriptions, transactions and distributions.",
       "platform": "Administer organisations and platform settings."
-    }
+    },
+    "signIn": "Sign in",
+    "openPortal": "Open my portal"
   },
   "placeholder": {
     "title": "Coming soon",
@@ -226,5 +227,80 @@
     "PASSWORD_TOO_SHORT": "Use at least 12 characters.",
     "PASSWORD_TOO_LONG": "Use at most 128 characters.",
     "PASSWORD_TOO_COMMON": "This password is too common. Choose another one."
+  },
+  "auth": {
+    "signIn": {
+      "title": "Sign in",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in",
+      "forgotPassword": "Forgot your password?"
+    },
+    "demo": {
+      "title": "Demonstration accounts",
+      "description": "Every account uses the password below. Accounts with two-factor authentication show their current code.",
+      "password": "Password: {password}",
+      "use": "Use",
+      "useAccount": "Fill the form with {name}",
+      "code": "Code: {code}",
+      "codeRenewal": "Codes change every 30 seconds.",
+      "platform": "Platform"
+    },
+    "roles": {
+      "PLATFORM_ADMIN": "Platform administrator",
+      "ISSUER_ADMIN": "Issuer administrator",
+      "ISSUER_OPERATOR": "Issuer operator",
+      "COMPLIANCE_OFFICER": "Compliance officer",
+      "AUDITOR": "Auditor",
+      "INVESTOR": "Investor"
+    },
+    "mfa": {
+      "title": "Two-factor authentication",
+      "description": "Enter the 6-digit code shown by your authentication app.",
+      "backupDescription": "Enter one of your backup codes. Each code works only once.",
+      "code": "Code",
+      "submit": "Verify",
+      "useBackupCode": "Use a backup code",
+      "useAuthenticator": "Use the authentication app",
+      "backToSignIn": "Back to sign-in"
+    },
+    "mfaSetup": {
+      "title": "Set up two-factor authentication",
+      "intro": "Your role requires a second factor. You need an authentication app on your phone (for example a TOTP app).",
+      "passwordStep": "Confirm your password to start.",
+      "continue": "Continue",
+      "scan": "Scan this QR code with your authentication app.",
+      "qrAlt": "QR code to add Virtus Assets to your authentication app",
+      "manualKey": "Or enter this key manually: {key}",
+      "backupCodes": "Backup codes",
+      "backupCodesHelp": "Keep these codes in a safe place: each one lets you sign in once if you lose your phone. They will not be shown again.",
+      "confirmStep": "Enter the code shown by the app to finish.",
+      "confirm": "Activate"
+    },
+    "forgot": {
+      "title": "Forgot your password?",
+      "description": "Enter your email: if an account exists, you will receive a link to choose a new password.",
+      "submit": "Send the link",
+      "sent": "If an account exists for this email, a link has been sent. It is valid for one hour."
+    },
+    "reset": {
+      "title": "Choose a new password",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm the password",
+      "submit": "Save the password",
+      "mismatch": "The two passwords are different.",
+      "done": "Your password has been changed. You can now sign in.",
+      "missingToken": "This link is incomplete. Request a new one."
+    },
+    "invitation": {
+      "title": "Join Virtus Assets",
+      "tenantInvitation": "{name}, you are invited to join {tenant} as {role}.",
+      "platformInvitation": "{name}, you are invited to join the platform as {role}.",
+      "choosePassword": "Choose your password to activate your account ({email}).",
+      "submit": "Activate my account"
+    },
+    "passwordHint": "At least 12 characters. A passphrase of a few words is easy to remember.",
+    "signOut": "Sign out",
+    "signedInAs": "Signed in as {name}"
   }
 }

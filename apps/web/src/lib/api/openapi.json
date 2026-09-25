@@ -1,0 +1,746 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "HealthController_liveness",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The API process is running.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": ["ok"]
+                    }
+                  },
+                  "required": ["status"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "tags": ["health"]
+      }
+    },
+    "/health/ready": {
+      "get": {
+        "operationId": "HealthController_readiness",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "All dependencies answer.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": ["ok", "unavailable"]
+                    },
+                    "checks": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "string",
+                        "enum": ["up", "down"]
+                      }
+                    }
+                  },
+                  "required": ["status", "checks"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "At least one dependency does not answer.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": ["ok", "unavailable"]
+                    },
+                    "checks": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "string",
+                        "enum": ["up", "down"]
+                      }
+                    }
+                  },
+                  "required": ["status", "checks"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "tags": ["health"]
+      }
+    },
+    "/api/v1/auth/sign-in": {
+      "post": {
+        "operationId": "AuthController_signIn",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "maxLength": 254,
+                    "format": "email",
+                    "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                  }
+                },
+                "required": ["email", "password"],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": ["SIGNED_IN", "MFA_REQUIRED"]
+                    }
+                  },
+                  "required": ["status"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "tags": ["auth"]
+      }
+    },
+    "/api/v1/auth/mfa/verify": {
+      "post": {
+        "operationId": "AuthController_verifySecondFactor",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "minLength": 6,
+                    "maxLength": 32
+                  },
+                  "method": {
+                    "default": "totp",
+                    "type": "string",
+                    "enum": ["totp", "backup"]
+                  }
+                },
+                "required": ["code", "method"],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": ["SIGNED_IN", "MFA_REQUIRED"]
+                    }
+                  },
+                  "required": ["status"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "tags": ["auth"]
+      }
+    },
+    "/api/v1/auth/me": {
+      "get": {
+        "operationId": "AuthController_me",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string",
+                          "format": "email",
+                          "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+                        },
+                        "locale": {
+                          "type": "string",
+                          "enum": ["en-GB", "fr-FR"]
+                        }
+                      },
+                      "required": ["id", "name", "email", "locale"],
+                      "additionalProperties": false
+                    },
+                    "tenant": {
+                      "nullable": true,
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                        },
+                        "legalName": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["id", "legalName"],
+                      "additionalProperties": false
+                    },
+                    "roles": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": [
+                          "PLATFORM_ADMIN",
+                          "ISSUER_ADMIN",
+                          "ISSUER_OPERATOR",
+                          "COMPLIANCE_OFFICER",
+                          "AUDITOR",
+                          "INVESTOR"
+                        ]
+                      }
+                    },
+                    "portals": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": ["platform", "issuer", "investor"]
+                      }
+                    },
+                    "homePortal": {
+                      "type": "string",
+                      "enum": ["platform", "issuer", "investor"]
+                    },
+                    "mfa": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "required": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": ["enabled", "required"],
+                      "additionalProperties": false
+                    },
+                    "sessionExpiresAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                    }
+                  },
+                  "required": [
+                    "user",
+                    "tenant",
+                    "roles",
+                    "portals",
+                    "homePortal",
+                    "mfa",
+                    "sessionExpiresAt"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "tags": ["auth"]
+      }
+    },
+    "/api/v1/auth/sign-out": {
+      "post": {
+        "operationId": "AuthController_signOut",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": ["auth"]
+      }
+    },
+    "/api/v1/auth/mfa/enroll": {
+      "post": {
+        "operationId": "AuthController_enrollMfa",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                  }
+                },
+                "required": ["password"],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "totpUri": {
+                      "type": "string"
+                    },
+                    "secretKey": {
+                      "type": "string"
+                    },
+                    "backupCodes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": ["totpUri", "secretKey", "backupCodes"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "tags": ["auth"]
+      }
+    },
+    "/api/v1/auth/mfa/confirm": {
+      "post": {
+        "operationId": "AuthController_confirmMfa",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "pattern": "^\\d{6}$"
+                  }
+                },
+                "required": ["code"],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": ["auth"]
+      }
+    },
+    "/api/v1/auth/password/forgot": {
+      "post": {
+        "operationId": "AuthController_forgotPassword",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "maxLength": 254,
+                    "format": "email",
+                    "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+                  }
+                },
+                "required": ["email"],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": ""
+          }
+        },
+        "tags": ["auth"]
+      }
+    },
+    "/api/v1/auth/password/reset": {
+      "post": {
+        "operationId": "AuthController_resetPassword",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 512
+                  },
+                  "newPassword": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                  }
+                },
+                "required": ["token", "newPassword"],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": ["auth"]
+      }
+    },
+    "/api/v1/auth/demo-accounts": {
+      "get": {
+        "operationId": "AuthController_demoAccountsList",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "password": {
+                      "type": "string"
+                    },
+                    "totpValidForSeconds": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "accounts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "email": {
+                            "type": "string",
+                            "format": "email",
+                            "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "role": {
+                            "type": "string",
+                            "enum": [
+                              "PLATFORM_ADMIN",
+                              "ISSUER_ADMIN",
+                              "ISSUER_OPERATOR",
+                              "COMPLIANCE_OFFICER",
+                              "AUDITOR",
+                              "INVESTOR"
+                            ]
+                          },
+                          "tenant": {
+                            "nullable": true,
+                            "type": "string",
+                            "enum": ["northwind", "contoso"]
+                          },
+                          "totpCode": {
+                            "nullable": true,
+                            "type": "string"
+                          }
+                        },
+                        "required": ["email", "name", "role", "tenant", "totpCode"],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": ["password", "totpValidForSeconds", "accounts"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "tags": ["auth"]
+      }
+    },
+    "/api/v1/auth/invitations/{token}": {
+      "get": {
+        "operationId": "InvitationAcceptanceController_preview",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "format": "email",
+                      "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "roleCode": {
+                      "type": "string",
+                      "enum": [
+                        "PLATFORM_ADMIN",
+                        "ISSUER_ADMIN",
+                        "ISSUER_OPERATOR",
+                        "COMPLIANCE_OFFICER",
+                        "AUDITOR",
+                        "INVESTOR"
+                      ]
+                    },
+                    "tenantName": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "expiresAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                    }
+                  },
+                  "required": ["email", "name", "roleCode", "tenantName", "expiresAt"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "tags": ["auth"]
+      }
+    },
+    "/api/v1/auth/invitations/{token}/accept": {
+      "post": {
+        "operationId": "InvitationAcceptanceController_accept",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                  }
+                },
+                "required": ["password"],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": ["SIGNED_IN", "MFA_REQUIRED"]
+                    }
+                  },
+                  "required": ["status"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "tags": ["auth"]
+      }
+    },
+    "/api/v1/users/invitations": {
+      "post": {
+        "operationId": "UserInvitationsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "maxLength": 254,
+                    "format": "email",
+                    "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "roleCode": {
+                    "type": "string",
+                    "enum": [
+                      "PLATFORM_ADMIN",
+                      "ISSUER_ADMIN",
+                      "ISSUER_OPERATOR",
+                      "COMPLIANCE_OFFICER",
+                      "AUDITOR",
+                      "INVESTOR"
+                    ]
+                  },
+                  "locale": {
+                    "default": "en-GB",
+                    "type": "string",
+                    "enum": ["en-GB", "fr-FR"]
+                  },
+                  "tenantId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                  }
+                },
+                "required": ["email", "name", "roleCode", "locale"],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                    },
+                    "expiresAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                    }
+                  },
+                  "required": ["id", "expiresAt"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "tags": ["users"]
+      }
+    }
+  },
+  "info": {
+    "title": "Virtus Assets API",
+    "description": "Demonstration environment — fictitious data.",
+    "version": "1",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {}
+  }
+}

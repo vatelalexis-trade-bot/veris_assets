@@ -25,6 +25,9 @@ else
   web_url="http://localhost:3000"
   mail_url="http://localhost:${MAILPIT_UI_PORT}"
 fi
+# The browser reaches the app through this address: the API accepts requests from it (CSRF check)
+# and marks session cookies Secure when it is https.
+export WEB_ORIGIN="${web_url}"
 
 cat <<EOF
 
