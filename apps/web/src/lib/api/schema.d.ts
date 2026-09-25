@@ -116,6 +116,102 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/documents': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['DocumentsController_list'];
+    put?: never;
+    post: operations['DocumentsController_upload'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/documents/download': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['DocumentsController_download'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/documents/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['DocumentsController_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/documents/{id}/versions': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['DocumentsController_addVersion'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/documents/{id}/download-url': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['DocumentsController_downloadUrl'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/documents/{id}/archive': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['DocumentsController_archive'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/health': {
     parameters: {
       query?: never;
@@ -532,6 +628,262 @@ export interface paths {
     patch: operations['SettingsController_update'];
     trace?: never;
   };
+  '/api/v1/investors': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['InvestorsController_list'];
+    put?: never;
+    post: operations['InvestorsController_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/investors/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['InvestorsController_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch: operations['InvestorsController_update'];
+    trace?: never;
+  };
+  '/api/v1/investors/{id}/representatives': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['InvestorsController_representatives'];
+    put?: never;
+    post: operations['InvestorsController_addRepresentative'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/investors/{id}/representatives/{representativeId}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch: operations['InvestorsController_updateRepresentative'];
+    trace?: never;
+  };
+  '/api/v1/investors/{id}/beneficial-owners': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['InvestorsController_beneficialOwners'];
+    put?: never;
+    post: operations['InvestorsController_addBeneficialOwner'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/investors/{id}/beneficial-owners/{ownerId}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch: operations['InvestorsController_updateBeneficialOwner'];
+    trace?: never;
+  };
+  '/api/v1/investors/{id}/comments': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['InvestorsController_comments'];
+    put?: never;
+    post: operations['InvestorsController_addComment'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/me/investor': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['MeController_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch: operations['MeController_update'];
+    trace?: never;
+  };
+  '/api/v1/me/investor/recipient-code/regenerate': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['MeController_regenerate'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/kyc-cases': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['KycCasesController_list'];
+    put?: never;
+    post: operations['KycCasesController_open'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/kyc-cases/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['KycCasesController_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/kyc-cases/{id}/documents': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['KycCasesController_attach'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/kyc-cases/{id}/submit-for-review': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['KycCasesController_submit'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/kyc-cases/{id}/approve': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['KycCasesController_approve'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/kyc-cases/{id}/reject': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['KycCasesController_reject'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/kyc-cases/{id}/send-back': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['KycCasesController_sendBack'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/audit-events': {
     parameters: {
       query?: never;
@@ -670,7 +1022,16 @@ export interface operations {
                 | 'DOCUMENT'
                 | 'COMPLIANCE';
               /** @enum {string} */
-              type: 'ROLES_CHANGED' | 'INVITATION_ACCEPTED';
+              type:
+                | 'ROLES_CHANGED'
+                | 'INVITATION_ACCEPTED'
+                | 'KYC_REVIEW_REQUESTED'
+                | 'KYC_RETURNED'
+                | 'KYC_APPROVED'
+                | 'KYC_REJECTED'
+                | 'KYC_EXPIRING_SOON'
+                | 'KYC_EXPIRED'
+                | 'DOCUMENT_ADDED';
               params: {
                 [key: string]: string;
               };
@@ -827,6 +1188,381 @@ export interface operations {
     requestBody?: never;
     responses: {
       204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  DocumentsController_list: {
+    parameters: {
+      query?: {
+        status?: 'ACTIVE' | 'ARCHIVED';
+        type?:
+          | 'ISSUANCE_DOCUMENT'
+          | 'INVESTOR_DOCUMENT'
+          | 'KYC_EVIDENCE'
+          | 'SUBSCRIPTION_FORM'
+          | 'ALLOCATION_CONFIRMATION'
+          | 'POSITION_STATEMENT'
+          | 'COUPON_NOTICE'
+          | 'REPORT';
+        investorId?: string;
+        page?: number;
+        pageSize?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            data: {
+              /** Format: uuid */
+              id: string;
+              /** @enum {string} */
+              type:
+                | 'ISSUANCE_DOCUMENT'
+                | 'INVESTOR_DOCUMENT'
+                | 'KYC_EVIDENCE'
+                | 'SUBSCRIPTION_FORM'
+                | 'ALLOCATION_CONFIRMATION'
+                | 'POSITION_STATEMENT'
+                | 'COUPON_NOTICE'
+                | 'REPORT';
+              name: string;
+              /** @enum {string} */
+              confidentiality: 'INVESTOR_VISIBLE' | 'INTERNAL' | 'CONFIDENTIAL';
+              /** @enum {string} */
+              ownerType: 'INVESTOR' | 'ISSUANCE' | 'TENANT';
+              /** Format: uuid */
+              investorId: string | null;
+              /** Format: uuid */
+              issuanceId: string | null;
+              /** @enum {string} */
+              status: 'ACTIVE' | 'ARCHIVED';
+              currentVersion: number;
+              current: {
+                version: number;
+                fileName: string;
+                mimeType: string;
+                sizeBytes: number;
+                checksumSha256: string;
+                /** Format: uuid */
+                uploadedBy: string;
+                /** Format: date-time */
+                uploadedAt: string;
+              };
+              /** Format: date-time */
+              createdAt: string;
+            }[];
+            meta: {
+              page: number;
+              pageSize: number;
+              total: number;
+            };
+          };
+        };
+      };
+    };
+  };
+  DocumentsController_upload: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'multipart/form-data': {
+          /** Format: binary */
+          file: string;
+          /** @enum {string} */
+          type:
+            | 'ISSUANCE_DOCUMENT'
+            | 'INVESTOR_DOCUMENT'
+            | 'KYC_EVIDENCE'
+            | 'SUBSCRIPTION_FORM'
+            | 'ALLOCATION_CONFIRMATION'
+            | 'POSITION_STATEMENT'
+            | 'COUPON_NOTICE'
+            | 'REPORT';
+          name: string;
+          /** @enum {string} */
+          confidentiality?: 'INVESTOR_VISIBLE' | 'INTERNAL' | 'CONFIDENTIAL';
+          /** @enum {string} */
+          ownerType?: 'INVESTOR' | 'ISSUANCE' | 'TENANT';
+          /** Format: uuid */
+          investorId?: string;
+          /** Format: uuid */
+          issuanceId?: string;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** @enum {string} */
+            type:
+              | 'ISSUANCE_DOCUMENT'
+              | 'INVESTOR_DOCUMENT'
+              | 'KYC_EVIDENCE'
+              | 'SUBSCRIPTION_FORM'
+              | 'ALLOCATION_CONFIRMATION'
+              | 'POSITION_STATEMENT'
+              | 'COUPON_NOTICE'
+              | 'REPORT';
+            name: string;
+            /** @enum {string} */
+            confidentiality: 'INVESTOR_VISIBLE' | 'INTERNAL' | 'CONFIDENTIAL';
+            /** @enum {string} */
+            ownerType: 'INVESTOR' | 'ISSUANCE' | 'TENANT';
+            /** Format: uuid */
+            investorId: string | null;
+            /** Format: uuid */
+            issuanceId: string | null;
+            /** @enum {string} */
+            status: 'ACTIVE' | 'ARCHIVED';
+            currentVersion: number;
+            current: {
+              version: number;
+              fileName: string;
+              mimeType: string;
+              sizeBytes: number;
+              checksumSha256: string;
+              /** Format: uuid */
+              uploadedBy: string;
+              /** Format: date-time */
+              uploadedAt: string;
+            };
+            /** Format: date-time */
+            createdAt: string;
+          };
+        };
+      };
+    };
+  };
+  DocumentsController_download: {
+    parameters: {
+      query: {
+        token: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  DocumentsController_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** @enum {string} */
+            type:
+              | 'ISSUANCE_DOCUMENT'
+              | 'INVESTOR_DOCUMENT'
+              | 'KYC_EVIDENCE'
+              | 'SUBSCRIPTION_FORM'
+              | 'ALLOCATION_CONFIRMATION'
+              | 'POSITION_STATEMENT'
+              | 'COUPON_NOTICE'
+              | 'REPORT';
+            name: string;
+            /** @enum {string} */
+            confidentiality: 'INVESTOR_VISIBLE' | 'INTERNAL' | 'CONFIDENTIAL';
+            /** @enum {string} */
+            ownerType: 'INVESTOR' | 'ISSUANCE' | 'TENANT';
+            /** Format: uuid */
+            investorId: string | null;
+            /** Format: uuid */
+            issuanceId: string | null;
+            /** @enum {string} */
+            status: 'ACTIVE' | 'ARCHIVED';
+            currentVersion: number;
+            current: {
+              version: number;
+              fileName: string;
+              mimeType: string;
+              sizeBytes: number;
+              checksumSha256: string;
+              /** Format: uuid */
+              uploadedBy: string;
+              /** Format: date-time */
+              uploadedAt: string;
+            };
+            /** Format: date-time */
+            createdAt: string;
+            versions: {
+              version: number;
+              fileName: string;
+              mimeType: string;
+              sizeBytes: number;
+              checksumSha256: string;
+              /** Format: uuid */
+              uploadedBy: string;
+              /** Format: date-time */
+              uploadedAt: string;
+            }[];
+          };
+        };
+      };
+    };
+  };
+  DocumentsController_addVersion: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'multipart/form-data': {
+          /** Format: binary */
+          file: string;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** @enum {string} */
+            type:
+              | 'ISSUANCE_DOCUMENT'
+              | 'INVESTOR_DOCUMENT'
+              | 'KYC_EVIDENCE'
+              | 'SUBSCRIPTION_FORM'
+              | 'ALLOCATION_CONFIRMATION'
+              | 'POSITION_STATEMENT'
+              | 'COUPON_NOTICE'
+              | 'REPORT';
+            name: string;
+            /** @enum {string} */
+            confidentiality: 'INVESTOR_VISIBLE' | 'INTERNAL' | 'CONFIDENTIAL';
+            /** @enum {string} */
+            ownerType: 'INVESTOR' | 'ISSUANCE' | 'TENANT';
+            /** Format: uuid */
+            investorId: string | null;
+            /** Format: uuid */
+            issuanceId: string | null;
+            /** @enum {string} */
+            status: 'ACTIVE' | 'ARCHIVED';
+            currentVersion: number;
+            current: {
+              version: number;
+              fileName: string;
+              mimeType: string;
+              sizeBytes: number;
+              checksumSha256: string;
+              /** Format: uuid */
+              uploadedBy: string;
+              /** Format: date-time */
+              uploadedAt: string;
+            };
+            /** Format: date-time */
+            createdAt: string;
+          };
+        };
+      };
+    };
+  };
+  DocumentsController_downloadUrl: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          version?: number;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            url: string;
+            /** Format: date-time */
+            expiresAt: string;
+          };
+        };
+      };
+    };
+  };
+  DocumentsController_archive: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
         headers: {
           [name: string]: unknown;
         };
@@ -2048,6 +2784,1379 @@ export interface operations {
             version: number;
             /** Format: date-time */
             createdAt: string;
+          };
+        };
+      };
+    };
+  };
+  InvestorsController_list: {
+    parameters: {
+      query?: {
+        profileStatus?: 'DRAFT' | 'ACTIVE' | 'INACTIVE';
+        kycStatus?:
+          'NOT_STARTED' | 'IN_PROGRESS' | 'PENDING_REVIEW' | 'APPROVED' | 'REJECTED' | 'EXPIRED';
+        q?: string;
+        page?: number;
+        pageSize?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            data: {
+              /** Format: uuid */
+              id: string;
+              /** @enum {string} */
+              type: 'LEGAL_ENTITY' | 'NATURAL_PERSON';
+              legalName: string;
+              tradeName: string | null;
+              legalForm: string | null;
+              registrationNumber: string | null;
+              taxId: string | null;
+              countryOfIncorporation: string;
+              address: {
+                line1: string;
+                line2?: string | null;
+                postalCode: string;
+                city: string;
+                countryCode: string;
+              } | null;
+              contactEmail: string | null;
+              phone: string | null;
+              /** @enum {string} */
+              classification: 'PROFESSIONAL' | 'ELIGIBLE_COUNTERPARTY';
+              /** @enum {string} */
+              profileStatus: 'DRAFT' | 'ACTIVE' | 'INACTIVE';
+              /** @enum {string} */
+              kycStatus:
+                | 'NOT_STARTED'
+                | 'IN_PROGRESS'
+                | 'PENDING_REVIEW'
+                | 'APPROVED'
+                | 'REJECTED'
+                | 'EXPIRED';
+              /** Format: date */
+              kycLastReviewDate: string | null;
+              /** Format: date */
+              kycExpiryDate: string | null;
+              /** @enum {string|null} */
+              riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | null;
+              /** @enum {string} */
+              eligibilityStatus: 'NOT_ASSESSED' | 'ELIGIBLE' | 'NOT_ELIGIBLE' | 'SUSPENDED';
+              recipientCode: string;
+              version: number;
+              /** Format: date-time */
+              createdAt: string;
+            }[];
+            meta: {
+              page: number;
+              pageSize: number;
+              total: number;
+            };
+          };
+        };
+      };
+    };
+  };
+  InvestorsController_create: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          /** @enum {string} */
+          type: 'LEGAL_ENTITY' | 'NATURAL_PERSON';
+          legalName: string;
+          tradeName?: string | null;
+          legalForm?: string | null;
+          registrationNumber?: string | null;
+          taxId?: string | null;
+          countryOfIncorporation: string;
+          /** @enum {string} */
+          classification: 'PROFESSIONAL' | 'ELIGIBLE_COUNTERPARTY';
+          /** @enum {string} */
+          profileStatus?: 'DRAFT' | 'ACTIVE' | 'INACTIVE';
+          address?: {
+            line1: string;
+            line2?: string | null;
+            postalCode: string;
+            city: string;
+            countryCode: string;
+          } | null;
+          /** Format: email */
+          contactEmail?: string | null;
+          phone?: string | null;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** @enum {string} */
+            type: 'LEGAL_ENTITY' | 'NATURAL_PERSON';
+            legalName: string;
+            tradeName: string | null;
+            legalForm: string | null;
+            registrationNumber: string | null;
+            taxId: string | null;
+            countryOfIncorporation: string;
+            address: {
+              line1: string;
+              line2?: string | null;
+              postalCode: string;
+              city: string;
+              countryCode: string;
+            } | null;
+            contactEmail: string | null;
+            phone: string | null;
+            /** @enum {string} */
+            classification: 'PROFESSIONAL' | 'ELIGIBLE_COUNTERPARTY';
+            /** @enum {string} */
+            profileStatus: 'DRAFT' | 'ACTIVE' | 'INACTIVE';
+            /** @enum {string} */
+            kycStatus:
+              | 'NOT_STARTED'
+              | 'IN_PROGRESS'
+              | 'PENDING_REVIEW'
+              | 'APPROVED'
+              | 'REJECTED'
+              | 'EXPIRED';
+            /** Format: date */
+            kycLastReviewDate: string | null;
+            /** Format: date */
+            kycExpiryDate: string | null;
+            /** @enum {string|null} */
+            riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | null;
+            /** @enum {string} */
+            eligibilityStatus: 'NOT_ASSESSED' | 'ELIGIBLE' | 'NOT_ELIGIBLE' | 'SUSPENDED';
+            recipientCode: string;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+          };
+        };
+      };
+    };
+  };
+  InvestorsController_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** @enum {string} */
+            type: 'LEGAL_ENTITY' | 'NATURAL_PERSON';
+            legalName: string;
+            tradeName: string | null;
+            legalForm: string | null;
+            registrationNumber: string | null;
+            taxId: string | null;
+            countryOfIncorporation: string;
+            address: {
+              line1: string;
+              line2?: string | null;
+              postalCode: string;
+              city: string;
+              countryCode: string;
+            } | null;
+            contactEmail: string | null;
+            phone: string | null;
+            /** @enum {string} */
+            classification: 'PROFESSIONAL' | 'ELIGIBLE_COUNTERPARTY';
+            /** @enum {string} */
+            profileStatus: 'DRAFT' | 'ACTIVE' | 'INACTIVE';
+            /** @enum {string} */
+            kycStatus:
+              | 'NOT_STARTED'
+              | 'IN_PROGRESS'
+              | 'PENDING_REVIEW'
+              | 'APPROVED'
+              | 'REJECTED'
+              | 'EXPIRED';
+            /** Format: date */
+            kycLastReviewDate: string | null;
+            /** Format: date */
+            kycExpiryDate: string | null;
+            /** @enum {string|null} */
+            riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | null;
+            /** @enum {string} */
+            eligibilityStatus: 'NOT_ASSESSED' | 'ELIGIBLE' | 'NOT_ELIGIBLE' | 'SUSPENDED';
+            recipientCode: string;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+          };
+        };
+      };
+    };
+  };
+  InvestorsController_update: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          /** @enum {string} */
+          type?: 'LEGAL_ENTITY' | 'NATURAL_PERSON';
+          legalName?: string;
+          tradeName?: string | null;
+          legalForm?: string | null;
+          registrationNumber?: string | null;
+          taxId?: string | null;
+          countryOfIncorporation?: string;
+          /** @enum {string} */
+          classification?: 'PROFESSIONAL' | 'ELIGIBLE_COUNTERPARTY';
+          /** @enum {string} */
+          profileStatus?: 'DRAFT' | 'ACTIVE' | 'INACTIVE';
+          address?: {
+            line1: string;
+            line2?: string | null;
+            postalCode: string;
+            city: string;
+            countryCode: string;
+          } | null;
+          /** Format: email */
+          contactEmail?: string | null;
+          phone?: string | null;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** @enum {string} */
+            type: 'LEGAL_ENTITY' | 'NATURAL_PERSON';
+            legalName: string;
+            tradeName: string | null;
+            legalForm: string | null;
+            registrationNumber: string | null;
+            taxId: string | null;
+            countryOfIncorporation: string;
+            address: {
+              line1: string;
+              line2?: string | null;
+              postalCode: string;
+              city: string;
+              countryCode: string;
+            } | null;
+            contactEmail: string | null;
+            phone: string | null;
+            /** @enum {string} */
+            classification: 'PROFESSIONAL' | 'ELIGIBLE_COUNTERPARTY';
+            /** @enum {string} */
+            profileStatus: 'DRAFT' | 'ACTIVE' | 'INACTIVE';
+            /** @enum {string} */
+            kycStatus:
+              | 'NOT_STARTED'
+              | 'IN_PROGRESS'
+              | 'PENDING_REVIEW'
+              | 'APPROVED'
+              | 'REJECTED'
+              | 'EXPIRED';
+            /** Format: date */
+            kycLastReviewDate: string | null;
+            /** Format: date */
+            kycExpiryDate: string | null;
+            /** @enum {string|null} */
+            riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | null;
+            /** @enum {string} */
+            eligibilityStatus: 'NOT_ASSESSED' | 'ELIGIBLE' | 'NOT_ELIGIBLE' | 'SUSPENDED';
+            recipientCode: string;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+          };
+        };
+      };
+    };
+  };
+  InvestorsController_representatives: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            fullName: string;
+            title: string | null;
+            email: string | null;
+            phone: string | null;
+            /** Format: date */
+            dateOfBirth: string | null;
+            pseudonymized: boolean;
+          }[];
+        };
+      };
+    };
+  };
+  InvestorsController_addRepresentative: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          fullName: string;
+          title?: string | null;
+          /** Format: email */
+          email?: string | null;
+          phone?: string | null;
+          /** Format: date */
+          dateOfBirth?: string | null;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            fullName: string;
+            title: string | null;
+            email: string | null;
+            phone: string | null;
+            /** Format: date */
+            dateOfBirth: string | null;
+            pseudonymized: boolean;
+          };
+        };
+      };
+    };
+  };
+  InvestorsController_updateRepresentative: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+        representativeId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          fullName?: string;
+          title?: string | null;
+          /** Format: email */
+          email?: string | null;
+          phone?: string | null;
+          /** Format: date */
+          dateOfBirth?: string | null;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            fullName: string;
+            title: string | null;
+            email: string | null;
+            phone: string | null;
+            /** Format: date */
+            dateOfBirth: string | null;
+            pseudonymized: boolean;
+          };
+        };
+      };
+    };
+  };
+  InvestorsController_beneficialOwners: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            fullName: string;
+            nationality: string | null;
+            ownershipPercentage: string;
+            /** Format: date */
+            dateOfBirth: string | null;
+            pseudonymized: boolean;
+          }[];
+        };
+      };
+    };
+  };
+  InvestorsController_addBeneficialOwner: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          fullName: string;
+          nationality?: string | null;
+          ownershipPercentage: string;
+          /** Format: date */
+          dateOfBirth?: string | null;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            fullName: string;
+            nationality: string | null;
+            ownershipPercentage: string;
+            /** Format: date */
+            dateOfBirth: string | null;
+            pseudonymized: boolean;
+          };
+        };
+      };
+    };
+  };
+  InvestorsController_updateBeneficialOwner: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+        ownerId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          fullName?: string;
+          nationality?: string | null;
+          ownershipPercentage?: string;
+          /** Format: date */
+          dateOfBirth?: string | null;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            fullName: string;
+            nationality: string | null;
+            ownershipPercentage: string;
+            /** Format: date */
+            dateOfBirth: string | null;
+            pseudonymized: boolean;
+          };
+        };
+      };
+    };
+  };
+  InvestorsController_comments: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            resourceType: string;
+            /** Format: uuid */
+            resourceId: string;
+            /** Format: uuid */
+            authorUserId: string;
+            body: string;
+            /** Format: date-time */
+            createdAt: string;
+          }[];
+        };
+      };
+    };
+  };
+  InvestorsController_addComment: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          body: string;
+          /** Format: uuid */
+          kycCaseId?: string;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            resourceType: string;
+            /** Format: uuid */
+            resourceId: string;
+            /** Format: uuid */
+            authorUserId: string;
+            body: string;
+            /** Format: date-time */
+            createdAt: string;
+          };
+        };
+      };
+    };
+  };
+  MeController_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** @enum {string} */
+            type: 'LEGAL_ENTITY' | 'NATURAL_PERSON';
+            legalName: string;
+            tradeName: string | null;
+            legalForm: string | null;
+            registrationNumber: string | null;
+            taxId: string | null;
+            countryOfIncorporation: string;
+            address: {
+              line1: string;
+              line2?: string | null;
+              postalCode: string;
+              city: string;
+              countryCode: string;
+            } | null;
+            contactEmail: string | null;
+            phone: string | null;
+            /** @enum {string} */
+            classification: 'PROFESSIONAL' | 'ELIGIBLE_COUNTERPARTY';
+            /** @enum {string} */
+            profileStatus: 'DRAFT' | 'ACTIVE' | 'INACTIVE';
+            /** @enum {string} */
+            kycStatus:
+              | 'NOT_STARTED'
+              | 'IN_PROGRESS'
+              | 'PENDING_REVIEW'
+              | 'APPROVED'
+              | 'REJECTED'
+              | 'EXPIRED';
+            /** Format: date */
+            kycLastReviewDate: string | null;
+            /** Format: date */
+            kycExpiryDate: string | null;
+            /** @enum {string|null} */
+            riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | null;
+            /** @enum {string} */
+            eligibilityStatus: 'NOT_ASSESSED' | 'ELIGIBLE' | 'NOT_ELIGIBLE' | 'SUSPENDED';
+            recipientCode: string;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+          };
+        };
+      };
+    };
+  };
+  MeController_update: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          tradeName?: string | null;
+          address?: {
+            line1: string;
+            line2?: string | null;
+            postalCode: string;
+            city: string;
+            countryCode: string;
+          } | null;
+          /** Format: email */
+          contactEmail?: string | null;
+          phone?: string | null;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** @enum {string} */
+            type: 'LEGAL_ENTITY' | 'NATURAL_PERSON';
+            legalName: string;
+            tradeName: string | null;
+            legalForm: string | null;
+            registrationNumber: string | null;
+            taxId: string | null;
+            countryOfIncorporation: string;
+            address: {
+              line1: string;
+              line2?: string | null;
+              postalCode: string;
+              city: string;
+              countryCode: string;
+            } | null;
+            contactEmail: string | null;
+            phone: string | null;
+            /** @enum {string} */
+            classification: 'PROFESSIONAL' | 'ELIGIBLE_COUNTERPARTY';
+            /** @enum {string} */
+            profileStatus: 'DRAFT' | 'ACTIVE' | 'INACTIVE';
+            /** @enum {string} */
+            kycStatus:
+              | 'NOT_STARTED'
+              | 'IN_PROGRESS'
+              | 'PENDING_REVIEW'
+              | 'APPROVED'
+              | 'REJECTED'
+              | 'EXPIRED';
+            /** Format: date */
+            kycLastReviewDate: string | null;
+            /** Format: date */
+            kycExpiryDate: string | null;
+            /** @enum {string|null} */
+            riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | null;
+            /** @enum {string} */
+            eligibilityStatus: 'NOT_ASSESSED' | 'ELIGIBLE' | 'NOT_ELIGIBLE' | 'SUSPENDED';
+            recipientCode: string;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+          };
+        };
+      };
+    };
+  };
+  MeController_regenerate: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** @enum {string} */
+            type: 'LEGAL_ENTITY' | 'NATURAL_PERSON';
+            legalName: string;
+            tradeName: string | null;
+            legalForm: string | null;
+            registrationNumber: string | null;
+            taxId: string | null;
+            countryOfIncorporation: string;
+            address: {
+              line1: string;
+              line2?: string | null;
+              postalCode: string;
+              city: string;
+              countryCode: string;
+            } | null;
+            contactEmail: string | null;
+            phone: string | null;
+            /** @enum {string} */
+            classification: 'PROFESSIONAL' | 'ELIGIBLE_COUNTERPARTY';
+            /** @enum {string} */
+            profileStatus: 'DRAFT' | 'ACTIVE' | 'INACTIVE';
+            /** @enum {string} */
+            kycStatus:
+              | 'NOT_STARTED'
+              | 'IN_PROGRESS'
+              | 'PENDING_REVIEW'
+              | 'APPROVED'
+              | 'REJECTED'
+              | 'EXPIRED';
+            /** Format: date */
+            kycLastReviewDate: string | null;
+            /** Format: date */
+            kycExpiryDate: string | null;
+            /** @enum {string|null} */
+            riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | null;
+            /** @enum {string} */
+            eligibilityStatus: 'NOT_ASSESSED' | 'ELIGIBLE' | 'NOT_ELIGIBLE' | 'SUSPENDED';
+            recipientCode: string;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+          };
+        };
+      };
+    };
+  };
+  KycCasesController_list: {
+    parameters: {
+      query?: {
+        status?: 'IN_PROGRESS' | 'PENDING_REVIEW' | 'APPROVED' | 'REJECTED' | 'EXPIRED';
+        investorId?: string;
+        page?: number;
+        pageSize?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            data: {
+              /** Format: uuid */
+              id: string;
+              /** Format: uuid */
+              investorId: string;
+              /** @enum {string} */
+              status: 'IN_PROGRESS' | 'PENDING_REVIEW' | 'APPROVED' | 'REJECTED' | 'EXPIRED';
+              /** Format: uuid */
+              preparedBy: string;
+              /** Format: date-time */
+              preparedAt: string;
+              /** Format: uuid */
+              decidedBy: string | null;
+              /** Format: date-time */
+              decidedAt: string | null;
+              decisionComment: string | null;
+              /** Format: date */
+              validUntil: string | null;
+              providerReference: string | null;
+              /** @enum {string|null} */
+              providerOutcome: 'CLEAR' | 'REVIEW' | null;
+              /** @enum {string|null} */
+              suggestedRiskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | null;
+              /** Format: date-time */
+              updatedAt: string;
+              investorName: string;
+            }[];
+            meta: {
+              page: number;
+              pageSize: number;
+              total: number;
+            };
+          };
+        };
+      };
+    };
+  };
+  KycCasesController_open: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: uuid */
+          investorId: string;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            investorId: string;
+            /** @enum {string} */
+            status: 'IN_PROGRESS' | 'PENDING_REVIEW' | 'APPROVED' | 'REJECTED' | 'EXPIRED';
+            /** Format: uuid */
+            preparedBy: string;
+            /** Format: date-time */
+            preparedAt: string;
+            /** Format: uuid */
+            decidedBy: string | null;
+            /** Format: date-time */
+            decidedAt: string | null;
+            decisionComment: string | null;
+            /** Format: date */
+            validUntil: string | null;
+            providerReference: string | null;
+            /** @enum {string|null} */
+            providerOutcome: 'CLEAR' | 'REVIEW' | null;
+            /** @enum {string|null} */
+            suggestedRiskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | null;
+            /** Format: date-time */
+            updatedAt: string;
+            documents: {
+              /** Format: uuid */
+              documentId: string;
+              /** @enum {string} */
+              kind:
+                | 'REGISTRATION_EXTRACT'
+                | 'ARTICLES_OF_ASSOCIATION'
+                | 'REPRESENTATIVE_ID'
+                | 'BENEFICIAL_OWNERS_DECLARATION'
+                | 'PROOF_OF_ADDRESS'
+                | 'OTHER';
+              name: string;
+              /** Format: date-time */
+              attachedAt: string;
+            }[];
+          };
+        };
+      };
+    };
+  };
+  KycCasesController_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            investorId: string;
+            /** @enum {string} */
+            status: 'IN_PROGRESS' | 'PENDING_REVIEW' | 'APPROVED' | 'REJECTED' | 'EXPIRED';
+            /** Format: uuid */
+            preparedBy: string;
+            /** Format: date-time */
+            preparedAt: string;
+            /** Format: uuid */
+            decidedBy: string | null;
+            /** Format: date-time */
+            decidedAt: string | null;
+            decisionComment: string | null;
+            /** Format: date */
+            validUntil: string | null;
+            providerReference: string | null;
+            /** @enum {string|null} */
+            providerOutcome: 'CLEAR' | 'REVIEW' | null;
+            /** @enum {string|null} */
+            suggestedRiskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | null;
+            /** Format: date-time */
+            updatedAt: string;
+            documents: {
+              /** Format: uuid */
+              documentId: string;
+              /** @enum {string} */
+              kind:
+                | 'REGISTRATION_EXTRACT'
+                | 'ARTICLES_OF_ASSOCIATION'
+                | 'REPRESENTATIVE_ID'
+                | 'BENEFICIAL_OWNERS_DECLARATION'
+                | 'PROOF_OF_ADDRESS'
+                | 'OTHER';
+              name: string;
+              /** Format: date-time */
+              attachedAt: string;
+            }[];
+          };
+        };
+      };
+    };
+  };
+  KycCasesController_attach: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: uuid */
+          documentId: string;
+          /** @enum {string} */
+          kind:
+            | 'REGISTRATION_EXTRACT'
+            | 'ARTICLES_OF_ASSOCIATION'
+            | 'REPRESENTATIVE_ID'
+            | 'BENEFICIAL_OWNERS_DECLARATION'
+            | 'PROOF_OF_ADDRESS'
+            | 'OTHER';
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            investorId: string;
+            /** @enum {string} */
+            status: 'IN_PROGRESS' | 'PENDING_REVIEW' | 'APPROVED' | 'REJECTED' | 'EXPIRED';
+            /** Format: uuid */
+            preparedBy: string;
+            /** Format: date-time */
+            preparedAt: string;
+            /** Format: uuid */
+            decidedBy: string | null;
+            /** Format: date-time */
+            decidedAt: string | null;
+            decisionComment: string | null;
+            /** Format: date */
+            validUntil: string | null;
+            providerReference: string | null;
+            /** @enum {string|null} */
+            providerOutcome: 'CLEAR' | 'REVIEW' | null;
+            /** @enum {string|null} */
+            suggestedRiskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | null;
+            /** Format: date-time */
+            updatedAt: string;
+            documents: {
+              /** Format: uuid */
+              documentId: string;
+              /** @enum {string} */
+              kind:
+                | 'REGISTRATION_EXTRACT'
+                | 'ARTICLES_OF_ASSOCIATION'
+                | 'REPRESENTATIVE_ID'
+                | 'BENEFICIAL_OWNERS_DECLARATION'
+                | 'PROOF_OF_ADDRESS'
+                | 'OTHER';
+              name: string;
+              /** Format: date-time */
+              attachedAt: string;
+            }[];
+          };
+        };
+      };
+    };
+  };
+  KycCasesController_submit: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            investorId: string;
+            /** @enum {string} */
+            status: 'IN_PROGRESS' | 'PENDING_REVIEW' | 'APPROVED' | 'REJECTED' | 'EXPIRED';
+            /** Format: uuid */
+            preparedBy: string;
+            /** Format: date-time */
+            preparedAt: string;
+            /** Format: uuid */
+            decidedBy: string | null;
+            /** Format: date-time */
+            decidedAt: string | null;
+            decisionComment: string | null;
+            /** Format: date */
+            validUntil: string | null;
+            providerReference: string | null;
+            /** @enum {string|null} */
+            providerOutcome: 'CLEAR' | 'REVIEW' | null;
+            /** @enum {string|null} */
+            suggestedRiskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | null;
+            /** Format: date-time */
+            updatedAt: string;
+            documents: {
+              /** Format: uuid */
+              documentId: string;
+              /** @enum {string} */
+              kind:
+                | 'REGISTRATION_EXTRACT'
+                | 'ARTICLES_OF_ASSOCIATION'
+                | 'REPRESENTATIVE_ID'
+                | 'BENEFICIAL_OWNERS_DECLARATION'
+                | 'PROOF_OF_ADDRESS'
+                | 'OTHER';
+              name: string;
+              /** Format: date-time */
+              attachedAt: string;
+            }[];
+          };
+        };
+      };
+    };
+  };
+  KycCasesController_approve: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          comment?: string | null;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            investorId: string;
+            /** @enum {string} */
+            status: 'IN_PROGRESS' | 'PENDING_REVIEW' | 'APPROVED' | 'REJECTED' | 'EXPIRED';
+            /** Format: uuid */
+            preparedBy: string;
+            /** Format: date-time */
+            preparedAt: string;
+            /** Format: uuid */
+            decidedBy: string | null;
+            /** Format: date-time */
+            decidedAt: string | null;
+            decisionComment: string | null;
+            /** Format: date */
+            validUntil: string | null;
+            providerReference: string | null;
+            /** @enum {string|null} */
+            providerOutcome: 'CLEAR' | 'REVIEW' | null;
+            /** @enum {string|null} */
+            suggestedRiskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | null;
+            /** Format: date-time */
+            updatedAt: string;
+            documents: {
+              /** Format: uuid */
+              documentId: string;
+              /** @enum {string} */
+              kind:
+                | 'REGISTRATION_EXTRACT'
+                | 'ARTICLES_OF_ASSOCIATION'
+                | 'REPRESENTATIVE_ID'
+                | 'BENEFICIAL_OWNERS_DECLARATION'
+                | 'PROOF_OF_ADDRESS'
+                | 'OTHER';
+              name: string;
+              /** Format: date-time */
+              attachedAt: string;
+            }[];
+          };
+        };
+      };
+    };
+  };
+  KycCasesController_reject: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          comment: string;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            investorId: string;
+            /** @enum {string} */
+            status: 'IN_PROGRESS' | 'PENDING_REVIEW' | 'APPROVED' | 'REJECTED' | 'EXPIRED';
+            /** Format: uuid */
+            preparedBy: string;
+            /** Format: date-time */
+            preparedAt: string;
+            /** Format: uuid */
+            decidedBy: string | null;
+            /** Format: date-time */
+            decidedAt: string | null;
+            decisionComment: string | null;
+            /** Format: date */
+            validUntil: string | null;
+            providerReference: string | null;
+            /** @enum {string|null} */
+            providerOutcome: 'CLEAR' | 'REVIEW' | null;
+            /** @enum {string|null} */
+            suggestedRiskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | null;
+            /** Format: date-time */
+            updatedAt: string;
+            documents: {
+              /** Format: uuid */
+              documentId: string;
+              /** @enum {string} */
+              kind:
+                | 'REGISTRATION_EXTRACT'
+                | 'ARTICLES_OF_ASSOCIATION'
+                | 'REPRESENTATIVE_ID'
+                | 'BENEFICIAL_OWNERS_DECLARATION'
+                | 'PROOF_OF_ADDRESS'
+                | 'OTHER';
+              name: string;
+              /** Format: date-time */
+              attachedAt: string;
+            }[];
+          };
+        };
+      };
+    };
+  };
+  KycCasesController_sendBack: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          comment: string;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            investorId: string;
+            /** @enum {string} */
+            status: 'IN_PROGRESS' | 'PENDING_REVIEW' | 'APPROVED' | 'REJECTED' | 'EXPIRED';
+            /** Format: uuid */
+            preparedBy: string;
+            /** Format: date-time */
+            preparedAt: string;
+            /** Format: uuid */
+            decidedBy: string | null;
+            /** Format: date-time */
+            decidedAt: string | null;
+            decisionComment: string | null;
+            /** Format: date */
+            validUntil: string | null;
+            providerReference: string | null;
+            /** @enum {string|null} */
+            providerOutcome: 'CLEAR' | 'REVIEW' | null;
+            /** @enum {string|null} */
+            suggestedRiskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | null;
+            /** Format: date-time */
+            updatedAt: string;
+            documents: {
+              /** Format: uuid */
+              documentId: string;
+              /** @enum {string} */
+              kind:
+                | 'REGISTRATION_EXTRACT'
+                | 'ARTICLES_OF_ASSOCIATION'
+                | 'REPRESENTATIVE_ID'
+                | 'BENEFICIAL_OWNERS_DECLARATION'
+                | 'PROOF_OF_ADDRESS'
+                | 'OTHER';
+              name: string;
+              /** Format: date-time */
+              attachedAt: string;
+            }[];
           };
         };
       };

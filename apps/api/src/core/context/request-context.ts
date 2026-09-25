@@ -6,6 +6,8 @@ export interface RequestUser {
   userId: string;
   /** Null for platform users. Always from the session, never from the request (SPEC §20). */
   tenantId: string | null;
+  /** Investor profile of an Investor account: the limit of its `own` permissions. */
+  investorId: string | null;
   roles: readonly string[];
   permissions: ReadonlyMap<Permission, PermissionScope>;
 }

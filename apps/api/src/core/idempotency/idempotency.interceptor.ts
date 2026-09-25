@@ -9,7 +9,7 @@ import { HTTP_CODE_METADATA } from '@nestjs/common/constants.js';
 import { Reflector } from '@nestjs/core';
 import { and, eq, sql } from 'drizzle-orm';
 import type { Request, Response } from 'express';
-import { from, lastValueFrom, type Observable } from 'rxjs';
+import { from, lastValueFrom, mergeMap, type Observable } from 'rxjs';
 import { currentUser, type RequestUser } from '../context/request-context.js';
 import {
   DATABASE,
@@ -21,6 +21,7 @@ import {
 } from '../database/database.js';
 import { idempotencyKey } from '../database/schema.js';
 import { AppError } from '../errors/app-error.js';
+import { receiveUpload, UPLOAD, uploadFingerprint } from '../documents/upload.interceptor.js';
 import { IDEMPOTENCY_KEY_HEADER, IDEMPOTENT } from './idempotent.decorator.js';
 import { requestHash } from './request-hash.js';
 
@@ -68,17 +69,30 @@ export class IdempotencyInterceptor implements NestInterceptor {
       ]);
     }
     const path = request.originalUrl.split('?')[0]!;
-    const claim = {
-      user: currentUser(),
-      key: key.toLowerCase(),
-      method: request.method,
-      path,
-      hash: requestHash(request.method, path, request.body),
-      status:
-        this.reflector.get<number | undefined>(HTTP_CODE_METADATA, context.getHandler()) ??
-        (request.method === 'POST' ? 201 : 200),
-    };
+    const upload = this.reflector.get<boolean | undefined>(UPLOAD, context.getHandler());
+    return from(upload ? receiveUpload(request, response) : Promise.resolve()).pipe(
+      mergeMap(() =>
+        this.run(next, response, {
+          user: currentUser(),
+          key: key.toLowerCase(),
+          method: request.method,
+          path,
+          // A file upload is identified by its fields and the file's content.
+          hash: requestHash(
+            request.method,
+            path,
+            upload ? uploadFingerprint(request) : request.body,
+          ),
+          status:
+            this.reflector.get<number | undefined>(HTTP_CODE_METADATA, context.getHandler()) ??
+            (request.method === 'POST' ? 201 : 200),
+        }),
+      ),
+    );
+  }
 
+  /** One transaction for the key, the work and the stored answer. */
+  private run(next: CallHandler, response: Response, claim: Claim): Observable<unknown> {
     return from(
       withRequestTransaction(this.db, async () => {
         const stored = await this.claim(claim);

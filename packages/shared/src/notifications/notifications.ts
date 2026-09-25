@@ -64,6 +64,97 @@ export const NOTIFICATION_TYPES = {
       },
     },
   },
+  KYC_REVIEW_REQUESTED: {
+    category: 'WORKFLOW',
+    texts: {
+      'en-GB': {
+        title: 'KYC/KYB case to review',
+        body: 'A KYC/KYB case was submitted and is waiting for a Compliance Officer’s decision.',
+      },
+      'fr-FR': {
+        title: 'Dossier KYC/KYB à examiner',
+        body: 'Un dossier KYC/KYB a été soumis et attend la décision d’un responsable conformité.',
+      },
+    },
+  },
+  KYC_RETURNED: {
+    category: 'WORKFLOW',
+    texts: {
+      'en-GB': {
+        title: 'KYC/KYB case sent back',
+        body: 'The Compliance Officer sent a KYC/KYB case back to you for completion. See the comment on the case.',
+      },
+      'fr-FR': {
+        title: 'Dossier KYC/KYB renvoyé',
+        body: 'Le responsable conformité vous a renvoyé un dossier KYC/KYB à compléter. Voir le commentaire du dossier.',
+      },
+    },
+  },
+  KYC_APPROVED: {
+    category: 'COMPLIANCE',
+    texts: {
+      'en-GB': {
+        title: 'KYC/KYB approved',
+        body: 'The KYC/KYB case was approved. It is valid until {validUntil}.',
+      },
+      'fr-FR': {
+        title: 'KYC/KYB approuvé',
+        body: 'Le dossier KYC/KYB a été approuvé. Il est valable jusqu’au {validUntil}.',
+      },
+    },
+  },
+  KYC_REJECTED: {
+    category: 'COMPLIANCE',
+    texts: {
+      'en-GB': {
+        title: 'KYC/KYB rejected',
+        body: 'The KYC/KYB case was rejected. See the comment of the Compliance Officer.',
+      },
+      'fr-FR': {
+        title: 'KYC/KYB refusé',
+        body: 'Le dossier KYC/KYB a été refusé. Voir le commentaire du responsable conformité.',
+      },
+    },
+  },
+  KYC_EXPIRING_SOON: {
+    category: 'COMPLIANCE',
+    texts: {
+      'en-GB': {
+        title: 'KYC/KYB expires soon',
+        body: 'A KYC/KYB approval expires on {validUntil}. A new case must be approved before then to keep subscribing.',
+      },
+      'fr-FR': {
+        title: 'KYC/KYB bientôt expiré',
+        body: 'Une validation KYC/KYB expire le {validUntil}. Un nouveau dossier doit être approuvé avant cette date pour continuer à souscrire.',
+      },
+    },
+  },
+  KYC_EXPIRED: {
+    category: 'COMPLIANCE',
+    texts: {
+      'en-GB': {
+        title: 'KYC/KYB expired',
+        body: 'A KYC/KYB approval has expired: no new subscription or incoming transfer is possible until a new case is approved. Existing positions are unchanged.',
+      },
+      'fr-FR': {
+        title: 'KYC/KYB expiré',
+        body: 'Une validation KYC/KYB a expiré : aucune nouvelle souscription ni aucun transfert entrant n’est possible avant l’approbation d’un nouveau dossier. Les positions existantes sont inchangées.',
+      },
+    },
+  },
+  DOCUMENT_ADDED: {
+    category: 'DOCUMENT',
+    texts: {
+      'en-GB': {
+        title: 'New document',
+        body: 'A new document is available in your documents.',
+      },
+      'fr-FR': {
+        title: 'Nouveau document',
+        body: 'Un nouveau document est disponible dans vos documents.',
+      },
+    },
+  },
 } as const satisfies Record<string, NotificationDefinition>;
 
 export type NotificationType = keyof typeof NOTIFICATION_TYPES;

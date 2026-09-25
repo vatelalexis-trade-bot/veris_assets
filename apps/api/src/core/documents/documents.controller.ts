@@ -1,0 +1,237 @@
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+  Query,
+  Res,
+  StreamableFile,
+  UploadedFile,
+} from '@nestjs/common';
+import { ApiBody, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
+import {
+  DOCUMENT_CONFIDENTIALITY,
+  DOCUMENT_TYPES,
+  type DocumentConfidentiality,
+  type DocumentType,
+} from '@virtus/shared';
+import type { Response } from 'express';
+import { z } from 'zod';
+import { ApiPageQuery, pageSchema, paginationQuery } from '../http/pagination.js';
+import { Idempotent } from '../idempotency/idempotent.decorator.js';
+import { toOpenApiSchema } from '../openapi/zod-openapi.js';
+import { RequirePermission, SessionOnly } from '../security/public.decorator.js';
+import { ZodValidationPipe } from '../validation/zod-validation.pipe.js';
+import {
+  DocumentsService,
+  type DocumentVersionRow,
+  type DocumentWithVersion,
+  type UploadedFile as File,
+} from './documents.service.js';
+import { Upload } from './upload.interceptor.js';
+
+const documentType = z.enum(DOCUMENT_TYPES);
+const confidentiality = z.enum(DOCUMENT_CONFIDENTIALITY);
+
+const versionView = z.object({
+  version: z.int(),
+  fileName: z.string(),
+  mimeType: z.string(),
+  sizeBytes: z.int(),
+  checksumSha256: z.string(),
+  uploadedBy: z.uuid(),
+  uploadedAt: z.iso.datetime(),
+});
+
+const documentView = z.object({
+  id: z.uuid(),
+  type: documentType,
+  name: z.string(),
+  confidentiality,
+  ownerType: z.enum(['INVESTOR', 'ISSUANCE', 'TENANT']),
+  investorId: z.uuid().nullable(),
+  issuanceId: z.uuid().nullable(),
+  status: z.enum(['ACTIVE', 'ARCHIVED']),
+  currentVersion: z.int(),
+  current: versionView,
+  createdAt: z.iso.datetime(),
+});
+
+const documentDetail = documentView.extend({ versions: z.array(versionView) });
+
+/** Text fields of the multipart upload. */
+const uploadFields = z.strictObject({
+  type: documentType,
+  name: z.string().trim().min(1).max(200),
+  confidentiality: confidentiality.default('INTERNAL'),
+  ownerType: z.enum(['INVESTOR', 'ISSUANCE', 'TENANT']).default('TENANT'),
+  investorId: z.uuid().optional(),
+  issuanceId: z.uuid().optional(),
+});
+
+const listQuery = paginationQuery.extend({
+  investorId: z.uuid().optional(),
+  type: documentType.optional(),
+  status: z.enum(['ACTIVE', 'ARCHIVED']).optional(),
+});
+
+const downloadBody = z.strictObject({ version: z.int().min(1).optional() });
+const downloadLink = z.object({ url: z.string(), expiresAt: z.iso.datetime() });
+
+const uploadSchema = {
+  type: 'object',
+  required: ['file', 'type', 'name'],
+  properties: {
+    file: { type: 'string', format: 'binary' },
+    type: { type: 'string', enum: [...DOCUMENT_TYPES] },
+    name: { type: 'string' },
+    confidentiality: { type: 'string', enum: [...DOCUMENT_CONFIDENTIALITY] },
+    ownerType: { type: 'string', enum: ['INVESTOR', 'ISSUANCE', 'TENANT'] },
+    investorId: { type: 'string', format: 'uuid' },
+    issuanceId: { type: 'string', format: 'uuid' },
+  },
+};
+
+function toVersion(row: DocumentVersionRow): z.infer<typeof versionView> {
+  return {
+    version: row.version,
+    fileName: row.fileName,
+    mimeType: row.mimeType,
+    sizeBytes: row.sizeBytes,
+    checksumSha256: row.checksumSha256,
+    uploadedBy: row.uploadedBy,
+    uploadedAt: row.uploadedAt.toISOString(),
+  };
+}
+
+export function toDocumentView(row: DocumentWithVersion): z.infer<typeof documentView> {
+  return {
+    id: row.id,
+    type: row.type as DocumentType,
+    name: row.name,
+    confidentiality: row.confidentiality as DocumentConfidentiality,
+    ownerType: row.ownerType as z.infer<typeof documentView>['ownerType'],
+    investorId: row.investorId,
+    issuanceId: row.issuanceId,
+    status: row.status as 'ACTIVE' | 'ARCHIVED',
+    currentVersion: row.currentVersion,
+    current: toVersion(row.current),
+    createdAt: row.createdAt.toISOString(),
+  };
+}
+
+const id = new ZodValidationPipe(z.uuid());
+
+/** Documents (docs/API.md §2.11). */
+@ApiTags('documents')
+@Controller('documents')
+export class DocumentsController {
+  constructor(private readonly documents: DocumentsService) {}
+
+  @Get()
+  @RequirePermission('document:read')
+  @ApiPageQuery()
+  @ApiQuery({ name: 'investorId', required: false, schema: { type: 'string', format: 'uuid' } })
+  @ApiQuery({
+    name: 'type',
+    required: false,
+    schema: { type: 'string', enum: [...DOCUMENT_TYPES] },
+  })
+  @ApiQuery({
+    name: 'status',
+    required: false,
+    schema: { type: 'string', enum: ['ACTIVE', 'ARCHIVED'] },
+  })
+  @ApiOkResponse({ schema: toOpenApiSchema(pageSchema(documentView)) })
+  async list(@Query(new ZodValidationPipe(listQuery)) query: z.infer<typeof listQuery>) {
+    const { page, pageSize, ...filters } = query;
+    const found = await this.documents.list(filters, { page, pageSize });
+    return { data: found.data.map(toDocumentView), meta: found.meta };
+  }
+
+  @Post()
+  @Idempotent()
+  @RequirePermission('document:upload')
+  @Upload()
+  @ApiBody({ schema: uploadSchema })
+  @ApiOkResponse({ schema: toOpenApiSchema(documentView) })
+  async upload(
+    @UploadedFile() file: File | undefined,
+    @Body(new ZodValidationPipe(uploadFields)) fields: z.infer<typeof uploadFields>,
+  ): Promise<z.infer<typeof documentView>> {
+    return toDocumentView(await this.documents.upload(file, fields));
+  }
+
+  /**
+   * The file of a download link (valid 5 minutes, for the user it was made for). Declared before
+   * ':id' so that "download" is never read as an identifier.
+   */
+  @Get('download')
+  @SessionOnly()
+  @ApiQuery({ name: 'token', required: true, schema: { type: 'string' } })
+  async download(
+    @Query('token', new ZodValidationPipe(z.string().min(10).max(2000))) token: string,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<StreamableFile> {
+    const { content, version } = await this.documents.download(token);
+    res.setHeader('Cache-Control', 'no-store');
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    return new StreamableFile(content, {
+      type: version.mimeType,
+      length: content.length,
+      disposition: `attachment; filename*=UTF-8''${encodeURIComponent(version.fileName)}`,
+    });
+  }
+
+  @Get(':id')
+  @RequirePermission('document:read')
+  @ApiOkResponse({ schema: toOpenApiSchema(documentDetail) })
+  async get(@Param('id', id) documentId: string): Promise<z.infer<typeof documentDetail>> {
+    const found = await this.documents.get(documentId);
+    return { ...toDocumentView(found), versions: found.versions.map(toVersion) };
+  }
+
+  @Post(':id/versions')
+  @Idempotent()
+  @RequirePermission('document:upload')
+  @Upload()
+  @ApiBody({
+    schema: {
+      type: 'object',
+      required: ['file'],
+      properties: { file: { type: 'string', format: 'binary' } },
+    },
+  })
+  @ApiOkResponse({ schema: toOpenApiSchema(documentView) })
+  async addVersion(
+    @Param('id', id) documentId: string,
+    @UploadedFile() file: File | undefined,
+  ): Promise<z.infer<typeof documentView>> {
+    return toDocumentView(await this.documents.addVersion(documentId, file));
+  }
+
+  @Post(':id/download-url')
+  @HttpCode(HttpStatus.OK)
+  @RequirePermission('document:read')
+  @ApiBody({ schema: toOpenApiSchema(downloadBody) })
+  @ApiOkResponse({ schema: toOpenApiSchema(downloadLink) })
+  async downloadUrl(
+    @Param('id', id) documentId: string,
+    @Body(new ZodValidationPipe(downloadBody)) body: z.infer<typeof downloadBody>,
+  ): Promise<z.infer<typeof downloadLink>> {
+    const link = await this.documents.downloadLink(documentId, body.version);
+    return { url: link.url, expiresAt: link.expiresAt.toISOString() };
+  }
+
+  @Post(':id/archive')
+  @HttpCode(HttpStatus.OK)
+  @Idempotent()
+  @RequirePermission('document:upload')
+  async archive(@Param('id', id) documentId: string): Promise<{ status: 'ARCHIVED' }> {
+    await this.documents.archive(documentId);
+    return { status: 'ARCHIVED' };
+  }
+}

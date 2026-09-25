@@ -4,6 +4,7 @@ import { AuditModule } from './audit/audit.module.js';
 import { ConfigModule } from './config/config.module.js';
 import { ENV, type Env } from './config/env.js';
 import { DatabaseModule } from './database/database.module.js';
+import { DocumentsModule } from './documents/documents.module.js';
 import { EmailModule } from './email/email.module.js';
 import { HealthModule } from './health/health.module.js';
 import { IdempotencyModule } from './idempotency/idempotency.module.js';
@@ -17,7 +18,7 @@ import { SecurityModule } from './security/security.module.js';
 /**
  * Technical layer shared by the business modules (decision D-022): configuration, logging,
  * database, Redis, audit, email, job queue, outbox and notifications, idempotency, status
- * transitions, rate limiting, health probes. It holds no business rule and never imports a business module.
+ * transitions, documents and fictitious providers, rate limiting, health probes. It holds no business rule and never imports a business module.
  */
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { SecurityModule } from './security/security.module.js';
     JobsModule,
     NotificationsModule,
     IdempotencyModule,
+    DocumentsModule,
     HealthModule,
   ],
   controllers: [ReferenceController],

@@ -34,8 +34,10 @@ describe('notification catalogue', () => {
     }
   });
 
-  it('gives the text in the requested language', () => {
-    const text = notificationText('INVITATION_ACCEPTED', 'fr-FR');
-    expect(text.title).toBe('Invitation acceptée');
+  it('gives the text in the requested language, placeholders filled', () => {
+    expect(notificationText('INVITATION_ACCEPTED', 'fr-FR').title).toBe('Invitation acceptée');
+    expect(notificationText('KYC_APPROVED', 'en-GB', { validUntil: '2027-09-25' }).body).toContain(
+      'valid until 2027-09-25',
+    );
   });
 });

@@ -17,6 +17,10 @@ import {
   type EmailMessage,
   type EmailProvider,
 } from '../core/email/email.provider.js';
+import {
+  DOCUMENT_STORAGE,
+  type DocumentStorageProvider,
+} from '../core/providers/document-storage.js';
 
 export class CapturedEmails implements EmailProvider {
   readonly messages: EmailMessage[] = [];
@@ -35,10 +39,26 @@ export class CapturedEmails implements EmailProvider {
   }
 }
 
+/** Document storage kept in memory: the integration tests need no S3 service (CI has none). */
+export class MemoryDocumentStorage implements DocumentStorageProvider {
+  readonly objects = new Map<string, Buffer>();
+
+  put(key: string, content: Buffer): Promise<void> {
+    this.objects.set(key, Buffer.from(content));
+    return Promise.resolve();
+  }
+
+  get(key: string): Promise<Buffer> {
+    const found = this.objects.get(key);
+    return found ? Promise.resolve(found) : Promise.reject(new Error(`No object ${key}`));
+  }
+}
+
 export interface IntegrationApp {
   app: NestExpressApplication;
   env: Env;
   emails: CapturedEmails;
+  storage: MemoryDocumentStorage;
   /** Direct access to the test database with the admin role, for assertions. */
   admin: pg.Client;
   /** Current authenticator code of a user who has set up two-factor authentication. */
@@ -67,11 +87,14 @@ export async function startIntegrationApp(): Promise<IntegrationApp> {
     REDIS_KEY_PREFIX: `va-test:${randomUUID()}:`,
   });
   const emails = new CapturedEmails();
+  const storage = new MemoryDocumentStorage();
   const moduleRef = await Test.createTestingModule({ imports: [AppModule] })
     .overrideProvider(ENV)
     .useValue(env)
     .overrideProvider(EMAIL_PROVIDER)
     .useValue(emails)
+    .overrideProvider(DOCUMENT_STORAGE)
+    .useValue(storage)
     .compile();
   const app = moduleRef.createNestApplication<NestExpressApplication>({
     logger: process.env.DEBUG_TEST_LOGS ? ['error'] : false,
@@ -95,6 +118,7 @@ export async function startIntegrationApp(): Promise<IntegrationApp> {
     app,
     env,
     emails,
+    storage,
     admin,
     totpCode,
     async signIn(email, password = env.DEMO_ACCOUNTS_PASSWORD) {

@@ -16,7 +16,7 @@ import {
   unique,
   uuid,
 } from 'drizzle-orm/pg-core';
-import { id, tenantId, utcTimestamp } from './columns.js';
+import { auditColumns, id, tenantId, utcTimestamp } from './columns.js';
 
 export const coreSchema = pgSchema('core');
 export const auditSchema = pgSchema('audit');
@@ -188,4 +188,63 @@ export const notificationPreference = coreSchema.table(
     updatedAt: utcTimestamp().notNull().defaultNow(),
   },
   (table) => [primaryKey({ columns: [table.userId, table.category] })],
+);
+
+// Documents (SPEC §16). The file itself is in the S3-compatible storage; these tables hold the
+// metadata. Business modules link documents to their resources (e.g. investor.kyc_document).
+
+export const document = coreSchema.table(
+  'document',
+  {
+    id: id(),
+    tenantId: tenantId(),
+    type: text().notNull(),
+    name: text().notNull(),
+    confidentiality: text().notNull(),
+    /** What the document belongs to: `INVESTOR`, `ISSUANCE` or `TENANT`. */
+    ownerType: text().notNull(),
+    issuanceId: uuid(),
+    investorId: uuid(),
+    status: text().notNull().default('ACTIVE'),
+    currentVersion: integer().notNull().default(1),
+    expiresAt: utcTimestamp(),
+    ...auditColumns(),
+  },
+  (table) => [
+    check('document_status', sql`${table.status} IN ('ACTIVE', 'ARCHIVED')`),
+    check(
+      'document_confidentiality',
+      sql`${table.confidentiality} IN ('INVESTOR_VISIBLE', 'INTERNAL', 'CONFIDENTIAL')`,
+    ),
+    check('document_owner_type', sql`${table.ownerType} IN ('INVESTOR', 'ISSUANCE', 'TENANT')`),
+    index('document_tenant_investor').on(table.tenantId, table.investorId),
+  ],
+);
+
+/** Every uploaded version of a document. Append-only: a new file is a new version. */
+export const documentVersion = coreSchema.table(
+  'document_version',
+  {
+    id: id(),
+    tenantId: tenantId(),
+    documentId: uuid()
+      .notNull()
+      .references(() => document.id),
+    version: integer().notNull(),
+    /** `tenants/{tenantId}/documents/{documentId}/v{version}` (docs/ARCHITECTURE.md §4.11). */
+    storageKey: text().notNull(),
+    /** Detected from the content, never taken from the file name. */
+    mimeType: text().notNull(),
+    sizeBytes: integer().notNull(),
+    checksumSha256: char({ length: 64 }).notNull(),
+    scanStatus: text().notNull(),
+    fileName: text().notNull(),
+    uploadedBy: uuid().notNull(),
+    uploadedAt: utcTimestamp().notNull().defaultNow(),
+  },
+  (table) => [
+    unique('document_version_number').on(table.documentId, table.version),
+    check('document_version_scan_status', sql`${table.scanStatus} IN ('CLEAN', 'REJECTED')`),
+    check('document_version_size', sql`${table.sizeBytes} > 0`),
+  ],
 );

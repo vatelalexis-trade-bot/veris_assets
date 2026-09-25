@@ -6,6 +6,8 @@ import { z } from 'zod';
 const port = z.coerce.number().int().min(1).max(65535);
 const required = z.string().min(1);
 
+const providerMode = z.enum(['success', 'reject', 'outage']).default('success');
+
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']).default('info'),
@@ -49,6 +51,11 @@ const envSchema = z.object({
   S3_BUCKET: required,
   S3_ACCESS_KEY_ID: required,
   S3_SECRET_ACCESS_KEY: required,
+
+  // Fictitious external providers (SPEC §27, docs/ARCHITECTURE.md §4.10): success, reject or
+  // outage, to play every scenario of the demonstration.
+  PROVIDER_KYC_MODE: providerMode,
+  PROVIDER_FILE_SCANNER_MODE: providerMode,
 });
 
 export type Env = z.infer<typeof envSchema>;

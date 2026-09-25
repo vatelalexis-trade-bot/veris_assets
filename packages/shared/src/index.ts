@@ -8,3 +8,5 @@ export * from './status/status-map.js';
 export * from './permissions/permissions.js';
 export * from './workflow/state-machine.js';
 export * from './notifications/notifications.js';
+export * from './investors/investors.js';
+export * from './dates/dates.js';

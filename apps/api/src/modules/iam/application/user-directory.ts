@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { inArray } from 'drizzle-orm';
+import { and, eq, inArray } from 'drizzle-orm';
 import type { Transaction } from '../../../core/database/database.js';
-import { user } from '../infrastructure/schema.js';
+import type { RoleCode } from '../domain/roles.js';
+import { role, user, userRole } from '../infrastructure/schema.js';
 
 /**
  * Names of users, for the screens of other modules (e.g. the author of an audit entry). Reads in
@@ -17,5 +18,25 @@ export class UserDirectory {
       .from(user)
       .where(inArray(user.id, unique));
     return new Map(rows.map((row) => [row.id, row.name]));
+  }
+
+  /** Active users of the tenant holding a role (e.g. the Compliance Officers to notify). */
+  async activeUsersWithRole(tx: Transaction, roleCode: RoleCode): Promise<string[]> {
+    const rows = await tx
+      .selectDistinct({ id: user.id })
+      .from(user)
+      .innerJoin(userRole, eq(userRole.userId, user.id))
+      .innerJoin(role, eq(role.id, userRole.roleId))
+      .where(and(eq(role.code, roleCode), eq(user.status, 'ACTIVE')));
+    return rows.map((row) => row.id);
+  }
+
+  /** Active portal accounts of an investor. */
+  async activeUsersOfInvestor(tx: Transaction, investorId: string): Promise<string[]> {
+    const rows = await tx
+      .select({ id: user.id })
+      .from(user)
+      .where(and(eq(user.investorId, investorId), eq(user.status, 'ACTIVE')));
+    return rows.map((row) => row.id);
   }
 }

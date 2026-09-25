@@ -325,7 +325,14 @@
     "EMAIL_ALREADY_REGISTERED": "An account already exists with this email.",
     "TENANT_UNKNOWN": "This organisation does not exist.",
     "MANDATORY_CATEGORY": "Security and workflow notifications cannot be switched off.",
-    "INVALID_IDEMPOTENCY_KEY": "This action could not be secured against duplicates. Please try again."
+    "INVALID_IDEMPOTENCY_KEY": "This action could not be secured against duplicates. Please try again.",
+    "OPEN_KYC_CASE_EXISTS": "This investor already has a KYC/KYB case in progress.",
+    "KYC_EVIDENCE_REQUIRED": "Attach at least one piece of evidence before submitting the case.",
+    "NOT_KYC_EVIDENCE_OF_INVESTOR": "Only the KYC evidence of this investor can be attached.",
+    "UNKNOWN_OWNER": "The investor or issuance of this document does not exist.",
+    "FILE_REQUIRED": "Choose a file.",
+    "TYPE_NOT_ALLOWED": "Allowed files: PDF, PNG, JPEG, CSV and XLSX. The type is checked from the content, not the name.",
+    "MAX_10_MB": "The file must not exceed 10 MB."
   },
   "organizationTypes": {
     "ISSUER": "Issuer",
@@ -480,7 +487,10 @@
     "resources": {
       "user": "User",
       "tenant": "Organisation",
-      "user_invitation": "Invitation"
+      "user_invitation": "Invitation",
+      "investor": "Investor",
+      "kyc_case": "KYC/KYB case",
+      "document": "Document"
     },
     "sources": {
       "WEB": "Web application",
@@ -520,7 +530,216 @@
       "TENANT_UPDATED": "Organisation updated",
       "TENANT_ACTIVATED": "Organisation activated",
       "TENANT_DEACTIVATED": "Organisation deactivated",
-      "TENANT_SETTINGS_UPDATED": "Settings changed"
+      "TENANT_SETTINGS_UPDATED": "Settings changed",
+      "INVESTOR_CREATED": "Investor created",
+      "INVESTOR_UPDATED": "Investor updated",
+      "INVESTOR_PROFILE_UPDATED": "Profile updated by the investor",
+      "INVESTOR_RECIPIENT_CODE_REGENERATED": "Recipient code renewed",
+      "INVESTOR_REPRESENTATIVE_ADDED": "Representative added",
+      "INVESTOR_REPRESENTATIVE_UPDATED": "Representative updated",
+      "INVESTOR_BENEFICIAL_OWNER_ADDED": "Beneficial owner added",
+      "INVESTOR_BENEFICIAL_OWNER_UPDATED": "Beneficial owner updated",
+      "COMPLIANCE_COMMENT_ADDED": "Compliance comment added",
+      "KYC_CASE_OPENED": "KYC/KYB case opened",
+      "KYC_DOCUMENT_ATTACHED": "KYC evidence attached",
+      "KYC_CASE_SUBMITTED": "KYC/KYB case submitted",
+      "KYC_APPROVED": "KYC/KYB approved",
+      "KYC_REJECTED": "KYC/KYB rejected",
+      "KYC_SENT_BACK": "KYC/KYB case sent back",
+      "KYC_EXPIRED": "KYC/KYB expired",
+      "DOCUMENT_UPLOADED": "Document added",
+      "DOCUMENT_VERSION_ADDED": "New version of a document",
+      "DOCUMENT_ARCHIVED": "Document archived",
+      "DOCUMENT_DOWNLOADED": "Confidential document downloaded",
+      "DOCUMENT_REJECTED": "File rejected by the security scan"
+    }
+  },
+  "investors": {
+    "title": "Investors",
+    "description": "Profiles of the organisation's investors, their KYC/KYB and their documents.",
+    "caption": "Investors of the organisation",
+    "empty": "No investor matches.",
+    "new": "New investor",
+    "newDescription": "Create the profile; its KYC/KYB case is opened from its page.",
+    "allKycStatuses": "All KYC statuses",
+    "back": "Investors",
+    "profile": "Profile",
+    "documents": "Documents",
+    "recipientCode": "recipient code {code}",
+    "columns": {
+      "legalName": "Legal name",
+      "country": "Country",
+      "classification": "Classification",
+      "profileStatus": "Profile",
+      "kycStatus": "KYC/KYB",
+      "kycExpiryDate": "KYC expires on"
+    },
+    "classification": {
+      "PROFESSIONAL": "Professional client",
+      "ELIGIBLE_COUNTERPARTY": "Eligible counterparty"
+    },
+    "profileStatus": {
+      "DRAFT": "Draft",
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive"
+    },
+    "type": {
+      "LEGAL_ENTITY": "Legal entity",
+      "NATURAL_PERSON": "Natural person"
+    },
+    "form": {
+      "legend": "Investor profile",
+      "type": "Type",
+      "tradeName": "Trade name",
+      "legalForm": "Legal form",
+      "registrationNumber": "Registration number",
+      "taxId": "Tax identifier",
+      "countryOfIncorporation": "Country of incorporation",
+      "contactEmail": "Contact email",
+      "phone": "Phone",
+      "address": "Address",
+      "line1": "Address line",
+      "line2": "Address line 2",
+      "postalCode": "Postal code",
+      "city": "City",
+      "addressCountry": "Country",
+      "create": "Create the investor"
+    },
+    "people": {
+      "title": "Representatives and beneficial owners",
+      "personalData": "Personal data (fictitious): shown only to the people who need it, masked in the logs and the audit log.",
+      "representatives": "Legal representatives",
+      "beneficialOwners": "Beneficial owners",
+      "none": "None yet.",
+      "fullName": "Full name",
+      "personTitle": "Position",
+      "email": "Email",
+      "nationality": "Nationality",
+      "ownership": "Ownership (%)",
+      "ownershipHint": "A number from 0.01 to 100, e.g. 25.5",
+      "addRepresentative": "Add the representative",
+      "addBeneficialOwner": "Add the beneficial owner"
+    },
+    "comments": {
+      "title": "Compliance comments",
+      "none": "No comment yet.",
+      "new": "New comment",
+      "add": "Add the comment"
+    }
+  },
+  "kyc": {
+    "title": "KYC/KYB",
+    "open": "Open a KYC/KYB case",
+    "openNew": "Open a new case",
+    "none": "No KYC/KYB case yet.",
+    "status": "Status",
+    "preparedAt": "Prepared on",
+    "provider": "Check by the provider (simulated)",
+    "providerOutcome": {
+      "CLEAR": "Nothing found",
+      "REVIEW": "Careful review recommended"
+    },
+    "suggestedRisk": "suggested risk: {level}",
+    "risk": {
+      "LOW": "low",
+      "MEDIUM": "medium",
+      "HIGH": "high"
+    },
+    "validUntil": "Valid until",
+    "decisionComment": "Comment of the decision",
+    "waitingForDecision": "Waiting for the decision of a Compliance Officer.",
+    "noEvidence": "No evidence attached yet.",
+    "evidence": "Evidence",
+    "download": "Download",
+    "kinds": {
+      "REGISTRATION_EXTRACT": "Company register extract",
+      "ARTICLES_OF_ASSOCIATION": "Articles of association",
+      "REPRESENTATIVE_ID": "Representative’s identity document",
+      "BENEFICIAL_OWNERS_DECLARATION": "Beneficial owners declaration",
+      "PROOF_OF_ADDRESS": "Proof of address",
+      "OTHER": "Other"
+    },
+    "attach": {
+      "title": "Attach evidence",
+      "noneAvailable": "Upload the investor’s evidence below (type “KYC evidence”), then attach it here.",
+      "document": "Document",
+      "kind": "Kind",
+      "submit": "Attach"
+    },
+    "submit": {
+      "action": "Submit for review",
+      "title": "Submit the case for review?",
+      "description": "The simulated provider checks the case, then a Compliance Officer decides. You will no longer be able to change the evidence."
+    },
+    "decide": {
+      "approve": "Approve",
+      "reject": "Reject",
+      "send-back": "Send back",
+      "approveTitle": "Approve the KYC/KYB case?",
+      "approveDescription": "The approval is valid 12 months. The person who prepared the case cannot approve it.",
+      "rejectTitle": "Reject the KYC/KYB case?",
+      "rejectDescription": "The investor will not be able to subscribe until a new case is approved.",
+      "send-backTitle": "Send the case back?",
+      "send-backDescription": "The case goes back to its preparer, who completes it and submits it again.",
+      "comment": "Comment (optional)",
+      "commentRequired": "Comment (required)"
+    }
+  },
+  "documents": {
+    "title": "Documents",
+    "description": "Documents of the organisation, its issuances and its investors.",
+    "ownTitle": "My documents",
+    "ownDescription": "Your documents and those shared with you. Files are checked before being stored.",
+    "caption": "Documents",
+    "empty": "No document yet.",
+    "download": "Download",
+    "columns": {
+      "name": "Name",
+      "type": "Type",
+      "confidentiality": "Visible by",
+      "file": "File",
+      "uploadedAt": "Added on",
+      "download": "File"
+    },
+    "types": {
+      "ISSUANCE_DOCUMENT": "Issuance document",
+      "INVESTOR_DOCUMENT": "Investor document",
+      "KYC_EVIDENCE": "KYC evidence",
+      "SUBSCRIPTION_FORM": "Subscription form",
+      "ALLOCATION_CONFIRMATION": "Allocation confirmation",
+      "POSITION_STATEMENT": "Position statement",
+      "COUPON_NOTICE": "Coupon notice",
+      "REPORT": "Report"
+    },
+    "confidentiality": {
+      "INVESTOR_VISIBLE": "The investor and the staff",
+      "INTERNAL": "The staff only",
+      "CONFIDENTIAL": "Confidential (compliance)"
+    },
+    "upload": {
+      "title": "Add a document",
+      "file": "File",
+      "hint": "PDF, PNG, JPEG, CSV or XLSX, 10 MB at most.",
+      "tooBig": "This file is over 10 MB.",
+      "name": "Name",
+      "submit": "Upload",
+      "done": "The document was added."
+    }
+  },
+  "profile": {
+    "title": "My profile",
+    "description": "Your organisation as known by the issuer, and your contact details.",
+    "kycStatus": "KYC/KYB",
+    "kycExpiry": "KYC/KYB valid until",
+    "registrationNumber": "Registration number",
+    "country": "Country of incorporation",
+    "contact": "Contact details",
+    "recipientCode": {
+      "title": "Recipient code",
+      "help": "Give this code to another investor who wants to transfer units to you. It never reveals your identity.",
+      "regenerate": "Create a new code",
+      "confirmTitle": "Create a new recipient code?",
+      "confirmDescription": "Your current code stops working at once."
     }
   }
 }

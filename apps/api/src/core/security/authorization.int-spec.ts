@@ -44,6 +44,17 @@ function harmlessCall(agent: Agent, route: DiscoveredRoute, id: string, body: ob
  */
 const VALID_BODIES: [RegExp, object][] = [
   [/^PUT \/api\/v1\/users\/:id\/roles$/, { roles: ['AUDITOR'] }],
+  [/^POST \/api\/v1\/investors\/:id\/representatives$/, { fullName: 'Probe (demo)' }],
+  [
+    /^POST \/api\/v1\/investors\/:id\/beneficial-owners$/,
+    { fullName: 'Probe (demo)', ownershipPercentage: '10' },
+  ],
+  [/^POST \/api\/v1\/investors\/:id\/comments$/, { body: 'Probe' }],
+  [
+    /^POST \/api\/v1\/kyc-cases\/:id\/documents$/,
+    { documentId: '0192a000-0000-7000-8000-000000000000', kind: 'OTHER' },
+  ],
+  [/^POST \/api\/v1\/kyc-cases\/:id\/(reject|send-back)$/, { comment: 'Probe' }],
 ];
 
 beforeAll(async () => {
@@ -101,6 +112,35 @@ describe('scenario 5 — tenant isolation (SPEC §20, §29)', () => {
     [
       /^\/api\/v1\/tenants\/:id/,
       () => idOf(`SELECT id FROM iam.tenant WHERE legal_name LIKE 'Contoso%'`),
+    ],
+    [
+      /^\/api\/v1\/investors\/:id/,
+      () => idOf(`SELECT id FROM investor.investor WHERE legal_name LIKE 'Quarry%'`),
+    ],
+    [
+      /^\/api\/v1\/kyc-cases\/:id/,
+      () =>
+        idOf(
+          `SELECT c.id FROM investor.kyc_case c JOIN investor.investor i ON i.id = c.investor_id
+           WHERE i.legal_name LIKE 'Quarry%'`,
+        ),
+    ],
+    [
+      /^\/api\/v1\/documents\/:id/,
+      () =>
+        idOf(
+          `WITH created AS (
+             INSERT INTO core.document (tenant_id, type, name, confidentiality, owner_type)
+             SELECT id, 'REPORT', 'Contoso report (demo)', 'INTERNAL', 'TENANT' FROM iam.tenant
+             WHERE legal_name LIKE 'Contoso%' RETURNING id, tenant_id
+           ), version AS (
+             INSERT INTO core.document_version (tenant_id, document_id, version, storage_key,
+               mime_type, size_bytes, checksum_sha256, scan_status, file_name, uploaded_by)
+             SELECT tenant_id, id, 1, 'unused', 'application/pdf', 1, repeat('0', 64), 'CLEAN',
+               'report.pdf', id FROM created
+           )
+           SELECT id FROM created`,
+        ),
     ],
     [
       /^\/api\/v1\/audit-events\/:id/,

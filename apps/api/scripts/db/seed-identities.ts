@@ -18,6 +18,7 @@ import {
 } from '../../src/modules/iam/infrastructure/schema.js';
 import { connectionConfig, withClient } from './admin.js';
 import { deterministicUuid } from './deterministic-id.js';
+import { INVESTOR_OF_ACCOUNT } from './seed-investors.js';
 import { tenants } from './seed-data.js';
 import { databaseName, type DatabaseTarget, type ToolsEnv } from './tools-env.js';
 
@@ -57,7 +58,12 @@ export async function seedIdentities(env: ToolsEnv, target: DatabaseTarget): Pro
         .select({ id: user.id })
         .from(user)
         .where(eq(user.email, demo.email));
-      if (existing) continue;
+      const investorId = INVESTOR_OF_ACCOUNT[demo.email] ?? null;
+      if (existing) {
+        // Accounts created before phase 8 get their investor profile.
+        await db.update(user).set({ investorId }).where(eq(user.id, existing.id));
+        continue;
+      }
       const userId = deterministicUuid(`user:${demo.email}`);
       const tenantId = demo.tenant ? TENANT_IDS[demo.tenant] : null;
       await db.transaction(async (tx) => {
@@ -66,6 +72,7 @@ export async function seedIdentities(env: ToolsEnv, target: DatabaseTarget): Pro
           name: demo.name,
           email: demo.email,
           tenantId,
+          investorId,
           locale: demo.locale,
         });
         await tx

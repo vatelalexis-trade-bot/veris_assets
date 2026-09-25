@@ -251,11 +251,11 @@ sequenceDiagram
 ### 4.10 Fournisseurs externes (section 27)
 
 Interfaces dans `core/providers` : `KycProvider`, `IdentityProvider`, `PaymentProvider`, `CustodyProvider`, `ElectronicSignatureProvider`, `DocumentStorageProvider`, `EmailProvider`, `TokenRegistryProvider` (= BlockchainProvider), `MarketDataProvider`, `AccountingProvider`, `FileScanner`.
-Implémentations factices sélectionnées par configuration, avec un mode `success | reject | outage` par fournisseur (variables `PROVIDER_<NOM>_MODE`). En mode `outage`, l'appel échoue avec `503 PROVIDER_UNAVAILABLE` ; un disjoncteur (circuit breaker) simple évite d'insister sur un fournisseur en panne.
+Implémentations factices sélectionnées par configuration, avec un mode `success | reject | outage` par fournisseur (variables `PROVIDER_<NOM>_MODE` ; en phase 8 : `PROVIDER_KYC_MODE`, `PROVIDER_FILE_SCANNER_MODE`). En mode `outage`, l'appel échoue avec `503 PROVIDER_UNAVAILABLE` ; un disjoncteur (circuit breaker) simple évite d'insister sur un fournisseur en panne.
 
 ### 4.11 Documents
 
-Upload → contrôle de taille (10 Mo) → détection du type réel par le contenu (magic bytes) → `FileScanner` → calcul du checksum SHA-256 → stockage `tenants/{tenantId}/documents/{documentId}/v{version}` → métadonnées en base. Téléchargement via URL signée de 5 minutes ; les téléchargements de documents confidentiels sont tracés dans l'audit. Les documents générés (PDF, CSV) portent la mention « Environnement de démonstration — données fictives ».
+Upload → contrôle de taille (10 Mo) → détection du type réel par le contenu (magic bytes) → `FileScanner` → calcul du checksum SHA-256 → stockage `tenants/{tenantId}/documents/{documentId}/v{version}` → métadonnées en base. Téléchargement via un lien signé de 5 minutes servi par l'API elle-même (D-045) ; le stockage n'est jamais exposé au navigateur ; les téléchargements de documents confidentiels sont tracés dans l'audit. Détection du type avec `file-type` (D-046). Les documents générés (PDF, CSV) portent la mention « Environnement de démonstration — données fictives ».
 
 ### 4.12 Authentification et sessions
 

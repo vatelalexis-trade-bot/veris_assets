@@ -51,4 +51,24 @@ export class Workflow {
       correlationId: context?.correlationId ?? null,
     });
   }
+
+  /** Records the first status of a new resource (no check: creating it is the use case's job). */
+  async start<S extends string>(
+    tx: Transaction,
+    machine: StateMachine<S>,
+    input: { tenantId: string; resourceId: string; to: S },
+  ): Promise<void> {
+    const context = getRequestContext();
+    const user = context?.user;
+    await tx.insert(workflowTransition).values({
+      tenantId: input.tenantId,
+      resourceType: machine.resourceType,
+      resourceId: input.resourceId,
+      fromStatus: null,
+      toStatus: input.to,
+      actorUserId: user?.userId ?? null,
+      actorRole: user ? user.roles.join(',') || null : null,
+      correlationId: context?.correlationId ?? null,
+    });
+  }
 }

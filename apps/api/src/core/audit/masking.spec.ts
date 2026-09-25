@@ -18,6 +18,16 @@ describe('audit masking', () => {
     });
   });
 
+  it('masks the fields whose name contains a sensitive key', () => {
+    expect(
+      maskSensitive({
+        contactEmail: 'a@example.com',
+        mobilePhone: '+33 6',
+        legalName: 'Alpine SAS',
+      }),
+    ).toEqual({ contactEmail: MASKED, mobilePhone: MASKED, legalName: 'Alpine SAS' });
+  });
+
   it('masks the personal fields named by the caller', () => {
     expect(maskSensitive({ name: 'Jane Doe', locale: 'fr-FR' }, ['name'])).toEqual({
       name: MASKED,

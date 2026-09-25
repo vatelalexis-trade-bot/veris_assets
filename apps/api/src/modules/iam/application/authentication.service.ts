@@ -23,6 +23,7 @@ export interface AuthContext {
   email: string;
   name: string;
   tenantId: string | null;
+  investorId: string | null;
   locale: string;
   roles: RoleCode[];
   permissions: Map<Permission, PermissionScope>;
@@ -219,6 +220,7 @@ export class AuthenticationService {
       email: identity.email,
       name: identity.name,
       tenantId: identity.tenantId,
+      investorId: identity.investorId,
       locale: identity.locale,
       roles,
       permissions,

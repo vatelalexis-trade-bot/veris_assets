@@ -325,7 +325,14 @@
     "EMAIL_ALREADY_REGISTERED": "Un compte existe déjà avec cet email.",
     "TENANT_UNKNOWN": "Cette organisation n’existe pas.",
     "MANDATORY_CATEGORY": "Les notifications de sécurité et de workflow ne peuvent pas être désactivées.",
-    "INVALID_IDEMPOTENCY_KEY": "Cette action n’a pas pu être protégée contre les doublons. Réessayez."
+    "INVALID_IDEMPOTENCY_KEY": "Cette action n’a pas pu être protégée contre les doublons. Réessayez.",
+    "OPEN_KYC_CASE_EXISTS": "Cet investisseur a déjà un dossier KYC/KYB en cours.",
+    "KYC_EVIDENCE_REQUIRED": "Joignez au moins une pièce avant de soumettre le dossier.",
+    "NOT_KYC_EVIDENCE_OF_INVESTOR": "Seules les pièces KYC de cet investisseur peuvent être jointes.",
+    "UNKNOWN_OWNER": "L’investisseur ou l’émission de ce document n’existe pas.",
+    "FILE_REQUIRED": "Choisissez un fichier.",
+    "TYPE_NOT_ALLOWED": "Fichiers acceptés : PDF, PNG, JPEG, CSV et XLSX. Le type est vérifié d’après le contenu, pas le nom.",
+    "MAX_10_MB": "Le fichier ne doit pas dépasser 10 Mo."
   },
   "organizationTypes": {
     "ISSUER": "Émetteur",
@@ -480,7 +487,10 @@
     "resources": {
       "user": "Utilisateur",
       "tenant": "Organisation",
-      "user_invitation": "Invitation"
+      "user_invitation": "Invitation",
+      "investor": "Investisseur",
+      "kyc_case": "Dossier KYC/KYB",
+      "document": "Document"
     },
     "sources": {
       "WEB": "Application web",
@@ -520,7 +530,216 @@
       "TENANT_UPDATED": "Organisation modifiée",
       "TENANT_ACTIVATED": "Organisation activée",
       "TENANT_DEACTIVATED": "Organisation désactivée",
-      "TENANT_SETTINGS_UPDATED": "Paramètres modifiés"
+      "TENANT_SETTINGS_UPDATED": "Paramètres modifiés",
+      "INVESTOR_CREATED": "Investisseur créé",
+      "INVESTOR_UPDATED": "Investisseur modifié",
+      "INVESTOR_PROFILE_UPDATED": "Profil modifié par l’investisseur",
+      "INVESTOR_RECIPIENT_CODE_REGENERATED": "Code destinataire renouvelé",
+      "INVESTOR_REPRESENTATIVE_ADDED": "Représentant ajouté",
+      "INVESTOR_REPRESENTATIVE_UPDATED": "Représentant modifié",
+      "INVESTOR_BENEFICIAL_OWNER_ADDED": "Bénéficiaire effectif ajouté",
+      "INVESTOR_BENEFICIAL_OWNER_UPDATED": "Bénéficiaire effectif modifié",
+      "COMPLIANCE_COMMENT_ADDED": "Commentaire de conformité ajouté",
+      "KYC_CASE_OPENED": "Dossier KYC/KYB ouvert",
+      "KYC_DOCUMENT_ATTACHED": "Pièce KYC jointe",
+      "KYC_CASE_SUBMITTED": "Dossier KYC/KYB soumis",
+      "KYC_APPROVED": "KYC/KYB approuvé",
+      "KYC_REJECTED": "KYC/KYB refusé",
+      "KYC_SENT_BACK": "Dossier KYC/KYB renvoyé",
+      "KYC_EXPIRED": "KYC/KYB expiré",
+      "DOCUMENT_UPLOADED": "Document ajouté",
+      "DOCUMENT_VERSION_ADDED": "Nouvelle version d’un document",
+      "DOCUMENT_ARCHIVED": "Document archivé",
+      "DOCUMENT_DOWNLOADED": "Document confidentiel téléchargé",
+      "DOCUMENT_REJECTED": "Fichier refusé par le contrôle de sécurité"
+    }
+  },
+  "investors": {
+    "title": "Investisseurs",
+    "description": "Profils des investisseurs de l’organisation, leur KYC/KYB et leurs documents.",
+    "caption": "Investisseurs de l’organisation",
+    "empty": "Aucun investisseur ne correspond.",
+    "new": "Nouvel investisseur",
+    "newDescription": "Créez le profil ; son dossier KYC/KYB s’ouvre ensuite depuis sa page.",
+    "allKycStatuses": "Tous les statuts KYC",
+    "back": "Investisseurs",
+    "profile": "Profil",
+    "documents": "Documents",
+    "recipientCode": "code destinataire {code}",
+    "columns": {
+      "legalName": "Raison sociale",
+      "country": "Pays",
+      "classification": "Classification",
+      "profileStatus": "Profil",
+      "kycStatus": "KYC/KYB",
+      "kycExpiryDate": "Expiration KYC"
+    },
+    "classification": {
+      "PROFESSIONAL": "Client professionnel",
+      "ELIGIBLE_COUNTERPARTY": "Contrepartie éligible"
+    },
+    "profileStatus": {
+      "DRAFT": "Brouillon",
+      "ACTIVE": "Actif",
+      "INACTIVE": "Inactif"
+    },
+    "type": {
+      "LEGAL_ENTITY": "Personne morale",
+      "NATURAL_PERSON": "Personne physique"
+    },
+    "form": {
+      "legend": "Profil de l’investisseur",
+      "type": "Type",
+      "tradeName": "Nom commercial",
+      "legalForm": "Forme juridique",
+      "registrationNumber": "Numéro d’immatriculation",
+      "taxId": "Identifiant fiscal",
+      "countryOfIncorporation": "Pays d’immatriculation",
+      "contactEmail": "Email de contact",
+      "phone": "Téléphone",
+      "address": "Adresse",
+      "line1": "Adresse",
+      "line2": "Complément d’adresse",
+      "postalCode": "Code postal",
+      "city": "Ville",
+      "addressCountry": "Pays",
+      "create": "Créer l’investisseur"
+    },
+    "people": {
+      "title": "Représentants et bénéficiaires effectifs",
+      "personalData": "Données personnelles (fictives) : visibles seulement par les personnes qui en ont besoin, masquées dans les logs et le journal d’audit.",
+      "representatives": "Représentants légaux",
+      "beneficialOwners": "Bénéficiaires effectifs",
+      "none": "Aucun pour l’instant.",
+      "fullName": "Nom complet",
+      "personTitle": "Fonction",
+      "email": "Email",
+      "nationality": "Nationalité",
+      "ownership": "Détention (%)",
+      "ownershipHint": "Un nombre de 0,01 à 100, par exemple 25,5",
+      "addRepresentative": "Ajouter le représentant",
+      "addBeneficialOwner": "Ajouter le bénéficiaire"
+    },
+    "comments": {
+      "title": "Commentaires de conformité",
+      "none": "Aucun commentaire pour l’instant.",
+      "new": "Nouveau commentaire",
+      "add": "Ajouter le commentaire"
+    }
+  },
+  "kyc": {
+    "title": "KYC/KYB",
+    "open": "Ouvrir un dossier KYC/KYB",
+    "openNew": "Ouvrir un nouveau dossier",
+    "none": "Aucun dossier KYC/KYB pour l’instant.",
+    "status": "Statut",
+    "preparedAt": "Préparé le",
+    "provider": "Contrôle du prestataire (simulé)",
+    "providerOutcome": {
+      "CLEAR": "Rien de signalé",
+      "REVIEW": "Examen approfondi recommandé"
+    },
+    "suggestedRisk": "risque suggéré : {level}",
+    "risk": {
+      "LOW": "faible",
+      "MEDIUM": "moyen",
+      "HIGH": "élevé"
+    },
+    "validUntil": "Valable jusqu’au",
+    "decisionComment": "Commentaire de la décision",
+    "waitingForDecision": "En attente de la décision d’un responsable conformité.",
+    "noEvidence": "Aucune pièce jointe pour l’instant.",
+    "evidence": "Pièces justificatives",
+    "download": "Télécharger",
+    "kinds": {
+      "REGISTRATION_EXTRACT": "Extrait du registre",
+      "ARTICLES_OF_ASSOCIATION": "Statuts",
+      "REPRESENTATIVE_ID": "Pièce d’identité du représentant",
+      "BENEFICIAL_OWNERS_DECLARATION": "Déclaration des bénéficiaires effectifs",
+      "PROOF_OF_ADDRESS": "Justificatif de domicile",
+      "OTHER": "Autre"
+    },
+    "attach": {
+      "title": "Joindre une pièce",
+      "noneAvailable": "Déposez les pièces de l’investisseur ci-dessous (type « Pièce KYC »), puis joignez-les ici.",
+      "document": "Document",
+      "kind": "Nature",
+      "submit": "Joindre"
+    },
+    "submit": {
+      "action": "Soumettre pour décision",
+      "title": "Soumettre le dossier pour décision ?",
+      "description": "Le prestataire simulé contrôle le dossier, puis un responsable conformité décide. Vous ne pourrez plus modifier les pièces."
+    },
+    "decide": {
+      "approve": "Approuver",
+      "reject": "Refuser",
+      "send-back": "Renvoyer pour compléments",
+      "approveTitle": "Approuver le dossier KYC/KYB ?",
+      "approveDescription": "La validation est valable 12 mois. La personne qui a préparé le dossier ne peut pas l’approuver.",
+      "rejectTitle": "Refuser le dossier KYC/KYB ?",
+      "rejectDescription": "L’investisseur ne pourra pas souscrire avant l’approbation d’un nouveau dossier.",
+      "send-backTitle": "Renvoyer le dossier ?",
+      "send-backDescription": "Le dossier retourne à son préparateur, qui le complète et le soumet de nouveau.",
+      "comment": "Commentaire (facultatif)",
+      "commentRequired": "Commentaire (obligatoire)"
+    }
+  },
+  "documents": {
+    "title": "Documents",
+    "description": "Documents de l’organisation, de ses émissions et de ses investisseurs.",
+    "ownTitle": "Mes documents",
+    "ownDescription": "Vos documents et ceux qui vous sont partagés. Les fichiers sont contrôlés avant d’être conservés.",
+    "caption": "Documents",
+    "empty": "Aucun document pour l’instant.",
+    "download": "Télécharger",
+    "columns": {
+      "name": "Nom",
+      "type": "Type",
+      "confidentiality": "Visible par",
+      "file": "Fichier",
+      "uploadedAt": "Ajouté le",
+      "download": "Fichier"
+    },
+    "types": {
+      "ISSUANCE_DOCUMENT": "Document d’émission",
+      "INVESTOR_DOCUMENT": "Document investisseur",
+      "KYC_EVIDENCE": "Pièce KYC",
+      "SUBSCRIPTION_FORM": "Bulletin de souscription",
+      "ALLOCATION_CONFIRMATION": "Confirmation d’allocation",
+      "POSITION_STATEMENT": "Relevé de position",
+      "COUPON_NOTICE": "Avis de coupon",
+      "REPORT": "Rapport"
+    },
+    "confidentiality": {
+      "INVESTOR_VISIBLE": "L’investisseur et l’équipe",
+      "INTERNAL": "L’équipe uniquement",
+      "CONFIDENTIAL": "Confidentiel (conformité)"
+    },
+    "upload": {
+      "title": "Ajouter un document",
+      "file": "Fichier",
+      "hint": "PDF, PNG, JPEG, CSV ou XLSX, 10 Mo au maximum.",
+      "tooBig": "Ce fichier dépasse 10 Mo.",
+      "name": "Nom",
+      "submit": "Déposer",
+      "done": "Le document a été ajouté."
+    }
+  },
+  "profile": {
+    "title": "Mon profil",
+    "description": "Votre organisation telle que l’émetteur la connaît, et vos coordonnées.",
+    "kycStatus": "KYC/KYB",
+    "kycExpiry": "KYC/KYB valable jusqu’au",
+    "registrationNumber": "Numéro d’immatriculation",
+    "country": "Pays d’immatriculation",
+    "contact": "Coordonnées",
+    "recipientCode": {
+      "title": "Code destinataire",
+      "help": "Communiquez ce code à un autre investisseur qui souhaite vous transférer des unités. Il ne révèle jamais votre identité.",
+      "regenerate": "Créer un nouveau code",
+      "confirmTitle": "Créer un nouveau code destinataire ?",
+      "confirmDescription": "Votre code actuel cesse immédiatement de fonctionner."
     }
   }
 }

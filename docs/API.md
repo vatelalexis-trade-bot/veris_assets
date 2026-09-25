@@ -147,14 +147,16 @@ Refus métier (détails de `VALIDATION_FAILED`) : `OWN_ACCOUNT`, `LAST_ADMINISTR
 | GET | `/investors` · `/investors/{id}` | `investor:read` | |
 | POST | `/investors` | `investor:manage` | ✓ |
 | PATCH | `/investors/{id}` | `investor:manage` / `profile:manage` (P) | |
-| GET / POST / PATCH | `/investors/{id}/representatives`, `/investors/{id}/beneficial-owners` | `investor-personal-data:read` / `investor:manage` | |
-| POST | `/investors/{id}/eligibility-status` (ELIGIBLE, NOT_ELIGIBLE, SUSPENDED + justification) | `eligibility:decide` | ✓ |
+| GET / POST | `/investors/{id}/representatives`, `/investors/{id}/beneficial-owners` · PATCH `…/{personId}` | `investor-personal-data:read` / `investor:manage` | |
+| GET | `/investors/{id}/comments` | `investor:read` | |
+| POST | `/investors/{id}/eligibility-status` (ELIGIBLE, NOT_ELIGIBLE, SUSPENDED + justification) — phase 9 | `eligibility:decide` | ✓ |
 | POST | `/investors/{id}/comments` | `compliance-comment:create` | |
-| GET | `/me/investor` · POST `/me/investor/recipient-code/regenerate` | `profile:manage` (P) | ✓ |
+| GET / PATCH | `/me/investor` (coordonnées seulement, `If-Match`, D-048) · POST `/me/investor/recipient-code/regenerate` | `profile:manage` (P) | ✓ (POST) |
 | GET | `/kyc-cases` · `/kyc-cases/{id}` | `kyc:read` | |
 | POST | `/kyc-cases` | `kyc:prepare` | ✓ |
-| POST | `/kyc-cases/{id}/submit-for-review` | `kyc:prepare` | ✓ |
-| POST | `/kyc-cases/{id}/approve` · `/reject` | `kyc:decide` | ✓ |
+| POST | `/kyc-cases/{id}/documents` (joindre une pièce KYC de l'investisseur) | `kyc:prepare` | |
+| POST | `/kyc-cases/{id}/submit-for-review` (au moins une pièce ; appel au fournisseur factice) | `kyc:prepare` | ✓ |
+| POST | `/kyc-cases/{id}/approve` · `/reject` · `/send-back` (commentaire obligatoire pour refuser ou renvoyer ; quatre yeux) | `kyc:decide` | ✓ |
 | GET | `/eligibility-assessments` · `/{id}` | `eligibility:read` | |
 | POST | `/eligibility-assessments/preview` (évaluation sans enregistrement) | `eligibility:read` | |
 
@@ -236,7 +238,8 @@ Refus métier (détails de `VALIDATION_FAILED`) : `OWN_ACCOUNT`, `LAST_ADMINISTR
 |---|---|---|---|
 | GET | `/documents` · `/{id}` · `/{id}/versions` | `document:read` (P) | |
 | POST | `/documents` (multipart, 10 Mo max) · `/documents/{id}/versions` | `document:upload` (P) | ✓ |
-| POST | `/documents/{id}/download-url` (URL signée 5 min ; téléchargement confidentiel tracé) | `document:read` / `document:read-confidential` | |
+| POST | `/documents/{id}/download-url` (lien signé 5 min vers l'API, D-045) | `document:read` / `document:read-confidential` | |
+| GET | `/documents/download?token=…` (fichier ; même utilisateur, téléchargement confidentiel tracé) | Session valide | |
 | POST | `/documents/{id}/archive` | `document:upload` | ✓ |
 
 ### 2.12 `/notifications`

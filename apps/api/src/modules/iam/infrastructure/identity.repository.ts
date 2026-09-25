@@ -20,6 +20,8 @@ export interface IdentityUser {
   email: string;
   name: string;
   tenantId: string | null;
+  /** Investor profile of an Investor account (portal), null otherwise. */
+  investorId: string | null;
   status: string;
   locale: string;
   twoFactorEnabled: boolean;
@@ -43,6 +45,7 @@ const userColumns = {
   email: user.email,
   name: user.name,
   tenantId: user.tenantId,
+  investorId: user.investorId,
   status: user.status,
   locale: user.locale,
   twoFactorEnabled: user.twoFactorEnabled,

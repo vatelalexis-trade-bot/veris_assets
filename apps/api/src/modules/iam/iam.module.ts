@@ -11,6 +11,7 @@ import { RolesController, UsersController } from './api/users.controller.js';
 import { AuthenticationService } from './application/authentication.service.js';
 import { DemoAccountsService } from './application/demo-accounts.service.js';
 import { IamEvents } from './application/iam-events.js';
+import { TenantDirectory } from './application/tenant-directory.js';
 import { UserDirectory } from './application/user-directory.js';
 import { InvitationService } from './application/invitation.service.js';
 import { PasswordResetMailer } from './application/password-reset-mailer.js';
@@ -71,9 +72,10 @@ import { IdentityRepository } from './infrastructure/identity.repository.js';
     TenantSettingsService,
     IamEvents,
     UserDirectory,
+    TenantDirectory,
     { provide: APP_GUARD, useClass: AuthGuard },
   ],
-  exports: [UserDirectory],
+  exports: [UserDirectory, TenantDirectory],
 })
 export class IamModule implements OnApplicationShutdown {
   constructor(@Inject(AUTH_POOL) private readonly pool: pg.Pool) {}

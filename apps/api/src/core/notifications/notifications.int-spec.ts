@@ -96,6 +96,7 @@ describe('outbox (SPEC §15)', () => {
 
     // Refused operation (an administrator may not give the Investor role): no event.
     const adminId = await idOfUser('northwind.admin2@example.com');
+    const eventsBefore = (await eventsOf(adminId)).length;
     const refused = await admin
       .put(`/api/v1/users/${adminId}/roles`)
       .set('Idempotency-Key', randomUUID())
@@ -103,7 +104,7 @@ describe('outbox (SPEC §15)', () => {
     expect(errorOf(refused).details).toEqual([
       expect.objectContaining({ code: 'ROLE_NOT_ASSIGNABLE' }),
     ]);
-    expect(await eventsOf(adminId)).toHaveLength(0);
+    expect(await eventsOf(adminId)).toHaveLength(eventsBefore);
   });
 
   it('delivers an event once: one notification and one email, in the user’s language', async () => {

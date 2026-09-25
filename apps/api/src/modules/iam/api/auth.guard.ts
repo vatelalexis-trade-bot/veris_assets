@@ -48,6 +48,7 @@ export class AuthGuard implements CanActivate {
     setRequestUser({
       userId: auth.userId,
       tenantId: auth.tenantId,
+      investorId: auth.investorId,
       roles: auth.roles,
       permissions: auth.permissions,
     });
