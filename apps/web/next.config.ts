@@ -1,4 +1,8 @@
 import type { NextConfig } from 'next';
+import createNextIntlPlugin from 'next-intl/plugin';
+
+// Loads the translations of the current language on every request (src/i18n/request.ts).
+const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
 // In GitHub Codespaces the app is opened through <codespace>-3000.<forwarding domain>;
 // the dev server must accept that origin (it only allows localhost by default).
@@ -17,4 +21,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);

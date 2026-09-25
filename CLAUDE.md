@@ -32,5 +32,5 @@ Le porteur de projet n'est pas développeur. Il travaille sur un Chromebook, dan
 
 ## Marque
 - Nom : Virtus Assets (ne jamais utiliser l'ancien nom de travail « Astraea »).
-- Logo : `brand/virtus-assets-logo.jpg` à la racine du dépôt ; à déplacer dans `apps/web/public/brand/` à la phase 4 (D-006) (en attente d'une version SVG).
+- Logo : `apps/web/public/brand/virtus-assets-logo.jpg` (déplacé en phase 4 ; en attente d'une version SVG). Composant `Logo` : ni déformation ni recoloration.
 - Couleurs : fond #0A1020, primaire #4F52D6, accent #45D6E6 (détail en section 23.1 de la spec).

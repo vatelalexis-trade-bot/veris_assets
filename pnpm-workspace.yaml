@@ -4,8 +4,11 @@ packages:
 
 # Install scripts of dependencies are refused unless explicitly allowed here (pnpm supply-chain safety).
 allowBuilds:
+  # Pulled in by next-intl (optional message extraction); prebuilt binaries are optional dependencies.
+  '@parcel/watcher': false
   # Install telemetry pulled in by swagger-ui-dist: refused.
   '@scarf/scarf': false
+  '@swc/core': false
   # Not needed: its platform binary is installed as an optional dependency.
   esbuild: false
   # Not needed: its prebuilt binary is installed as an optional dependency (same choice as create-next-app).

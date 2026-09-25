@@ -57,7 +57,7 @@ Vérifiable par : navigation dans les deux langues.
 | P4-4 | `AppShell`, `Sidebar`, `Header`, `DemoBanner`, menus émetteur / investisseur / plateforme (pages vides) | M |
 | P4-5 | Composants de base shadcn/ui adaptés : boutons, formulaires, `StatusBadge`, `DataTable`, `EmptyState`, `Skeleton`, `ErrorState` | M |
 | P4-6 | Correspondance statuts → couleur/libellé dans `packages/shared/status` | M |
-| P4-7 | Client API généré depuis OpenAPI + TanStack Query | S |
+| P4-7 | Client API généré depuis OpenAPI + TanStack Query — reporté en phase 5 (D-027) | S |
 
 ## Phase 5 — Authentification
 Vérifiable par : connexion avec un compte de démo, dans le navigateur.

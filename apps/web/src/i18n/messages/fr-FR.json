@@ -1,0 +1,223 @@
+{
+  "common": {
+    "productName": "Virtus Assets",
+    "skipToContent": "Aller au contenu principal",
+    "loading": "Chargement…",
+    "retry": "Réessayer",
+    "language": "Langue",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "mainNavigation": "Navigation principale",
+    "backToHome": "Retour à l’accueil"
+  },
+  "demoBanner": {
+    "text": "Environnement de démonstration — données fictives"
+  },
+  "languages": {
+    "en-GB": "English",
+    "fr-FR": "Français"
+  },
+  "portals": {
+    "issuer": "Portail émetteur",
+    "investor": "Portail investisseur",
+    "platform": "Console plateforme"
+  },
+  "navigation": {
+    "issuer": {
+      "dashboard": "Tableau de bord",
+      "tasks": "À traiter",
+      "issuances": "Émissions",
+      "investors": "Investisseurs",
+      "subscriptions": "Souscriptions",
+      "registry": "Registre",
+      "distributions": "Distributions",
+      "documents": "Documents",
+      "reports": "Rapports",
+      "audit": "Journal d’audit",
+      "settings": "Paramètres"
+    },
+    "investor": {
+      "portfolio": "Portefeuille",
+      "opportunities": "Opportunités d’investissement",
+      "subscriptions": "Souscriptions",
+      "transactions": "Transactions",
+      "distributions": "Distributions",
+      "documents": "Documents",
+      "profile": "Profil"
+    },
+    "platform": {
+      "tenants": "Organisations",
+      "metrics": "Indicateurs",
+      "templates": "Modèles d’emails",
+      "settings": "Paramètres",
+      "break-glass": "Accès exceptionnel"
+    }
+  },
+  "home": {
+    "title": "Gestion du cycle de vie des actifs privés numériques",
+    "subtitle": "Émettez, administrez et gérez vos actifs privés depuis une seule plateforme.",
+    "demoNotice": "Ceci est un environnement de démonstration : toutes les données sont fictives et aucun paiement réel n’est effectué.",
+    "choosePortal": "Découvrir les portails",
+    "temporaryNavigation": "La connexion arrive à la phase suivante ; d’ici là, les portails sont ouverts à la navigation.",
+    "portalDescriptions": {
+      "issuer": "Créez des émissions, intégrez les investisseurs, gérez souscriptions, registre et distributions.",
+      "investor": "Suivez positions, souscriptions, transactions et distributions.",
+      "platform": "Administrez les organisations et les paramètres de la plateforme."
+    }
+  },
+  "placeholder": {
+    "title": "Bientôt disponible",
+    "description": "Cet écran sera construit dans une prochaine phase du projet."
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "description": "La page demandée n’existe pas ou a été déplacée."
+  },
+  "errorState": {
+    "title": "Une erreur est survenue",
+    "correlationId": "Référence pour le support : {id}"
+  },
+  "dataTable": {
+    "empty": "Aucune donnée à afficher.",
+    "previousPage": "Page précédente",
+    "nextPage": "Page suivante",
+    "pageInfo": "Page {page} sur {pageCount}",
+    "rowCount": "{total, plural, one {# résultat} other {# résultats}}",
+    "sortBy": "Trier par {column}"
+  },
+  "status": {
+    "issuance": {
+      "DRAFT": "Brouillon",
+      "UNDER_REVIEW": "En revue",
+      "APPROVED": "Approuvée",
+      "SUBSCRIPTION_OPEN": "Souscriptions ouvertes",
+      "SUBSCRIPTION_CLOSED": "Souscriptions closes",
+      "ALLOCATED": "Allouée",
+      "ACTIVE": "Active",
+      "MATURED": "Échue",
+      "CANCELLED": "Annulée"
+    },
+    "subscription": {
+      "DRAFT": "Brouillon",
+      "SUBMITTED": "Soumise",
+      "UNDER_REVIEW": "En revue",
+      "APPROVED": "Approuvée",
+      "REJECTED": "Rejetée",
+      "PAYMENT_PENDING": "Paiement en attente",
+      "PAYMENT_CONFIRMED": "Paiement confirmé",
+      "ALLOCATED": "Allouée",
+      "CANCELLED": "Annulée"
+    },
+    "kyc": {
+      "NOT_STARTED": "Non commencé",
+      "IN_PROGRESS": "En cours",
+      "PENDING_REVIEW": "En attente de revue",
+      "APPROVED": "Approuvé",
+      "REJECTED": "Rejeté",
+      "EXPIRED": "Expiré"
+    },
+    "eligibility": {
+      "NOT_ASSESSED": "Non évalué",
+      "ELIGIBLE": "Éligible",
+      "NOT_ELIGIBLE": "Non éligible",
+      "SUSPENDED": "Suspendu"
+    },
+    "transfer": {
+      "DRAFT": "Brouillon",
+      "SUBMITTED": "Soumis",
+      "COMPLIANCE_REVIEW": "Revue conformité",
+      "APPROVED": "Approuvé",
+      "REJECTED": "Rejeté",
+      "EXECUTED": "Exécuté",
+      "CANCELLED": "Annulé"
+    },
+    "distribution": {
+      "DRAFT": "Brouillon",
+      "CALCULATED": "Calculée",
+      "UNDER_REVIEW": "En revue",
+      "APPROVED": "Approuvée",
+      "PAYMENT_INSTRUCTION_GENERATED": "Instruction de paiement générée",
+      "PAID": "Payée",
+      "FAILED": "Échouée",
+      "CANCELLED": "Annulée"
+    }
+  },
+  "errors": {
+    "VALIDATION_FAILED": "Certaines informations sont manquantes ou invalides.",
+    "RESOURCE_NOT_FOUND": "L’élément demandé est introuvable.",
+    "PERMISSION_DENIED": "Vous n’êtes pas autorisé à effectuer cette action.",
+    "INVALID_STATE_TRANSITION": "Cette action n’est pas possible dans le statut actuel.",
+    "VERSION_CONFLICT": "Quelqu’un d’autre a modifié cet élément. Rechargez la page et réessayez.",
+    "FOUR_EYES_VIOLATION": "Cette action doit être validée par un autre utilisateur que celui qui l’a initiée.",
+    "COMMENT_REQUIRED": "Un commentaire est obligatoire pour cette action.",
+    "PRECONDITION_REQUIRED": "La page n’est plus à jour. Rechargez-la et réessayez.",
+    "RATE_LIMITED": "Trop de requêtes. Patientez un instant puis réessayez.",
+    "PROVIDER_UNAVAILABLE": "Un service externe est temporairement indisponible. Réessayez plus tard.",
+    "INTERNAL_ERROR": "Une erreur inattendue est survenue.",
+    "IDEMPOTENCY_KEY_REQUIRED": "Cette action n’a pas pu être protégée contre les doublons. Réessayez.",
+    "IDEMPOTENCY_KEY_REUSED": "Cette action a déjà été envoyée avec des informations différentes.",
+    "IDEMPOTENCY_IN_PROGRESS": "Cette action est encore en cours de traitement.",
+    "UNAUTHENTICATED": "Veuillez vous connecter.",
+    "INVALID_CREDENTIALS": "L’email ou le mot de passe est incorrect.",
+    "MFA_REQUIRED": "Saisissez le code de votre application d’authentification.",
+    "MFA_INVALID_CODE": "Le code d’authentification est invalide.",
+    "ACCOUNT_LOCKED": "Le compte est temporairement bloqué après trop de tentatives échouées.",
+    "ACCOUNT_INACTIVE": "Ce compte est inactif.",
+    "SESSION_EXPIRED": "Votre session a expiré. Veuillez vous reconnecter.",
+    "PASSWORD_TOO_WEAK": "Le mot de passe ne respecte pas les exigences.",
+    "INVITATION_INVALID_OR_EXPIRED": "L’invitation est invalide ou a expiré.",
+    "ISSUANCE_INCONSISTENT_TERMS": "Les caractéristiques de l’émission sont incohérentes.",
+    "SUBSCRIPTION_WINDOW_NOT_STARTED": "La période de souscription n’a pas encore commencé.",
+    "MINIMUM_NOT_REACHED_JUSTIFICATION_REQUIRED": "Le montant minimum n’est pas atteint : une justification est requise pour continuer.",
+    "PENDING_PAYMENTS_REMAINING": "Des souscriptions sont encore en attente de paiement.",
+    "ELIGIBILITY_FAILED": "L’investisseur ne respecte pas les règles d’éligibilité de cette émission.",
+    "SUBSCRIPTION_WINDOW_CLOSED": "La période de souscription est close.",
+    "SUBSCRIPTION_BELOW_MINIMUM": "Le montant est inférieur à la souscription minimale.",
+    "SUBSCRIPTION_LIMIT_EXCEEDED": "La souscription demandée dépasse la limite autorisée.",
+    "AMOUNT_UNITS_MISMATCH": "Le montant ne correspond pas au nombre d’unités multiplié par la valeur nominale.",
+    "INSUFFICIENT_UNITS": "Il n’y a pas assez d’unités disponibles.",
+    "ISSUANCE_CAP_EXCEEDED": "La demande dépasse le montant maximal de l’émission.",
+    "NOT_INVITED": "L’investisseur n’est pas invité à cette émission.",
+    "ALLOCATION_EXCEEDS_SUPPLY": "L’allocation dépasse le nombre total d’unités.",
+    "ALLOCATION_EXCEEDS_REQUEST": "L’allocation dépasse le nombre d’unités demandé.",
+    "INSUFFICIENT_AVAILABLE_QUANTITY": "La quantité disponible est insuffisante.",
+    "REGISTRY_INVARIANT_VIOLATION": "Cette opération rendrait le registre incohérent.",
+    "QUANTITY_NOT_INTEGER": "Les quantités doivent être des unités entières.",
+    "TRANSFER_NOT_ALLOWED": "Les transferts ne sont pas autorisés pour cette émission.",
+    "SELF_TRANSFER_FORBIDDEN": "Un investisseur ne peut pas se transférer des unités à lui-même.",
+    "LOCKUP_PERIOD_ACTIVE": "Les transferts sont bloqués jusqu’à la fin de la période de blocage.",
+    "RECIPIENT_CODE_UNKNOWN": "Le code destinataire est inconnu.",
+    "RECIPIENT_NOT_ELIGIBLE": "Le destinataire n’est pas éligible.",
+    "MAX_INVESTORS_REACHED": "Le nombre maximal d’investisseurs est atteint.",
+    "DISTRIBUTION_ALREADY_EXISTS": "Une distribution existe déjà pour cette date de paiement.",
+    "SNAPSHOT_MISMATCH": "Le recalcul à partir de la photo du registre donne un résultat différent.",
+    "FILE_TYPE_NOT_ALLOWED": "Ce type de fichier n’est pas autorisé.",
+    "FILE_TOO_LARGE": "Le fichier est trop volumineux.",
+    "FILE_REJECTED_BY_SCAN": "Le fichier a été rejeté par le contrôle de sécurité."
+  },
+  "eligibilityRules": {
+    "PROFILE_INACTIVE": "Le profil de l’investisseur n’est pas actif.",
+    "KYC_NOT_APPROVED": "Le contrôle KYC/KYB n’est pas approuvé.",
+    "KYC_EXPIRED": "Le contrôle KYC/KYB a expiré.",
+    "KYC_EXPIRES_TOO_SOON": "Le contrôle KYC/KYB expire trop tôt pour cette émission.",
+    "CLASSIFICATION_INCOMPATIBLE": "La classification de l’investisseur n’est pas acceptée.",
+    "INVESTOR_TYPE_NOT_ALLOWED": "Ce type d’investisseur n’est pas accepté.",
+    "NOT_PROFESSIONAL": "Cette émission est réservée aux investisseurs professionnels.",
+    "COUNTRY_EXCLUDED": "Le pays de l’investisseur est exclu de cette émission.",
+    "COUNTRY_NOT_ALLOWED": "Le pays de l’investisseur ne fait pas partie des pays autorisés.",
+    "INVESTOR_SUSPENDED": "L’investisseur est suspendu.",
+    "INVESTOR_NOT_ELIGIBLE": "L’investisseur a été évalué comme non éligible.",
+    "MAX_INVESTORS_REACHED": "Le nombre maximal d’investisseurs est atteint."
+  },
+  "issuanceTermsRules": {
+    "TARGET_NOT_EQUAL_NOMINAL_TIMES_UNITS": "Le montant cible doit être égal à la valeur nominale multipliée par le nombre d’unités.",
+    "MIN_TARGET_MAX_ORDER": "Le minimum ne doit pas dépasser la cible, ni la cible le maximum.",
+    "MIN_SUBSCRIPTION_ABOVE_MAX_PER_INVESTOR": "La souscription minimale dépasse le maximum par investisseur.",
+    "DATE_ORDER_INVALID": "Les dates doivent se suivre : début de souscription, fin de souscription, date d’émission, maturité.",
+    "COUNTRY_BOTH_ALLOWED_AND_EXCLUDED": "Un pays ne peut pas être à la fois autorisé et exclu.",
+    "NEGATIVE_RATE": "Le taux ne peut pas être négatif.",
+    "RATE_TYPE_NOT_SUPPORTED": "Seuls les taux fixes sont pris en charge.",
+    "FREQUENCY_NOT_SUPPORTED": "Cette fréquence de distribution n’est pas prise en charge.",
+    "UNITS_NOT_INTEGER": "Le nombre d’unités doit être un nombre entier."
+  }
+}

@@ -25,7 +25,7 @@ Les décisions référencées `D-xxx` sont dans `docs/DECISIONS.md`. Modèle de 
 | Front | Next.js (App Router), React, Tailwind CSS, shadcn/ui | Landing, portails, console plateforme |
 | Front — données | TanStack Query, client généré depuis OpenAPI (`openapi-typescript` + `openapi-fetch`) | Appels typés à l'API |
 | Front — formulaires | React Hook Form + Zod | Validation en ligne |
-| Front — tableaux / graphiques | TanStack Table, Recharts | Data tables, KPI, calculateur |
+| Front — tableaux / graphiques | `DataTable` maison (tri et pagination faits par l'API, D-027), Recharts | Data tables, KPI, calculateur |
 | Front — i18n | next-intl | en-GB, fr-FR |
 | Back | NestJS | Modules, injection de dépendances, guards, OpenAPI |
 | Validation | Zod (pipe `ZodValidationPipe` maison) ; OpenAPI produit depuis les mêmes schémas via `z.toJSONSchema` | Entrées API, variables d'environnement, documentation. `nestjs-zod` écarté : incompatible avec NestJS 12 |
@@ -79,7 +79,6 @@ virtus_assets/
 ├─ infra/                    Configuration des services Docker (Garage…)
 ├─ scripts/                  Démarrage, initialisation du stockage, contrôle des mentions interdites
 ├─ tests/e2e/                Playwright : les six scénarios de la section 29
-├─ brand/                    Logo source (déplacé vers apps/web/public/brand en phase 4)
 └─ docs/                     SPEC, DECISIONS, ARCHITECTURE, DATA_MODEL, API, BACKLOG
 ```
 
@@ -286,18 +285,18 @@ Format de la section 22.2 de la spec. Les codes et leur statut HTTP sont défini
 
 ```
 apps/web/src/
-├─ app/[locale]/
-│  ├─ (public)/            Landing + calculateur, contact
-│  ├─ (auth)/              login, mfa, invitation/[token], reset-password
-│  ├─ (issuer)/issuer/     Portail émetteur
-│  ├─ (investor)/portal/   Portail investisseur
-│  └─ (platform)/platform/ Console Platform Administrator
-├─ components/ui/          Composants shadcn/ui (copiés, adaptés aux jetons)
-├─ components/app/         Composants métier transverses (section 23.2)
-├─ features/<domaine>/     Écrans, hooks et formulaires par domaine
-├─ lib/api/                Client généré + hooks TanStack Query
-├─ i18n/messages/          en-GB.json, fr-FR.json
-└─ theme/                  tokens.css (jetons de couleur, typographie)
+├─ app/globals.css         Jetons du thème (couleurs, polices) : source unique
+├─ app/[locale]/           Page d'accueil (landing en phase 15), 404 traduite
+│  ├─ issuer/              Portail émetteur (layout = AppShell)
+│  ├─ portal/              Portail investisseur
+│  ├─ platform/            Console Platform Administrator
+│  └─ (auth)/…             Connexion, MFA, invitation (phase 5)
+├─ proxy.ts                Proxy Next.js 16 (ex-middleware) : préfixe de langue /en, /fr
+├─ components/ui/          Primitives dans le style shadcn/ui, adaptées aux jetons
+├─ components/app/         Composants transverses (section 23.2)
+├─ features/<domaine>/     Écrans, hooks et formulaires par domaine (menus : features/navigation)
+├─ lib/api/                Client généré depuis OpenAPI (phase 5, D-027)
+└─ i18n/                   routing, navigation, request, messages/en-GB.json et fr-FR.json
 ```
 
 ### 5.2 Routes principales
@@ -329,7 +328,7 @@ Onglets du détail d'une émission (section 13.4) : `overview`, `details`, `term
 
 ### 5.5 Thème
 
-- Jetons définis une seule fois dans `theme/tokens.css` (variables CSS) et exposés à Tailwind ; aucun code couleur en dur dans les composants (règle de lint).
+- Jetons définis une seule fois dans `apps/web/src/app/globals.css` (bloc `@theme` de Tailwind CSS 4, qui génère les classes `bg-surface`, `text-muted`…) ; aucun code couleur ni style en ligne dans les composants (règle ESLint).
 - Valeurs : section 23.1 de la spec, plus les jetons de texte accessibles proposés en D-021.
 - Mode sombre par défaut (seul mode du MVP).
 - Typographie : Montserrat (titres), Inter (texte, tableaux, `font-variant-numeric: tabular-nums`), servies localement via `next/font`.

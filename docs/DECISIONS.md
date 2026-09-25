@@ -85,8 +85,23 @@ Validée par le porteur de projet (« ok pour tous les points »).
 
 ## 2026-09-25 — Phase 3 (base de données)
 
-**D-024 — Proposée. Génération des identifiants.** Les UUID v7 (spec 21.2) sont générés par PostgreSQL 18 (fonction native `uuidv7()`, valeur par défaut des clés primaires) plutôt que par l'application, ce qui évite une bibliothèque de plus ; l'application pourra toujours fournir son propre identifiant quand elle en a besoin avant l'insertion. Les données de démonstration utilisent des identifiants **déterministes** (UUID version 8, dérivés du nom de l'objet) pour que chaque `pnpm db:reset` redonne exactement les mêmes identifiants (spec 28). *Précise `docs/DATA_MODEL.md` §1.*
+Validées par le porteur de projet (« ok pour D-024, D-025 et D-026 »).
 
-**D-025 — Proposée. Types d'organisation.** La spec (6.1) prévoit un « type d'organisation » sans en donner la liste. Valeurs retenues : `ISSUER` (émetteur), `ASSET_MANAGER` (société de gestion), `FUND` (fonds). *Complète `docs/DATA_MODEL.md` §3.2.*
+**D-024 — Acceptée. Génération des identifiants.** Les UUID v7 (spec 21.2) sont générés par PostgreSQL 18 (fonction native `uuidv7()`, valeur par défaut des clés primaires) plutôt que par l'application, ce qui évite une bibliothèque de plus ; l'application pourra toujours fournir son propre identifiant quand elle en a besoin avant l'insertion. Les données de démonstration utilisent des identifiants **déterministes** (UUID version 8, dérivés du nom de l'objet) pour que chaque `pnpm db:reset` redonne exactement les mêmes identifiants (spec 28). *Précise `docs/DATA_MODEL.md` §1.*
 
-**D-026 — Proposée. Pas de clé étrangère des tables techniques vers les tenants.** Les tables du noyau technique (`core.*`, `audit.*`) portent `tenant_id` sans clé étrangère vers `iam.tenant` : le noyau ne doit dépendre d'aucun module métier (règle de frontière), et l'isolation reste garantie par la RLS. Les tables des modules métier, elles, auront leurs clés étrangères vers `iam.tenant`.
+**D-025 — Acceptée. Types d'organisation.** La spec (6.1) prévoit un « type d'organisation » sans en donner la liste. Valeurs retenues : `ISSUER` (émetteur), `ASSET_MANAGER` (société de gestion), `FUND` (fonds). *Complète `docs/DATA_MODEL.md` §3.2.*
+
+**D-026 — Acceptée. Pas de clé étrangère des tables techniques vers les tenants.** Les tables du noyau technique (`core.*`, `audit.*`) portent `tenant_id` sans clé étrangère vers `iam.tenant` : le noyau ne doit dépendre d'aucun module métier (règle de frontière), et l'isolation reste garantie par la RLS. Les tables des modules métier, elles, auront leurs clés étrangères vers `iam.tenant`.
+
+---
+
+## 2026-09-25 — Phase 4 (squelette front-end)
+
+**D-027 — Proposée. Tableau de données et client API.**
+1. Le composant `DataTable` est un tableau « piloté » : le tri et la pagination sont faits par l'API (spec 22.1 et 25), le tableau affiche la page reçue et transmet les choix de l'utilisateur. La bibliothèque TanStack Table, prévue dans `docs/ARCHITECTURE.md`, n'est donc pas nécessaire pour l'instant.
+2. Le client API généré depuis OpenAPI et TanStack Query (P4-7, priorité « S ») sont reportés à la phase 5, avec les premières routes réellement appelées par le front (connexion).
+*Modifie la stack (`docs/ARCHITECTURE.md` §2) et décale P4-7.*
+
+**D-028 — Proposée. Deux jetons de couleur complémentaires.** La spec (23.1) ne définit pas de couleur de bordure. Ajouts : `border` `#2A3547` pour les séparateurs décoratifs, et `input-border` `#6B7280` pour le contour des champs de saisie, qui doit contraster au moins à 3:1 avec les fonds (règle WCAG 1.4.11, vérifiée par un test). *Ajoute des jetons à la section 23.1.*
+
+**D-029 — Proposée. Présentation du logo.** Le fichier fourni (1408 × 768, larges marges de la couleur du fond) est affiché sans déformation ni recoloration, dans un cadre qui n'en montre que la partie centrale (monogramme et nom), pour rester lisible dans la barre latérale. Le fichier lui-même n'est pas modifié. À revoir avec la version SVG.

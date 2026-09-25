@@ -1,0 +1,223 @@
+{
+  "common": {
+    "productName": "Virtus Assets",
+    "skipToContent": "Skip to main content",
+    "loading": "Loading…",
+    "retry": "Try again",
+    "language": "Language",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "mainNavigation": "Main navigation",
+    "backToHome": "Back to home"
+  },
+  "demoBanner": {
+    "text": "Demonstration environment — fictitious data"
+  },
+  "languages": {
+    "en-GB": "English",
+    "fr-FR": "Français"
+  },
+  "portals": {
+    "issuer": "Issuer portal",
+    "investor": "Investor portal",
+    "platform": "Platform console"
+  },
+  "navigation": {
+    "issuer": {
+      "dashboard": "Dashboard",
+      "tasks": "To do",
+      "issuances": "Issuances",
+      "investors": "Investors",
+      "subscriptions": "Subscriptions",
+      "registry": "Registry",
+      "distributions": "Distributions",
+      "documents": "Documents",
+      "reports": "Reports",
+      "audit": "Audit log",
+      "settings": "Settings"
+    },
+    "investor": {
+      "portfolio": "Portfolio",
+      "opportunities": "Investment opportunities",
+      "subscriptions": "Subscriptions",
+      "transactions": "Transactions",
+      "distributions": "Distributions",
+      "documents": "Documents",
+      "profile": "Profile"
+    },
+    "platform": {
+      "tenants": "Organisations",
+      "metrics": "Metrics",
+      "templates": "Email templates",
+      "settings": "Settings",
+      "break-glass": "Exceptional access"
+    }
+  },
+  "home": {
+    "title": "Digital private asset lifecycle management",
+    "subtitle": "Issue, administer and service private assets from a single platform.",
+    "demoNotice": "This is a demonstration environment: all data is fictitious and no real payment is made.",
+    "choosePortal": "Explore the portals",
+    "temporaryNavigation": "Sign-in arrives in the next phase; until then, the portals are open for navigation.",
+    "portalDescriptions": {
+      "issuer": "Create issuances, onboard investors, run subscriptions, the registry and distributions.",
+      "investor": "Follow positions, subscriptions, transactions and distributions.",
+      "platform": "Administer organisations and platform settings."
+    }
+  },
+  "placeholder": {
+    "title": "Coming soon",
+    "description": "This screen will be built in a later phase of the project."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for does not exist or has moved."
+  },
+  "errorState": {
+    "title": "Something went wrong",
+    "correlationId": "Reference for support: {id}"
+  },
+  "dataTable": {
+    "empty": "No data to display.",
+    "previousPage": "Previous page",
+    "nextPage": "Next page",
+    "pageInfo": "Page {page} of {pageCount}",
+    "rowCount": "{total, plural, one {# result} other {# results}}",
+    "sortBy": "Sort by {column}"
+  },
+  "status": {
+    "issuance": {
+      "DRAFT": "Draft",
+      "UNDER_REVIEW": "Under review",
+      "APPROVED": "Approved",
+      "SUBSCRIPTION_OPEN": "Subscription open",
+      "SUBSCRIPTION_CLOSED": "Subscription closed",
+      "ALLOCATED": "Allocated",
+      "ACTIVE": "Active",
+      "MATURED": "Matured",
+      "CANCELLED": "Cancelled"
+    },
+    "subscription": {
+      "DRAFT": "Draft",
+      "SUBMITTED": "Submitted",
+      "UNDER_REVIEW": "Under review",
+      "APPROVED": "Approved",
+      "REJECTED": "Rejected",
+      "PAYMENT_PENDING": "Payment pending",
+      "PAYMENT_CONFIRMED": "Payment confirmed",
+      "ALLOCATED": "Allocated",
+      "CANCELLED": "Cancelled"
+    },
+    "kyc": {
+      "NOT_STARTED": "Not started",
+      "IN_PROGRESS": "In progress",
+      "PENDING_REVIEW": "Pending review",
+      "APPROVED": "Approved",
+      "REJECTED": "Rejected",
+      "EXPIRED": "Expired"
+    },
+    "eligibility": {
+      "NOT_ASSESSED": "Not assessed",
+      "ELIGIBLE": "Eligible",
+      "NOT_ELIGIBLE": "Not eligible",
+      "SUSPENDED": "Suspended"
+    },
+    "transfer": {
+      "DRAFT": "Draft",
+      "SUBMITTED": "Submitted",
+      "COMPLIANCE_REVIEW": "Compliance review",
+      "APPROVED": "Approved",
+      "REJECTED": "Rejected",
+      "EXECUTED": "Executed",
+      "CANCELLED": "Cancelled"
+    },
+    "distribution": {
+      "DRAFT": "Draft",
+      "CALCULATED": "Calculated",
+      "UNDER_REVIEW": "Under review",
+      "APPROVED": "Approved",
+      "PAYMENT_INSTRUCTION_GENERATED": "Payment instruction generated",
+      "PAID": "Paid",
+      "FAILED": "Failed",
+      "CANCELLED": "Cancelled"
+    }
+  },
+  "errors": {
+    "VALIDATION_FAILED": "Some information is missing or invalid.",
+    "RESOURCE_NOT_FOUND": "The requested item was not found.",
+    "PERMISSION_DENIED": "You are not allowed to perform this action.",
+    "INVALID_STATE_TRANSITION": "This action is not possible in the current status.",
+    "VERSION_CONFLICT": "Someone else modified this item. Reload the page and try again.",
+    "FOUR_EYES_VIOLATION": "This action must be validated by another user than the one who initiated it.",
+    "COMMENT_REQUIRED": "A comment is required for this action.",
+    "PRECONDITION_REQUIRED": "The page is out of date. Reload it and try again.",
+    "RATE_LIMITED": "Too many requests. Please wait a moment and try again.",
+    "PROVIDER_UNAVAILABLE": "An external service is temporarily unavailable. Please try again later.",
+    "INTERNAL_ERROR": "An unexpected error occurred.",
+    "IDEMPOTENCY_KEY_REQUIRED": "This action could not be secured against duplicates. Please try again.",
+    "IDEMPOTENCY_KEY_REUSED": "This action was already sent with different information.",
+    "IDEMPOTENCY_IN_PROGRESS": "This action is still being processed.",
+    "UNAUTHENTICATED": "Please sign in.",
+    "INVALID_CREDENTIALS": "The email or password is incorrect.",
+    "MFA_REQUIRED": "Enter the code from your authentication app.",
+    "MFA_INVALID_CODE": "The authentication code is invalid.",
+    "ACCOUNT_LOCKED": "The account is temporarily locked after too many failed attempts.",
+    "ACCOUNT_INACTIVE": "This account is inactive.",
+    "SESSION_EXPIRED": "Your session has expired. Please sign in again.",
+    "PASSWORD_TOO_WEAK": "The password does not meet the requirements.",
+    "INVITATION_INVALID_OR_EXPIRED": "The invitation is invalid or has expired.",
+    "ISSUANCE_INCONSISTENT_TERMS": "The issuance terms are inconsistent.",
+    "SUBSCRIPTION_WINDOW_NOT_STARTED": "The subscription period has not started yet.",
+    "MINIMUM_NOT_REACHED_JUSTIFICATION_REQUIRED": "The minimum amount is not reached: a justification is required to proceed.",
+    "PENDING_PAYMENTS_REMAINING": "Some subscriptions are still waiting for payment.",
+    "ELIGIBILITY_FAILED": "The investor does not meet the eligibility rules of this issuance.",
+    "SUBSCRIPTION_WINDOW_CLOSED": "The subscription period is closed.",
+    "SUBSCRIPTION_BELOW_MINIMUM": "The amount is below the minimum subscription.",
+    "SUBSCRIPTION_LIMIT_EXCEEDED": "The requested subscription exceeds the permitted limit.",
+    "AMOUNT_UNITS_MISMATCH": "The amount does not match the number of units times the nominal value.",
+    "INSUFFICIENT_UNITS": "Not enough units are available.",
+    "ISSUANCE_CAP_EXCEEDED": "The request exceeds the maximum amount of the issuance.",
+    "NOT_INVITED": "The investor is not invited to this issuance.",
+    "ALLOCATION_EXCEEDS_SUPPLY": "The allocation exceeds the total number of units.",
+    "ALLOCATION_EXCEEDS_REQUEST": "The allocation exceeds the requested number of units.",
+    "INSUFFICIENT_AVAILABLE_QUANTITY": "The available quantity is insufficient.",
+    "REGISTRY_INVARIANT_VIOLATION": "This operation would make the registry inconsistent.",
+    "QUANTITY_NOT_INTEGER": "Quantities must be whole units.",
+    "TRANSFER_NOT_ALLOWED": "Transfers are not allowed for this issuance.",
+    "SELF_TRANSFER_FORBIDDEN": "An investor cannot transfer units to itself.",
+    "LOCKUP_PERIOD_ACTIVE": "Transfers are blocked until the end of the lock-up period.",
+    "RECIPIENT_CODE_UNKNOWN": "The recipient code is unknown.",
+    "RECIPIENT_NOT_ELIGIBLE": "The recipient is not eligible.",
+    "MAX_INVESTORS_REACHED": "The maximum number of investors is reached.",
+    "DISTRIBUTION_ALREADY_EXISTS": "A distribution already exists for this payment date.",
+    "SNAPSHOT_MISMATCH": "The recalculation from the snapshot gives a different result.",
+    "FILE_TYPE_NOT_ALLOWED": "This file type is not allowed.",
+    "FILE_TOO_LARGE": "The file is too large.",
+    "FILE_REJECTED_BY_SCAN": "The file was rejected by the security scan."
+  },
+  "eligibilityRules": {
+    "PROFILE_INACTIVE": "The investor profile is not active.",
+    "KYC_NOT_APPROVED": "The KYC/KYB check is not approved.",
+    "KYC_EXPIRED": "The KYC/KYB check has expired.",
+    "KYC_EXPIRES_TOO_SOON": "The KYC/KYB check expires too soon for this issuance.",
+    "CLASSIFICATION_INCOMPATIBLE": "The investor classification is not accepted.",
+    "INVESTOR_TYPE_NOT_ALLOWED": "This type of investor is not accepted.",
+    "NOT_PROFESSIONAL": "This issuance is reserved for professional investors.",
+    "COUNTRY_EXCLUDED": "The investor’s country is excluded from this issuance.",
+    "COUNTRY_NOT_ALLOWED": "The investor’s country is not in the allowed list.",
+    "INVESTOR_SUSPENDED": "The investor is suspended.",
+    "INVESTOR_NOT_ELIGIBLE": "The investor has been assessed as not eligible.",
+    "MAX_INVESTORS_REACHED": "The maximum number of investors is reached."
+  },
+  "issuanceTermsRules": {
+    "TARGET_NOT_EQUAL_NOMINAL_TIMES_UNITS": "The target amount must equal the nominal value times the number of units.",
+    "MIN_TARGET_MAX_ORDER": "The minimum must not exceed the target, nor the target the maximum.",
+    "MIN_SUBSCRIPTION_ABOVE_MAX_PER_INVESTOR": "The minimum subscription exceeds the maximum per investor.",
+    "DATE_ORDER_INVALID": "The dates must follow each other: subscription start, subscription end, issue date, maturity.",
+    "COUNTRY_BOTH_ALLOWED_AND_EXCLUDED": "A country cannot be both allowed and excluded.",
+    "NEGATIVE_RATE": "The rate cannot be negative.",
+    "RATE_TYPE_NOT_SUPPORTED": "Only fixed rates are supported.",
+    "FREQUENCY_NOT_SUPPORTED": "This distribution frequency is not supported.",
+    "UNITS_NOT_INTEGER": "The number of units must be a whole number."
+  }
+}

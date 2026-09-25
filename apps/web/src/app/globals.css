@@ -1,0 +1,55 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens (SPEC §23.1 and decision D-021), defined once. Components use only the Tailwind
+ * utilities generated from them (bg-surface, text-muted, border-border…), never raw colour codes:
+ * an ESLint rule rejects colour literals in the source code, and a test checks WCAG AA contrast.
+ * Dark mode only for the MVP.
+ */
+@theme {
+  --color-background: #0a1020;
+  --color-surface: #111827;
+  --color-surface-raised: #182131;
+  /* Decorative separators. */
+  --color-border: #2a3547;
+  /* Borders of form fields: at least 3:1 against the backgrounds (WCAG 1.4.11). */
+  --color-input-border: #6b7280;
+
+  --color-primary: #4f52d6;
+  --color-primary-foreground: #ffffff;
+  /* Readable indigo for text and links on dark backgrounds (D-021). */
+  --color-primary-text: #8b8ef0;
+  --color-accent: #45d6e6;
+
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  /* Readable red for error text on dark backgrounds (D-021). */
+  --color-error-text: #f87171;
+
+  --color-foreground: #f9fafb;
+  --color-muted: #9ca3af;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-montserrat), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-heading;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent;
+  }
+}
