@@ -551,7 +551,9 @@
       "DOCUMENT_VERSION_ADDED": "New version of a document",
       "DOCUMENT_ARCHIVED": "Document archived",
       "DOCUMENT_DOWNLOADED": "Confidential document downloaded",
-      "DOCUMENT_REJECTED": "File rejected by the security scan"
+      "DOCUMENT_REJECTED": "File rejected by the security scan",
+      "ELIGIBILITY_ASSESSED": "Eligibility checked",
+      "ELIGIBILITY_STATUS_CHANGED": "Eligibility status decided"
     }
   },
   "investors": {
@@ -741,5 +743,70 @@
       "confirmTitle": "Create a new recipient code?",
       "confirmDescription": "Your current code stops working at once."
     }
+  },
+  "eligibility": {
+    "title": "Eligibility",
+    "resultTitle": "Result of the eligibility check",
+    "eligible": "Eligible: every rule is met.",
+    "notEligible": "Not eligible: {count, plural, one {# rule is not met} other {# rules are not met}}.",
+    "passed": "Met:",
+    "failed": "Not met:",
+    "details": {
+      "profileStatus": "Profile: {value}",
+      "kycStatus": "KYC/KYB: {value}",
+      "expiryDate": "KYC/KYB valid until {value}",
+      "requiredUntil": "must be valid until {value}",
+      "classification": "Classification: {value}",
+      "investorType": "Type: {value}",
+      "country": "Country: {value}",
+      "maxInvestors": "Maximum: {value} investors",
+      "currentInvestorCount": "Current: {value}"
+    },
+    "decide": {
+      "title": "Decision of the Compliance Officer",
+      "status": "New status",
+      "justification": "Justification (required)",
+      "submit": "Record the decision"
+    },
+    "simulate": {
+      "title": "Try the rules of an issuance",
+      "help": "Checks the investor against these rules now, without recording anything.",
+      "professionalOnly": "Professional investors only",
+      "kycRequired": "Valid KYC/KYB required",
+      "minDays": "KYC/KYB still valid after (days)",
+      "excludedCountries": "Excluded countries",
+      "allowedCountries": "Allowed countries (none: all)",
+      "submit": "Check"
+    },
+    "history": {
+      "title": "Decisions",
+      "none": "No decision yet.",
+      "show": "Show the rules",
+      "hide": "Hide the rules",
+      "result": {
+        "ELIGIBLE": "Eligible",
+        "NOT_ELIGIBLE": "Not eligible"
+      },
+      "context": {
+        "INVITATION": "invitation",
+        "SUBSCRIPTION": "subscription",
+        "TRANSFER": "transfer",
+        "MANUAL": "decision of a Compliance Officer"
+      }
+    }
+  },
+  "eligibilityChecks": {
+    "PROFILE_INACTIVE": "The investor profile is active.",
+    "KYC_NOT_APPROVED": "The KYC/KYB check is approved.",
+    "KYC_EXPIRED": "The KYC/KYB check has not expired.",
+    "KYC_EXPIRES_TOO_SOON": "The KYC/KYB check stays valid long enough.",
+    "CLASSIFICATION_INCOMPATIBLE": "The investor classification is accepted.",
+    "INVESTOR_TYPE_NOT_ALLOWED": "This type of investor is accepted.",
+    "NOT_PROFESSIONAL": "The investor is a professional investor.",
+    "COUNTRY_EXCLUDED": "The investor’s country is not excluded.",
+    "COUNTRY_NOT_ALLOWED": "The investor’s country is allowed.",
+    "INVESTOR_SUSPENDED": "The investor is not suspended.",
+    "INVESTOR_NOT_ELIGIBLE": "No Compliance Officer has found the investor not eligible.",
+    "MAX_INVESTORS_REACHED": "The maximum number of investors is not reached."
   }
 }

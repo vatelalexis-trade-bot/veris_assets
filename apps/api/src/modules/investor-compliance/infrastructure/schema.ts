@@ -2,6 +2,7 @@
 // separate tables that the registry never references (SPEC §8.5).
 import { sql } from 'drizzle-orm';
 import {
+  boolean,
   char,
   check,
   date,
@@ -191,3 +192,44 @@ export const complianceComment = investorSchema.table('compliance_comment', {
   body: text().notNull(),
   createdAt: utcTimestamp().notNull().defaultNow(),
 });
+
+/**
+ * Every eligibility decision (SPEC §8.4): the engine's at invitation, subscription and transfer
+ * time, and the Compliance Officer's manual ones. Append-only: a decision is never changed.
+ */
+export const eligibilityAssessment = investorSchema.table(
+  'eligibility_assessment',
+  {
+    id: id(),
+    tenantId: tenantId(),
+    investorId: uuid()
+      .notNull()
+      .references(() => investor.id),
+    /** Null for a manual decision about the investor as a whole. */
+    issuanceId: uuid(),
+    context: text().notNull(),
+    result: text().notNull(),
+    /** `[{ code, passed, detail }]`, in evaluation order. */
+    rules: jsonb().notNull(),
+    /** The rule set that was applied (null for a manual decision). */
+    ruleSet: jsonb(),
+    rulesVersion: text().notNull(),
+    decidedByUserId: uuid(),
+    decidedBySystem: boolean().notNull(),
+    justification: text(),
+    assessedAt: utcTimestamp().notNull().defaultNow(),
+  },
+  (table) => [
+    check(
+      'eligibility_assessment_context',
+      sql`${table.context} IN ('INVITATION', 'SUBSCRIPTION', 'TRANSFER', 'MANUAL')`,
+    ),
+    check('eligibility_assessment_result', sql`${table.result} IN ('ELIGIBLE', 'NOT_ELIGIBLE')`),
+    // A decision is made either by the system or by a person, never by nobody.
+    check(
+      'eligibility_assessment_decider',
+      sql`${table.decidedBySystem} OR ${table.decidedByUserId} IS NOT NULL`,
+    ),
+    index('eligibility_assessment_investor').on(table.tenantId, table.investorId, table.assessedAt),
+  ],
+);

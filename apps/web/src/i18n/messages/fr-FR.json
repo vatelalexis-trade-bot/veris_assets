@@ -551,7 +551,9 @@
       "DOCUMENT_VERSION_ADDED": "Nouvelle version d’un document",
       "DOCUMENT_ARCHIVED": "Document archivé",
       "DOCUMENT_DOWNLOADED": "Document confidentiel téléchargé",
-      "DOCUMENT_REJECTED": "Fichier refusé par le contrôle de sécurité"
+      "DOCUMENT_REJECTED": "Fichier refusé par le contrôle de sécurité",
+      "ELIGIBILITY_ASSESSED": "Éligibilité contrôlée",
+      "ELIGIBILITY_STATUS_CHANGED": "Statut d’éligibilité décidé"
     }
   },
   "investors": {
@@ -741,5 +743,70 @@
       "confirmTitle": "Créer un nouveau code destinataire ?",
       "confirmDescription": "Votre code actuel cesse immédiatement de fonctionner."
     }
+  },
+  "eligibility": {
+    "title": "Éligibilité",
+    "resultTitle": "Résultat du contrôle d’éligibilité",
+    "eligible": "Éligible : toutes les règles sont respectées.",
+    "notEligible": "Non éligible : {count, plural, one {# règle n’est pas respectée} other {# règles ne sont pas respectées}}.",
+    "passed": "Respectée :",
+    "failed": "Non respectée :",
+    "details": {
+      "profileStatus": "Profil : {value}",
+      "kycStatus": "KYC/KYB : {value}",
+      "expiryDate": "KYC/KYB valable jusqu’au {value}",
+      "requiredUntil": "doit être valable jusqu’au {value}",
+      "classification": "Classification : {value}",
+      "investorType": "Type : {value}",
+      "country": "Pays : {value}",
+      "maxInvestors": "Maximum : {value} investisseurs",
+      "currentInvestorCount": "Actuellement : {value}"
+    },
+    "decide": {
+      "title": "Décision du responsable conformité",
+      "status": "Nouveau statut",
+      "justification": "Justification (obligatoire)",
+      "submit": "Enregistrer la décision"
+    },
+    "simulate": {
+      "title": "Tester les règles d’une émission",
+      "help": "Contrôle l’investisseur avec ces règles, maintenant, sans rien enregistrer.",
+      "professionalOnly": "Investisseurs professionnels uniquement",
+      "kycRequired": "KYC/KYB valide exigé",
+      "minDays": "KYC/KYB encore valable après (jours)",
+      "excludedCountries": "Pays exclus",
+      "allowedCountries": "Pays autorisés (aucun : tous)",
+      "submit": "Contrôler"
+    },
+    "history": {
+      "title": "Décisions",
+      "none": "Aucune décision pour l’instant.",
+      "show": "Voir les règles",
+      "hide": "Masquer les règles",
+      "result": {
+        "ELIGIBLE": "Éligible",
+        "NOT_ELIGIBLE": "Non éligible"
+      },
+      "context": {
+        "INVITATION": "invitation",
+        "SUBSCRIPTION": "souscription",
+        "TRANSFER": "transfert",
+        "MANUAL": "décision du responsable conformité"
+      }
+    }
+  },
+  "eligibilityChecks": {
+    "PROFILE_INACTIVE": "Le profil de l’investisseur est actif.",
+    "KYC_NOT_APPROVED": "Le contrôle KYC/KYB est approuvé.",
+    "KYC_EXPIRED": "Le contrôle KYC/KYB n’a pas expiré.",
+    "KYC_EXPIRES_TOO_SOON": "Le contrôle KYC/KYB reste valable assez longtemps.",
+    "CLASSIFICATION_INCOMPATIBLE": "La classification de l’investisseur est acceptée.",
+    "INVESTOR_TYPE_NOT_ALLOWED": "Ce type d’investisseur est accepté.",
+    "NOT_PROFESSIONAL": "L’investisseur est un investisseur professionnel.",
+    "COUNTRY_EXCLUDED": "Le pays de l’investisseur n’est pas exclu.",
+    "COUNTRY_NOT_ALLOWED": "Le pays de l’investisseur est autorisé.",
+    "INVESTOR_SUSPENDED": "L’investisseur n’est pas suspendu.",
+    "INVESTOR_NOT_ELIGIBLE": "Aucun responsable conformité n’a jugé l’investisseur non éligible.",
+    "MAX_INVESTORS_REACHED": "Le nombre maximal d’investisseurs n’est pas atteint."
   }
 }

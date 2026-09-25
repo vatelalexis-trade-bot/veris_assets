@@ -1,4 +1,16 @@
-import { Body, Controller, Get, Headers, Param, Patch, Post, Query, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Headers,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Query,
+  Res,
+} from '@nestjs/common';
 import { ApiBody, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { KYC_STATUSES, PROFILE_STATUSES } from '@virtus/shared';
 import type { Response } from 'express';
@@ -9,7 +21,9 @@ import { Idempotent } from '../../../core/idempotency/idempotent.decorator.js';
 import { toOpenApiSchema } from '../../../core/openapi/zod-openapi.js';
 import { RequirePermission } from '../../../core/security/public.decorator.js';
 import { ZodValidationPipe } from '../../../core/validation/zod-validation.pipe.js';
+import { EligibilityService } from '../application/eligibility.service.js';
 import { InvestorsService } from '../application/investors.service.js';
+import { eligibilityStatusBody } from './eligibility.dto.js';
 import {
   beneficialOwnerBody,
   beneficialOwnerView,
@@ -34,7 +48,10 @@ type InvestorView = z.infer<typeof investorView>;
 @ApiTags('investors')
 @Controller('investors')
 export class InvestorsController {
-  constructor(private readonly investors: InvestorsService) {}
+  constructor(
+    private readonly investors: InvestorsService,
+    private readonly eligibility: EligibilityService,
+  ) {}
 
   @Get()
   @RequirePermission('investor:read')
@@ -95,6 +112,22 @@ export class InvestorsController {
     const updated = await this.investors.update(investorId, expectedVersion(ifMatch), body);
     res.setHeader('ETag', etagOf(updated.version));
     return toInvestorView(updated);
+  }
+
+  /** Decision of a Compliance Officer, with a justification (SPEC §4.4, §8.3). */
+  @Post(':id/eligibility-status')
+  @Idempotent()
+  @HttpCode(HttpStatus.OK)
+  @RequirePermission('eligibility:decide')
+  @ApiBody({ schema: toOpenApiSchema(eligibilityStatusBody) })
+  @ApiOkResponse({ schema: toOpenApiSchema(investorView) })
+  async setEligibilityStatus(
+    @Param('id', id) investorId: string,
+    @Body(new ZodValidationPipe(eligibilityStatusBody)) body: z.infer<typeof eligibilityStatusBody>,
+  ): Promise<InvestorView> {
+    return toInvestorView(
+      await this.eligibility.setStatus(investorId, body.status, body.justification),
+    );
   }
 
   @Get(':id/representatives')

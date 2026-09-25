@@ -660,6 +660,22 @@ export interface paths {
     patch: operations['InvestorsController_update'];
     trace?: never;
   };
+  '/api/v1/investors/{id}/eligibility-status': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['InvestorsController_setEligibilityStatus'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/investors/{id}/representatives': {
     parameters: {
       query?: never;
@@ -878,6 +894,54 @@ export interface paths {
     get?: never;
     put?: never;
     post: operations['KycCasesController_sendBack'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/eligibility-assessments': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['EligibilityController_list'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/eligibility-assessments/preview': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['EligibilityController_preview'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/eligibility-assessments/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['EligibilityController_get'];
+    put?: never;
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
@@ -3116,6 +3180,82 @@ export interface operations {
       };
     };
   };
+  InvestorsController_setEligibilityStatus: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          /** @enum {string} */
+          status: 'ELIGIBLE' | 'NOT_ELIGIBLE' | 'SUSPENDED';
+          justification: string;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** @enum {string} */
+            type: 'LEGAL_ENTITY' | 'NATURAL_PERSON';
+            legalName: string;
+            tradeName: string | null;
+            legalForm: string | null;
+            registrationNumber: string | null;
+            taxId: string | null;
+            countryOfIncorporation: string;
+            address: {
+              line1: string;
+              line2?: string | null;
+              postalCode: string;
+              city: string;
+              countryCode: string;
+            } | null;
+            contactEmail: string | null;
+            phone: string | null;
+            /** @enum {string} */
+            classification: 'PROFESSIONAL' | 'ELIGIBLE_COUNTERPARTY';
+            /** @enum {string} */
+            profileStatus: 'DRAFT' | 'ACTIVE' | 'INACTIVE';
+            /** @enum {string} */
+            kycStatus:
+              | 'NOT_STARTED'
+              | 'IN_PROGRESS'
+              | 'PENDING_REVIEW'
+              | 'APPROVED'
+              | 'REJECTED'
+              | 'EXPIRED';
+            /** Format: date */
+            kycLastReviewDate: string | null;
+            /** Format: date */
+            kycExpiryDate: string | null;
+            /** @enum {string|null} */
+            riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | null;
+            /** @enum {string} */
+            eligibilityStatus: 'NOT_ASSESSED' | 'ELIGIBLE' | 'NOT_ELIGIBLE' | 'SUSPENDED';
+            recipientCode: string;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+          };
+        };
+      };
+    };
+  };
   InvestorsController_representatives: {
     parameters: {
       query?: never;
@@ -4157,6 +4297,220 @@ export interface operations {
               /** Format: date-time */
               attachedAt: string;
             }[];
+          };
+        };
+      };
+    };
+  };
+  EligibilityController_list: {
+    parameters: {
+      query?: {
+        context?: 'INVITATION' | 'SUBSCRIPTION' | 'TRANSFER' | 'MANUAL';
+        investorId?: string;
+        page?: number;
+        pageSize?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            data: {
+              /** @enum {string} */
+              result: 'ELIGIBLE' | 'NOT_ELIGIBLE';
+              rules: {
+                /** @enum {string} */
+                code:
+                  | 'PROFILE_INACTIVE'
+                  | 'KYC_NOT_APPROVED'
+                  | 'KYC_EXPIRED'
+                  | 'KYC_EXPIRES_TOO_SOON'
+                  | 'CLASSIFICATION_INCOMPATIBLE'
+                  | 'INVESTOR_TYPE_NOT_ALLOWED'
+                  | 'NOT_PROFESSIONAL'
+                  | 'COUNTRY_EXCLUDED'
+                  | 'COUNTRY_NOT_ALLOWED'
+                  | 'INVESTOR_SUSPENDED'
+                  | 'INVESTOR_NOT_ELIGIBLE'
+                  | 'MAX_INVESTORS_REACHED';
+                passed: boolean;
+                detail?: {
+                  [key: string]: string | number | null;
+                };
+              }[];
+              rulesVersion: string;
+              /** Format: uuid */
+              id: string;
+              /** Format: uuid */
+              investorId: string;
+              investorName: string;
+              /** Format: uuid */
+              issuanceId: string | null;
+              /** @enum {string} */
+              context: 'INVITATION' | 'SUBSCRIPTION' | 'TRANSFER' | 'MANUAL';
+              /** Format: uuid */
+              decidedByUserId: string | null;
+              decidedBySystem: boolean;
+              justification: string | null;
+              ruleSet: {
+                professionalOnly: boolean;
+                allowedCountries: string[];
+                excludedCountries: string[];
+                allowedInvestorTypes: ('LEGAL_ENTITY' | 'NATURAL_PERSON')[];
+                allowedClassifications: ('PROFESSIONAL' | 'ELIGIBLE_COUNTERPARTY')[];
+                kycRequired: boolean;
+                kycMinRemainingValidityDays: number;
+                maxInvestors: number | null;
+                rulesVersion: number;
+              } | null;
+              /** Format: date-time */
+              assessedAt: string;
+            }[];
+            meta: {
+              page: number;
+              pageSize: number;
+              total: number;
+            };
+          };
+        };
+      };
+    };
+  };
+  EligibilityController_preview: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: uuid */
+          investorId: string;
+          ruleSet: {
+            professionalOnly: boolean;
+            allowedCountries: string[];
+            excludedCountries: string[];
+            allowedInvestorTypes: ('LEGAL_ENTITY' | 'NATURAL_PERSON')[];
+            allowedClassifications: ('PROFESSIONAL' | 'ELIGIBLE_COUNTERPARTY')[];
+            kycRequired: boolean;
+            kycMinRemainingValidityDays: number;
+            maxInvestors: number | null;
+            rulesVersion: number;
+          };
+          currentInvestorCount?: number;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @enum {string} */
+            result: 'ELIGIBLE' | 'NOT_ELIGIBLE';
+            rules: {
+              /** @enum {string} */
+              code:
+                | 'PROFILE_INACTIVE'
+                | 'KYC_NOT_APPROVED'
+                | 'KYC_EXPIRED'
+                | 'KYC_EXPIRES_TOO_SOON'
+                | 'CLASSIFICATION_INCOMPATIBLE'
+                | 'INVESTOR_TYPE_NOT_ALLOWED'
+                | 'NOT_PROFESSIONAL'
+                | 'COUNTRY_EXCLUDED'
+                | 'COUNTRY_NOT_ALLOWED'
+                | 'INVESTOR_SUSPENDED'
+                | 'INVESTOR_NOT_ELIGIBLE'
+                | 'MAX_INVESTORS_REACHED';
+              passed: boolean;
+              detail?: {
+                [key: string]: string | number | null;
+              };
+            }[];
+            rulesVersion: string;
+          };
+        };
+      };
+    };
+  };
+  EligibilityController_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @enum {string} */
+            result: 'ELIGIBLE' | 'NOT_ELIGIBLE';
+            rules: {
+              /** @enum {string} */
+              code:
+                | 'PROFILE_INACTIVE'
+                | 'KYC_NOT_APPROVED'
+                | 'KYC_EXPIRED'
+                | 'KYC_EXPIRES_TOO_SOON'
+                | 'CLASSIFICATION_INCOMPATIBLE'
+                | 'INVESTOR_TYPE_NOT_ALLOWED'
+                | 'NOT_PROFESSIONAL'
+                | 'COUNTRY_EXCLUDED'
+                | 'COUNTRY_NOT_ALLOWED'
+                | 'INVESTOR_SUSPENDED'
+                | 'INVESTOR_NOT_ELIGIBLE'
+                | 'MAX_INVESTORS_REACHED';
+              passed: boolean;
+              detail?: {
+                [key: string]: string | number | null;
+              };
+            }[];
+            rulesVersion: string;
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            investorId: string;
+            investorName: string;
+            /** Format: uuid */
+            issuanceId: string | null;
+            /** @enum {string} */
+            context: 'INVITATION' | 'SUBSCRIPTION' | 'TRANSFER' | 'MANUAL';
+            /** Format: uuid */
+            decidedByUserId: string | null;
+            decidedBySystem: boolean;
+            justification: string | null;
+            ruleSet: {
+              professionalOnly: boolean;
+              allowedCountries: string[];
+              excludedCountries: string[];
+              allowedInvestorTypes: ('LEGAL_ENTITY' | 'NATURAL_PERSON')[];
+              allowedClassifications: ('PROFESSIONAL' | 'ELIGIBLE_COUNTERPARTY')[];
+              kycRequired: boolean;
+              kycMinRemainingValidityDays: number;
+              maxInvestors: number | null;
+              rulesVersion: number;
+            } | null;
+            /** Format: date-time */
+            assessedAt: string;
           };
         };
       };

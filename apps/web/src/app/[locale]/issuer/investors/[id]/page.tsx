@@ -20,6 +20,8 @@ export default async function InvestorPage({
         canDecideKyc: Boolean(permissions['kyc:decide']),
         canComment: Boolean(permissions['compliance-comment:create']),
         canUpload: Boolean(permissions['document:upload']),
+        canReadEligibility: Boolean(permissions['eligibility:read']),
+        canDecideEligibility: Boolean(permissions['eligibility:decide']),
       }}
     />
   );

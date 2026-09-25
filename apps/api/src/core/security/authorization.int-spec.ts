@@ -55,6 +55,10 @@ const VALID_BODIES: [RegExp, object][] = [
     { documentId: '0192a000-0000-7000-8000-000000000000', kind: 'OTHER' },
   ],
   [/^POST \/api\/v1\/kyc-cases\/:id\/(reject|send-back)$/, { comment: 'Probe' }],
+  [
+    /^POST \/api\/v1\/investors\/:id\/eligibility-status$/,
+    { status: 'SUSPENDED', justification: 'Probe' },
+  ],
 ];
 
 beforeAll(async () => {
@@ -140,6 +144,17 @@ describe('scenario 5 — tenant isolation (SPEC §20, §29)', () => {
                'report.pdf', id FROM created
            )
            SELECT id FROM created`,
+        ),
+    ],
+    [
+      /^\/api\/v1\/eligibility-assessments\/:id/,
+      () =>
+        idOf(
+          `INSERT INTO investor.eligibility_assessment (tenant_id, investor_id, context, result, rules,
+             rules_version, decided_by_system)
+           SELECT tenant_id, id, 'MANUAL', 'ELIGIBLE', '[]', 'engine-1/rules-0', true
+           FROM investor.investor WHERE legal_name LIKE 'Quarry%'
+           RETURNING id`,
         ),
     ],
     [

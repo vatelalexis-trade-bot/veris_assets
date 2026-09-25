@@ -149,7 +149,7 @@ Refus métier (détails de `VALIDATION_FAILED`) : `OWN_ACCOUNT`, `LAST_ADMINISTR
 | PATCH | `/investors/{id}` | `investor:manage` / `profile:manage` (P) | |
 | GET / POST | `/investors/{id}/representatives`, `/investors/{id}/beneficial-owners` · PATCH `…/{personId}` | `investor-personal-data:read` / `investor:manage` | |
 | GET | `/investors/{id}/comments` | `investor:read` | |
-| POST | `/investors/{id}/eligibility-status` (ELIGIBLE, NOT_ELIGIBLE, SUSPENDED + justification) — phase 9 | `eligibility:decide` | ✓ |
+| POST | `/investors/{id}/eligibility-status` (ELIGIBLE, NOT_ELIGIBLE, SUSPENDED + justification obligatoire, D-052) | `eligibility:decide` | ✓ |
 | POST | `/investors/{id}/comments` | `compliance-comment:create` | |
 | GET / PATCH | `/me/investor` (coordonnées seulement, `If-Match`, D-048) · POST `/me/investor/recipient-code/regenerate` | `profile:manage` (P) | ✓ (POST) |
 | GET | `/kyc-cases` · `/kyc-cases/{id}` | `kyc:read` | |
@@ -157,8 +157,8 @@ Refus métier (détails de `VALIDATION_FAILED`) : `OWN_ACCOUNT`, `LAST_ADMINISTR
 | POST | `/kyc-cases/{id}/documents` (joindre une pièce KYC de l'investisseur) | `kyc:prepare` | |
 | POST | `/kyc-cases/{id}/submit-for-review` (au moins une pièce ; appel au fournisseur factice) | `kyc:prepare` | ✓ |
 | POST | `/kyc-cases/{id}/approve` · `/reject` · `/send-back` (commentaire obligatoire pour refuser ou renvoyer ; quatre yeux) | `kyc:decide` | ✓ |
-| GET | `/eligibility-assessments` · `/{id}` | `eligibility:read` | |
-| POST | `/eligibility-assessments/preview` (évaluation sans enregistrement) | `eligibility:read` | |
+| GET | `/eligibility-assessments` (filtres `investorId`, `context`) · `/{id}` (règles, jeu de règles appliqué) | `eligibility:read` | |
+| POST | `/eligibility-assessments/preview` (`investorId` + jeu de règles ; évaluation sans enregistrement) | `eligibility:read` | |
 
 ### 2.6 `/issuances`
 

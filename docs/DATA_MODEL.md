@@ -118,7 +118,7 @@ RLS : `iam.user`, `iam.user_role` et `iam.user_invitation` sont filtrées par te
 **`investor.beneficial_owner`** [DP] — `id`, `tenant_id`, `investor_id`, `full_name`, `nationality`, `ownership_percentage`, `date_of_birth`, `pseudonymized_at`, colonnes communes.
 **`investor.kyc_case`** — `id`, `tenant_id`, `investor_id`, `status`, `prepared_by`, `prepared_at`, `decided_by`, `decided_at`, `decision_comment`, `valid_until`, `provider_reference`, colonnes communes. Contrainte : `decided_by <> prepared_by`.
 **`investor.kyc_document`** — `id`, `tenant_id`, `kyc_case_id`, `document_id`, `kind`.
-**`investor.eligibility_assessment`** [AO] — `id`, `tenant_id`, `investor_id`, `issuance_id` (nullable), `context` (`INVITATION`, `SUBSCRIPTION`, `TRANSFER`, `MANUAL`), `result` (`ELIGIBLE`, `NOT_ELIGIBLE`), `rules` (jsonb : `[{code, passed, detail}]`), `rules_version`, `decided_by_user_id` (nullable), `decided_by_system`, `justification`, `assessed_at`.
+**`investor.eligibility_assessment`** [AO] — `id`, `tenant_id`, `investor_id`, `issuance_id` (nullable), `context` (`INVITATION`, `SUBSCRIPTION`, `TRANSFER`, `MANUAL`), `result` (`ELIGIBLE`, `NOT_ELIGIBLE`), `rules` (jsonb : `[{code, passed, detail}]`), `rule_set` (jsonb, jeu de règles appliqué, D-052), `rules_version`, `decided_by_user_id` (nullable), `decided_by_system`, `justification`, `assessed_at`.
 **`investor.compliance_comment`** [AO] — `id`, `tenant_id`, `investor_id`, `resource_type`, `resource_id`, `author_user_id`, `body`, `created_at`.
 
 ### 3.4 `issuance`

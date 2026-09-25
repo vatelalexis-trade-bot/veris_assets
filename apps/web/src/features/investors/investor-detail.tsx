@@ -14,6 +14,7 @@ import { StatusBadge } from '@/components/app/status-badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { DocumentsTable } from '@/features/documents/documents-table';
+import { EligibilityPanel } from '@/features/eligibility/eligibility-panel';
 import { UploadForm } from '@/features/documents/upload-form';
 import { Link } from '@/i18n/navigation';
 import { api } from '@/lib/api/client';
@@ -30,6 +31,8 @@ export interface InvestorRights {
   canDecideKyc: boolean;
   canComment: boolean;
   canUpload: boolean;
+  canReadEligibility: boolean;
+  canDecideEligibility: boolean;
 }
 
 /** One investor: profile, KYC/KYB, representatives and owners, documents, compliance comments. */
@@ -84,6 +87,13 @@ export function InvestorDetail({ id, rights }: { id: string; rights: InvestorRig
         investorId={id}
         rights={{ canPrepare: rights.canPrepareKyc, canDecide: rights.canDecideKyc }}
       />
+      {rights.canReadEligibility ? (
+        <EligibilityPanel
+          investorId={id}
+          status={current.eligibilityStatus}
+          rights={{ canRead: rights.canReadEligibility, canDecide: rights.canDecideEligibility }}
+        />
+      ) : null}
       {rights.canReadPersonalData ? (
         <PeoplePanel investorId={id} canManage={rights.canManage} />
       ) : null}

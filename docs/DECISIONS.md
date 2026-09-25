@@ -173,18 +173,18 @@ Validées par le porteur de projet (« ok let's go »).
 
 ## 2026-09-25 — Phase 8 (investisseurs, KYC/KYB simulé, documents)
 
-Proposées, en attente de validation par le porteur de projet.
+Validées par le porteur de projet (« OK pour les règles et lancer la phase 9 »).
 
-**D-045 — Proposée. Téléchargement des documents par l'API.** La spec (16) prévoit une « URL de téléchargement temporaire ». Plutôt qu'une URL signée du stockage S3 (Garage n'est pas joignable par le navigateur dans Codespaces, et le stockage n'a pas à être exposé), l'API donne un lien signé vers elle-même, valable 5 minutes, utilisable seulement par l'utilisateur qui l'a demandé et avec sa session ; les droits sont vérifiés à la création du lien et de nouveau au téléchargement. Le téléchargement d'un document confidentiel est tracé dans l'audit. *Précise `docs/ARCHITECTURE.md` §4.11.*
+**D-045 — Acceptée. Téléchargement des documents par l'API.** La spec (16) prévoit une « URL de téléchargement temporaire ». Plutôt qu'une URL signée du stockage S3 (Garage n'est pas joignable par le navigateur dans Codespaces, et le stockage n'a pas à être exposé), l'API donne un lien signé vers elle-même, valable 5 minutes, utilisable seulement par l'utilisateur qui l'a demandé et avec sa session ; les droits sont vérifiés à la création du lien et de nouveau au téléchargement. Le téléchargement d'un document confidentiel est tracé dans l'audit. *Précise `docs/ARCHITECTURE.md` §4.11.*
 
-**D-046 — Proposée. Contrôles des fichiers.**
+**D-046 — Acceptée. Contrôles des fichiers.**
 1. Le type réel est détecté d'après le contenu avec la bibliothèque `file-type` (version 22.1.1) ; un CSV, qui n'a pas de signature, est accepté s'il s'agit de texte UTF-8 sans caractère de contrôle avec un séparateur sur la première ligne.
 2. L'antivirus factice refuse le fichier de test standard EICAR (inoffensif, reconnu par tous les antivirus), ce qui permet de démontrer le refus ; le refus est tracé dans l'audit et le fichier n'est pas conservé.
 3. Le fichier est stocké avant l'écriture des métadonnées : si celle-ci échoue, un fichier inutilisé reste dans le stockage, mais aucun document ne pointe jamais vers un fichier absent. `pnpm db:reset` ne vide pas le stockage de démonstration.
 4. Pour l'anti-doublon d'un envoi de fichier, l'empreinte de la requête inclut le contenu du fichier.
 5. Dans les tests d'intégration, le stockage est remplacé par une version en mémoire (la CI n'a pas de service S3) ; le stockage réel est vérifié lors de l'essai de la démo.
 
-**D-047 — Proposée. Règles du dossier KYC/KYB.**
+**D-047 — Acceptée. Règles du dossier KYC/KYB.**
 1. Un dossier naît « en préparation » (IN_PROGRESS) ; un investisseur a au plus un dossier ouvert. Son statut KYC est la copie de celui de son dernier dossier (NOT_STARTED s'il n'en a aucun).
 2. Au moins une pièce justificative (document de type « pièce KYC » de ce même investisseur) est exigée pour soumettre ; la personne qui soumet est le préparateur.
 3. À la soumission, le fournisseur factice donne une recommandation (rien de signalé / examen approfondi, risque suggéré) ; en panne, le dossier reste en préparation (503). La décision reste toujours humaine.
@@ -192,8 +192,29 @@ Proposées, en attente de validation par le porteur de projet.
 5. Une validation vaut 12 mois, jusqu'à la veille de la date anniversaire ; le niveau de risque suggéré devient celui de l'investisseur.
 6. La tâche quotidienne `kyc-expiry` prévient une fois l'investisseur et les responsables conformité 30 jours avant l'échéance, puis passe le dossier en EXPIRED le lendemain de son dernier jour de validité (fuseau de l'organisation, D-015).
 
-**D-048 — Proposée. Profil dans le portail investisseur.** L'investisseur consulte et modifie son profil par `GET/PATCH /me/investor` (au lieu de `PATCH /investors/{id}` avec la portée « propre » prévue par `docs/API.md`) : il ne peut changer que ses coordonnées (nom commercial, email, téléphone, adresse), jamais sa raison sociale ni sa classification. Code destinataire (D-010) : format `VA-XXXX-XXXX`, alphabet sans lettres ambiguës (pas de I, L, O, U), régénérable, l'ancien cessant aussitôt de fonctionner. Les comptes de démo investor.a, b et c sont reliés à Alpine, Baltic et Cedar. L'invitation d'un investisseur sur le portail arrive avec les émissions (phase 10).
+**D-048 — Acceptée. Profil dans le portail investisseur.** L'investisseur consulte et modifie son profil par `GET/PATCH /me/investor` (au lieu de `PATCH /investors/{id}` avec la portée « propre » prévue par `docs/API.md`) : il ne peut changer que ses coordonnées (nom commercial, email, téléphone, adresse), jamais sa raison sociale ni sa classification. Code destinataire (D-010) : format `VA-XXXX-XXXX`, alphabet sans lettres ambiguës (pas de I, L, O, U), régénérable, l'ancien cessant aussitôt de fonctionner. Les comptes de démo investor.a, b et c sont reliés à Alpine, Baltic et Cedar. L'invitation d'un investisseur sur le portail arrive avec les émissions (phase 10).
 
-**D-049 — Proposée. Masquage de l'audit élargi.** Un champ est masqué dès que son nom *contient* une clé sensible (`contactEmail`, `mobilePhone`…), et non plus seulement s'il porte exactement ce nom. Les noms, fonctions et nationalités des représentants et bénéficiaires effectifs sont aussi masqués.
+**D-049 — Acceptée. Masquage de l'audit élargi.** Un champ est masqué dès que son nom *contient* une clé sensible (`contactEmail`, `mobilePhone`…), et non plus seulement s'il porte exactement ce nom. Les noms, fonctions et nationalités des représentants et bénéficiaires effectifs sont aussi masqués.
 
-**D-050 — Proposée. Routes ajoutées ou précisées.** `POST /kyc-cases/{id}/documents` (joindre une pièce), `POST /kyc-cases/{id}/send-back` (renvoi pour compléments), `GET /documents/download?token=…` (fichier d'un lien signé), `PATCH` des représentants et bénéficiaires, `GET /investors/{id}/comments`. La route `POST /investors/{id}/eligibility-status` et `/eligibility-assessments` arrivent en phase 9 avec le moteur d'éligibilité. *Complète `docs/API.md` §2.5 et §2.11.*
+**D-050 — Acceptée. Routes ajoutées ou précisées.** `POST /kyc-cases/{id}/documents` (joindre une pièce), `POST /kyc-cases/{id}/send-back` (renvoi pour compléments), `GET /documents/download?token=…` (fichier d'un lien signé), `PATCH` des représentants et bénéficiaires, `GET /investors/{id}/comments`. La route `POST /investors/{id}/eligibility-status` et `/eligibility-assessments` arrivent en phase 9 avec le moteur d'éligibilité. *Complète `docs/API.md` §2.5 et §2.11.*
+
+---
+
+## 2026-09-25 — Phase 9 (moteur d'éligibilité)
+
+Proposées, en attente de validation par le porteur de projet.
+
+**D-051 — Proposée. Règles du moteur d'éligibilité.**
+1. Toutes les règles demandées sont évaluées et renvoyées (réussies et échouées), sans s'arrêter à la première ; seules les règles que le jeu de règles de l'émission demande sont évaluées (liste vide = pas de restriction).
+2. Un KYC approuvé dont la date de fin est passée est traité comme expiré (`KYC_EXPIRED`), même avant le passage de la tâche quotidienne ; un KYC valable jusqu'à aujourd'hui inclus est accepté.
+3. « Investisseur professionnel » = client professionnel ou contrepartie éligible : la règle `NOT_PROFESSIONAL` ne peut pas échouer avec les classifications du MVP ; elle est gardée pour de futures classifications.
+4. Une décision « non éligible » ou « suspendu » d'un responsable conformité bloque toutes les émissions (`INVESTOR_NOT_ELIGIBLE`, `INVESTOR_SUSPENDED`).
+5. Le plafond d'investisseurs ne s'applique pas à un investisseur déjà présent sur l'émission.
+6. La version enregistrée avec chaque décision combine celle du moteur et celle du jeu de règles (`engine-1/rules-3`).
+
+**D-052 — Proposée. Enregistrement des décisions d'éligibilité.**
+1. Le moteur enregistre sa décision quand une invitation, une souscription ou un transfert en dépend (phases 10 à 13), dans la transaction de l'opération ; la simulation (`preview`) n'enregistre rien.
+2. Le responsable conformité décide du statut (éligible, non éligible, suspendu) avec une justification obligatoire ; cette décision est enregistrée avec la situation générale de l'investisseur à ce moment (profil, KYC). On ne revient jamais à « non évalué », et redemander le statut actuel est refusé (409).
+3. Chaque décision conserve aussi le jeu de règles appliqué (colonne `rule_set`, ajoutée au modèle de `docs/DATA_MODEL.md` §3.3) pour pouvoir l'expliquer plus tard.
+
+**D-053 — Proposée. Scénario 2 avant les émissions.** Les émissions n'existant qu'à la phase 10, la partie éligibilité du scénario 2 est vérifiée avec le jeu de règles de l'émission solaire de démonstration fourni directement (pays exclu : États-Unis). La fiche investisseur propose un simulateur de règles au responsable conformité. La « whitelist » d'une émission sera la liste de ses invitations (phase 10).
