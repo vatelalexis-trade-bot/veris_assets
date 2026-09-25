@@ -72,3 +72,9 @@ Validées par le porteur de projet (« OK je valide »).
 **D-021 — Acceptée. Couleurs de texte accessibles.** Contrastes mesurés (WCAG) : l'indigo primaire `#4F52D6` passe en fond de bouton avec texte blanc (5,98:1) mais échoue comme couleur de texte ou de lien sur les fonds sombres (3,17:1 sur `#0A1020`, AA exige 4,5:1). Le rouge d'erreur `#EF4444` échoue avec du texte blanc dessus (3,76:1) et en texte sur Secondary Surface (4,29:1). Proposition : garder toutes les couleurs de marque inchangées et ajouter deux jetons réservés au texte, `primary-text` `#8B8EF0` (6,52:1 sur le fond) et `error-text` `#F87171` (6,85:1) ; les boutons destructifs utilisent un texte sombre sur fond rouge. *Ajoute des jetons à la section 23.1.*
 
 **D-022 — Acceptée. Noyau technique partagé.** En plus des six modules métier, le back-end comporte une couche technique `core` : contexte tenant, transactions, idempotence, écriture de l'audit, outbox, transitions de workflow, documents, notifications, référentiels, interfaces des fournisseurs. Elle ne contient aucune règle métier. *Précise les sections 5 et 30.2.*
+
+---
+
+## 2026-09-25 — Phase 2 (squelette back-end)
+
+**D-023 — Proposée. Report de l'instrumentation OpenTelemetry (P2-8, priorité « S ») à la phase 16.** L'API NestJS 12 est au format « ES module » : l'instrumentation automatique des traces exige un mécanisme de chargement spécifique, à vérifier et à maintenir. Avant les phases 3 (base de données) et 7 (jobs), il n'y aurait presque rien à tracer. En attendant, le correlation ID relie déjà toutes les lignes de log d'une même requête. *Décale un élément « S » de la phase 2 vers la phase 16, comme le prévoit `docs/BACKLOG.md`.*

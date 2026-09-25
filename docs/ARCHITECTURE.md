@@ -28,7 +28,7 @@ Les décisions référencées `D-xxx` sont dans `docs/DECISIONS.md`. Modèle de 
 | Front — tableaux / graphiques | TanStack Table, Recharts | Data tables, KPI, calculateur |
 | Front — i18n | next-intl | en-GB, fr-FR |
 | Back | NestJS | Modules, injection de dépendances, guards, OpenAPI |
-| Validation | Zod | Entrées API, variables d'environnement |
+| Validation | Zod (pipe `ZodValidationPipe` maison) ; OpenAPI produit depuis les mêmes schémas via `z.toJSONSchema` | Entrées API, variables d'environnement, documentation. `nestjs-zod` écarté : incompatible avec NestJS 12 |
 | Base | PostgreSQL (dernière version majeure stable, confirmée en phase 1) | RLS, NUMERIC, triggers |
 | Accès aux données | Drizzle ORM + driver `pg` ; migrations Drizzle Kit + SQL manuel (RLS, triggers) | Requêtes typées proches du SQL |
 | Décimaux | decimal.js | Aucun calcul en flottant |
@@ -38,7 +38,7 @@ Les décisions référencées `D-xxx` sont dans `docs/DECISIONS.md`. Modèle de 
 | Documents | Stockage compatible S3 (Garage en dev, D-005) + `@aws-sdk/client-s3` | Fichiers, URL temporaires |
 | Emails | Mailpit (dev) derrière `EmailProvider` | Emails capturés localement |
 | PDF | Bibliothèque de génération PDF légère côté serveur (choix vérifié en phase 11) | Confirmations d'allocation, avis de coupon |
-| Observabilité | pino (logs JSON), OpenTelemetry, Sentry (région UE) | Logs, traces, erreurs |
+| Observabilité | pino via `nestjs-pino` (logs JSON), OpenTelemetry, Sentry (région UE) | Logs, traces, erreurs |
 | Tests | Vitest, Playwright | Unitaires, intégration (vrai PostgreSQL), bout en bout |
 | Qualité | ESLint, Prettier, dependency-cruiser, TypeScript strict | CI bloquante |
 | CI / sécurité | GitHub Actions, Dependabot, secret scanning | À chaque push |
@@ -265,14 +265,15 @@ Upload → contrôle de taille (10 Mo) → détection du type réel par le conte
 
 ### 4.13 Erreurs
 
-Format de la section 22.2 de la spec. Les codes sont définis dans `packages/shared/errors` (catalogue unique, traduit côté front). Toute exception non prévue devient `500 INTERNAL_ERROR`, sans détail technique dans la réponse ; le détail va dans les logs avec le correlation ID.
+Format de la section 22.2 de la spec. Les codes et leur statut HTTP sont définis dans `packages/shared/src/errors/error-codes.ts` (catalogue unique, traduit côté front). Toute exception non prévue devient `500 INTERNAL_ERROR`, sans détail technique dans la réponse ; le détail va dans les logs avec le correlation ID.
 
 ### 4.14 Observabilité
 
 - Logs JSON (pino) avec `correlationId`, `tenantId`, `userId` ; masquage automatique des champs sensibles (liste centralisée : email, téléphone, identifiants fiscaux, noms de personnes, jetons, mots de passe).
 - OpenTelemetry : traces HTTP, base de données et jobs ; export OTLP désactivé par défaut en dev, profil docker compose `observability` (`grafana/otel-lgtm`) pour les visualiser.
 - Sentry (région UE) pour les erreurs front et back, activé par variable d'environnement.
-- `GET /health` (vivant) et `GET /health/ready` (base, Redis, stockage joignables).
+- `GET /health` (vivant) et `GET /health/ready` (base, Redis, stockage joignables ; 503 si l'un ne répond pas en 2 secondes). Ces routes sont hors du préfixe `/api/v1` et ne sont pas relayées par le front.
+- Les logs écrits pendant une requête portent uniquement `correlationId` (pas la requête entière) ; la ligne de fin de requête contient méthode, URL, statut et durée, avec cookies et en-tête `Authorization` masqués.
 
 ---
 

@@ -4,10 +4,38 @@ import prettier from 'eslint-config-prettier';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
+const USE_DECIMAL =
+  'Amounts, quantities and rates use Decimal from @virtus/shared, never JavaScript numbers (SPEC rule 7).';
+
 /**
- * @param {{ tsconfigRootDir: string }} options directory of the package's tsconfig.json
+ * Forbids the usual ways of turning amounts into floating-point numbers. Arithmetic operators on
+ * Decimal/Money values are already rejected by TypeScript, since they are objects.
  */
-export function nodeTypeScriptConfig({ tsconfigRootDir }) {
+const decimalSafetyRules = {
+  'no-restricted-globals': ['error', { name: 'parseFloat', message: USE_DECIMAL }],
+  'no-restricted-syntax': [
+    'error',
+    { selector: "CallExpression[callee.name='Number']", message: USE_DECIMAL },
+    {
+      selector: "MemberExpression[object.name='Number'][property.name='parseFloat']",
+      message: USE_DECIMAL,
+    },
+    { selector: "MemberExpression[object.name='Math']", message: USE_DECIMAL },
+    { selector: "UnaryExpression[operator='+']", message: USE_DECIMAL },
+    {
+      selector: "CallExpression[callee.object.name='z'][callee.property.name='number']",
+      message:
+        'Amounts and quantities travel as decimal strings in JSON (SPEC §21.2), not z.number().',
+    },
+  ],
+};
+
+/**
+ * @param {{ tsconfigRootDir: string, decimalSafeFiles?: string[] }} options
+ *   tsconfigRootDir: directory of the package's tsconfig.json;
+ *   decimalSafeFiles: globs of business code where floating-point conversions are forbidden.
+ */
+export function nodeTypeScriptConfig({ tsconfigRootDir, decimalSafeFiles = [] }) {
   return tseslint.config(
     { ignores: ['dist/**', 'coverage/**'] },
     js.configs.recommended,
@@ -22,6 +50,9 @@ export function nodeTypeScriptConfig({ tsconfigRootDir }) {
       files: ['**/*.mjs', '**/*.js'],
       ...tseslint.configs.disableTypeChecked,
     },
+    ...(decimalSafeFiles.length > 0
+      ? [{ files: decimalSafeFiles, rules: decimalSafetyRules }]
+      : []),
     prettier,
   );
 }

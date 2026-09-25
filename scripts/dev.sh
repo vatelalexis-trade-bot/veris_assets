@@ -27,8 +27,9 @@ cat <<EOF
 
   Virtus Assets — development environment
   Web app ........ ${web_url}
+  API docs ....... ${web_url}/api/v1/docs
   Test emails .... ${mail_url}
-  API ............ http://${API_HOST}:${API_PORT} (internal)
+  API health ..... http://${API_HOST}:${API_PORT}/health/ready (internal)
 
 EOF
 

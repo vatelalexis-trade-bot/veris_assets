@@ -63,7 +63,7 @@ Le `message` est en anglais, destiné aux logs ; le front affiche le texte tradu
 
 ### 1.3 Catalogue initial des codes d'erreur
 
-Défini dans `packages/shared/errors` (source unique, traduite en en-GB et fr-FR). Il s'enrichit à chaque phase.
+Défini dans `packages/shared/src/errors/error-codes.ts`, avec le statut HTTP de chaque code : c'est la source unique (ce tableau en est un résumé), traduite en en-GB et fr-FR côté front. Il s'enrichit à chaque phase.
 
 | Domaine | Codes |
 |---|---|
@@ -93,7 +93,7 @@ Sauf mention contraire, les chemins sont relatifs à `/api/v1` (par exemple `/is
 |---|---|---|
 | GET | `/health` | Public |
 | GET | `/health/ready` | Public |
-| GET | `/api/v1/docs` | Développement uniquement |
+| GET | `/api/v1/docs` (interface) · `/api/v1/docs/json` (fichier OpenAPI) | Développement uniquement ; accessible via l'adresse du front grâce au proxy |
 
 ### 2.2 `/auth`
 
