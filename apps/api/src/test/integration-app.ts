@@ -48,6 +48,13 @@ export interface IntegrationApp {
 export async function startIntegrationApp(): Promise<IntegrationApp> {
   const tools = loadToolsEnv();
   const env = parseEnv({
+    // Settings of services these tests do not use (storage): placeholders when not configured,
+    // as in CI where there is no .env file.
+    S3_ENDPOINT: 'http://127.0.0.1:3900',
+    S3_REGION: 'garage',
+    S3_BUCKET: 'unused-in-tests',
+    S3_ACCESS_KEY_ID: 'unused-in-tests',
+    S3_SECRET_ACCESS_KEY: 'unused-in-tests',
     ...process.env,
     NODE_ENV: 'test',
     LOG_LEVEL: 'silent',
