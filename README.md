@@ -26,17 +26,17 @@ Pour arrêter l'application : **Ctrl + C** dans le terminal. Les services Docker
 
 ## Commandes utiles
 
-| Commande | Effet |
-|---|---|
-| `pnpm dev` | Démarre tout (services + API + web) |
-| `pnpm services:up` | Démarre seulement les services Docker |
-| `pnpm services:down` | Arrête les services Docker (les données sont conservées) |
-| `pnpm services:logs` | Affiche les journaux des services |
-| `pnpm test` | Lance les tests automatiques |
-| `pnpm lint` | Vérifie la qualité du code, les règles d'architecture, les mentions interdites et la mise en forme |
-| `pnpm typecheck` | Vérifie les types TypeScript |
-| `pnpm build` | Compile l'API et l'application web |
-| `pnpm format` | Remet en forme automatiquement tout le code |
+| Commande             | Effet                                                                                              |
+| -------------------- | -------------------------------------------------------------------------------------------------- |
+| `pnpm dev`           | Démarre tout (services + API + web)                                                                |
+| `pnpm services:up`   | Démarre seulement les services Docker                                                              |
+| `pnpm services:down` | Arrête les services Docker (les données sont conservées)                                           |
+| `pnpm services:logs` | Affiche les journaux des services                                                                  |
+| `pnpm test`          | Lance les tests automatiques                                                                       |
+| `pnpm lint`          | Vérifie la qualité du code, les règles d'architecture, les mentions interdites et la mise en forme |
+| `pnpm typecheck`     | Vérifie les types TypeScript                                                                       |
+| `pnpm build`         | Compile l'API et l'application web                                                                 |
+| `pnpm format`        | Remet en forme automatiquement tout le code                                                        |
 
 La commande de réinitialisation des données de démo (`pnpm db:reset`) arrive en phase 3.
 
@@ -64,4 +64,4 @@ docs/             Spécification, décisions, architecture
 
 ## Machine Codespace
 
-Une machine **4 cœurs** est recommandée (décision D-008) : sur github.com → Codespaces → « … » à côté du Codespace → *Change machine type*.
+Une machine **4 cœurs** est recommandée (décision D-008) : sur github.com → Codespaces → « … » à côté du Codespace → _Change machine type_.
