@@ -165,15 +165,16 @@ Refus métier (détails de `VALIDATION_FAILED`) : `OWN_ACCOUNT`, `LAST_ADMINISTR
 | Méthode | Chemin | Permission | IK |
 |---|---|---|---|
 | GET | `/issuances` (filtres : statut, catégorie, devise, période, émetteur, `q`) | `issuance:read` (P : invitations) | |
-| GET | `/issuances/{id}` · `/issuances/{id}/terms` · `/eligibility-rules` | `issuance:read` | |
+| GET | `/issuances/{id}` (avec conditions et règles d'éligibilité, chacune avec sa version, D-057) | `issuance:read` (P : invitations) | |
 | POST | `/issuances` (brouillon) | `issuance:edit` | ✓ |
-| PATCH | `/issuances/{id}` · `/terms` · `/eligibility-rules` (brouillon, sauvegarde automatique) | `issuance:edit` | |
-| POST | `/issuances/{id}/validate` (contrôles 6.3 sans soumettre) | `issuance:edit` | |
+| PATCH | `/issuances/{id}` · `/terms` · `/eligibility-rules` (brouillon, sauvegarde automatique ; `If-Match` : version de la partie modifiée, D-056) | `issuance:edit` | |
+| POST | `/issuances/{id}/validate` (contrôles 6.3 sans soumettre : `{ consistent, failures }`) | `issuance:edit` | |
+| GET / POST | `/issuances/{id}/documents` (documents de l'émission, étape 5) | `issuance:read` / `issuance:edit` | |
 | POST | `/issuances/{id}/submit` | `issuance:submit` | ✓ |
 | POST | `/issuances/{id}/approve` · `/return-to-draft` | `issuance:approve` | ✓ |
 | POST | `/issuances/{id}/open-subscription` · `/close-subscription` · `/activate` · `/mature` | `issuance:operate` | ✓ |
 | POST | `/issuances/{id}/cancel` | `issuance:cancel` | ✓ |
-| GET / POST | `/issuances/{id}/invitations` · DELETE `/issuances/{id}/invitations/{invitationId}` (révocation logique) | `invitation:manage` | ✓ |
+| GET / POST | `/issuances/{id}/invitations` (contrôle d'éligibilité ; refus `ELIGIBILITY_FAILED`, D-055) · DELETE `/issuances/{id}/invitations/{invitationId}` (révocation logique) | `invitation:manage` | ✓ |
 | GET | `/issuances/{id}/transitions` | `issuance:read` | |
 | GET | `/issuances/{id}/coupon-schedule` | `distribution:read` | |
 

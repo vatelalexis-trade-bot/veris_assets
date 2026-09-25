@@ -22,6 +22,8 @@ interface UploadFormProps {
   /** Types the user may give (an investor: its own documents and its KYC evidence). */
   types: readonly DocumentType[];
   investorId?: string;
+  /** The document belongs to this issuance (wizard step 5). */
+  issuanceId?: string;
   /** Staff choose who may read the document; an investor's documents get it from their type. */
   chooseConfidentiality?: boolean;
   onUploaded?: (document: Omit<DocumentView, 'versions'>) => void;
@@ -31,6 +33,7 @@ interface UploadFormProps {
 export function UploadForm({
   types,
   investorId,
+  issuanceId,
   chooseConfidentiality,
   onUploaded,
 }: UploadFormProps) {
@@ -42,7 +45,7 @@ export function UploadForm({
   const [type, setType] = useState<DocumentType>(types[0]!);
   const [name, setName] = useState('');
   const [confidentiality, setConfidentiality] = useState<DocumentConfidentiality>(
-    investorId ? 'INVESTOR_VISIBLE' : 'INTERNAL',
+    investorId || issuanceId ? 'INVESTOR_VISIBLE' : 'INTERNAL',
   );
   const tooBig = file !== null && file.size > MAX_DOCUMENT_SIZE_BYTES;
 
@@ -56,6 +59,7 @@ export function UploadForm({
             ? { confidentiality: type === 'KYC_EVIDENCE' ? 'CONFIDENTIAL' : confidentiality }
             : {}),
           ...(investorId ? { ownerType: 'INVESTOR' as const, investorId } : {}),
+          ...(issuanceId ? { ownerType: 'ISSUANCE' as const, issuanceId } : {}),
         },
         file!,
         idempotency.header(),
@@ -117,7 +121,7 @@ export function UploadForm({
             onChange={(event) => setConfidentiality(event.target.value as DocumentConfidentiality)}
           >
             {DOCUMENT_CONFIDENTIALITY.filter(
-              (value) => investorId || value !== 'INVESTOR_VISIBLE',
+              (value) => investorId || issuanceId || value !== 'INVESTOR_VISIBLE',
             ).map((value) => (
               <option key={value} value={value}>
                 {t(`confidentiality.${value}`)}

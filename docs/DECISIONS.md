@@ -202,9 +202,9 @@ Validées par le porteur de projet (« OK pour les règles et lancer la phase 9 
 
 ## 2026-09-25 — Phase 9 (moteur d'éligibilité)
 
-Proposées, en attente de validation par le porteur de projet.
+Validées par le porteur de projet (« ok pour tout »).
 
-**D-051 — Proposée. Règles du moteur d'éligibilité.**
+**D-051 — Acceptée. Règles du moteur d'éligibilité.**
 1. Toutes les règles demandées sont évaluées et renvoyées (réussies et échouées), sans s'arrêter à la première ; seules les règles que le jeu de règles de l'émission demande sont évaluées (liste vide = pas de restriction).
 2. Un KYC approuvé dont la date de fin est passée est traité comme expiré (`KYC_EXPIRED`), même avant le passage de la tâche quotidienne ; un KYC valable jusqu'à aujourd'hui inclus est accepté.
 3. « Investisseur professionnel » = client professionnel ou contrepartie éligible : la règle `NOT_PROFESSIONAL` ne peut pas échouer avec les classifications du MVP ; elle est gardée pour de futures classifications.
@@ -212,9 +212,33 @@ Proposées, en attente de validation par le porteur de projet.
 5. Le plafond d'investisseurs ne s'applique pas à un investisseur déjà présent sur l'émission.
 6. La version enregistrée avec chaque décision combine celle du moteur et celle du jeu de règles (`engine-1/rules-3`).
 
-**D-052 — Proposée. Enregistrement des décisions d'éligibilité.**
+**D-052 — Acceptée. Enregistrement des décisions d'éligibilité.**
 1. Le moteur enregistre sa décision quand une invitation, une souscription ou un transfert en dépend (phases 10 à 13), dans la transaction de l'opération ; la simulation (`preview`) n'enregistre rien.
 2. Le responsable conformité décide du statut (éligible, non éligible, suspendu) avec une justification obligatoire ; cette décision est enregistrée avec la situation générale de l'investisseur à ce moment (profil, KYC). On ne revient jamais à « non évalué », et redemander le statut actuel est refusé (409).
 3. Chaque décision conserve aussi le jeu de règles appliqué (colonne `rule_set`, ajoutée au modèle de `docs/DATA_MODEL.md` §3.3) pour pouvoir l'expliquer plus tard.
 
-**D-053 — Proposée. Scénario 2 avant les émissions.** Les émissions n'existant qu'à la phase 10, la partie éligibilité du scénario 2 est vérifiée avec le jeu de règles de l'émission solaire de démonstration fourni directement (pays exclu : États-Unis). La fiche investisseur propose un simulateur de règles au responsable conformité. La « whitelist » d'une émission sera la liste de ses invitations (phase 10).
+**D-053 — Acceptée. Scénario 2 avant les émissions.** Les émissions n'existant qu'à la phase 10, la partie éligibilité du scénario 2 est vérifiée avec le jeu de règles de l'émission solaire de démonstration fourni directement (pays exclu : États-Unis). La fiche investisseur propose un simulateur de règles au responsable conformité. La « whitelist » d'une émission sera la liste de ses invitations (phase 10).
+
+---
+
+## 2026-09-25 — Phase 10 (émissions)
+
+Proposées, en attente de validation par le porteur de projet.
+
+**D-054 — Proposée. Cycle de vie livré en phase 10.** La machine à états complète de la spec (7.1) est en place, mais seules les actions jouables aujourd'hui ont une route : soumettre, approuver (quatre yeux), renvoyer en brouillon (commentaire obligatoire), ouvrir et clôturer les souscriptions, annuler (commentaire obligatoire). L'allocation (phase 12), l'activation et l'échéance (phase 14) arriveront avec leurs phases. L'ouverture est refusée avant la date de début (`SUBSCRIPTION_WINDOW_NOT_STARTED`) et après la date de fin. La tâche `subscription-auto-close` clôture chaque jour (et au démarrage) les souscriptions dont la date de fin est passée, dans le fuseau de l'organisation. Seul un brouillon est modifiable.
+
+**D-055 — Proposée. Invitations (whitelist).**
+1. Un investisseur est invité après contrôle d'éligibilité ; s'il n'est pas éligible, l'invitation est refusée (`422 ELIGIBILITY_FAILED` avec les règles échouées et leurs valeurs), et la décision est tout de même enregistrée, dans une transaction à part, pour qu'elle survive au refus.
+2. Le plafond d'investisseurs n'est pas contrôlé à l'invitation (il limite les souscripteurs ; il le sera à la souscription, phase 11).
+3. On invite d'une émission approuvée jusqu'à la clôture des souscriptions. Une invitation retirée reste dans l'historique ; une nouvelle invitation refait le contrôle d'éligibilité.
+4. Un investisseur ne voit que les émissions où il est invité, jamais un brouillon ni une émission en cours d'approbation.
+
+**D-056 — Proposée. Assistant de création.**
+1. Le brouillon naît avec un nom et un code court (unique dans l'organisation, en majuscules) ; l'assistant enregistre ensuite automatiquement, environ une seconde après la dernière saisie, et se souvient de l'étape atteinte.
+2. L'émission a trois parties versionnées séparément (informations générales, conditions, règles d'éligibilité), chacune avec son `If-Match`, pour que l'enregistrement automatique d'une étape ne bloque pas les autres.
+3. Le taux est saisi en pourcentage (5 ou 5,25) et conservé en fraction (0,05), converti en décimal exact. La fréquence de distribution est à l'étape 2 ; la convention de décompte des jours, l'arrondi, le jour ouvré et la date d'enregistrement (D-012) à l'étape 4.
+4. Deux contrôles s'ajoutent à ceux de la spec (6.3) : champ nécessaire manquant (`REQUIRED_FIELD_MISSING`) et montant plus précis que la devise (`AMOUNT_TOO_PRECISE`). Les contrôles s'affichent à côté des champs et dans la revue, avec un lien vers l'étape à corriger.
+
+**D-057 — Proposée. Routes des émissions.** Ajoutées : `GET/POST /issuances/{id}/documents` (documents de l'émission, étape 5). `GET /issuances/{id}/terms` et `/eligibility-rules` ne sont pas créées : ces parties sont déjà renvoyées par `GET /issuances/{id}`, avec leur version. *Modifie `docs/API.md` §2.6.*
+
+**D-058 — Proposée. Tests de bout en bout.** Playwright 1.63.0, dossier `tests/e2e/`, commande `pnpm test:e2e`, nouveau job de CI « End-to-end scenarios ». L'application est compilée et démarrée comme en production (`scripts/e2e-server.sh`) ; en local, une démo déjà lancée est réutilisée. Le test se connecte par les vrais écrans, avec le code à deux facteurs fourni par la route des comptes de démo (D-016). Il utilise un code d'émission nouveau à chaque passage : il ne réinitialise pas la base de démo.

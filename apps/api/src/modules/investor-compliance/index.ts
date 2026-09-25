@@ -7,3 +7,4 @@ export {
   type EligibilityRuleSet,
 } from './domain/eligibility.js';
 export { ruleSetSchema } from './api/eligibility.dto.js';
+export { investor } from './infrastructure/schema.js';

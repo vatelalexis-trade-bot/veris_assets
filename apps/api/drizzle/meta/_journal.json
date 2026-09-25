@@ -85,6 +85,20 @@
       "when": 1790366051752,
       "tag": "0011_eligibility_security",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1790367459797,
+      "tag": "0012_issuances",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1790367487466,
+      "tag": "0013_issuances_security",
+      "breakpoints": true
     }
   ]
 }

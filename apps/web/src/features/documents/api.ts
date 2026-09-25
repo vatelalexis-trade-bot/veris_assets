@@ -11,6 +11,7 @@ export interface UploadFields {
   confidentiality?: DocumentConfidentiality;
   ownerType?: 'INVESTOR' | 'ISSUANCE' | 'TENANT';
   investorId?: string;
+  issuanceId?: string;
 }
 
 /** Multipart body: the file plus its text fields (the typed client sends JSON otherwise). */

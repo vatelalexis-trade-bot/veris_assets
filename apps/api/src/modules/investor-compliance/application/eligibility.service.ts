@@ -8,6 +8,7 @@ import {
   type Database,
   type Transaction,
   withCurrentTenant,
+  withTenantTransaction,
 } from '../../../core/database/database.js';
 import { AppError } from '../../../core/errors/app-error.js';
 import { offsetOf, type Page, type Pagination } from '../../../core/http/pagination.js';
@@ -88,6 +89,46 @@ export class EligibilityService {
     request: AssessmentRequest,
   ): Promise<{ assessment: EligibilityAssessmentRow; result: EligibilityResult }> {
     const result = await this.evaluate(tx, tenantId, request);
+    return { assessment: await this.record(tx, tenantId, request, result), result };
+  }
+
+  /**
+   * For an operation that needs an eligible investor (invitation, subscription, transfer): the
+   * decision is recorded with the operation when it is eligible. When it is not, the decision is
+   * recorded in a separate transaction — so that it survives the refusal (SPEC §29, scenario 2) —
+   * and ELIGIBILITY_FAILED is raised with the failed rules.
+   */
+  async requireEligible(
+    tx: Transaction,
+    tenantId: string,
+    request: AssessmentRequest,
+  ): Promise<EligibilityAssessmentRow> {
+    const result = await this.evaluate(tx, tenantId, request);
+    if (result.result === 'ELIGIBLE') return this.record(tx, tenantId, request, result);
+    const refused = await withTenantTransaction(
+      this.db,
+      tenantId,
+      (separate) => this.record(separate, tenantId, request, result),
+      { separate: true },
+    );
+    throw new AppError(
+      'ELIGIBILITY_FAILED',
+      result.rules
+        .filter((rule) => !rule.passed)
+        .map((rule) => ({
+          code: rule.code,
+          field: 'investorId',
+          meta: { ...(rule.detail ?? {}), assessmentId: refused.id },
+        })),
+    );
+  }
+
+  private async record(
+    tx: Transaction,
+    tenantId: string,
+    request: AssessmentRequest,
+    result: EligibilityResult,
+  ): Promise<EligibilityAssessmentRow> {
     const [assessment] = await tx
       .insert(eligibilityAssessment)
       .values({
@@ -118,7 +159,7 @@ export class EligibilityService {
       result: 'SUCCESS',
       ...(result.result === 'NOT_ELIGIBLE' ? { reason: failedRuleCodes(result).join(',') } : {}),
     });
-    return { assessment: assessment!, result };
+    return assessment!;
   }
 
   /** Evaluation without recording anything ("what if", docs/API.md §2.5). */

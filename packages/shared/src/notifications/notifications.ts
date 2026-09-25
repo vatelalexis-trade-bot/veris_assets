@@ -155,6 +155,84 @@ export const NOTIFICATION_TYPES = {
       },
     },
   },
+  ISSUANCE_REVIEW_REQUESTED: {
+    category: 'WORKFLOW',
+    texts: {
+      'en-GB': {
+        title: 'Issuance to approve',
+        body: 'The issuance {code} was submitted and waits for the approval of another administrator.',
+      },
+      'fr-FR': {
+        title: 'Émission à approuver',
+        body: 'L’émission {code} a été soumise et attend l’approbation d’un autre administrateur.',
+      },
+    },
+  },
+  ISSUANCE_APPROVED: {
+    category: 'WORKFLOW',
+    texts: {
+      'en-GB': {
+        title: 'Issuance approved',
+        body: 'The issuance {code} you submitted was approved.',
+      },
+      'fr-FR': {
+        title: 'Émission approuvée',
+        body: 'L’émission {code} que vous avez soumise a été approuvée.',
+      },
+    },
+  },
+  ISSUANCE_RETURNED: {
+    category: 'WORKFLOW',
+    texts: {
+      'en-GB': {
+        title: 'Issuance sent back to draft',
+        body: 'The issuance {code} was sent back to draft. See the comment of the administrator.',
+      },
+      'fr-FR': {
+        title: 'Émission renvoyée en brouillon',
+        body: 'L’émission {code} a été renvoyée en brouillon. Voir le commentaire de l’administrateur.',
+      },
+    },
+  },
+  INVESTOR_INVITED: {
+    category: 'ISSUANCE',
+    texts: {
+      'en-GB': {
+        title: 'New investment opportunity',
+        body: 'You are invited to the issuance {code}. See its terms and documents in your opportunities.',
+      },
+      'fr-FR': {
+        title: 'Nouvelle opportunité',
+        body: 'Vous êtes invité à l’émission {code}. Consultez ses conditions et ses documents dans vos opportunités.',
+      },
+    },
+  },
+  ISSUANCE_OPENED: {
+    category: 'ISSUANCE',
+    texts: {
+      'en-GB': {
+        title: 'Subscriptions are open',
+        body: 'Subscriptions to the issuance {code} are now open.',
+      },
+      'fr-FR': {
+        title: 'Souscriptions ouvertes',
+        body: 'Les souscriptions à l’émission {code} sont maintenant ouvertes.',
+      },
+    },
+  },
+  ISSUANCE_CANCELLED: {
+    category: 'ISSUANCE',
+    texts: {
+      'en-GB': {
+        title: 'Issuance cancelled',
+        body: 'The issuance {code} was cancelled. Subscriptions in progress are cancelled with it.',
+      },
+      'fr-FR': {
+        title: 'Émission annulée',
+        body: 'L’émission {code} a été annulée. Les souscriptions en cours sont annulées avec elle.',
+      },
+    },
+  },
 } as const satisfies Record<string, NotificationDefinition>;
 
 export type NotificationType = keyof typeof NOTIFICATION_TYPES;

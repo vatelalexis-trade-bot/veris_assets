@@ -236,7 +236,9 @@
     "NEGATIVE_RATE": "The rate cannot be negative.",
     "RATE_TYPE_NOT_SUPPORTED": "Only fixed rates are supported.",
     "FREQUENCY_NOT_SUPPORTED": "This distribution frequency is not supported.",
-    "UNITS_NOT_INTEGER": "The number of units must be a whole number."
+    "UNITS_NOT_INTEGER": "The number of units must be a whole number.",
+    "REQUIRED_FIELD_MISSING": "This information is needed before submitting.",
+    "AMOUNT_TOO_PRECISE": "This amount has more decimals than the currency allows."
   },
   "passwordRules": {
     "PASSWORD_TOO_SHORT": "Use at least 12 characters.",
@@ -332,7 +334,11 @@
     "UNKNOWN_OWNER": "The investor or issuance of this document does not exist.",
     "FILE_REQUIRED": "Choose a file.",
     "TYPE_NOT_ALLOWED": "Allowed files: PDF, PNG, JPEG, CSV and XLSX. The type is checked from the content, not the name.",
-    "MAX_10_MB": "The file must not exceed 10 MB."
+    "MAX_10_MB": "The file must not exceed 10 MB.",
+    "ISSUANCE_CODE_TAKEN": "Another issuance already has this code.",
+    "ALREADY_INVITED": "This investor is already invited.",
+    "NOT_A_DOCUMENT_OF_ISSUANCE": "This document does not belong to the issuance.",
+    "SUBSCRIPTION_START_DATE": "Subscriptions open on the start date of the issuance."
   },
   "organizationTypes": {
     "ISSUER": "Issuer",
@@ -490,7 +496,8 @@
       "user_invitation": "Invitation",
       "investor": "Investor",
       "kyc_case": "KYC/KYB case",
-      "document": "Document"
+      "document": "Document",
+      "issuance": "Issuance"
     },
     "sources": {
       "WEB": "Web application",
@@ -553,7 +560,20 @@
       "DOCUMENT_DOWNLOADED": "Confidential document downloaded",
       "DOCUMENT_REJECTED": "File rejected by the security scan",
       "ELIGIBILITY_ASSESSED": "Eligibility checked",
-      "ELIGIBILITY_STATUS_CHANGED": "Eligibility status decided"
+      "ELIGIBILITY_STATUS_CHANGED": "Eligibility status decided",
+      "ISSUANCE_CREATED": "Issuance created",
+      "ISSUANCE_UPDATED": "Issuance updated",
+      "ISSUANCE_TERMS_UPDATED": "Issuance terms updated",
+      "ISSUANCE_RULES_UPDATED": "Eligibility rules updated",
+      "ISSUANCE_UNDER_REVIEW": "Issuance submitted",
+      "ISSUANCE_APPROVED": "Issuance approved",
+      "ISSUANCE_RETURNED_TO_DRAFT": "Issuance sent back to draft",
+      "ISSUANCE_SUBSCRIPTION_OPEN": "Subscriptions opened",
+      "ISSUANCE_SUBSCRIPTION_CLOSED": "Subscriptions closed",
+      "ISSUANCE_CANCELLED": "Issuance cancelled",
+      "ISSUANCE_DOCUMENT_ATTACHED": "Issuance document added",
+      "INVESTOR_INVITED_TO_ISSUANCE": "Investor invited",
+      "INVESTOR_INVITATION_REVOKED": "Invitation revoked"
     }
   },
   "investors": {
@@ -808,5 +828,209 @@
     "INVESTOR_SUSPENDED": "The investor is not suspended.",
     "INVESTOR_NOT_ELIGIBLE": "No Compliance Officer has found the investor not eligible.",
     "MAX_INVESTORS_REACHED": "The maximum number of investors is not reached."
+  },
+  "issuances": {
+    "title": "Issuances",
+    "description": "Your issuances, from the draft to their end.",
+    "caption": "Issuances of the organisation",
+    "empty": "No issuance matches.",
+    "new": "New issuance",
+    "newDescription": "Give it a name and a short code; the wizard guides you through the rest, saving as you go.",
+    "createDraft": "Create the draft",
+    "allStatuses": "All statuses",
+    "allCategories": "All categories",
+    "back": "Issuances",
+    "statusComment": "Comment:",
+    "fourEyes": "You submitted this issuance: another Issuer Administrator must approve it.",
+    "yes": "Yes",
+    "no": "No",
+    "any": "Any",
+    "download": "Download",
+    "unknownUser": "Unknown user",
+    "system": "System",
+    "columns": {
+      "name": "Issuance",
+      "status": "Status",
+      "category": "Category",
+      "target": "Target",
+      "window": "Subscriptions"
+    },
+    "categories": {
+      "PRIVATE_DEBT": "Private debt",
+      "RENEWABLE_ENERGY": "Renewable energy",
+      "REAL_ESTATE": "Real estate",
+      "INFRASTRUCTURE": "Infrastructure",
+      "PRIVATE_EQUITY": "Private equity"
+    },
+    "fields": {
+      "name": "Name",
+      "code": "Short code",
+      "codeHint": "2 to 20 letters, digits or hyphens, unique in your organisation.",
+      "codeInvalid": "Use 2 to 20 letters, digits or hyphens.",
+      "description": "Description",
+      "assetCategory": "Asset category",
+      "countryCode": "Country of issuance",
+      "currency": "Currency",
+      "legalIssuerName": "Legal issuer",
+      "spvName": "SPV (optional)",
+      "targetAmount": "Target amount",
+      "minimumAmount": "Minimum amount",
+      "maximumAmount": "Maximum amount",
+      "nominalValue": "Nominal value of a unit",
+      "totalUnits": "Total number of units",
+      "ratePercent": "Interest rate (%)",
+      "rateHint": "Fixed rate, e.g. 5 or 5.25",
+      "distributionFrequency": "Distribution frequency",
+      "issueDate": "Issue date",
+      "maturityDate": "Maturity date",
+      "subscriptionStartDate": "Subscriptions open on",
+      "subscriptionEndDate": "Subscriptions close on",
+      "minSubscriptionAmount": "Minimum subscription",
+      "maxAmountPerInvestor": "Maximum per investor",
+      "professionalOnly": "Professional investors only",
+      "kycRequired": "Valid KYC/KYB required",
+      "kycMinRemainingValidityDays": "KYC/KYB still valid after (days)",
+      "maxInvestors": "Maximum number of investors",
+      "maxInvestorsHint": "Empty: no limit.",
+      "excludedCountries": "Excluded countries",
+      "allowedCountries": "Allowed countries",
+      "allowedInvestorTypes": "Investor types accepted",
+      "allowedClassifications": "Classifications accepted",
+      "emptyListHint": "A list left empty means no restriction.",
+      "transfersAllowed": "Transfers between investors allowed",
+      "manualTransferApproval": "Transfers approved manually",
+      "lockupEndDate": "End of the lock-up",
+      "lockupHint": "No transfer before this date (optional).",
+      "dayCount": "Day count convention",
+      "gracePeriodDays": "Grace period (days)",
+      "roundingMethod": "Rounding",
+      "businessDayConvention": "Payment on a non-business day",
+      "recordDateOffsetBusinessDays": "Record date (business days before payment)",
+      "recordDateHint": "The holders on this date receive the coupon.",
+      "earlyRedemptionAllowed": "Early redemption allowed",
+      "documentKind": "Kind of document"
+    },
+    "fieldNames": {
+      "name": "Name",
+      "code": "Short code",
+      "assetCategory": "Asset category",
+      "countryCode": "Country of issuance",
+      "currency": "Currency",
+      "legalIssuerName": "Legal issuer",
+      "eligibilityRules_excludedCountries": "Excluded countries",
+      "terms_interestRate": "Interest rate (%)",
+      "terms_rateType": "Rate type",
+      "terms_dayCount": "Day count convention",
+      "terms_targetAmount": "Target amount",
+      "terms_minimumAmount": "Minimum amount",
+      "terms_maximumAmount": "Maximum amount",
+      "terms_nominalValue": "Nominal value of a unit",
+      "terms_totalUnits": "Total number of units",
+      "terms_distributionFrequency": "Distribution frequency",
+      "terms_issueDate": "Issue date",
+      "terms_maturityDate": "Maturity date",
+      "terms_subscriptionStartDate": "Subscriptions open on",
+      "terms_subscriptionEndDate": "Subscriptions close on",
+      "terms_minSubscriptionAmount": "Minimum subscription",
+      "terms_maxAmountPerInvestor": "Maximum per investor"
+    },
+    "frequencies": {
+      "MONTHLY": "Monthly",
+      "QUARTERLY": "Quarterly",
+      "SEMI_ANNUAL": "Semi-annual",
+      "ANNUAL": "Annual",
+      "BULLET": "At maturity (bullet)"
+    },
+    "dayCountOptions": {
+      "ACT_365F": "Actual/365 fixed",
+      "30E_360": "30E/360"
+    },
+    "roundingMethodOptions": {
+      "HALF_EVEN": "To the nearest, halves to even (banker’s)",
+      "HALF_UP": "To the nearest, halves up",
+      "DOWN": "Down"
+    },
+    "businessDayConventionOptions": {
+      "FOLLOWING": "Next business day",
+      "NONE": "Same day"
+    },
+    "documentKinds": {
+      "TERM_SHEET": "Term sheet",
+      "MEMORANDUM": "Memorandum",
+      "TERMS_AND_CONDITIONS": "Terms and conditions",
+      "MARKETING": "Marketing document",
+      "INVESTOR_DOCUMENT": "Investor document"
+    },
+    "wizard": {
+      "description": "Draft {code} — saved automatically as you type.",
+      "saving": "Saving…",
+      "saved": "Saved",
+      "saveFailed": "Not saved — see below",
+      "steps": "Steps of the wizard",
+      "stepNames": {
+        "GENERAL": "General",
+        "FINANCIAL": "Financial terms",
+        "ELIGIBILITY": "Eligibility",
+        "SERVICING": "Servicing",
+        "DOCUMENTS": "Documents",
+        "REVIEW": "Review"
+      },
+      "previous": "Previous step",
+      "next": "Next step",
+      "notEditable": "This issuance is no longer a draft: it cannot be edited.",
+      "openIssuance": "Open the issuance",
+      "invalidNumber": "Type a number, e.g. 1000 or 1000.50",
+      "financialHelp": "Amounts in {currency}. Target = nominal value × number of units.",
+      "principalAtMaturity": "The principal is repaid at maturity.",
+      "documentsHelp": "Add the term sheet, memorandum, terms and marketing documents (demonstration files).",
+      "noDocuments": "No document yet.",
+      "checks": "Consistency checks",
+      "consistent": "Everything is consistent: the issuance can be submitted.",
+      "fix": "Fix"
+    },
+    "actions": {
+      "edit": "Continue editing",
+      "commentRequired": "Comment (required)",
+      "submit": "Submit for approval",
+      "submitTitle": "Submit the issuance?",
+      "submitDescription": "Another Issuer Administrator will approve it. The draft can no longer be edited, unless it is sent back.",
+      "approve": "Approve",
+      "approveTitle": "Approve the issuance?",
+      "approveDescription": "Its terms and eligibility rules become final. Investors can then be invited.",
+      "open-subscription": "Open subscriptions",
+      "open-subscriptionTitle": "Open subscriptions?",
+      "open-subscriptionDescription": "Invited investors are told and can subscribe until the end date.",
+      "close-subscription": "Close subscriptions",
+      "close-subscriptionTitle": "Close subscriptions?",
+      "close-subscriptionDescription": "No new subscription will be accepted. The allocation comes next.",
+      "return-to-draft": "Send back to draft",
+      "return-to-draftTitle": "Send the issuance back to draft?",
+      "return-to-draftDescription": "The person who submitted it will correct it and submit it again.",
+      "cancel": "Cancel the issuance",
+      "cancelTitle": "Cancel the issuance?",
+      "cancelDescription": "This cannot be undone. Subscriptions in progress are cancelled and investors are told."
+    },
+    "tabs": {
+      "label": "Issuance sections",
+      "overview": "Overview",
+      "invitations": "Invited investors",
+      "documents": "Documents",
+      "history": "History"
+    },
+    "invitations": {
+      "investor": "Investor",
+      "invite": "Invite",
+      "help": "The eligibility rules of the issuance are checked first: an investor who does not meet them is not invited.",
+      "refused": "This investor cannot be invited:",
+      "closed": "Investors are invited once the issuance is approved, until subscriptions close.",
+      "none": "No investor invited yet.",
+      "status": {
+        "INVITED": "invited",
+        "REVOKED": "invitation revoked"
+      },
+      "revoke": "Revoke",
+      "revokeTitle": "Revoke the invitation of {name}?",
+      "revokeDescription": "The investor no longer sees the issuance. Its existing subscriptions are kept."
+    }
   }
 }

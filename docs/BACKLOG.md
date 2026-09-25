@@ -127,7 +127,7 @@ Vérifiable par : scénario 1 vert.
 | P10-3 | Machine à états de l'émission, actions explicites, quatre yeux, annulation | M |
 | P10-4 | Invitations d'investisseurs (évaluation d'éligibilité à l'invitation) | M |
 | P10-5 | Liste des émissions (colonnes, filtres dans l'URL) et détail avec onglets | M |
-| P10-6 | Scénario 1 automatisé (Playwright) | M |
+| P10-6 | Scénario 1 automatisé (Playwright, `pnpm test:e2e`, D-058) | M |
 
 ## Phase 11 — Souscriptions et paiements fictifs
 Vérifiable par : souscription de bout en bout.

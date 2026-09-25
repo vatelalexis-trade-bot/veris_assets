@@ -948,6 +948,246 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/issuances': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['IssuancesController_list'];
+    put?: never;
+    post: operations['IssuancesController_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/issuances/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['IssuancesController_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch: operations['IssuancesController_update'];
+    trace?: never;
+  };
+  '/api/v1/issuances/{id}/terms': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch: operations['IssuancesController_updateTerms'];
+    trace?: never;
+  };
+  '/api/v1/issuances/{id}/eligibility-rules': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch: operations['IssuancesController_updateRules'];
+    trace?: never;
+  };
+  '/api/v1/issuances/{id}/validate': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['IssuancesController_validate'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/issuances/{id}/submit': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['IssuancesController_submit'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/issuances/{id}/approve': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['IssuancesController_approve'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/issuances/{id}/return-to-draft': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['IssuancesController_returnToDraft'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/issuances/{id}/open-subscription': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['IssuancesController_openSubscription'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/issuances/{id}/close-subscription': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['IssuancesController_closeSubscription'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/issuances/{id}/cancel': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['IssuancesController_cancel'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/issuances/{id}/transitions': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['IssuancesController_transitions'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/issuances/{id}/documents': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['IssuancesController_documents'];
+    put?: never;
+    post: operations['IssuancesController_attach'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/issuances/{id}/invitations': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['IssuancesController_invitationsOf'];
+    put?: never;
+    post: operations['IssuancesController_invite'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/issuances/{id}/invitations/{invitationId}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete: operations['IssuancesController_revoke'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/audit-events': {
     parameters: {
       query?: never;
@@ -1095,7 +1335,13 @@ export interface operations {
                 | 'KYC_REJECTED'
                 | 'KYC_EXPIRING_SOON'
                 | 'KYC_EXPIRED'
-                | 'DOCUMENT_ADDED';
+                | 'DOCUMENT_ADDED'
+                | 'ISSUANCE_REVIEW_REQUESTED'
+                | 'ISSUANCE_APPROVED'
+                | 'ISSUANCE_RETURNED'
+                | 'INVESTOR_INVITED'
+                | 'ISSUANCE_OPENED'
+                | 'ISSUANCE_CANCELLED';
               params: {
                 [key: string]: string;
               };
@@ -4511,6 +4757,1843 @@ export interface operations {
             } | null;
             /** Format: date-time */
             assessedAt: string;
+          };
+        };
+      };
+    };
+  };
+  IssuancesController_list: {
+    parameters: {
+      query?: {
+        q?: string;
+        currency?: string;
+        assetCategory?:
+          'PRIVATE_DEBT' | 'RENEWABLE_ENERGY' | 'REAL_ESTATE' | 'INFRASTRUCTURE' | 'PRIVATE_EQUITY';
+        status?:
+          | 'DRAFT'
+          | 'UNDER_REVIEW'
+          | 'APPROVED'
+          | 'SUBSCRIPTION_OPEN'
+          | 'SUBSCRIPTION_CLOSED'
+          | 'ALLOCATED'
+          | 'ACTIVE'
+          | 'MATURED'
+          | 'CANCELLED';
+        page?: number;
+        pageSize?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            data: {
+              /** Format: uuid */
+              id: string;
+              name: string;
+              code: string;
+              description: string | null;
+              /** @enum {string|null} */
+              assetCategory:
+                | 'PRIVATE_DEBT'
+                | 'RENEWABLE_ENERGY'
+                | 'REAL_ESTATE'
+                | 'INFRASTRUCTURE'
+                | 'PRIVATE_EQUITY'
+                | null;
+              countryCode: string | null;
+              currency: string | null;
+              legalIssuerName: string | null;
+              spvName: string | null;
+              /** @enum {string} */
+              status:
+                | 'DRAFT'
+                | 'UNDER_REVIEW'
+                | 'APPROVED'
+                | 'SUBSCRIPTION_OPEN'
+                | 'SUBSCRIPTION_CLOSED'
+                | 'ALLOCATED'
+                | 'ACTIVE'
+                | 'MATURED'
+                | 'CANCELLED';
+              /** @enum {string} */
+              wizardStep:
+                'GENERAL' | 'FINANCIAL' | 'ELIGIBILITY' | 'SERVICING' | 'DOCUMENTS' | 'REVIEW';
+              /** Format: uuid */
+              submittedBy: string | null;
+              /** Format: date-time */
+              submittedAt: string | null;
+              /** Format: uuid */
+              approvedBy: string | null;
+              /** Format: date-time */
+              approvedAt: string | null;
+              statusComment: string | null;
+              version: number;
+              /** Format: date-time */
+              createdAt: string;
+              /** Format: date-time */
+              updatedAt: string;
+              terms: {
+                targetAmount: string | null;
+                minimumAmount: string | null;
+                maximumAmount: string | null;
+                nominalValue: string | null;
+                totalUnits: string | null;
+                interestRate: string | null;
+                /** @enum {string|null} */
+                rateType: 'FIXED' | null;
+                /** @enum {string|null} */
+                distributionFrequency:
+                  'MONTHLY' | 'QUARTERLY' | 'SEMI_ANNUAL' | 'ANNUAL' | 'BULLET' | null;
+                /** @enum {string|null} */
+                dayCount: 'ACT_365F' | '30E_360' | null;
+                /** Format: date */
+                issueDate: string | null;
+                /** Format: date */
+                maturityDate: string | null;
+                /** Format: date */
+                subscriptionStartDate: string | null;
+                /** Format: date */
+                subscriptionEndDate: string | null;
+                minSubscriptionAmount: string | null;
+                maxAmountPerInvestor: string | null;
+                gracePeriodDays: number;
+                /** @enum {string} */
+                principalRepayment: 'AT_MATURITY';
+                /** @enum {string} */
+                roundingMethod: 'HALF_EVEN' | 'HALF_UP' | 'DOWN';
+                /** @enum {string} */
+                businessDayConvention: 'FOLLOWING' | 'NONE';
+                recordDateOffsetBusinessDays: number;
+                earlyRedemptionAllowed: boolean;
+                version: number;
+              };
+              eligibilityRules: {
+                professionalOnly: boolean;
+                allowedCountries: string[];
+                excludedCountries: string[];
+                allowedInvestorTypes: ('LEGAL_ENTITY' | 'NATURAL_PERSON')[];
+                allowedClassifications: ('PROFESSIONAL' | 'ELIGIBLE_COUNTERPARTY')[];
+                kycRequired: boolean;
+                kycMinRemainingValidityDays: number;
+                transfersAllowed: boolean;
+                manualTransferApproval: boolean;
+                maxInvestors: number | null;
+                /** Format: date */
+                lockupEndDate: string | null;
+                rulesVersion: number;
+                version: number;
+              };
+            }[];
+            meta: {
+              page: number;
+              pageSize: number;
+              total: number;
+            };
+          };
+        };
+      };
+    };
+  };
+  IssuancesController_create: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          name: string;
+          code: string;
+          description?: string | null;
+          /** @enum {string|null} */
+          assetCategory?:
+            | 'PRIVATE_DEBT'
+            | 'RENEWABLE_ENERGY'
+            | 'REAL_ESTATE'
+            | 'INFRASTRUCTURE'
+            | 'PRIVATE_EQUITY'
+            | null;
+          countryCode?: string | null;
+          currency?: string | null;
+          legalIssuerName?: string | null;
+          spvName?: string | null;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            code: string;
+            description: string | null;
+            /** @enum {string|null} */
+            assetCategory:
+              | 'PRIVATE_DEBT'
+              | 'RENEWABLE_ENERGY'
+              | 'REAL_ESTATE'
+              | 'INFRASTRUCTURE'
+              | 'PRIVATE_EQUITY'
+              | null;
+            countryCode: string | null;
+            currency: string | null;
+            legalIssuerName: string | null;
+            spvName: string | null;
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'SUBSCRIPTION_OPEN'
+              | 'SUBSCRIPTION_CLOSED'
+              | 'ALLOCATED'
+              | 'ACTIVE'
+              | 'MATURED'
+              | 'CANCELLED';
+            /** @enum {string} */
+            wizardStep:
+              'GENERAL' | 'FINANCIAL' | 'ELIGIBILITY' | 'SERVICING' | 'DOCUMENTS' | 'REVIEW';
+            /** Format: uuid */
+            submittedBy: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: uuid */
+            approvedBy: string | null;
+            /** Format: date-time */
+            approvedAt: string | null;
+            statusComment: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            terms: {
+              targetAmount: string | null;
+              minimumAmount: string | null;
+              maximumAmount: string | null;
+              nominalValue: string | null;
+              totalUnits: string | null;
+              interestRate: string | null;
+              /** @enum {string|null} */
+              rateType: 'FIXED' | null;
+              /** @enum {string|null} */
+              distributionFrequency:
+                'MONTHLY' | 'QUARTERLY' | 'SEMI_ANNUAL' | 'ANNUAL' | 'BULLET' | null;
+              /** @enum {string|null} */
+              dayCount: 'ACT_365F' | '30E_360' | null;
+              /** Format: date */
+              issueDate: string | null;
+              /** Format: date */
+              maturityDate: string | null;
+              /** Format: date */
+              subscriptionStartDate: string | null;
+              /** Format: date */
+              subscriptionEndDate: string | null;
+              minSubscriptionAmount: string | null;
+              maxAmountPerInvestor: string | null;
+              gracePeriodDays: number;
+              /** @enum {string} */
+              principalRepayment: 'AT_MATURITY';
+              /** @enum {string} */
+              roundingMethod: 'HALF_EVEN' | 'HALF_UP' | 'DOWN';
+              /** @enum {string} */
+              businessDayConvention: 'FOLLOWING' | 'NONE';
+              recordDateOffsetBusinessDays: number;
+              earlyRedemptionAllowed: boolean;
+              version: number;
+            };
+            eligibilityRules: {
+              professionalOnly: boolean;
+              allowedCountries: string[];
+              excludedCountries: string[];
+              allowedInvestorTypes: ('LEGAL_ENTITY' | 'NATURAL_PERSON')[];
+              allowedClassifications: ('PROFESSIONAL' | 'ELIGIBLE_COUNTERPARTY')[];
+              kycRequired: boolean;
+              kycMinRemainingValidityDays: number;
+              transfersAllowed: boolean;
+              manualTransferApproval: boolean;
+              maxInvestors: number | null;
+              /** Format: date */
+              lockupEndDate: string | null;
+              rulesVersion: number;
+              version: number;
+            };
+          };
+        };
+      };
+    };
+  };
+  IssuancesController_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            code: string;
+            description: string | null;
+            /** @enum {string|null} */
+            assetCategory:
+              | 'PRIVATE_DEBT'
+              | 'RENEWABLE_ENERGY'
+              | 'REAL_ESTATE'
+              | 'INFRASTRUCTURE'
+              | 'PRIVATE_EQUITY'
+              | null;
+            countryCode: string | null;
+            currency: string | null;
+            legalIssuerName: string | null;
+            spvName: string | null;
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'SUBSCRIPTION_OPEN'
+              | 'SUBSCRIPTION_CLOSED'
+              | 'ALLOCATED'
+              | 'ACTIVE'
+              | 'MATURED'
+              | 'CANCELLED';
+            /** @enum {string} */
+            wizardStep:
+              'GENERAL' | 'FINANCIAL' | 'ELIGIBILITY' | 'SERVICING' | 'DOCUMENTS' | 'REVIEW';
+            /** Format: uuid */
+            submittedBy: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: uuid */
+            approvedBy: string | null;
+            /** Format: date-time */
+            approvedAt: string | null;
+            statusComment: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            terms: {
+              targetAmount: string | null;
+              minimumAmount: string | null;
+              maximumAmount: string | null;
+              nominalValue: string | null;
+              totalUnits: string | null;
+              interestRate: string | null;
+              /** @enum {string|null} */
+              rateType: 'FIXED' | null;
+              /** @enum {string|null} */
+              distributionFrequency:
+                'MONTHLY' | 'QUARTERLY' | 'SEMI_ANNUAL' | 'ANNUAL' | 'BULLET' | null;
+              /** @enum {string|null} */
+              dayCount: 'ACT_365F' | '30E_360' | null;
+              /** Format: date */
+              issueDate: string | null;
+              /** Format: date */
+              maturityDate: string | null;
+              /** Format: date */
+              subscriptionStartDate: string | null;
+              /** Format: date */
+              subscriptionEndDate: string | null;
+              minSubscriptionAmount: string | null;
+              maxAmountPerInvestor: string | null;
+              gracePeriodDays: number;
+              /** @enum {string} */
+              principalRepayment: 'AT_MATURITY';
+              /** @enum {string} */
+              roundingMethod: 'HALF_EVEN' | 'HALF_UP' | 'DOWN';
+              /** @enum {string} */
+              businessDayConvention: 'FOLLOWING' | 'NONE';
+              recordDateOffsetBusinessDays: number;
+              earlyRedemptionAllowed: boolean;
+              version: number;
+            };
+            eligibilityRules: {
+              professionalOnly: boolean;
+              allowedCountries: string[];
+              excludedCountries: string[];
+              allowedInvestorTypes: ('LEGAL_ENTITY' | 'NATURAL_PERSON')[];
+              allowedClassifications: ('PROFESSIONAL' | 'ELIGIBLE_COUNTERPARTY')[];
+              kycRequired: boolean;
+              kycMinRemainingValidityDays: number;
+              transfersAllowed: boolean;
+              manualTransferApproval: boolean;
+              maxInvestors: number | null;
+              /** Format: date */
+              lockupEndDate: string | null;
+              rulesVersion: number;
+              version: number;
+            };
+          };
+        };
+      };
+    };
+  };
+  IssuancesController_update: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          name?: string;
+          code?: string;
+          description?: string | null;
+          /** @enum {string|null} */
+          assetCategory?:
+            | 'PRIVATE_DEBT'
+            | 'RENEWABLE_ENERGY'
+            | 'REAL_ESTATE'
+            | 'INFRASTRUCTURE'
+            | 'PRIVATE_EQUITY'
+            | null;
+          countryCode?: string | null;
+          currency?: string | null;
+          legalIssuerName?: string | null;
+          spvName?: string | null;
+          /** @enum {string} */
+          wizardStep?:
+            'GENERAL' | 'FINANCIAL' | 'ELIGIBILITY' | 'SERVICING' | 'DOCUMENTS' | 'REVIEW';
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            code: string;
+            description: string | null;
+            /** @enum {string|null} */
+            assetCategory:
+              | 'PRIVATE_DEBT'
+              | 'RENEWABLE_ENERGY'
+              | 'REAL_ESTATE'
+              | 'INFRASTRUCTURE'
+              | 'PRIVATE_EQUITY'
+              | null;
+            countryCode: string | null;
+            currency: string | null;
+            legalIssuerName: string | null;
+            spvName: string | null;
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'SUBSCRIPTION_OPEN'
+              | 'SUBSCRIPTION_CLOSED'
+              | 'ALLOCATED'
+              | 'ACTIVE'
+              | 'MATURED'
+              | 'CANCELLED';
+            /** @enum {string} */
+            wizardStep:
+              'GENERAL' | 'FINANCIAL' | 'ELIGIBILITY' | 'SERVICING' | 'DOCUMENTS' | 'REVIEW';
+            /** Format: uuid */
+            submittedBy: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: uuid */
+            approvedBy: string | null;
+            /** Format: date-time */
+            approvedAt: string | null;
+            statusComment: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            terms: {
+              targetAmount: string | null;
+              minimumAmount: string | null;
+              maximumAmount: string | null;
+              nominalValue: string | null;
+              totalUnits: string | null;
+              interestRate: string | null;
+              /** @enum {string|null} */
+              rateType: 'FIXED' | null;
+              /** @enum {string|null} */
+              distributionFrequency:
+                'MONTHLY' | 'QUARTERLY' | 'SEMI_ANNUAL' | 'ANNUAL' | 'BULLET' | null;
+              /** @enum {string|null} */
+              dayCount: 'ACT_365F' | '30E_360' | null;
+              /** Format: date */
+              issueDate: string | null;
+              /** Format: date */
+              maturityDate: string | null;
+              /** Format: date */
+              subscriptionStartDate: string | null;
+              /** Format: date */
+              subscriptionEndDate: string | null;
+              minSubscriptionAmount: string | null;
+              maxAmountPerInvestor: string | null;
+              gracePeriodDays: number;
+              /** @enum {string} */
+              principalRepayment: 'AT_MATURITY';
+              /** @enum {string} */
+              roundingMethod: 'HALF_EVEN' | 'HALF_UP' | 'DOWN';
+              /** @enum {string} */
+              businessDayConvention: 'FOLLOWING' | 'NONE';
+              recordDateOffsetBusinessDays: number;
+              earlyRedemptionAllowed: boolean;
+              version: number;
+            };
+            eligibilityRules: {
+              professionalOnly: boolean;
+              allowedCountries: string[];
+              excludedCountries: string[];
+              allowedInvestorTypes: ('LEGAL_ENTITY' | 'NATURAL_PERSON')[];
+              allowedClassifications: ('PROFESSIONAL' | 'ELIGIBLE_COUNTERPARTY')[];
+              kycRequired: boolean;
+              kycMinRemainingValidityDays: number;
+              transfersAllowed: boolean;
+              manualTransferApproval: boolean;
+              maxInvestors: number | null;
+              /** Format: date */
+              lockupEndDate: string | null;
+              rulesVersion: number;
+              version: number;
+            };
+          };
+        };
+      };
+    };
+  };
+  IssuancesController_updateTerms: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          targetAmount?: string | null;
+          minimumAmount?: string | null;
+          maximumAmount?: string | null;
+          nominalValue?: string | null;
+          totalUnits?: string | null;
+          interestRate?: string | null;
+          rateType?: string | null;
+          distributionFrequency?: string | null;
+          /** @enum {string|null} */
+          dayCount?: 'ACT_365F' | '30E_360' | null;
+          /** Format: date */
+          issueDate?: string | null;
+          /** Format: date */
+          maturityDate?: string | null;
+          /** Format: date */
+          subscriptionStartDate?: string | null;
+          /** Format: date */
+          subscriptionEndDate?: string | null;
+          minSubscriptionAmount?: string | null;
+          maxAmountPerInvestor?: string | null;
+          gracePeriodDays?: number;
+          /** @enum {string} */
+          principalRepayment?: 'AT_MATURITY';
+          /** @enum {string} */
+          roundingMethod?: 'HALF_EVEN' | 'HALF_UP' | 'DOWN';
+          /** @enum {string} */
+          businessDayConvention?: 'FOLLOWING' | 'NONE';
+          recordDateOffsetBusinessDays?: number;
+          earlyRedemptionAllowed?: boolean;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            code: string;
+            description: string | null;
+            /** @enum {string|null} */
+            assetCategory:
+              | 'PRIVATE_DEBT'
+              | 'RENEWABLE_ENERGY'
+              | 'REAL_ESTATE'
+              | 'INFRASTRUCTURE'
+              | 'PRIVATE_EQUITY'
+              | null;
+            countryCode: string | null;
+            currency: string | null;
+            legalIssuerName: string | null;
+            spvName: string | null;
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'SUBSCRIPTION_OPEN'
+              | 'SUBSCRIPTION_CLOSED'
+              | 'ALLOCATED'
+              | 'ACTIVE'
+              | 'MATURED'
+              | 'CANCELLED';
+            /** @enum {string} */
+            wizardStep:
+              'GENERAL' | 'FINANCIAL' | 'ELIGIBILITY' | 'SERVICING' | 'DOCUMENTS' | 'REVIEW';
+            /** Format: uuid */
+            submittedBy: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: uuid */
+            approvedBy: string | null;
+            /** Format: date-time */
+            approvedAt: string | null;
+            statusComment: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            terms: {
+              targetAmount: string | null;
+              minimumAmount: string | null;
+              maximumAmount: string | null;
+              nominalValue: string | null;
+              totalUnits: string | null;
+              interestRate: string | null;
+              /** @enum {string|null} */
+              rateType: 'FIXED' | null;
+              /** @enum {string|null} */
+              distributionFrequency:
+                'MONTHLY' | 'QUARTERLY' | 'SEMI_ANNUAL' | 'ANNUAL' | 'BULLET' | null;
+              /** @enum {string|null} */
+              dayCount: 'ACT_365F' | '30E_360' | null;
+              /** Format: date */
+              issueDate: string | null;
+              /** Format: date */
+              maturityDate: string | null;
+              /** Format: date */
+              subscriptionStartDate: string | null;
+              /** Format: date */
+              subscriptionEndDate: string | null;
+              minSubscriptionAmount: string | null;
+              maxAmountPerInvestor: string | null;
+              gracePeriodDays: number;
+              /** @enum {string} */
+              principalRepayment: 'AT_MATURITY';
+              /** @enum {string} */
+              roundingMethod: 'HALF_EVEN' | 'HALF_UP' | 'DOWN';
+              /** @enum {string} */
+              businessDayConvention: 'FOLLOWING' | 'NONE';
+              recordDateOffsetBusinessDays: number;
+              earlyRedemptionAllowed: boolean;
+              version: number;
+            };
+            eligibilityRules: {
+              professionalOnly: boolean;
+              allowedCountries: string[];
+              excludedCountries: string[];
+              allowedInvestorTypes: ('LEGAL_ENTITY' | 'NATURAL_PERSON')[];
+              allowedClassifications: ('PROFESSIONAL' | 'ELIGIBLE_COUNTERPARTY')[];
+              kycRequired: boolean;
+              kycMinRemainingValidityDays: number;
+              transfersAllowed: boolean;
+              manualTransferApproval: boolean;
+              maxInvestors: number | null;
+              /** Format: date */
+              lockupEndDate: string | null;
+              rulesVersion: number;
+              version: number;
+            };
+          };
+        };
+      };
+    };
+  };
+  IssuancesController_updateRules: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          professionalOnly?: boolean;
+          allowedCountries?: string[];
+          excludedCountries?: string[];
+          allowedInvestorTypes?: ('LEGAL_ENTITY' | 'NATURAL_PERSON')[];
+          allowedClassifications?: ('PROFESSIONAL' | 'ELIGIBLE_COUNTERPARTY')[];
+          kycRequired?: boolean;
+          kycMinRemainingValidityDays?: number;
+          transfersAllowed?: boolean;
+          manualTransferApproval?: boolean;
+          maxInvestors?: number | null;
+          /** Format: date */
+          lockupEndDate?: string | null;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            code: string;
+            description: string | null;
+            /** @enum {string|null} */
+            assetCategory:
+              | 'PRIVATE_DEBT'
+              | 'RENEWABLE_ENERGY'
+              | 'REAL_ESTATE'
+              | 'INFRASTRUCTURE'
+              | 'PRIVATE_EQUITY'
+              | null;
+            countryCode: string | null;
+            currency: string | null;
+            legalIssuerName: string | null;
+            spvName: string | null;
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'SUBSCRIPTION_OPEN'
+              | 'SUBSCRIPTION_CLOSED'
+              | 'ALLOCATED'
+              | 'ACTIVE'
+              | 'MATURED'
+              | 'CANCELLED';
+            /** @enum {string} */
+            wizardStep:
+              'GENERAL' | 'FINANCIAL' | 'ELIGIBILITY' | 'SERVICING' | 'DOCUMENTS' | 'REVIEW';
+            /** Format: uuid */
+            submittedBy: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: uuid */
+            approvedBy: string | null;
+            /** Format: date-time */
+            approvedAt: string | null;
+            statusComment: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            terms: {
+              targetAmount: string | null;
+              minimumAmount: string | null;
+              maximumAmount: string | null;
+              nominalValue: string | null;
+              totalUnits: string | null;
+              interestRate: string | null;
+              /** @enum {string|null} */
+              rateType: 'FIXED' | null;
+              /** @enum {string|null} */
+              distributionFrequency:
+                'MONTHLY' | 'QUARTERLY' | 'SEMI_ANNUAL' | 'ANNUAL' | 'BULLET' | null;
+              /** @enum {string|null} */
+              dayCount: 'ACT_365F' | '30E_360' | null;
+              /** Format: date */
+              issueDate: string | null;
+              /** Format: date */
+              maturityDate: string | null;
+              /** Format: date */
+              subscriptionStartDate: string | null;
+              /** Format: date */
+              subscriptionEndDate: string | null;
+              minSubscriptionAmount: string | null;
+              maxAmountPerInvestor: string | null;
+              gracePeriodDays: number;
+              /** @enum {string} */
+              principalRepayment: 'AT_MATURITY';
+              /** @enum {string} */
+              roundingMethod: 'HALF_EVEN' | 'HALF_UP' | 'DOWN';
+              /** @enum {string} */
+              businessDayConvention: 'FOLLOWING' | 'NONE';
+              recordDateOffsetBusinessDays: number;
+              earlyRedemptionAllowed: boolean;
+              version: number;
+            };
+            eligibilityRules: {
+              professionalOnly: boolean;
+              allowedCountries: string[];
+              excludedCountries: string[];
+              allowedInvestorTypes: ('LEGAL_ENTITY' | 'NATURAL_PERSON')[];
+              allowedClassifications: ('PROFESSIONAL' | 'ELIGIBLE_COUNTERPARTY')[];
+              kycRequired: boolean;
+              kycMinRemainingValidityDays: number;
+              transfersAllowed: boolean;
+              manualTransferApproval: boolean;
+              maxInvestors: number | null;
+              /** Format: date */
+              lockupEndDate: string | null;
+              rulesVersion: number;
+              version: number;
+            };
+          };
+        };
+      };
+    };
+  };
+  IssuancesController_validate: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            consistent: boolean;
+            failures: {
+              /** @enum {string} */
+              code:
+                | 'TARGET_NOT_EQUAL_NOMINAL_TIMES_UNITS'
+                | 'MIN_TARGET_MAX_ORDER'
+                | 'MIN_SUBSCRIPTION_ABOVE_MAX_PER_INVESTOR'
+                | 'DATE_ORDER_INVALID'
+                | 'COUNTRY_BOTH_ALLOWED_AND_EXCLUDED'
+                | 'NEGATIVE_RATE'
+                | 'RATE_TYPE_NOT_SUPPORTED'
+                | 'FREQUENCY_NOT_SUPPORTED'
+                | 'UNITS_NOT_INTEGER'
+                | 'REQUIRED_FIELD_MISSING'
+                | 'AMOUNT_TOO_PRECISE';
+              field: string | null;
+            }[];
+          };
+        };
+      };
+    };
+  };
+  IssuancesController_submit: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            code: string;
+            description: string | null;
+            /** @enum {string|null} */
+            assetCategory:
+              | 'PRIVATE_DEBT'
+              | 'RENEWABLE_ENERGY'
+              | 'REAL_ESTATE'
+              | 'INFRASTRUCTURE'
+              | 'PRIVATE_EQUITY'
+              | null;
+            countryCode: string | null;
+            currency: string | null;
+            legalIssuerName: string | null;
+            spvName: string | null;
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'SUBSCRIPTION_OPEN'
+              | 'SUBSCRIPTION_CLOSED'
+              | 'ALLOCATED'
+              | 'ACTIVE'
+              | 'MATURED'
+              | 'CANCELLED';
+            /** @enum {string} */
+            wizardStep:
+              'GENERAL' | 'FINANCIAL' | 'ELIGIBILITY' | 'SERVICING' | 'DOCUMENTS' | 'REVIEW';
+            /** Format: uuid */
+            submittedBy: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: uuid */
+            approvedBy: string | null;
+            /** Format: date-time */
+            approvedAt: string | null;
+            statusComment: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            terms: {
+              targetAmount: string | null;
+              minimumAmount: string | null;
+              maximumAmount: string | null;
+              nominalValue: string | null;
+              totalUnits: string | null;
+              interestRate: string | null;
+              /** @enum {string|null} */
+              rateType: 'FIXED' | null;
+              /** @enum {string|null} */
+              distributionFrequency:
+                'MONTHLY' | 'QUARTERLY' | 'SEMI_ANNUAL' | 'ANNUAL' | 'BULLET' | null;
+              /** @enum {string|null} */
+              dayCount: 'ACT_365F' | '30E_360' | null;
+              /** Format: date */
+              issueDate: string | null;
+              /** Format: date */
+              maturityDate: string | null;
+              /** Format: date */
+              subscriptionStartDate: string | null;
+              /** Format: date */
+              subscriptionEndDate: string | null;
+              minSubscriptionAmount: string | null;
+              maxAmountPerInvestor: string | null;
+              gracePeriodDays: number;
+              /** @enum {string} */
+              principalRepayment: 'AT_MATURITY';
+              /** @enum {string} */
+              roundingMethod: 'HALF_EVEN' | 'HALF_UP' | 'DOWN';
+              /** @enum {string} */
+              businessDayConvention: 'FOLLOWING' | 'NONE';
+              recordDateOffsetBusinessDays: number;
+              earlyRedemptionAllowed: boolean;
+              version: number;
+            };
+            eligibilityRules: {
+              professionalOnly: boolean;
+              allowedCountries: string[];
+              excludedCountries: string[];
+              allowedInvestorTypes: ('LEGAL_ENTITY' | 'NATURAL_PERSON')[];
+              allowedClassifications: ('PROFESSIONAL' | 'ELIGIBLE_COUNTERPARTY')[];
+              kycRequired: boolean;
+              kycMinRemainingValidityDays: number;
+              transfersAllowed: boolean;
+              manualTransferApproval: boolean;
+              maxInvestors: number | null;
+              /** Format: date */
+              lockupEndDate: string | null;
+              rulesVersion: number;
+              version: number;
+            };
+          };
+        };
+      };
+    };
+  };
+  IssuancesController_approve: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            code: string;
+            description: string | null;
+            /** @enum {string|null} */
+            assetCategory:
+              | 'PRIVATE_DEBT'
+              | 'RENEWABLE_ENERGY'
+              | 'REAL_ESTATE'
+              | 'INFRASTRUCTURE'
+              | 'PRIVATE_EQUITY'
+              | null;
+            countryCode: string | null;
+            currency: string | null;
+            legalIssuerName: string | null;
+            spvName: string | null;
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'SUBSCRIPTION_OPEN'
+              | 'SUBSCRIPTION_CLOSED'
+              | 'ALLOCATED'
+              | 'ACTIVE'
+              | 'MATURED'
+              | 'CANCELLED';
+            /** @enum {string} */
+            wizardStep:
+              'GENERAL' | 'FINANCIAL' | 'ELIGIBILITY' | 'SERVICING' | 'DOCUMENTS' | 'REVIEW';
+            /** Format: uuid */
+            submittedBy: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: uuid */
+            approvedBy: string | null;
+            /** Format: date-time */
+            approvedAt: string | null;
+            statusComment: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            terms: {
+              targetAmount: string | null;
+              minimumAmount: string | null;
+              maximumAmount: string | null;
+              nominalValue: string | null;
+              totalUnits: string | null;
+              interestRate: string | null;
+              /** @enum {string|null} */
+              rateType: 'FIXED' | null;
+              /** @enum {string|null} */
+              distributionFrequency:
+                'MONTHLY' | 'QUARTERLY' | 'SEMI_ANNUAL' | 'ANNUAL' | 'BULLET' | null;
+              /** @enum {string|null} */
+              dayCount: 'ACT_365F' | '30E_360' | null;
+              /** Format: date */
+              issueDate: string | null;
+              /** Format: date */
+              maturityDate: string | null;
+              /** Format: date */
+              subscriptionStartDate: string | null;
+              /** Format: date */
+              subscriptionEndDate: string | null;
+              minSubscriptionAmount: string | null;
+              maxAmountPerInvestor: string | null;
+              gracePeriodDays: number;
+              /** @enum {string} */
+              principalRepayment: 'AT_MATURITY';
+              /** @enum {string} */
+              roundingMethod: 'HALF_EVEN' | 'HALF_UP' | 'DOWN';
+              /** @enum {string} */
+              businessDayConvention: 'FOLLOWING' | 'NONE';
+              recordDateOffsetBusinessDays: number;
+              earlyRedemptionAllowed: boolean;
+              version: number;
+            };
+            eligibilityRules: {
+              professionalOnly: boolean;
+              allowedCountries: string[];
+              excludedCountries: string[];
+              allowedInvestorTypes: ('LEGAL_ENTITY' | 'NATURAL_PERSON')[];
+              allowedClassifications: ('PROFESSIONAL' | 'ELIGIBLE_COUNTERPARTY')[];
+              kycRequired: boolean;
+              kycMinRemainingValidityDays: number;
+              transfersAllowed: boolean;
+              manualTransferApproval: boolean;
+              maxInvestors: number | null;
+              /** Format: date */
+              lockupEndDate: string | null;
+              rulesVersion: number;
+              version: number;
+            };
+          };
+        };
+      };
+    };
+  };
+  IssuancesController_returnToDraft: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          comment: string;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            code: string;
+            description: string | null;
+            /** @enum {string|null} */
+            assetCategory:
+              | 'PRIVATE_DEBT'
+              | 'RENEWABLE_ENERGY'
+              | 'REAL_ESTATE'
+              | 'INFRASTRUCTURE'
+              | 'PRIVATE_EQUITY'
+              | null;
+            countryCode: string | null;
+            currency: string | null;
+            legalIssuerName: string | null;
+            spvName: string | null;
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'SUBSCRIPTION_OPEN'
+              | 'SUBSCRIPTION_CLOSED'
+              | 'ALLOCATED'
+              | 'ACTIVE'
+              | 'MATURED'
+              | 'CANCELLED';
+            /** @enum {string} */
+            wizardStep:
+              'GENERAL' | 'FINANCIAL' | 'ELIGIBILITY' | 'SERVICING' | 'DOCUMENTS' | 'REVIEW';
+            /** Format: uuid */
+            submittedBy: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: uuid */
+            approvedBy: string | null;
+            /** Format: date-time */
+            approvedAt: string | null;
+            statusComment: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            terms: {
+              targetAmount: string | null;
+              minimumAmount: string | null;
+              maximumAmount: string | null;
+              nominalValue: string | null;
+              totalUnits: string | null;
+              interestRate: string | null;
+              /** @enum {string|null} */
+              rateType: 'FIXED' | null;
+              /** @enum {string|null} */
+              distributionFrequency:
+                'MONTHLY' | 'QUARTERLY' | 'SEMI_ANNUAL' | 'ANNUAL' | 'BULLET' | null;
+              /** @enum {string|null} */
+              dayCount: 'ACT_365F' | '30E_360' | null;
+              /** Format: date */
+              issueDate: string | null;
+              /** Format: date */
+              maturityDate: string | null;
+              /** Format: date */
+              subscriptionStartDate: string | null;
+              /** Format: date */
+              subscriptionEndDate: string | null;
+              minSubscriptionAmount: string | null;
+              maxAmountPerInvestor: string | null;
+              gracePeriodDays: number;
+              /** @enum {string} */
+              principalRepayment: 'AT_MATURITY';
+              /** @enum {string} */
+              roundingMethod: 'HALF_EVEN' | 'HALF_UP' | 'DOWN';
+              /** @enum {string} */
+              businessDayConvention: 'FOLLOWING' | 'NONE';
+              recordDateOffsetBusinessDays: number;
+              earlyRedemptionAllowed: boolean;
+              version: number;
+            };
+            eligibilityRules: {
+              professionalOnly: boolean;
+              allowedCountries: string[];
+              excludedCountries: string[];
+              allowedInvestorTypes: ('LEGAL_ENTITY' | 'NATURAL_PERSON')[];
+              allowedClassifications: ('PROFESSIONAL' | 'ELIGIBLE_COUNTERPARTY')[];
+              kycRequired: boolean;
+              kycMinRemainingValidityDays: number;
+              transfersAllowed: boolean;
+              manualTransferApproval: boolean;
+              maxInvestors: number | null;
+              /** Format: date */
+              lockupEndDate: string | null;
+              rulesVersion: number;
+              version: number;
+            };
+          };
+        };
+      };
+    };
+  };
+  IssuancesController_openSubscription: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            code: string;
+            description: string | null;
+            /** @enum {string|null} */
+            assetCategory:
+              | 'PRIVATE_DEBT'
+              | 'RENEWABLE_ENERGY'
+              | 'REAL_ESTATE'
+              | 'INFRASTRUCTURE'
+              | 'PRIVATE_EQUITY'
+              | null;
+            countryCode: string | null;
+            currency: string | null;
+            legalIssuerName: string | null;
+            spvName: string | null;
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'SUBSCRIPTION_OPEN'
+              | 'SUBSCRIPTION_CLOSED'
+              | 'ALLOCATED'
+              | 'ACTIVE'
+              | 'MATURED'
+              | 'CANCELLED';
+            /** @enum {string} */
+            wizardStep:
+              'GENERAL' | 'FINANCIAL' | 'ELIGIBILITY' | 'SERVICING' | 'DOCUMENTS' | 'REVIEW';
+            /** Format: uuid */
+            submittedBy: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: uuid */
+            approvedBy: string | null;
+            /** Format: date-time */
+            approvedAt: string | null;
+            statusComment: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            terms: {
+              targetAmount: string | null;
+              minimumAmount: string | null;
+              maximumAmount: string | null;
+              nominalValue: string | null;
+              totalUnits: string | null;
+              interestRate: string | null;
+              /** @enum {string|null} */
+              rateType: 'FIXED' | null;
+              /** @enum {string|null} */
+              distributionFrequency:
+                'MONTHLY' | 'QUARTERLY' | 'SEMI_ANNUAL' | 'ANNUAL' | 'BULLET' | null;
+              /** @enum {string|null} */
+              dayCount: 'ACT_365F' | '30E_360' | null;
+              /** Format: date */
+              issueDate: string | null;
+              /** Format: date */
+              maturityDate: string | null;
+              /** Format: date */
+              subscriptionStartDate: string | null;
+              /** Format: date */
+              subscriptionEndDate: string | null;
+              minSubscriptionAmount: string | null;
+              maxAmountPerInvestor: string | null;
+              gracePeriodDays: number;
+              /** @enum {string} */
+              principalRepayment: 'AT_MATURITY';
+              /** @enum {string} */
+              roundingMethod: 'HALF_EVEN' | 'HALF_UP' | 'DOWN';
+              /** @enum {string} */
+              businessDayConvention: 'FOLLOWING' | 'NONE';
+              recordDateOffsetBusinessDays: number;
+              earlyRedemptionAllowed: boolean;
+              version: number;
+            };
+            eligibilityRules: {
+              professionalOnly: boolean;
+              allowedCountries: string[];
+              excludedCountries: string[];
+              allowedInvestorTypes: ('LEGAL_ENTITY' | 'NATURAL_PERSON')[];
+              allowedClassifications: ('PROFESSIONAL' | 'ELIGIBLE_COUNTERPARTY')[];
+              kycRequired: boolean;
+              kycMinRemainingValidityDays: number;
+              transfersAllowed: boolean;
+              manualTransferApproval: boolean;
+              maxInvestors: number | null;
+              /** Format: date */
+              lockupEndDate: string | null;
+              rulesVersion: number;
+              version: number;
+            };
+          };
+        };
+      };
+    };
+  };
+  IssuancesController_closeSubscription: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            code: string;
+            description: string | null;
+            /** @enum {string|null} */
+            assetCategory:
+              | 'PRIVATE_DEBT'
+              | 'RENEWABLE_ENERGY'
+              | 'REAL_ESTATE'
+              | 'INFRASTRUCTURE'
+              | 'PRIVATE_EQUITY'
+              | null;
+            countryCode: string | null;
+            currency: string | null;
+            legalIssuerName: string | null;
+            spvName: string | null;
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'SUBSCRIPTION_OPEN'
+              | 'SUBSCRIPTION_CLOSED'
+              | 'ALLOCATED'
+              | 'ACTIVE'
+              | 'MATURED'
+              | 'CANCELLED';
+            /** @enum {string} */
+            wizardStep:
+              'GENERAL' | 'FINANCIAL' | 'ELIGIBILITY' | 'SERVICING' | 'DOCUMENTS' | 'REVIEW';
+            /** Format: uuid */
+            submittedBy: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: uuid */
+            approvedBy: string | null;
+            /** Format: date-time */
+            approvedAt: string | null;
+            statusComment: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            terms: {
+              targetAmount: string | null;
+              minimumAmount: string | null;
+              maximumAmount: string | null;
+              nominalValue: string | null;
+              totalUnits: string | null;
+              interestRate: string | null;
+              /** @enum {string|null} */
+              rateType: 'FIXED' | null;
+              /** @enum {string|null} */
+              distributionFrequency:
+                'MONTHLY' | 'QUARTERLY' | 'SEMI_ANNUAL' | 'ANNUAL' | 'BULLET' | null;
+              /** @enum {string|null} */
+              dayCount: 'ACT_365F' | '30E_360' | null;
+              /** Format: date */
+              issueDate: string | null;
+              /** Format: date */
+              maturityDate: string | null;
+              /** Format: date */
+              subscriptionStartDate: string | null;
+              /** Format: date */
+              subscriptionEndDate: string | null;
+              minSubscriptionAmount: string | null;
+              maxAmountPerInvestor: string | null;
+              gracePeriodDays: number;
+              /** @enum {string} */
+              principalRepayment: 'AT_MATURITY';
+              /** @enum {string} */
+              roundingMethod: 'HALF_EVEN' | 'HALF_UP' | 'DOWN';
+              /** @enum {string} */
+              businessDayConvention: 'FOLLOWING' | 'NONE';
+              recordDateOffsetBusinessDays: number;
+              earlyRedemptionAllowed: boolean;
+              version: number;
+            };
+            eligibilityRules: {
+              professionalOnly: boolean;
+              allowedCountries: string[];
+              excludedCountries: string[];
+              allowedInvestorTypes: ('LEGAL_ENTITY' | 'NATURAL_PERSON')[];
+              allowedClassifications: ('PROFESSIONAL' | 'ELIGIBLE_COUNTERPARTY')[];
+              kycRequired: boolean;
+              kycMinRemainingValidityDays: number;
+              transfersAllowed: boolean;
+              manualTransferApproval: boolean;
+              maxInvestors: number | null;
+              /** Format: date */
+              lockupEndDate: string | null;
+              rulesVersion: number;
+              version: number;
+            };
+          };
+        };
+      };
+    };
+  };
+  IssuancesController_cancel: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          comment: string;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            code: string;
+            description: string | null;
+            /** @enum {string|null} */
+            assetCategory:
+              | 'PRIVATE_DEBT'
+              | 'RENEWABLE_ENERGY'
+              | 'REAL_ESTATE'
+              | 'INFRASTRUCTURE'
+              | 'PRIVATE_EQUITY'
+              | null;
+            countryCode: string | null;
+            currency: string | null;
+            legalIssuerName: string | null;
+            spvName: string | null;
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'SUBSCRIPTION_OPEN'
+              | 'SUBSCRIPTION_CLOSED'
+              | 'ALLOCATED'
+              | 'ACTIVE'
+              | 'MATURED'
+              | 'CANCELLED';
+            /** @enum {string} */
+            wizardStep:
+              'GENERAL' | 'FINANCIAL' | 'ELIGIBILITY' | 'SERVICING' | 'DOCUMENTS' | 'REVIEW';
+            /** Format: uuid */
+            submittedBy: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: uuid */
+            approvedBy: string | null;
+            /** Format: date-time */
+            approvedAt: string | null;
+            statusComment: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            terms: {
+              targetAmount: string | null;
+              minimumAmount: string | null;
+              maximumAmount: string | null;
+              nominalValue: string | null;
+              totalUnits: string | null;
+              interestRate: string | null;
+              /** @enum {string|null} */
+              rateType: 'FIXED' | null;
+              /** @enum {string|null} */
+              distributionFrequency:
+                'MONTHLY' | 'QUARTERLY' | 'SEMI_ANNUAL' | 'ANNUAL' | 'BULLET' | null;
+              /** @enum {string|null} */
+              dayCount: 'ACT_365F' | '30E_360' | null;
+              /** Format: date */
+              issueDate: string | null;
+              /** Format: date */
+              maturityDate: string | null;
+              /** Format: date */
+              subscriptionStartDate: string | null;
+              /** Format: date */
+              subscriptionEndDate: string | null;
+              minSubscriptionAmount: string | null;
+              maxAmountPerInvestor: string | null;
+              gracePeriodDays: number;
+              /** @enum {string} */
+              principalRepayment: 'AT_MATURITY';
+              /** @enum {string} */
+              roundingMethod: 'HALF_EVEN' | 'HALF_UP' | 'DOWN';
+              /** @enum {string} */
+              businessDayConvention: 'FOLLOWING' | 'NONE';
+              recordDateOffsetBusinessDays: number;
+              earlyRedemptionAllowed: boolean;
+              version: number;
+            };
+            eligibilityRules: {
+              professionalOnly: boolean;
+              allowedCountries: string[];
+              excludedCountries: string[];
+              allowedInvestorTypes: ('LEGAL_ENTITY' | 'NATURAL_PERSON')[];
+              allowedClassifications: ('PROFESSIONAL' | 'ELIGIBLE_COUNTERPARTY')[];
+              kycRequired: boolean;
+              kycMinRemainingValidityDays: number;
+              transfersAllowed: boolean;
+              manualTransferApproval: boolean;
+              maxInvestors: number | null;
+              /** Format: date */
+              lockupEndDate: string | null;
+              rulesVersion: number;
+              version: number;
+            };
+          };
+        };
+      };
+    };
+  };
+  IssuancesController_transitions: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @enum {string|null} */
+            fromStatus:
+              | 'DRAFT'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'SUBSCRIPTION_OPEN'
+              | 'SUBSCRIPTION_CLOSED'
+              | 'ALLOCATED'
+              | 'ACTIVE'
+              | 'MATURED'
+              | 'CANCELLED'
+              | null;
+            /** @enum {string} */
+            toStatus:
+              | 'DRAFT'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'SUBSCRIPTION_OPEN'
+              | 'SUBSCRIPTION_CLOSED'
+              | 'ALLOCATED'
+              | 'ACTIVE'
+              | 'MATURED'
+              | 'CANCELLED';
+            /** Format: uuid */
+            actorUserId: string | null;
+            actorName: string | null;
+            actorRole: string | null;
+            comment: string | null;
+            /** Format: date-time */
+            occurredAt: string;
+          }[];
+        };
+      };
+    };
+  };
+  IssuancesController_documents: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            documentId: string;
+            /** @enum {string} */
+            kind:
+              | 'TERM_SHEET'
+              | 'MEMORANDUM'
+              | 'TERMS_AND_CONDITIONS'
+              | 'MARKETING'
+              | 'INVESTOR_DOCUMENT';
+            name: string;
+            confidentiality: string;
+            status: string;
+          }[];
+        };
+      };
+    };
+  };
+  IssuancesController_attach: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: uuid */
+          documentId: string;
+          /** @enum {string} */
+          kind:
+            | 'TERM_SHEET'
+            | 'MEMORANDUM'
+            | 'TERMS_AND_CONDITIONS'
+            | 'MARKETING'
+            | 'INVESTOR_DOCUMENT';
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            documentId: string;
+            /** @enum {string} */
+            kind:
+              | 'TERM_SHEET'
+              | 'MEMORANDUM'
+              | 'TERMS_AND_CONDITIONS'
+              | 'MARKETING'
+              | 'INVESTOR_DOCUMENT';
+            name: string;
+            confidentiality: string;
+            status: string;
+          }[];
+        };
+      };
+    };
+  };
+  IssuancesController_invitationsOf: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            investorId: string;
+            investorName: string;
+            /** @enum {string} */
+            status: 'INVITED' | 'REVOKED';
+            /** Format: uuid */
+            eligibilityAssessmentId: string;
+            /** Format: date-time */
+            invitedAt: string;
+            /** Format: date-time */
+            revokedAt: string | null;
+          }[];
+        };
+      };
+    };
+  };
+  IssuancesController_invite: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: uuid */
+          investorId: string;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** @enum {string} */
+            status: 'INVITED';
+          };
+        };
+      };
+    };
+  };
+  IssuancesController_revoke: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+        invitationId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** @enum {string} */
+            status: 'REVOKED';
           };
         };
       };

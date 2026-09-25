@@ -236,7 +236,9 @@
     "NEGATIVE_RATE": "Le taux ne peut pas être négatif.",
     "RATE_TYPE_NOT_SUPPORTED": "Seuls les taux fixes sont pris en charge.",
     "FREQUENCY_NOT_SUPPORTED": "Cette fréquence de distribution n’est pas prise en charge.",
-    "UNITS_NOT_INTEGER": "Le nombre d’unités doit être un nombre entier."
+    "UNITS_NOT_INTEGER": "Le nombre d’unités doit être un nombre entier.",
+    "REQUIRED_FIELD_MISSING": "Cette information est nécessaire avant la soumission.",
+    "AMOUNT_TOO_PRECISE": "Ce montant a plus de décimales que la devise n’en permet."
   },
   "passwordRules": {
     "PASSWORD_TOO_SHORT": "Utilisez au moins 12 caractères.",
@@ -332,7 +334,11 @@
     "UNKNOWN_OWNER": "L’investisseur ou l’émission de ce document n’existe pas.",
     "FILE_REQUIRED": "Choisissez un fichier.",
     "TYPE_NOT_ALLOWED": "Fichiers acceptés : PDF, PNG, JPEG, CSV et XLSX. Le type est vérifié d’après le contenu, pas le nom.",
-    "MAX_10_MB": "Le fichier ne doit pas dépasser 10 Mo."
+    "MAX_10_MB": "Le fichier ne doit pas dépasser 10 Mo.",
+    "ISSUANCE_CODE_TAKEN": "Une autre émission a déjà ce code.",
+    "ALREADY_INVITED": "Cet investisseur est déjà invité.",
+    "NOT_A_DOCUMENT_OF_ISSUANCE": "Ce document n’appartient pas à l’émission.",
+    "SUBSCRIPTION_START_DATE": "Les souscriptions s’ouvrent à la date de début prévue."
   },
   "organizationTypes": {
     "ISSUER": "Émetteur",
@@ -490,7 +496,8 @@
       "user_invitation": "Invitation",
       "investor": "Investisseur",
       "kyc_case": "Dossier KYC/KYB",
-      "document": "Document"
+      "document": "Document",
+      "issuance": "Émission"
     },
     "sources": {
       "WEB": "Application web",
@@ -553,7 +560,20 @@
       "DOCUMENT_DOWNLOADED": "Document confidentiel téléchargé",
       "DOCUMENT_REJECTED": "Fichier refusé par le contrôle de sécurité",
       "ELIGIBILITY_ASSESSED": "Éligibilité contrôlée",
-      "ELIGIBILITY_STATUS_CHANGED": "Statut d’éligibilité décidé"
+      "ELIGIBILITY_STATUS_CHANGED": "Statut d’éligibilité décidé",
+      "ISSUANCE_CREATED": "Émission créée",
+      "ISSUANCE_UPDATED": "Émission modifiée",
+      "ISSUANCE_TERMS_UPDATED": "Conditions modifiées",
+      "ISSUANCE_RULES_UPDATED": "Règles d’éligibilité modifiées",
+      "ISSUANCE_UNDER_REVIEW": "Émission soumise",
+      "ISSUANCE_APPROVED": "Émission approuvée",
+      "ISSUANCE_RETURNED_TO_DRAFT": "Émission renvoyée en brouillon",
+      "ISSUANCE_SUBSCRIPTION_OPEN": "Souscriptions ouvertes",
+      "ISSUANCE_SUBSCRIPTION_CLOSED": "Souscriptions clôturées",
+      "ISSUANCE_CANCELLED": "Émission annulée",
+      "ISSUANCE_DOCUMENT_ATTACHED": "Document d’émission ajouté",
+      "INVESTOR_INVITED_TO_ISSUANCE": "Investisseur invité",
+      "INVESTOR_INVITATION_REVOKED": "Invitation retirée"
     }
   },
   "investors": {
@@ -808,5 +828,209 @@
     "INVESTOR_SUSPENDED": "L’investisseur n’est pas suspendu.",
     "INVESTOR_NOT_ELIGIBLE": "Aucun responsable conformité n’a jugé l’investisseur non éligible.",
     "MAX_INVESTORS_REACHED": "Le nombre maximal d’investisseurs n’est pas atteint."
+  },
+  "issuances": {
+    "title": "Émissions",
+    "description": "Vos émissions, du brouillon jusqu’à leur échéance.",
+    "caption": "Émissions de l’organisation",
+    "empty": "Aucune émission ne correspond.",
+    "new": "Nouvelle émission",
+    "newDescription": "Donnez-lui un nom et un code court ; l’assistant vous guide pour le reste et enregistre au fur et à mesure.",
+    "createDraft": "Créer le brouillon",
+    "allStatuses": "Tous les statuts",
+    "allCategories": "Toutes les catégories",
+    "back": "Émissions",
+    "statusComment": "Commentaire :",
+    "fourEyes": "Vous avez soumis cette émission : un autre administrateur émetteur doit l’approuver.",
+    "yes": "Oui",
+    "no": "Non",
+    "any": "Tous",
+    "download": "Télécharger",
+    "unknownUser": "Utilisateur inconnu",
+    "system": "Système",
+    "columns": {
+      "name": "Émission",
+      "status": "Statut",
+      "category": "Catégorie",
+      "target": "Cible",
+      "window": "Souscriptions"
+    },
+    "categories": {
+      "PRIVATE_DEBT": "Dette privée",
+      "RENEWABLE_ENERGY": "Énergies renouvelables",
+      "REAL_ESTATE": "Immobilier",
+      "INFRASTRUCTURE": "Infrastructures",
+      "PRIVATE_EQUITY": "Capital-investissement"
+    },
+    "fields": {
+      "name": "Nom",
+      "code": "Code court",
+      "codeHint": "2 à 20 lettres, chiffres ou tirets, unique dans votre organisation.",
+      "codeInvalid": "Utilisez 2 à 20 lettres, chiffres ou tirets.",
+      "description": "Description",
+      "assetCategory": "Catégorie d’actif",
+      "countryCode": "Pays d’émission",
+      "currency": "Devise",
+      "legalIssuerName": "Émetteur juridique",
+      "spvName": "SPV (facultatif)",
+      "targetAmount": "Montant cible",
+      "minimumAmount": "Montant minimum",
+      "maximumAmount": "Montant maximum",
+      "nominalValue": "Valeur nominale d’une unité",
+      "totalUnits": "Nombre total d’unités",
+      "ratePercent": "Taux d’intérêt (%)",
+      "rateHint": "Taux fixe, par exemple 5 ou 5,25",
+      "distributionFrequency": "Fréquence de distribution",
+      "issueDate": "Date d’émission",
+      "maturityDate": "Date de maturité",
+      "subscriptionStartDate": "Ouverture des souscriptions",
+      "subscriptionEndDate": "Clôture des souscriptions",
+      "minSubscriptionAmount": "Souscription minimale",
+      "maxAmountPerInvestor": "Maximum par investisseur",
+      "professionalOnly": "Investisseurs professionnels uniquement",
+      "kycRequired": "KYC/KYB valide exigé",
+      "kycMinRemainingValidityDays": "KYC/KYB encore valable après (jours)",
+      "maxInvestors": "Nombre maximal d’investisseurs",
+      "maxInvestorsHint": "Vide : pas de limite.",
+      "excludedCountries": "Pays exclus",
+      "allowedCountries": "Pays autorisés",
+      "allowedInvestorTypes": "Types d’investisseurs acceptés",
+      "allowedClassifications": "Classifications acceptées",
+      "emptyListHint": "Une liste laissée vide signifie : pas de restriction.",
+      "transfersAllowed": "Transferts entre investisseurs autorisés",
+      "manualTransferApproval": "Transferts validés manuellement",
+      "lockupEndDate": "Fin de la période de blocage",
+      "lockupHint": "Aucun transfert avant cette date (facultatif).",
+      "dayCount": "Convention de décompte des jours",
+      "gracePeriodDays": "Période de grâce (jours)",
+      "roundingMethod": "Arrondi",
+      "businessDayConvention": "Paiement un jour non ouvré",
+      "recordDateOffsetBusinessDays": "Date d’enregistrement (jours ouvrés avant paiement)",
+      "recordDateHint": "Les détenteurs à cette date reçoivent le coupon.",
+      "earlyRedemptionAllowed": "Remboursement anticipé autorisé",
+      "documentKind": "Nature du document"
+    },
+    "fieldNames": {
+      "name": "Nom",
+      "code": "Code court",
+      "assetCategory": "Catégorie d’actif",
+      "countryCode": "Pays d’émission",
+      "currency": "Devise",
+      "legalIssuerName": "Émetteur juridique",
+      "eligibilityRules_excludedCountries": "Pays exclus",
+      "terms_interestRate": "Taux d’intérêt (%)",
+      "terms_rateType": "Type de taux",
+      "terms_dayCount": "Convention de décompte des jours",
+      "terms_targetAmount": "Montant cible",
+      "terms_minimumAmount": "Montant minimum",
+      "terms_maximumAmount": "Montant maximum",
+      "terms_nominalValue": "Valeur nominale d’une unité",
+      "terms_totalUnits": "Nombre total d’unités",
+      "terms_distributionFrequency": "Fréquence de distribution",
+      "terms_issueDate": "Date d’émission",
+      "terms_maturityDate": "Date de maturité",
+      "terms_subscriptionStartDate": "Ouverture des souscriptions",
+      "terms_subscriptionEndDate": "Clôture des souscriptions",
+      "terms_minSubscriptionAmount": "Souscription minimale",
+      "terms_maxAmountPerInvestor": "Maximum par investisseur"
+    },
+    "frequencies": {
+      "MONTHLY": "Mensuelle",
+      "QUARTERLY": "Trimestrielle",
+      "SEMI_ANNUAL": "Semestrielle",
+      "ANNUAL": "Annuelle",
+      "BULLET": "À maturité (in fine)"
+    },
+    "dayCountOptions": {
+      "ACT_365F": "Exact/365 fixe",
+      "30E_360": "30E/360"
+    },
+    "roundingMethodOptions": {
+      "HALF_EVEN": "Au plus proche, moitiés au pair (bancaire)",
+      "HALF_UP": "Au plus proche, moitiés vers le haut",
+      "DOWN": "Vers le bas"
+    },
+    "businessDayConventionOptions": {
+      "FOLLOWING": "Jour ouvré suivant",
+      "NONE": "Le jour même"
+    },
+    "documentKinds": {
+      "TERM_SHEET": "Term sheet",
+      "MEMORANDUM": "Mémorandum",
+      "TERMS_AND_CONDITIONS": "Conditions d’émission",
+      "MARKETING": "Documentation commerciale",
+      "INVESTOR_DOCUMENT": "Document investisseurs"
+    },
+    "wizard": {
+      "description": "Brouillon {code} — enregistré automatiquement pendant la saisie.",
+      "saving": "Enregistrement…",
+      "saved": "Enregistré",
+      "saveFailed": "Non enregistré — voir ci-dessous",
+      "steps": "Étapes de l’assistant",
+      "stepNames": {
+        "GENERAL": "Informations générales",
+        "FINANCIAL": "Caractéristiques financières",
+        "ELIGIBILITY": "Éligibilité",
+        "SERVICING": "Servicing",
+        "DOCUMENTS": "Documents",
+        "REVIEW": "Revue"
+      },
+      "previous": "Étape précédente",
+      "next": "Étape suivante",
+      "notEditable": "Cette émission n’est plus un brouillon : elle ne peut plus être modifiée.",
+      "openIssuance": "Ouvrir l’émission",
+      "invalidNumber": "Saisissez un nombre, par exemple 1000 ou 1000,50",
+      "financialHelp": "Montants en {currency}. Cible = valeur nominale × nombre d’unités.",
+      "principalAtMaturity": "Le principal est remboursé à maturité.",
+      "documentsHelp": "Ajoutez term sheet, mémorandum, conditions et documentation commerciale (fichiers de démonstration).",
+      "noDocuments": "Aucun document pour l’instant.",
+      "checks": "Contrôles de cohérence",
+      "consistent": "Tout est cohérent : l’émission peut être soumise.",
+      "fix": "Corriger"
+    },
+    "actions": {
+      "edit": "Reprendre la saisie",
+      "commentRequired": "Commentaire (obligatoire)",
+      "submit": "Soumettre pour approbation",
+      "submitTitle": "Soumettre l’émission ?",
+      "submitDescription": "Un autre administrateur émetteur l’approuvera. Le brouillon ne peut plus être modifié, sauf s’il est renvoyé.",
+      "approve": "Approuver",
+      "approveTitle": "Approuver l’émission ?",
+      "approveDescription": "Ses conditions et règles d’éligibilité deviennent définitives. Les investisseurs peuvent ensuite être invités.",
+      "open-subscription": "Ouvrir les souscriptions",
+      "open-subscriptionTitle": "Ouvrir les souscriptions ?",
+      "open-subscriptionDescription": "Les investisseurs invités sont prévenus et peuvent souscrire jusqu’à la date de fin.",
+      "close-subscription": "Clôturer les souscriptions",
+      "close-subscriptionTitle": "Clôturer les souscriptions ?",
+      "close-subscriptionDescription": "Plus aucune souscription ne sera acceptée. L’allocation vient ensuite.",
+      "return-to-draft": "Renvoyer en brouillon",
+      "return-to-draftTitle": "Renvoyer l’émission en brouillon ?",
+      "return-to-draftDescription": "La personne qui l’a soumise la corrigera et la soumettra de nouveau.",
+      "cancel": "Annuler l’émission",
+      "cancelTitle": "Annuler l’émission ?",
+      "cancelDescription": "C’est définitif. Les souscriptions en cours sont annulées et les investisseurs prévenus."
+    },
+    "tabs": {
+      "label": "Rubriques de l’émission",
+      "overview": "Aperçu",
+      "invitations": "Investisseurs invités",
+      "documents": "Documents",
+      "history": "Historique"
+    },
+    "invitations": {
+      "investor": "Investisseur",
+      "invite": "Inviter",
+      "help": "Les règles d’éligibilité de l’émission sont d’abord contrôlées : un investisseur qui ne les respecte pas n’est pas invité.",
+      "refused": "Cet investisseur ne peut pas être invité :",
+      "closed": "Les investisseurs sont invités une fois l’émission approuvée, jusqu’à la clôture des souscriptions.",
+      "none": "Aucun investisseur invité pour l’instant.",
+      "status": {
+        "INVITED": "invité",
+        "REVOKED": "invitation retirée"
+      },
+      "revoke": "Retirer",
+      "revokeTitle": "Retirer l’invitation de {name} ?",
+      "revokeDescription": "L’investisseur ne voit plus l’émission. Ses souscriptions existantes sont conservées."
+    }
   }
 }

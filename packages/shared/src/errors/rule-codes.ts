@@ -29,6 +29,10 @@ export const ISSUANCE_TERMS_RULE_CODES = [
   'RATE_TYPE_NOT_SUPPORTED',
   'FREQUENCY_NOT_SUPPORTED',
   'UNITS_NOT_INTEGER',
+  // A field needed to submit is empty (the detail's field names it).
+  'REQUIRED_FIELD_MISSING',
+  // An amount has more decimals than its currency allows (EUR: 2).
+  'AMOUNT_TOO_PRECISE',
 ] as const;
 
 /** Reasons for refusing a password (SPEC §24: length and common passwords only). */

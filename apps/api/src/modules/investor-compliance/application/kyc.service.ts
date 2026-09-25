@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { dateInTimeZone, type KycCaseStatus } from '@virtus/shared';
+import type { KycCaseStatus } from '@virtus/shared';
 import { and, asc, count, desc, eq, type SQL } from 'drizzle-orm';
 import { AuditWriter } from '../../../core/audit/audit-writer.js';
 import { currentUser, type RequestUser } from '../../../core/context/request-context.js';
@@ -17,7 +17,7 @@ import { Outbox } from '../../../core/outbox/outbox.js';
 import { CircuitBreaker } from '../../../core/providers/circuit-breaker.js';
 import { KYC_PROVIDER, type KycProvider } from '../../../core/providers/kyc-provider.js';
 import { Workflow } from '../../../core/workflow/workflow.js';
-import { tenant } from '../../iam/index.js';
+import { TenantDirectory } from '../../iam/index.js';
 import { kycCaseMachine, kycValidUntil } from '../domain/kyc.js';
 import { investor, kycCase, kycDocument } from '../infrastructure/schema.js';
 import { INVESTOR_EVENTS } from './investor-events.js';
@@ -64,6 +64,7 @@ export class KycService {
     private readonly workflow: Workflow,
     private readonly audit: AuditWriter,
     private readonly outbox: Outbox,
+    private readonly tenants: TenantDirectory,
   ) {}
 
   /** An investor (portal) only sees its own cases. */
@@ -331,12 +332,8 @@ export class KycService {
   }
 
   /** Today in the tenant's time zone (decision D-015). */
-  async todayOf(tx: Transaction, tenantId: string): Promise<string> {
-    const [row] = await tx
-      .select({ timezone: tenant.timezone })
-      .from(tenant)
-      .where(eq(tenant.id, tenantId));
-    return dateInTimeZone(new Date(), row?.timezone ?? 'Europe/Paris');
+  todayOf(tx: Transaction, tenantId: string): Promise<string> {
+    return this.tenants.todayOf(tx, tenantId);
   }
 
   /** In the caller's transaction, within the user's scope; `lock` serialises the decisions. */

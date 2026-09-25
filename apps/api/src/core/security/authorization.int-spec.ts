@@ -55,6 +55,15 @@ const VALID_BODIES: [RegExp, object][] = [
     { documentId: '0192a000-0000-7000-8000-000000000000', kind: 'OTHER' },
   ],
   [/^POST \/api\/v1\/kyc-cases\/:id\/(reject|send-back)$/, { comment: 'Probe' }],
+  [/^POST \/api\/v1\/issuances\/:id\/(return-to-draft|cancel)$/, { comment: 'Probe' }],
+  [
+    /^POST \/api\/v1\/issuances\/:id\/invitations$/,
+    { investorId: '0192a000-0000-7000-8000-000000000000' },
+  ],
+  [
+    /^POST \/api\/v1\/issuances\/:id\/documents$/,
+    { documentId: '0192a000-0000-7000-8000-000000000000', kind: 'TERM_SHEET' },
+  ],
   [
     /^POST \/api\/v1\/investors\/:id\/eligibility-status$/,
     { status: 'SUSPENDED', justification: 'Probe' },
@@ -142,6 +151,22 @@ describe('scenario 5 — tenant isolation (SPEC §20, §29)', () => {
                mime_type, size_bytes, checksum_sha256, scan_status, file_name, uploaded_by)
              SELECT tenant_id, id, 1, 'unused', 'application/pdf', 1, repeat('0', 64), 'CLEAN',
                'report.pdf', id FROM created
+           )
+           SELECT id FROM created`,
+        ),
+    ],
+    [
+      /^\/api\/v1\/issuances\/:id/,
+      () =>
+        idOf(
+          `WITH created AS (
+             INSERT INTO issuance.issuance (tenant_id, name, code, status)
+             SELECT id, 'Contoso Notes (demo)', 'CTN' || floor(random() * 1e6)::text, 'APPROVED'
+             FROM iam.tenant WHERE legal_name LIKE 'Contoso%' RETURNING id, tenant_id
+           ), terms AS (
+             INSERT INTO issuance.issuance_terms (issuance_id, tenant_id) SELECT id, tenant_id FROM created
+           ), rules AS (
+             INSERT INTO issuance.eligibility_rule_set (issuance_id, tenant_id) SELECT id, tenant_id FROM created
            )
            SELECT id FROM created`,
         ),

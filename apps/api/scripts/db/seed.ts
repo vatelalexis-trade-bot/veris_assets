@@ -1,10 +1,22 @@
 // Loads the demonstration data. Idempotent: running it again changes nothing.
 import { sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/node-postgres';
-import { country, currency, referenceData } from '../../src/core/database/schema.js';
+import {
+  country,
+  currency,
+  referenceData,
+  workflowTransition,
+} from '../../src/core/database/schema.js';
 import { tenant } from '../../src/modules/iam/infrastructure/schema.js';
 import {
+  eligibilityRuleSet,
+  investorInvitation,
+  issuance,
+  issuanceTerms,
+} from '../../src/modules/issuance/infrastructure/schema.js';
+import {
   beneficialOwner,
+  eligibilityAssessment,
   investor,
   investorRepresentative,
   kycCase,
@@ -13,6 +25,7 @@ import { connectionConfig, withClient } from './admin.js';
 import * as data from './seed-data.js';
 import { seedIdentities } from './seed-identities.js';
 import { demoInvestorRows } from './seed-investors.js';
+import { demoIssuanceRows } from './seed-issuances.js';
 import { databaseName, type DatabaseTarget, type ToolsEnv } from './tools-env.js';
 
 export async function seedDatabase(env: ToolsEnv, target: DatabaseTarget): Promise<void> {
@@ -54,6 +67,18 @@ export async function seedDatabase(env: ToolsEnv, target: DatabaseTarget): Promi
           await tx.insert(beneficialOwner).values(owners).onConflictDoNothing();
       });
     }
+
+    const northwind = data.tenants[0].id;
+    const issuances = demoIssuanceRows(northwind);
+    await db.transaction(async (tx) => {
+      await tx.execute(sql`SELECT set_config('app.tenant_id', ${northwind}, true)`);
+      await tx.insert(issuance).values(issuances.issuances).onConflictDoNothing();
+      await tx.insert(issuanceTerms).values(issuances.terms).onConflictDoNothing();
+      await tx.insert(eligibilityRuleSet).values(issuances.rules).onConflictDoNothing();
+      await tx.insert(eligibilityAssessment).values(issuances.assessments).onConflictDoNothing();
+      await tx.insert(investorInvitation).values(issuances.invitations).onConflictDoNothing();
+      await tx.insert(workflowTransition).values(issuances.transitions).onConflictDoNothing();
+    });
   });
   await seedIdentities(env, target);
 }
