@@ -21,3 +21,8 @@ test-results/
 # Logs and OS files
 *.log
 .DS_Store
+
+# TypeScript sources are never compiled next to themselves (scripts run with tsx, builds go to dist/)
+apps/api/scripts/**/*.js
+apps/api/src/**/*.js
+*.js.map

@@ -193,7 +193,9 @@
     "SNAPSHOT_MISMATCH": "The recalculation from the snapshot gives a different result.",
     "FILE_TYPE_NOT_ALLOWED": "This file type is not allowed.",
     "FILE_TOO_LARGE": "The file is too large.",
-    "FILE_REJECTED_BY_SCAN": "The file was rejected by the security scan."
+    "FILE_REJECTED_BY_SCAN": "The file was rejected by the security scan.",
+    "MFA_ENROLLMENT_REQUIRED": "Set up two-factor authentication to continue.",
+    "RESET_TOKEN_INVALID_OR_EXPIRED": "This password reset link is invalid or has expired. Request a new one."
   },
   "eligibilityRules": {
     "PROFILE_INACTIVE": "The investor profile is not active.",
@@ -219,5 +221,10 @@
     "RATE_TYPE_NOT_SUPPORTED": "Only fixed rates are supported.",
     "FREQUENCY_NOT_SUPPORTED": "This distribution frequency is not supported.",
     "UNITS_NOT_INTEGER": "The number of units must be a whole number."
+  },
+  "passwordRules": {
+    "PASSWORD_TOO_SHORT": "Use at least 12 characters.",
+    "PASSWORD_TOO_LONG": "Use at most 128 characters.",
+    "PASSWORD_TOO_COMMON": "This password is too common. Choose another one."
   }
 }

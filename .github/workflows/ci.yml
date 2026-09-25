@@ -65,6 +65,15 @@ jobs:
           --health-interval 5s
           --health-timeout 3s
           --health-retries 20
+      redis:
+        image: redis:8.10.2-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 20
     env:
       POSTGRES_HOST: 127.0.0.1
       POSTGRES_PORT: '5432'
@@ -74,6 +83,10 @@ jobs:
       POSTGRES_TEST_DB: virtus_assets_test
       DB_MIGRATOR_PASSWORD: ci-migrator-password
       DB_APP_PASSWORD: ci-app-password
+      DB_AUTH_PASSWORD: ci-auth-password
+      BETTER_AUTH_SECRET: ci-only-better-auth-secret-0123456789abcdef
+      DEMO_ACCOUNTS_PASSWORD: ci-demo-accounts-password
+      REDIS_HOST: 127.0.0.1
     steps:
       - uses: actions/checkout@v7
 
@@ -89,7 +102,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Integration tests (roles, row level security, append-only, migrations)
+      - name: Integration tests (roles, row level security, append-only, migrations, authentication)
         run: pnpm test:integration
 
       - name: Demo database can be reset twice in a row

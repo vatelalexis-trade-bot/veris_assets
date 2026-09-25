@@ -31,4 +31,13 @@ export const ISSUANCE_TERMS_RULE_CODES = [
   'UNITS_NOT_INTEGER',
 ] as const;
 
+/** Reasons for refusing a password (SPEC §24: length and common passwords only). */
+export const PASSWORD_RULE_CODES = [
+  'PASSWORD_TOO_SHORT',
+  'PASSWORD_TOO_LONG',
+  'PASSWORD_TOO_COMMON',
+] as const;
+
+export type PasswordRuleCode = (typeof PASSWORD_RULE_CODES)[number];
+
 export type IssuanceTermsRuleCode = (typeof ISSUANCE_TERMS_RULE_CODES)[number];

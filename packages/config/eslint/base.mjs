@@ -50,6 +50,16 @@ export function nodeTypeScriptConfig({ tsconfigRootDir, decimalSafeFiles = [] })
       files: ['**/*.mjs', '**/*.js'],
       ...tseslint.configs.disableTypeChecked,
     },
+    {
+      // HTTP test clients return untyped JSON bodies; tests assert on them explicitly.
+      files: ['**/*.spec.ts', '**/*.int-spec.ts'],
+      rules: {
+        '@typescript-eslint/no-unsafe-assignment': 'off',
+        '@typescript-eslint/no-unsafe-member-access': 'off',
+        '@typescript-eslint/no-unsafe-argument': 'off',
+        '@typescript-eslint/no-unsafe-call': 'off',
+      },
+    },
     ...(decimalSafeFiles.length > 0
       ? [{ files: decimalSafeFiles, rules: decimalSafetyRules }]
       : []),

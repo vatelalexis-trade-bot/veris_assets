@@ -15,6 +15,20 @@
       "when": 1790323564116,
       "tag": "0001_security_foundation",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790327974278,
+      "tag": "0002_identity",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1790327997928,
+      "tag": "0003_identity_security",
+      "breakpoints": true
     }
   ]
 }

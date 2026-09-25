@@ -65,6 +65,14 @@ export const ERROR_CATALOG = {
     status: 422,
     message: 'The invitation is invalid or has expired.',
   },
+  MFA_ENROLLMENT_REQUIRED: {
+    status: 403,
+    message: 'Two-factor authentication must be set up before using the application.',
+  },
+  RESET_TOKEN_INVALID_OR_EXPIRED: {
+    status: 422,
+    message: 'The password reset link is invalid or has expired.',
+  },
 
   // Issuance
   ISSUANCE_INCONSISTENT_TERMS: { status: 422, message: 'The issuance terms are inconsistent.' },

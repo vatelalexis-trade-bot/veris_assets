@@ -18,6 +18,11 @@ const toolsEnvSchema = z.object({
   POSTGRES_TEST_DB: required.default('virtus_assets_test'),
   DB_MIGRATOR_PASSWORD: required,
   DB_APP_PASSWORD: required,
+  DB_AUTH_PASSWORD: required,
+  // Demonstration accounts are created only when their password is configured (decision D-017).
+  DEMO_ACCOUNTS_PASSWORD: z.string().min(12).optional(),
+  BETTER_AUTH_SECRET: z.string().min(32).optional(),
+  WEB_ORIGIN: z.url().default('http://localhost:3000'),
 });
 
 export type ToolsEnv = z.infer<typeof toolsEnvSchema>;

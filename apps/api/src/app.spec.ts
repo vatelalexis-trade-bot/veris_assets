@@ -9,6 +9,7 @@ import { AppModule } from './app.module.js';
 import { ENV, parseEnv } from './core/config/env.js';
 import { configureApp } from './core/configure-app.js';
 import { AppError } from './core/errors/app-error.js';
+import { Public } from './core/security/public.decorator.js';
 import { READINESS_CHECKS, type ReadinessCheck } from './core/health/readiness-check.js';
 import { ZodValidationPipe } from './core/validation/zod-validation.pipe.js';
 import { TEST_ENV_SOURCE } from './test/test-env.js';
@@ -18,6 +19,7 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 const createSchema = z.strictObject({ name: z.string().min(1), units: z.string() });
 
 /** Test-only routes that exercise the error handling of the real application setup. */
+@Public()
 @Controller('test-errors')
 class TestErrorsController {
   @Get('business')

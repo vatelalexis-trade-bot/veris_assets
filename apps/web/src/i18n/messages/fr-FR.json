@@ -193,7 +193,9 @@
     "SNAPSHOT_MISMATCH": "Le recalcul à partir de la photo du registre donne un résultat différent.",
     "FILE_TYPE_NOT_ALLOWED": "Ce type de fichier n’est pas autorisé.",
     "FILE_TOO_LARGE": "Le fichier est trop volumineux.",
-    "FILE_REJECTED_BY_SCAN": "Le fichier a été rejeté par le contrôle de sécurité."
+    "FILE_REJECTED_BY_SCAN": "Le fichier a été rejeté par le contrôle de sécurité.",
+    "MFA_ENROLLMENT_REQUIRED": "Configurez l’authentification à deux facteurs pour continuer.",
+    "RESET_TOKEN_INVALID_OR_EXPIRED": "Ce lien de réinitialisation est invalide ou a expiré. Demandez-en un nouveau."
   },
   "eligibilityRules": {
     "PROFILE_INACTIVE": "Le profil de l’investisseur n’est pas actif.",
@@ -219,5 +221,10 @@
     "RATE_TYPE_NOT_SUPPORTED": "Seuls les taux fixes sont pris en charge.",
     "FREQUENCY_NOT_SUPPORTED": "Cette fréquence de distribution n’est pas prise en charge.",
     "UNITS_NOT_INTEGER": "Le nombre d’unités doit être un nombre entier."
+  },
+  "passwordRules": {
+    "PASSWORD_TOO_SHORT": "Utilisez au moins 12 caractères.",
+    "PASSWORD_TOO_LONG": "Utilisez au plus 128 caractères.",
+    "PASSWORD_TOO_COMMON": "Ce mot de passe est trop courant. Choisissez-en un autre."
   }
 }

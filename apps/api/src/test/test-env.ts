@@ -4,6 +4,8 @@ export const TEST_ENV_SOURCE: Record<string, string> = {
   LOG_LEVEL: 'silent',
   POSTGRES_DB: 'virtus_assets_test',
   DB_APP_PASSWORD: 'test-password',
+  DB_AUTH_PASSWORD: 'test-auth-password',
+  BETTER_AUTH_SECRET: 'test-secret-0123456789abcdef0123456789abcdef',
   S3_ENDPOINT: 'http://127.0.0.1:3900',
   S3_REGION: 'garage',
   S3_BUCKET: 'test-bucket',

@@ -5,6 +5,7 @@ import { country, currency, referenceData } from '../../src/core/database/schema
 import { tenant } from '../../src/modules/iam/infrastructure/schema.js';
 import { connectionConfig, withClient } from './admin.js';
 import * as data from './seed-data.js';
+import { seedIdentities } from './seed-identities.js';
 import { databaseName, type DatabaseTarget, type ToolsEnv } from './tools-env.js';
 
 export async function seedDatabase(env: ToolsEnv, target: DatabaseTarget): Promise<void> {
@@ -26,4 +27,5 @@ export async function seedDatabase(env: ToolsEnv, target: DatabaseTarget): Promi
       });
     }
   });
+  await seedIdentities(env, target);
 }

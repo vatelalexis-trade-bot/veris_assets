@@ -2,6 +2,7 @@ import {
   ELIGIBILITY_RULE_CODES,
   ERROR_CODES,
   ISSUANCE_TERMS_RULE_CODES,
+  PASSWORD_RULE_CODES,
   STATUS_DOMAINS,
   STATUS_TONES,
   statusLabelKey,
@@ -58,6 +59,7 @@ describe('translations (SPEC §23.4)', () => {
     ['error codes', ERROR_CODES.map((code) => `errors.${code}`)],
     ['eligibility rules', ELIGIBILITY_RULE_CODES.map((code) => `eligibilityRules.${code}`)],
     ['issuance terms rules', ISSUANCE_TERMS_RULE_CODES.map((code) => `issuanceTermsRules.${code}`)],
+    ['password rules', PASSWORD_RULE_CODES.map((code) => `passwordRules.${code}`)],
     [
       'business statuses',
       STATUS_DOMAINS.flatMap((domain) =>

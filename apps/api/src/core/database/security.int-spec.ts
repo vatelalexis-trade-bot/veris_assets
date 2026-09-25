@@ -59,14 +59,44 @@ afterAll(async () => {
 });
 
 describe('roles', () => {
-  it('gives the API role no administrative power', async () => {
+  it.each([DB_ROLES.app, DB_ROLES.auth])('gives %s no administrative power', async (roleName) => {
     const { rows } = await clients.admin.query<Record<string, boolean>>(
       'SELECT rolsuper, rolbypassrls, rolcreaterole, rolcreatedb FROM pg_roles WHERE rolname = $1',
-      [DB_ROLES.app],
+      [roleName],
     );
     expect(rows).toEqual([
       { rolsuper: false, rolbypassrls: false, rolcreaterole: false, rolcreatedb: false },
     ]);
+  });
+
+  it('confines the authentication role to identity tables (decision D-030)', async () => {
+    const { rows } = await clients.admin.query<{ table: string }>(
+      `SELECT format('%I.%I', n.nspname, c.relname) AS table
+         FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
+        WHERE c.relkind = 'r' AND n.nspname = ANY($1)
+          AND has_table_privilege($2, c.oid, 'SELECT, INSERT, UPDATE, DELETE')`,
+      [APPLICATION_SCHEMAS, DB_ROLES.auth],
+    );
+    // "user" is a reserved word, hence quoted by format('%I').
+    expect(rows.map((row) => row.table).sort()).toEqual([
+      'iam."user"',
+      'iam.account',
+      'iam.role',
+      'iam.session',
+      'iam.two_factor',
+      'iam.user_invitation',
+      'iam.user_role',
+      'iam.verification',
+    ]);
+  });
+
+  it('keeps sessions, credentials and TOTP secrets out of reach of the API role', async () => {
+    const { rows } = await clients.admin.query<{ allowed: boolean }>(
+      `SELECT bool_or(has_table_privilege($1, t, 'SELECT, INSERT, UPDATE, DELETE')) AS allowed
+         FROM unnest(ARRAY['iam.session', 'iam.account', 'iam.verification', 'iam.two_factor']::regclass[]) AS t`,
+      [DB_ROLES.app],
+    );
+    expect(rows[0]?.allowed).toBe(false);
   });
 
   it('makes the migrator own every application table, and the API role none', async () => {

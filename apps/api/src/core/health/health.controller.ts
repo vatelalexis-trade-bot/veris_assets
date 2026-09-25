@@ -3,6 +3,7 @@ import { ApiOkResponse, ApiServiceUnavailableResponse, ApiTags } from '@nestjs/s
 import type { Response } from 'express';
 import { z } from 'zod';
 import { toOpenApiSchema } from '../openapi/zod-openapi.js';
+import { Public } from '../security/public.decorator.js';
 import {
   READINESS_CHECKS,
   runReadinessChecks,
@@ -18,6 +19,7 @@ const readinessSchema = z.object({
 
 /** Health probes, outside the /api/v1 prefix (docs/API.md §2.1). */
 @ApiTags('health')
+@Public()
 @Controller('health')
 export class HealthController {
   private readonly logger = new Logger(HealthController.name);

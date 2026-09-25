@@ -17,9 +17,24 @@ const envSchema = z.object({
   POSTGRES_DB: required,
   // The API connects as va_app only; the superuser and migrator credentials are never read here.
   DB_APP_PASSWORD: required,
+  // Authentication component (decision D-030).
+  DB_AUTH_PASSWORD: required,
+  BETTER_AUTH_SECRET: z.string().min(32),
+  WEB_ORIGIN: z.url().default('http://localhost:3000'),
+  DEMO_MODE: z
+    .enum(['true', 'false'])
+    .default('false')
+    .transform((value) => value === 'true'),
+  DEMO_ACCOUNTS_PASSWORD: z.string().min(12).optional(),
+
+  SMTP_HOST: required.default('127.0.0.1'),
+  SMTP_PORT: port.default(1025),
+  MAIL_FROM: required.default('Virtus Assets <no-reply@virtus-assets.example>'),
 
   REDIS_HOST: required.default('127.0.0.1'),
   REDIS_PORT: port.default(6379),
+  // Namespace of every Redis key; tests use their own to never share counters with development.
+  REDIS_KEY_PREFIX: required.default('va:'),
 
   S3_ENDPOINT: z.url(),
   S3_REGION: required,

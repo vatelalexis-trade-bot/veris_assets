@@ -97,11 +97,13 @@ Validées par le porteur de projet (« ok pour D-024, D-025 et D-026 »).
 
 ## 2026-09-25 — Phase 4 (squelette front-end)
 
-**D-027 — Proposée. Tableau de données et client API.**
+Validées par le porteur de projet (« je valide D-027, D-028 et D-029 »).
+
+**D-027 — Acceptée. Tableau de données et client API.**
 1. Le composant `DataTable` est un tableau « piloté » : le tri et la pagination sont faits par l'API (spec 22.1 et 25), le tableau affiche la page reçue et transmet les choix de l'utilisateur. La bibliothèque TanStack Table, prévue dans `docs/ARCHITECTURE.md`, n'est donc pas nécessaire pour l'instant.
 2. Le client API généré depuis OpenAPI et TanStack Query (P4-7, priorité « S ») sont reportés à la phase 5, avec les premières routes réellement appelées par le front (connexion).
 *Modifie la stack (`docs/ARCHITECTURE.md` §2) et décale P4-7.*
 
-**D-028 — Proposée. Deux jetons de couleur complémentaires.** La spec (23.1) ne définit pas de couleur de bordure. Ajouts : `border` `#2A3547` pour les séparateurs décoratifs, et `input-border` `#6B7280` pour le contour des champs de saisie, qui doit contraster au moins à 3:1 avec les fonds (règle WCAG 1.4.11, vérifiée par un test). *Ajoute des jetons à la section 23.1.*
+**D-028 — Acceptée. Deux jetons de couleur complémentaires.** La spec (23.1) ne définit pas de couleur de bordure. Ajouts : `border` `#2A3547` pour les séparateurs décoratifs, et `input-border` `#6B7280` pour le contour des champs de saisie, qui doit contraster au moins à 3:1 avec les fonds (règle WCAG 1.4.11, vérifiée par un test). *Ajoute des jetons à la section 23.1.*
 
-**D-029 — Proposée. Présentation du logo.** Le fichier fourni (1408 × 768, larges marges de la couleur du fond) est affiché sans déformation ni recoloration, dans un cadre qui n'en montre que la partie centrale (monogramme et nom), pour rester lisible dans la barre latérale. Le fichier lui-même n'est pas modifié. À revoir avec la version SVG.
+**D-029 — Acceptée. Présentation du logo.** Le fichier fourni (1408 × 768, larges marges de la couleur du fond) est affiché sans déformation ni recoloration, dans un cadre qui n'en montre que la partie centrale (monogramme et nom), pour rester lisible dans la barre latérale. Le fichier lui-même n'est pas modifié. À revoir avec la version SVG.
