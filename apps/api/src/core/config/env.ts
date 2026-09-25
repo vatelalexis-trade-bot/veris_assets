@@ -15,8 +15,8 @@ const envSchema = z.object({
   POSTGRES_HOST: required.default('127.0.0.1'),
   POSTGRES_PORT: port.default(5432),
   POSTGRES_DB: required,
-  POSTGRES_USER: required,
-  POSTGRES_PASSWORD: required,
+  // The API connects as va_app only; the superuser and migrator credentials are never read here.
+  DB_APP_PASSWORD: required,
 
   REDIS_HOST: required.default('127.0.0.1'),
   REDIS_PORT: port.default(6379),

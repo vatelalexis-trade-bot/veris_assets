@@ -1,30 +1,18 @@
 import { HeadBucketCommand, S3Client } from '@aws-sdk/client-s3';
 import { Redis } from 'ioredis';
-import pg from 'pg';
+import type pg from 'pg';
 import type { Env } from '../config/env.js';
 import { READINESS_TIMEOUT_MS, type ReadinessCheck } from './readiness-check.js';
 
-// Each check opens a short-lived connection and closes it. Shared connection pools arrive with
-// the data layer (phase 3); the checks will then reuse them.
+// Redis and storage checks open a short-lived connection and close it; their shared clients
+// arrive with rate limiting (phase 5) and documents (phase 8).
 
-export function postgresCheck(env: Env): ReadinessCheck {
+/** Runs a trivial query through the API's own pool, hence with the va_app role. */
+export function postgresCheck(pool: pg.Pool): ReadinessCheck {
   return {
     name: 'database',
     async check() {
-      const client = new pg.Client({
-        host: env.POSTGRES_HOST,
-        port: env.POSTGRES_PORT,
-        database: env.POSTGRES_DB,
-        user: env.POSTGRES_USER,
-        password: env.POSTGRES_PASSWORD,
-        connectionTimeoutMillis: READINESS_TIMEOUT_MS,
-      });
-      try {
-        await client.connect();
-        await client.query('SELECT 1');
-      } finally {
-        await client.end().catch(() => undefined);
-      }
+      await pool.query('SELECT 1');
     },
   };
 }

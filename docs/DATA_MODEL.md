@@ -9,7 +9,7 @@ Les noms de tables et de colonnes sont indicatifs ; ils sont finalisés dans les
 
 | Sujet | Règle |
 |---|---|
-| Identifiants | UUID v7 générés par l'application |
+| Identifiants | UUID v7 générés par PostgreSQL 18 (`uuidv7()`) quand l'application n'en fournit pas ; données de démo : UUID déterministes (D-024) |
 | Montants | `NUMERIC(38,18)` + colonne `currency` (ISO 4217) à côté ; arrondi à la devise appliqué par le domaine |
 | Quantités | `NUMERIC(38,18)` ; `CHECK (quantity = trunc(quantity))` pendant le MVP (unités entières, D-001) |
 | Taux | `NUMERIC(12,10)` en fraction (`0.05` = 5 %) |
@@ -98,7 +98,7 @@ Toutes les entités de la section 21 de la spec sont présentes. Correspondances
 
 ### 3.2 `iam`
 
-**`iam.tenant`** — `id`, `legal_name`, `trade_name`, `country_code`, `base_currency`, `default_locale`, `timezone` (défaut `Europe/Paris`, D-015), `organization_type`, `status` (`ACTIVE`, `INACTIVE`), `logo_document_id`, colonnes communes. RLS : lecture de son propre tenant ; gestion réservée au Platform Administrator.
+**`iam.tenant`** — `id`, `legal_name`, `trade_name`, `country_code`, `base_currency`, `default_locale`, `timezone` (défaut `Europe/Paris`, D-015), `organization_type` (`ISSUER`, `ASSET_MANAGER`, `FUND`, D-025), `status` (`ACTIVE`, `INACTIVE`), `logo_document_id`, colonnes communes. RLS : lecture de son propre tenant ; gestion réservée au Platform Administrator.
 
 **`iam.user`** (table utilisateur de Better Auth, étendue) — `id`, `email` (unique), `name`, `email_verified`, `tenant_id` (null = utilisateur plateforme), `investor_id` (renseigné pour le rôle Investor), `status` (`INVITED`, `ACTIVE`, `INACTIVE`, `LOCKED`), `locale`, `failed_login_count`, `locked_until`, `last_login_at`, colonnes communes.
 Tables techniques de Better Auth (sessions, comptes/mots de passe, vérifications, TOTP) : noms exacts fixés en phase 5.

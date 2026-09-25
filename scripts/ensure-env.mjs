@@ -1,7 +1,8 @@
 // Creates .env from .env.example on first run, with freshly generated development secrets.
-// An existing .env is never modified (the database volume depends on its password).
+// On later runs, only appends the variables added to .env.example since then: existing values
+// are never changed (the database volume depends on its passwords).
 import { randomBytes } from 'node:crypto';
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { appendFileSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const GENERATORS = {
@@ -20,13 +21,41 @@ export function fillPlaceholders(template) {
   });
 }
 
+const VARIABLE_LINE = /^([A-Z][A-Z0-9_]*)=/;
+
+function variableNames(text) {
+  return new Set(
+    text
+      .split('\n')
+      .map((line) => VARIABLE_LINE.exec(line)?.[1])
+      .filter(Boolean),
+  );
+}
+
+/** Returns the lines of the template (placeholders filled) whose variable is absent from `existing`. */
+export function missingVariableLines(existing, template) {
+  const present = variableNames(existing);
+  return template
+    .split('\n')
+    .filter((line) => {
+      const name = VARIABLE_LINE.exec(line)?.[1];
+      return name !== undefined && !present.has(name);
+    })
+    .map(fillPlaceholders);
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const envPath = new URL('../.env', import.meta.url);
-  if (existsSync(envPath)) {
-    console.log('.env already exists: kept as is.');
-  } else {
-    const template = readFileSync(new URL('../.env.example', import.meta.url), 'utf8');
+  const template = readFileSync(new URL('../.env.example', import.meta.url), 'utf8');
+  if (!existsSync(envPath)) {
     writeFileSync(envPath, fillPlaceholders(template), { mode: 0o600 });
     console.log('.env created from .env.example with new development secrets.');
+  } else {
+    const missing = missingVariableLines(readFileSync(envPath, 'utf8'), template);
+    if (missing.length > 0) {
+      appendFileSync(envPath, `\n# Added from .env.example\n${missing.join('\n')}\n`);
+      const names = missing.map((line) => VARIABLE_LINE.exec(line)?.[1]).join(', ');
+      console.log(`.env completed with new variables: ${names}.`);
+    }
   }
 }

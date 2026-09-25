@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
-# `pnpm dev`: starts the services, then the shared package watcher, the API and the web app.
+# `pnpm dev`: starts the services, prepares the database, then runs the shared package watcher,
+# the API and the web app.
 # Stop everything with Ctrl+C (the Docker services keep running; `pnpm services:down` stops them).
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 bash scripts/services-up.sh
+# Roles, database, migrations and demo data (idempotent: only what is missing is created).
+pnpm db:setup
 
 set -a
 # shellcheck disable=SC1091

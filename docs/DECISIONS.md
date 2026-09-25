@@ -80,3 +80,13 @@ Validées par le porteur de projet (« OK je valide »).
 Validée par le porteur de projet (« ok pour tous les points »).
 
 **D-023 — Acceptée. Report de l'instrumentation OpenTelemetry (P2-8, priorité « S ») à la phase 16.** L'API NestJS 12 est au format « ES module » : l'instrumentation automatique des traces exige un mécanisme de chargement spécifique, à vérifier et à maintenir. Avant les phases 3 (base de données) et 7 (jobs), il n'y aurait presque rien à tracer. En attendant, le correlation ID relie déjà toutes les lignes de log d'une même requête. *Décale un élément « S » de la phase 2 vers la phase 16, comme le prévoit `docs/BACKLOG.md`.*
+
+---
+
+## 2026-09-25 — Phase 3 (base de données)
+
+**D-024 — Proposée. Génération des identifiants.** Les UUID v7 (spec 21.2) sont générés par PostgreSQL 18 (fonction native `uuidv7()`, valeur par défaut des clés primaires) plutôt que par l'application, ce qui évite une bibliothèque de plus ; l'application pourra toujours fournir son propre identifiant quand elle en a besoin avant l'insertion. Les données de démonstration utilisent des identifiants **déterministes** (UUID version 8, dérivés du nom de l'objet) pour que chaque `pnpm db:reset` redonne exactement les mêmes identifiants (spec 28). *Précise `docs/DATA_MODEL.md` §1.*
+
+**D-025 — Proposée. Types d'organisation.** La spec (6.1) prévoit un « type d'organisation » sans en donner la liste. Valeurs retenues : `ISSUER` (émetteur), `ASSET_MANAGER` (société de gestion), `FUND` (fonds). *Complète `docs/DATA_MODEL.md` §3.2.*
+
+**D-026 — Proposée. Pas de clé étrangère des tables techniques vers les tenants.** Les tables du noyau technique (`core.*`, `audit.*`) portent `tenant_id` sans clé étrangère vers `iam.tenant` : le noyau ne doit dépendre d'aucun module métier (règle de frontière), et l'isolation reste garantie par la RLS. Les tables des modules métier, elles, auront leurs clés étrangères vers `iam.tenant`.

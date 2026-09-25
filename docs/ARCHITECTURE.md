@@ -91,7 +91,10 @@ Pas de dossier `packages/contracts` (nom réservé par la spec aux contrats bloc
 |---|---|
 | `pnpm dev` | Démarre les services Docker, applique les migrations, lance l'API, les workers et le front |
 | `pnpm db:reset` | Recrée la base de démo et recharge le jeu de données déterministe |
-| `pnpm test` | Tests unitaires et d'intégration |
+| `pnpm db:setup` | Crée ce qui manque (rôles, base, migrations, données de démo) ; idempotent, lancé par `pnpm dev` |
+| `pnpm db:generate` | Écrit la migration SQL suivante à partir des définitions de tables ; `--custom` pour une migration de sécurité écrite à la main |
+| `pnpm test` | Tests unitaires (sans service externe) |
+| `pnpm test:integration` | Tests sur PostgreSQL réel : rôles, RLS, append-only, migrations rejouables |
 | `pnpm test:e2e` | Scénarios Playwright |
 | `pnpm lint` | Lint, format, frontières entre modules, mots interdits |
 
@@ -176,7 +179,7 @@ sequenceDiagram
 ### 4.5 Isolation multi-tenant (défense en profondeur)
 
 1. **Applicatif** : le tenant vient de la session, jamais de la requête.
-2. **RLS PostgreSQL** sur toutes les tables métier : politique `tenant_id = current_setting('app.tenant_id')::uuid`, `FORCE ROW LEVEL SECURITY`.
+2. **RLS PostgreSQL** sur toutes les tables métier : politique `tenant_id = core.current_tenant_id()` (lecture de `app.tenant_id`, positionné par `withTenantTransaction` pour la seule transaction), `FORCE ROW LEVEL SECURITY`. Chaque nouvelle table est enregistrée dans une migration « de sécurité » écrite à la main, via les fonctions `core.enable_tenant_isolation()` et `core.make_append_only()` ; les tests d'intégration échouent si une table portant `tenant_id` n'est pas protégée.
 3. **Deux rôles PostgreSQL** :
    - `va_migrator` : propriétaire des schémas, utilisé uniquement par les migrations et le seed ;
    - `va_app` : utilisé par l'API et les workers ; pas propriétaire, pas `BYPASSRLS`, **aucun droit UPDATE ni DELETE** sur `registry.ledger_entry` et `audit.audit_event`.

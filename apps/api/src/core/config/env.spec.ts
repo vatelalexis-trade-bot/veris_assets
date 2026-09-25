@@ -29,7 +29,7 @@ describe('parseEnv', () => {
   });
 
   it('lists every missing required variable', () => {
-    expect(() => parseEnv({})).toThrow(/POSTGRES_PASSWORD.*S3_BUCKET/);
+    expect(() => parseEnv({})).toThrow(/DB_APP_PASSWORD.*S3_BUCKET/);
   });
 
   it('never prints secret values in the error message', () => {

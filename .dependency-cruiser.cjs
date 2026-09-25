@@ -83,7 +83,7 @@ module.exports = {
   ],
   options: {
     doNotFollow: { path: ['node_modules'] },
-    exclude: { path: ['[.]spec[.]ts$', '(^|/)dist/'] },
+    exclude: { path: ['[.](int-)?spec[.]ts$', '(^|/)dist/'] },
     tsPreCompilationDeps: true,
     tsConfig: { fileName: 'tsconfig.depcruise.json' },
     enhancedResolveOptions: {

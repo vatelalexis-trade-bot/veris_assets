@@ -26,19 +26,22 @@ Pour arrêter l'application : **Ctrl + C** dans le terminal. Les services Docker
 
 ## Commandes utiles
 
-| Commande             | Effet                                                                                              |
-| -------------------- | -------------------------------------------------------------------------------------------------- |
-| `pnpm dev`           | Démarre tout (services + API + web)                                                                |
-| `pnpm services:up`   | Démarre seulement les services Docker                                                              |
-| `pnpm services:down` | Arrête les services Docker (les données sont conservées)                                           |
-| `pnpm services:logs` | Affiche les journaux des services                                                                  |
-| `pnpm test`          | Lance les tests automatiques                                                                       |
-| `pnpm lint`          | Vérifie la qualité du code, les règles d'architecture, les mentions interdites et la mise en forme |
-| `pnpm typecheck`     | Vérifie les types TypeScript                                                                       |
-| `pnpm build`         | Compile l'API et l'application web                                                                 |
-| `pnpm format`        | Remet en forme automatiquement tout le code                                                        |
+| Commande                | Effet                                                                                                  |
+| ----------------------- | ------------------------------------------------------------------------------------------------------ |
+| `pnpm dev`              | Démarre tout (services + API + web)                                                                    |
+| `pnpm services:up`      | Démarre seulement les services Docker                                                                  |
+| `pnpm services:down`    | Arrête les services Docker (les données sont conservées)                                               |
+| `pnpm services:logs`    | Affiche les journaux des services                                                                      |
+| `pnpm db:reset`         | Efface la base de démo et la reconstruit (migrations + données fictives) — données fictives uniquement |
+| `pnpm db:setup`         | Prépare la base si besoin (rôles, migrations, données de démo) ; lancé automatiquement par `pnpm dev`  |
+| `pnpm test`             | Lance les tests automatiques                                                                           |
+| `pnpm test:integration` | Lance les tests sur une vraie base PostgreSQL (services Docker démarrés)                               |
+| `pnpm lint`             | Vérifie la qualité du code, les règles d'architecture, les mentions interdites et la mise en forme     |
+| `pnpm typecheck`        | Vérifie les types TypeScript                                                                           |
+| `pnpm build`            | Compile l'API et l'application web                                                                     |
+| `pnpm format`           | Remet en forme automatiquement tout le code                                                            |
 
-La commande de réinitialisation des données de démo (`pnpm db:reset`) arrive en phase 3.
+`pnpm db:reset` supprime puis recrée uniquement la base de démonstration : elle refuse de fonctionner en production.
 
 ## Où voir les emails de test
 
