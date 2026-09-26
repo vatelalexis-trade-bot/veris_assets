@@ -63,6 +63,7 @@ const VALID_BODIES: [RegExp, object][] = [
   [/^POST \/api\/v1\/subscriptions\/:id\/(reject|cancel)$/, { reason: 'Probe' }],
   [/^POST \/api\/v1\/allocations\/:id\/reject$/, { comment: 'Probe' }],
   [/^POST \/api\/v1\/ledger\/corrections\/:id\/reject$/, { comment: 'Probe' }],
+  [/^POST \/api\/v1\/transfers\/:id\/(reject|cancel)$/, { reason: 'Probe' }],
   [
     /^POST \/api\/v1\/issuances\/:id\/invitations$/,
     { investorId: '0192a000-0000-7000-8000-000000000000' },
@@ -239,6 +240,20 @@ describe('scenario 5 — tenant isolation (SPEC §20, §29)', () => {
            SELECT tenant_id, issuance_id, 1, 'ISSUANCE', id, 100, current_date, now(), 'probe',
              repeat('0', 64), repeat('0', 64)
            FROM account RETURNING id`,
+        ),
+    ],
+    [
+      /^\/api\/v1\/transfers\/:id/,
+      () =>
+        idOf(
+          `${CONTOSO_ISSUANCE}
+           INSERT INTO registry.transfer_request (tenant_id, issuance_id, from_investor_id,
+             to_investor_id, recipient_code, quantity, status, requested_by)
+           SELECT created.tenant_id, created.id, q.id, r.id, 'PROBE', 10, 'COMPLIANCE_REVIEW', u.id
+           FROM created, investor.investor q, investor.investor r, iam.user u
+           WHERE q.legal_name LIKE 'Quarry%' AND r.legal_name LIKE 'Reed%'
+             AND u.email = 'contoso.operator@example.com'
+           RETURNING id`,
         ),
     ],
     [

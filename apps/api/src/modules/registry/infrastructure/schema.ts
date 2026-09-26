@@ -333,3 +333,51 @@ export const correctionRequest = registrySchema.table(
     index('correction_request_issuance').on(table.tenantId, table.issuanceId, table.status),
   ],
 );
+
+/**
+ * A transfer of units between two investors of an issuance (SPEC §11): requested by the holder
+ * with the recipient's code (D-010), reviewed by a Compliance Officer or an Issuer Administrator.
+ * A transfer without financial settlement: the indicative price is information only (§11.3).
+ */
+export const transferRequest = registrySchema.table(
+  'transfer_request',
+  {
+    id: id(),
+    tenantId: tenantId().references(() => tenant.id),
+    issuanceId: uuid()
+      .notNull()
+      .references(() => issuance.id),
+    fromInvestorId: uuid()
+      .notNull()
+      .references(() => investor.id),
+    toInvestorId: uuid()
+      .notNull()
+      .references(() => investor.id),
+    /** The code the sender typed; the recipient's identity is never shown to the sender. */
+    recipientCode: text().notNull(),
+    quantity: units().notNull(),
+    indicativePrice: numeric({ precision: 24, scale: 4 }),
+    indicativePriceCurrency: char({ length: 3 }),
+    status: text().notNull().default('DRAFT'),
+    blockEntryId: uuid().references(() => ledgerEntry.id),
+    transferEntryId: uuid().references(() => ledgerEntry.id),
+    eligibilityAssessmentId: uuid(),
+    requestedBy: uuid().notNull(),
+    submittedAt: utcTimestamp(),
+    reviewedBy: uuid(),
+    reviewedAt: utcTimestamp(),
+    rejectionReason: text(),
+    cancellationReason: text(),
+    ...auditColumns(),
+  },
+  (table) => [
+    check(
+      'transfer_request_status',
+      sql`${table.status} IN ('DRAFT', 'SUBMITTED', 'COMPLIANCE_REVIEW', 'APPROVED', 'REJECTED', 'EXECUTED', 'CANCELLED')`,
+    ),
+    check('transfer_request_quantity_positive', sql`${table.quantity} > 0`),
+    check('transfer_request_not_to_self', sql`${table.fromInvestorId} <> ${table.toInvestorId}`),
+    index('transfer_request_issuance_status').on(table.tenantId, table.issuanceId, table.status),
+    index('transfer_request_from').on(table.tenantId, table.fromInvestorId),
+  ],
+);

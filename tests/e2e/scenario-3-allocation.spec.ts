@@ -5,44 +5,8 @@
 // positions add up to 1 000, and an allocation of 1 001 units is refused.
 // The issuance and its subscriptions are prepared through the API, with a new code at each run:
 // the scenario can be played again on the same database.
-import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
-import { signIn } from './helpers';
-
-const HEADERS = { Origin: 'http://localhost:3000' };
-
-/** A call of the API with the session of the page; fails the test on an unexpected answer. */
-async function call<T>(
-  page: Page,
-  method: 'GET' | 'POST' | 'PATCH',
-  path: string,
-  options: { data?: object; version?: number } = {},
-): Promise<T> {
-  const request: APIRequestContext = page.request;
-  const response = await request.fetch(path, {
-    method,
-    headers: {
-      ...HEADERS,
-      ...(method === 'POST' ? { 'Idempotency-Key': crypto.randomUUID() } : {}),
-      ...(options.version !== undefined ? { 'If-Match': `"${options.version}"` } : {}),
-    },
-    ...(options.data ? { data: options.data } : {}),
-  });
-  expect(response.ok(), `${method} ${path}: ${await response.text()}`).toBe(true);
-  return (await response.json()) as T;
-}
-
-interface Issuance {
-  id: string;
-  version: number;
-  terms: { version: number };
-  eligibilityRules: { version: number };
-}
-
-/** Today in the organisation's time zone (Europe/Paris, D-015), as YYYY-MM-DD. */
-function parisDate(offsetDays = 0): string {
-  const date = new Date(Date.now() + offsetDays * 86_400_000);
-  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Paris' }).format(date);
-}
+import { expect, test, type Page } from '@playwright/test';
+import { call, closedIssuance, signIn } from './helpers';
 
 test('scenario 3 — manual allocation of an oversubscribed issuance, four eyes', async ({
   browser,
@@ -64,72 +28,15 @@ test('scenario 3 — manual allocation of an oversubscribed issuance, four eyes'
   const admin1 = pages['northwind.admin1@example.com']!;
   const admin2 = pages['northwind.admin2@example.com']!;
 
-  // An issuance of 1 000 units of 1 000 €, approved (four eyes) and open to subscriptions.
-  const created = await call<Issuance>(operator, 'POST', '/api/v1/issuances', {
-    data: { name, code },
+  // An issuance of 1 000 units, closed with 1 200 units requested and approved.
+  const created = await closedIssuance(pages, {
+    code,
+    name,
+    requests: [
+      ['investor.a@example.com', 'Alpine', '700'],
+      ['investor.b@example.com', 'Baltic', '500'],
+    ],
   });
-  const general = await call<Issuance>(operator, 'PATCH', `/api/v1/issuances/${created.id}`, {
-    version: created.version,
-    data: {
-      assetCategory: 'INFRASTRUCTURE',
-      countryCode: 'FR',
-      currency: 'EUR',
-      legalIssuerName: 'Northwind Allocation Notes SAS (demo)',
-    },
-  });
-  const terms = await call<Issuance>(operator, 'PATCH', `/api/v1/issuances/${created.id}/terms`, {
-    version: general.terms.version,
-    data: {
-      targetAmount: '1000000.00',
-      minimumAmount: '500000.00',
-      maximumAmount: '1000000.00',
-      nominalValue: '1000.00',
-      totalUnits: '1000',
-      interestRate: '0.04',
-      rateType: 'FIXED',
-      distributionFrequency: 'ANNUAL',
-      dayCount: '30E_360',
-      subscriptionStartDate: parisDate(),
-      subscriptionEndDate: parisDate(30),
-      issueDate: parisDate(45),
-      maturityDate: parisDate(45 + 3 * 365),
-      minSubscriptionAmount: '100000.00',
-      maxAmountPerInvestor: '700000.00',
-    },
-  });
-  await call(operator, 'PATCH', `/api/v1/issuances/${created.id}/eligibility-rules`, {
-    version: terms.eligibilityRules.version,
-    data: { kycMinRemainingValidityDays: 30 },
-  });
-  await call(operator, 'POST', `/api/v1/issuances/${created.id}/submit`);
-  await call(admin1, 'POST', `/api/v1/issuances/${created.id}/approve`);
-  await call(admin1, 'POST', `/api/v1/issuances/${created.id}/open-subscription`);
-
-  // Alpine asks 700 units and Baltic 500: 1 200 units for 1 000.
-  const requests: [string, string, string][] = [
-    ['investor.a@example.com', 'Alpine', '700'],
-    ['investor.b@example.com', 'Baltic', '500'],
-  ];
-  for (const [email, investorName, units] of requests) {
-    const found = await call<{ data: { id: string }[] }>(
-      operator,
-      'GET',
-      `/api/v1/investors?q=${investorName}`,
-    );
-    await call(operator, 'POST', `/api/v1/issuances/${created.id}/invitations`, {
-      data: { investorId: found.data[0]!.id },
-    });
-    const investor = pages[email]!;
-    const draft = await call<{ id: string }>(investor, 'POST', '/api/v1/subscriptions', {
-      data: { issuanceId: created.id, requestedUnits: units, requestedAmount: `${units}000.00` },
-    });
-    await call(investor, 'POST', `/api/v1/subscriptions/${draft.id}/submit`, {
-      data: { documentsAccepted: true, eligibilityDeclared: true },
-    });
-    await call(operator, 'POST', `/api/v1/subscriptions/${draft.id}/start-review`);
-    await call(admin1, 'POST', `/api/v1/subscriptions/${draft.id}/approve`);
-  }
-  await call(admin1, 'POST', `/api/v1/issuances/${created.id}/close-subscription`);
 
   // The operator prepares the allocation, prefilled with the requests.
   await operator.goto(`/en/issuer/issuances/${created.id}`);

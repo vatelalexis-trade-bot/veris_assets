@@ -339,7 +339,9 @@ Validées par le porteur de projet (« OK pour tout, on pourra ajuster plus tard
 
 ## 2026-09-26 — Phase 12b (paiement, corrections, rapprochement)
 
-**D-069 — Proposée. Paiement fictif (spec 9.2, 4.8, D-009).**
+Validées par le porteur de projet (« ok pour tout »).
+
+**D-069 — Acceptée. Paiement fictif (spec 9.2, 4.8, D-009).**
 1. Un opérateur ou un administrateur de l'émetteur (`payment:prepare`) prépare la confirmation du paiement du montant dû. Le fournisseur de paiement fictif rend une référence (`FAKE-PAY-…`).
 2. Un administrateur autre que celui qui l'a préparée (`payment:confirm`, quatre yeux) confirme ensuite, si le fournisseur indique le paiement reçu. Dans une seule transaction :
    - `UNBLOCK` des unités ;
@@ -349,7 +351,7 @@ Validées par le porteur de projet (« OK pour tout, on pourra ajuster plus tard
 4. Une souscription annulée par l'émetteur pendant l'attente du paiement marque le paiement « échoué ».
 5. Nouvelle route `GET /subscriptions/{id}/payment` : l'investisseur voit l'état du paiement de ses propres souscriptions.
 
-**D-070 — Proposée. Corrections par contre-écriture (spec 10.3, 4.8).**
+**D-070 — Acceptée. Corrections par contre-écriture (spec 10.3, 4.8).**
 1. Un administrateur de l'émetteur (`registry-correction:request`) propose d'annuler **un** mouvement, avec un motif, et éventuellement les mouvements qui auraient dû être écrits (« remplacements »).
 2. Un responsable conformité ou un autre administrateur (`registry-correction:approve`) approuve ou rejette. C'est toujours une autre personne que celle qui a proposé (quatre yeux) ; le rejet demande un commentaire.
 3. L'approbation écrit des mouvements `CORRECTION` :
@@ -364,18 +366,18 @@ Validées par le porteur de projet (« OK pour tout, on pourra ajuster plus tard
 5. Les corrections portent sur les quantités. Les montants d'acquisition ne sont pas recalculés.
 6. Nouvelle route `GET /ledger/corrections?issuanceId=…&status=…`, réservée à l'émetteur (liste vide pour un investisseur).
 
-**D-071 — Proposée. Rapprochement du registre (spec 10.4).**
+**D-071 — Acceptée. Rapprochement du registre (spec 10.4).**
 1. La tâche quotidienne `registry-reconciliation` (3 h 15) reconstruit les positions de chaque émission à partir de son ledger, pour toutes les organisations, et vérifie la chaîne d'empreintes (invariants 1, 2, 3 et 5).
 2. Une anomalie est inscrite dans l'audit (`REGISTRY_RECONCILIATION_FAILED`) et signalée aux administrateurs et aux responsables conformité (notification obligatoire). Rien n'est réparé automatiquement : une réparation passe par une correction à quatre yeux.
 3. Le même contrôle se lance à la demande (`GET /ledger/reconciliation?issuanceId=…`, réservé à l'émetteur). Son résultat s'affiche en tête de l'écran registre.
 
-**D-072 — Proposée. `TokenRegistryProvider` (spec 26).**
+**D-072 — Acceptée. `TokenRegistryProvider` (spec 26).**
 1. L'interface est dans `core/providers`, avec les opérations de la spec : `createAsset`, `mint`, `transfer`, `burn`, `freeze`, `unfreeze`, `getBalance`, `getTransactionStatus`.
 2. Chaque appel porte l'organisation et l'émission (déterminées par le serveur), et les comptes sont les comptes logiques du registre.
 3. `InternalLedgerProvider` est la seule implémentation : chaque opération est un mouvement écrit par le `LedgerWriter`, dans sa propre transaction.
 4. Les parcours métier (allocation, paiement, corrections) écrivent directement par le `LedgerWriter`, dans leur propre transaction : le registre interne reste la source de vérité. L'interface est le point d'extension d'un futur miroir blockchain. Aucune dépendance blockchain n'est ajoutée.
 
-**D-073 — Proposée. Tests de concurrence et couverture (spec 25, P12-6).**
+**D-073 — Acceptée. Tests de concurrence et couverture (spec 25, P12-6).**
 1. Des tests lancent des écritures simultanées sur une même position et vérifient qu'on ne bloque ou ne transfère jamais plus que disponible, que la séquence et la chaîne d'empreintes restent intactes, et qu'un paiement confirmé en même temps par deux administrateurs ne l'est qu'une fois :
    - 5 blocages de 30 unités sur 100 disponibles ;
    - 12 transferts de 100 unités sur 800 ;
@@ -383,3 +385,40 @@ Validées par le porteur de projet (« OK pour tout, on pourra ajuster plus tard
 2. La couverture du module Registre se mesure avec `pnpm test:coverage`, sur ses tests unitaires et d'intégration ensemble. C'est une étape de la CI, qui utilise le module `@vitest/coverage-v8` 5.0.1 (même version que vitest).
 3. Les 90 % de la spec s'appliquent aux lignes, aux instructions et aux fonctions. Les branches ont un plancher de 75 % : ce sont surtout des valeurs par défaut défensives. Mesure au 2026-09-26 : lignes 97 %, instructions 95 %, fonctions 96 %, branches 78 %.
 4. Les déclarations de tables (`schema.ts`) sont exclues de la mesure : elles ne contiennent pas de logique.
+
+---
+
+## 2026-09-26 — Phase 13 (transferts)
+
+**D-074 — Proposée. Destinataire d'un transfert et confidentialité (précise D-010).**
+1. Le destinataire est désigné par son code destinataire. Ce peut être n'importe quel investisseur de l'organisation, même s'il n'est pas invité à l'émission : l'invitation donne le droit de souscrire, et pour un transfert c'est le moteur d'éligibilité qui décide.
+2. L'expéditeur ne voit jamais le nom ni l'identifiant du destinataire : seulement le code qu'il a saisi.
+3. Un destinataire refusé donne `RECIPIENT_NOT_ELIGIBLE`, sans le détail des règles. Le dépassement du maximum par investisseur donne le même code, pour ne rien révéler des avoirs du destinataire.
+4. La décision d'éligibilité est enregistrée (contexte `TRANSFER`), et l'émetteur en voit le détail.
+5. Le destinataire est prévenu des unités reçues, sans le nom de l'expéditeur.
+6. Un investisseur ne voit que les demandes qu'il a faites.
+
+**D-075 — Proposée. Contrôles et écritures d'un transfert (spec 11.1, 11.3, D-014).**
+1. À l'envoi, dans une seule transaction :
+   - émission allouée ou active, avec les transferts autorisés, sinon `TRANSFER_NOT_ALLOWED` ;
+   - période de blocage terminée, sinon `LOCKUP_PERIOD_ACTIVE` : un transfert est accepté le jour même de la fin ;
+   - unités entières, jamais vers soi-même ;
+   - KYC/KYB valide de l'expéditeur, qui voit alors ses propres raisons ;
+   - éligibilité du destinataire selon les règles de l'émission, le nombre maximal d'investisseurs étant compté sur les détenteurs actuels ;
+   - maximum par investisseur, calculé sur les avoirs du destinataire × la valeur nominale ;
+   - puis `BLOCK` des unités (`INSUFFICIENT_AVAILABLE_QUANTITY` si elles ne sont pas disponibles). La demande passe « Soumise » puis aussitôt « Revue conformité ».
+2. L'approbation est faite par un responsable conformité ou un administrateur de l'émetteur. L'éligibilité du destinataire est revérifiée, puis `UNBLOCK` + `TRANSFER`, et la demande passe « Approuvée » puis « Exécutée », dans la même transaction.
+3. Le montant d'acquisition suit les unités, au prorata : montant × unités transférées / unités détenues, arrondi aux décimales de la devise.
+4. Un rejet (motif obligatoire) ou une annulation débloque les unités. L'investisseur annule sans motif ; l'émetteur annule avec un motif, que l'investisseur voit.
+5. Un brouillon est modifiable (nouvelle route `PATCH /transfers/{id}`) : après un refus, le même brouillon est réutilisé. Le prix indicatif n'est qu'une information : aucun règlement n'est simulé (spec 11.3).
+
+**D-076 — Proposée. Portefeuille de l'investisseur.**
+1. L'entrée « Portefeuille » du portail investisseur montre dès maintenant les positions (détenues, bloquées, disponibles, montant investi) et les demandes de transfert, avec un bouton « Transférer ». Le détail complet d'une position (spec 14.3) reste en phase 15.
+2. Le registre lit une émission sans le filtre des invitations, puisqu'un détenteur peut avoir reçu ses unités par transfert. C'est le registre qui vérifie ce que l'utilisateur peut faire.
+
+**D-077 — Proposée. Menu « Transferts » de l'émetteur.** *Modifie la spec 13.2.* Une entrée « Transferts » (`transfer:read`) est ajoutée au menu de l'émetteur, après « Registre ». Elle s'ouvre sur les demandes en revue de conformité, pour les responsables conformité et les administrateurs. La file « À traiter » (phase 15) les reprendra.
+
+**D-078 — Proposée. Données de démo et scénario 4.**
+1. Nouvelle émission « Northwind Private Debt Fund I » (NWPD1) : allouée et payée (Alpine 800, Baltic 600, Cedar 400 unités, 200 restant en trésorerie), avec son ledger chaîné et cohérent.
+2. Un transfert de 100 unités d'Alpine vers Danube attend la revue de conformité, comme le demande la spec (28).
+3. Le scénario 4 automatisé prépare sa propre émission par l'API, il peut donc être rejoué. La préparation par l'API est maintenant partagée avec le scénario 3.

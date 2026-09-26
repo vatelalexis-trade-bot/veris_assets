@@ -40,6 +40,7 @@
       "investors": "Investisseurs",
       "subscriptions": "Souscriptions",
       "registry": "Registre",
+      "transfers": "Transferts",
       "distributions": "Distributions",
       "documents": "Documents",
       "reports": "Rapports",
@@ -518,7 +519,8 @@
       "issuance": "Émission",
       "subscription": "Souscription",
       "allocation_round": "Allocation",
-      "correction_request": "Correction du registre"
+      "correction_request": "Correction du registre",
+      "transfer": "Transfert"
     },
     "sources": {
       "WEB": "Application web",
@@ -616,7 +618,15 @@
       "REGISTRY_CORRECTION_REQUESTED": "Correction du registre proposée",
       "REGISTRY_CORRECTION_APPROVED": "Correction du registre approuvée",
       "REGISTRY_CORRECTION_REJECTED": "Correction du registre rejetée",
-      "REGISTRY_RECONCILIATION_FAILED": "Anomalie du registre détectée"
+      "REGISTRY_RECONCILIATION_FAILED": "Anomalie du registre détectée",
+      "TRANSFER_CREATED": "Transfert préparé",
+      "TRANSFER_UPDATED": "Brouillon de transfert modifié",
+      "TRANSFER_SUBMITTED": "Transfert envoyé",
+      "TRANSFER_COMPLIANCE_REVIEW": "Transfert en examen de conformité",
+      "TRANSFER_APPROVED": "Transfert approuvé",
+      "TRANSFER_EXECUTED": "Transfert exécuté",
+      "TRANSFER_REJECTED": "Transfert rejeté",
+      "TRANSFER_CANCELLED": "Transfert annulé"
     }
   },
   "investors": {
@@ -1307,6 +1317,87 @@
       "quantity": "Unités",
       "noAccount": "—",
       "propose": "Proposer la correction"
+    }
+  },
+  "transfers": {
+    "title": "Transferts",
+    "description": "Demandes de transfert entre investisseurs. Approuvez-les ou rejetez-les après l’examen de conformité.",
+    "caption": "Demandes de transfert, les plus récentes en premier",
+    "empty": "Aucune demande de transfert.",
+    "allStatuses": "Tous les statuts",
+    "back": "Retour aux transferts",
+    "backToPortfolio": "Retour au portefeuille",
+    "detailTitle": "Transfert d’unités {code}",
+    "detailDescription": "{quantity} unités",
+    "summary": "Demande",
+    "history": "Historique",
+    "system": "Système",
+    "unknownUser": "Utilisateur inconnu",
+    "rejectionReason": "Motif du rejet :",
+    "cancellationReason": "Motif de l’annulation :",
+    "blockedWhileReviewed": "Les unités sont bloquées pendant l’examen de la demande.",
+    "recipientChecked": "L’éligibilité du destinataire a été vérifiée et enregistrée.",
+    "columns": {
+      "issuance": "Émission",
+      "parties": "De → vers",
+      "recipientCode": "Code destinataire",
+      "quantity": "Unités",
+      "status": "Statut",
+      "updatedAt": "Dernière modification"
+    },
+    "fields": {
+      "issuance": "Émission",
+      "recipientCode": "Code destinataire",
+      "from": "De",
+      "to": "Vers",
+      "quantity": "Unités",
+      "indicativePrice": "Prix indicatif par unité",
+      "submittedAt": "Envoyée le",
+      "reviewedAt": "Décidée le"
+    },
+    "actions": {
+      "approve": "Approuver et exécuter",
+      "approveTitle": "Approuver ce transfert ?",
+      "approveDescription": "L’éligibilité du destinataire est vérifiée à nouveau, puis les unités passent aussitôt au destinataire. C’est définitif.",
+      "reject": "Rejeter",
+      "rejectTitle": "Rejeter ce transfert ?",
+      "rejectDescription": "Les unités redeviennent disponibles pour l’expéditeur, qui voit le motif.",
+      "cancel": "Annuler la demande",
+      "cancelTitle": "Annuler cette demande de transfert ?",
+      "cancelDescription": "La demande est retirée et les unités redeviennent disponibles.",
+      "cancelByIssuerDescription": "La demande est annulée, les unités redeviennent disponibles pour l’expéditeur, qui voit le motif.",
+      "reasonRequired": "Motif (obligatoire, visible par l’expéditeur)"
+    },
+    "portfolio": {
+      "title": "Portefeuille",
+      "description": "Vos positions dans les émissions, et vos demandes de transfert.",
+      "caption": "Vos positions",
+      "empty": "Vous ne détenez encore aucune unité.",
+      "requests": "Mes demandes de transfert",
+      "transfer": "Transférer",
+      "columns": {
+        "issuance": "Émission",
+        "held": "Détenues",
+        "blocked": "Bloquées",
+        "available": "Disponibles",
+        "acquisitionAmount": "Montant investi",
+        "actions": "Actions"
+      }
+    },
+    "form": {
+      "title": "Transférer des unités",
+      "description": "Transférez des unités à un autre investisseur avec le code destinataire qu’il vous a donné. Un responsable conformité examine chaque demande.",
+      "noPosition": "Vous ne détenez aucune unité de cette émission.",
+      "holding": "{issuance} : {available} unités disponibles sur {held} détenues.",
+      "recipientCode": "Code destinataire",
+      "recipientCodeHint": "Le code affiché dans le profil du destinataire, par exemple VA-ABCD-EFGH.",
+      "quantity": "Nombre d’unités",
+      "quantityInvalid": "Saisissez un nombre entier d’unités, entre 1 et {available}.",
+      "indicativePrice": "Prix indicatif par unité (facultatif)",
+      "indicativePriceHint": "À titre d’information : aucun paiement ne passe par la plateforme.",
+      "priceInvalid": "Saisissez un montant positif, par exemple 1010,50.",
+      "submit": "Envoyer la demande",
+      "back": "Retour au portefeuille"
     }
   }
 }

@@ -158,7 +158,7 @@ Vérifiable par : scénario 3 vert. Livrée en deux fois (D-064) : 12a = P12-1, 
 | P12-9 | Paiement fictif sur le montant alloué : préparation / confirmation quatre yeux ; `PaymentProvider` factice (ex-P11-4, D-059) | M |
 
 ## Phase 13 — Transferts
-Vérifiable par : scénario 4 vert.
+Vérifiable par : scénario 4 vert. Livrée (D-074 à D-078).
 
 | ID | Élément | Prio |
 |---|---|:-:|

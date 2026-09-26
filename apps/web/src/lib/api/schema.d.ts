@@ -1588,6 +1588,118 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/transfers': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['TransfersController_list'];
+    put?: never;
+    post: operations['TransfersController_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/transfers/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['TransfersController_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch: operations['TransfersController_update'];
+    trace?: never;
+  };
+  '/api/v1/transfers/{id}/submit': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['TransfersController_submit'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/transfers/{id}/approve': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['TransfersController_approve'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/transfers/{id}/reject': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['TransfersController_reject'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/transfers/{id}/cancel': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['TransfersController_cancel'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/transfers/{id}/transitions': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['TransfersController_transitions'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/audit-events': {
     parameters: {
       query?: never;
@@ -1752,6 +1864,11 @@ export interface operations {
                 | 'CORRECTION_APPROVED'
                 | 'CORRECTION_REJECTED'
                 | 'REGISTRY_ANOMALY'
+                | 'TRANSFER_TO_REVIEW'
+                | 'TRANSFER_EXECUTED'
+                | 'TRANSFER_RECEIVED'
+                | 'TRANSFER_REJECTED'
+                | 'TRANSFER_CANCELLED'
                 | 'SUBSCRIPTION_SUBMITTED'
                 | 'SUBSCRIPTION_APPROVED'
                 | 'SUBSCRIPTION_REJECTED'
@@ -8954,6 +9071,593 @@ export interface operations {
             initiatedByService: string | null;
             correlationId: string | null;
           };
+        };
+      };
+    };
+  };
+  TransfersController_list: {
+    parameters: {
+      query?: {
+        status?:
+          | 'DRAFT'
+          | 'SUBMITTED'
+          | 'COMPLIANCE_REVIEW'
+          | 'APPROVED'
+          | 'REJECTED'
+          | 'EXECUTED'
+          | 'CANCELLED';
+        issuanceId?: string;
+        page?: number;
+        pageSize?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            data: {
+              /** Format: uuid */
+              id: string;
+              /** Format: uuid */
+              issuanceId: string;
+              issuanceName: string;
+              issuanceCode: string;
+              /** Format: uuid */
+              fromInvestorId: string;
+              fromInvestorName: string;
+              /** Format: uuid */
+              toInvestorId: string | null;
+              toInvestorName: string | null;
+              recipientCode: string;
+              quantity: string;
+              indicativePrice: string | null;
+              indicativePriceCurrency: string | null;
+              /** @enum {string} */
+              status:
+                | 'DRAFT'
+                | 'SUBMITTED'
+                | 'COMPLIANCE_REVIEW'
+                | 'APPROVED'
+                | 'REJECTED'
+                | 'EXECUTED'
+                | 'CANCELLED';
+              /** Format: uuid */
+              eligibilityAssessmentId: string | null;
+              /** Format: date-time */
+              submittedAt: string | null;
+              /** Format: date-time */
+              reviewedAt: string | null;
+              rejectionReason: string | null;
+              cancellationReason: string | null;
+              version: number;
+              /** Format: date-time */
+              createdAt: string;
+              /** Format: date-time */
+              updatedAt: string;
+            }[];
+            meta: {
+              page: number;
+              pageSize: number;
+              total: number;
+            };
+          };
+        };
+      };
+    };
+  };
+  TransfersController_create: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: uuid */
+          issuanceId: string;
+          recipientCode: string;
+          quantity: string;
+          indicativePrice?: string | null;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceName: string;
+            issuanceCode: string;
+            /** Format: uuid */
+            fromInvestorId: string;
+            fromInvestorName: string;
+            /** Format: uuid */
+            toInvestorId: string | null;
+            toInvestorName: string | null;
+            recipientCode: string;
+            quantity: string;
+            indicativePrice: string | null;
+            indicativePriceCurrency: string | null;
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'SUBMITTED'
+              | 'COMPLIANCE_REVIEW'
+              | 'APPROVED'
+              | 'REJECTED'
+              | 'EXECUTED'
+              | 'CANCELLED';
+            /** Format: uuid */
+            eligibilityAssessmentId: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: date-time */
+            reviewedAt: string | null;
+            rejectionReason: string | null;
+            cancellationReason: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+          };
+        };
+      };
+    };
+  };
+  TransfersController_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceName: string;
+            issuanceCode: string;
+            /** Format: uuid */
+            fromInvestorId: string;
+            fromInvestorName: string;
+            /** Format: uuid */
+            toInvestorId: string | null;
+            toInvestorName: string | null;
+            recipientCode: string;
+            quantity: string;
+            indicativePrice: string | null;
+            indicativePriceCurrency: string | null;
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'SUBMITTED'
+              | 'COMPLIANCE_REVIEW'
+              | 'APPROVED'
+              | 'REJECTED'
+              | 'EXECUTED'
+              | 'CANCELLED';
+            /** Format: uuid */
+            eligibilityAssessmentId: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: date-time */
+            reviewedAt: string | null;
+            rejectionReason: string | null;
+            cancellationReason: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+          };
+        };
+      };
+    };
+  };
+  TransfersController_update: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          recipientCode?: string;
+          quantity?: string;
+          indicativePrice?: string | null;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceName: string;
+            issuanceCode: string;
+            /** Format: uuid */
+            fromInvestorId: string;
+            fromInvestorName: string;
+            /** Format: uuid */
+            toInvestorId: string | null;
+            toInvestorName: string | null;
+            recipientCode: string;
+            quantity: string;
+            indicativePrice: string | null;
+            indicativePriceCurrency: string | null;
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'SUBMITTED'
+              | 'COMPLIANCE_REVIEW'
+              | 'APPROVED'
+              | 'REJECTED'
+              | 'EXECUTED'
+              | 'CANCELLED';
+            /** Format: uuid */
+            eligibilityAssessmentId: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: date-time */
+            reviewedAt: string | null;
+            rejectionReason: string | null;
+            cancellationReason: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+          };
+        };
+      };
+    };
+  };
+  TransfersController_submit: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceName: string;
+            issuanceCode: string;
+            /** Format: uuid */
+            fromInvestorId: string;
+            fromInvestorName: string;
+            /** Format: uuid */
+            toInvestorId: string | null;
+            toInvestorName: string | null;
+            recipientCode: string;
+            quantity: string;
+            indicativePrice: string | null;
+            indicativePriceCurrency: string | null;
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'SUBMITTED'
+              | 'COMPLIANCE_REVIEW'
+              | 'APPROVED'
+              | 'REJECTED'
+              | 'EXECUTED'
+              | 'CANCELLED';
+            /** Format: uuid */
+            eligibilityAssessmentId: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: date-time */
+            reviewedAt: string | null;
+            rejectionReason: string | null;
+            cancellationReason: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+          };
+        };
+      };
+    };
+  };
+  TransfersController_approve: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceName: string;
+            issuanceCode: string;
+            /** Format: uuid */
+            fromInvestorId: string;
+            fromInvestorName: string;
+            /** Format: uuid */
+            toInvestorId: string | null;
+            toInvestorName: string | null;
+            recipientCode: string;
+            quantity: string;
+            indicativePrice: string | null;
+            indicativePriceCurrency: string | null;
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'SUBMITTED'
+              | 'COMPLIANCE_REVIEW'
+              | 'APPROVED'
+              | 'REJECTED'
+              | 'EXECUTED'
+              | 'CANCELLED';
+            /** Format: uuid */
+            eligibilityAssessmentId: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: date-time */
+            reviewedAt: string | null;
+            rejectionReason: string | null;
+            cancellationReason: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+          };
+        };
+      };
+    };
+  };
+  TransfersController_reject: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          reason: string;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceName: string;
+            issuanceCode: string;
+            /** Format: uuid */
+            fromInvestorId: string;
+            fromInvestorName: string;
+            /** Format: uuid */
+            toInvestorId: string | null;
+            toInvestorName: string | null;
+            recipientCode: string;
+            quantity: string;
+            indicativePrice: string | null;
+            indicativePriceCurrency: string | null;
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'SUBMITTED'
+              | 'COMPLIANCE_REVIEW'
+              | 'APPROVED'
+              | 'REJECTED'
+              | 'EXECUTED'
+              | 'CANCELLED';
+            /** Format: uuid */
+            eligibilityAssessmentId: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: date-time */
+            reviewedAt: string | null;
+            rejectionReason: string | null;
+            cancellationReason: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+          };
+        };
+      };
+    };
+  };
+  TransfersController_cancel: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          reason?: string | null;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceName: string;
+            issuanceCode: string;
+            /** Format: uuid */
+            fromInvestorId: string;
+            fromInvestorName: string;
+            /** Format: uuid */
+            toInvestorId: string | null;
+            toInvestorName: string | null;
+            recipientCode: string;
+            quantity: string;
+            indicativePrice: string | null;
+            indicativePriceCurrency: string | null;
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'SUBMITTED'
+              | 'COMPLIANCE_REVIEW'
+              | 'APPROVED'
+              | 'REJECTED'
+              | 'EXECUTED'
+              | 'CANCELLED';
+            /** Format: uuid */
+            eligibilityAssessmentId: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: date-time */
+            reviewedAt: string | null;
+            rejectionReason: string | null;
+            cancellationReason: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+          };
+        };
+      };
+    };
+  };
+  TransfersController_transitions: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @enum {string|null} */
+            fromStatus:
+              | 'DRAFT'
+              | 'SUBMITTED'
+              | 'COMPLIANCE_REVIEW'
+              | 'APPROVED'
+              | 'REJECTED'
+              | 'EXECUTED'
+              | 'CANCELLED'
+              | null;
+            /** @enum {string} */
+            toStatus:
+              | 'DRAFT'
+              | 'SUBMITTED'
+              | 'COMPLIANCE_REVIEW'
+              | 'APPROVED'
+              | 'REJECTED'
+              | 'EXECUTED'
+              | 'CANCELLED';
+            actorName: string | null;
+            /** Format: uuid */
+            actorUserId: string | null;
+            comment: string | null;
+            /** Format: date-time */
+            occurredAt: string;
+          }[];
         };
       };
     };

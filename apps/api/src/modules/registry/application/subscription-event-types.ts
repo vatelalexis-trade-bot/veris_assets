@@ -29,3 +29,11 @@ export const REGISTRY_EVENTS = {
   correctionDecided: 'registry.correction.decided',
   anomaly: 'registry.reconciliation.anomaly',
 } as const;
+
+/** Transfers. Payload: issuance `code`, `units`, `fromInvestorId`, `toInvestorId`. */
+export const TRANSFER_EVENTS = {
+  submitted: 'registry.transfer.submitted',
+  executed: 'registry.transfer.executed',
+  rejected: 'registry.transfer.rejected',
+  cancelledByIssuer: 'registry.transfer.cancelled-by-issuer',
+} as const;

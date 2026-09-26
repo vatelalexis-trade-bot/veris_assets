@@ -219,10 +219,12 @@ Refus à l'envoi et à l'approbation : `422` avec le code du premier contrôle �
 | Méthode | Chemin | Permission | IK |
 |---|---|---|---|
 | GET | `/transfers` · `/{id}` | `transfer:read` (P) | |
-| POST | `/transfers` (brouillon, avec `recipientCode`, D-010) | `transfer:request` (P) | ✓ |
-| POST | `/transfers/{id}/submit` | `transfer:request` (P) | ✓ |
-| POST | `/transfers/{id}/approve` · `/reject` | `transfer:approve` | ✓ |
-| POST | `/transfers/{id}/cancel` | `transfer:cancel` (P) | ✓ |
+| POST | `/transfers` (brouillon, avec `recipientCode`, D-010 ; refus `RECIPIENT_CODE_UNKNOWN`, `SELF_TRANSFER_FORBIDDEN`) | `transfer:request` (P) | ✓ |
+| PATCH | `/transfers/{id}` (brouillon, D-075) | `transfer:request` (P) | |
+| POST | `/transfers/{id}/submit` (contrôles 11.3, `BLOCK`, puis revue conformité ; refus `RECIPIENT_NOT_ELIGIBLE` sans détail, D-074) | `transfer:request` (P) | ✓ |
+| POST | `/transfers/{id}/approve` (`UNBLOCK` + `TRANSFER`, exécuté) · `/reject` (motif) | `transfer:approve` | ✓ |
+| POST | `/transfers/{id}/cancel` (motif obligatoire pour l'émetteur) | `transfer:cancel` (P) | ✓ |
+| GET | `/transfers/{id}/transitions` | `transfer:read` (P) | |
 
 ### 2.10 `/distributions` et `/payment-instructions`
 

@@ -21,12 +21,23 @@ import {
   investorRepresentative,
   kycCase,
 } from '../../src/modules/investor-compliance/infrastructure/schema.js';
-import { subscription } from '../../src/modules/registry/infrastructure/schema.js';
+import {
+  allocation,
+  allocationRound,
+  ledgerEntry,
+  ledgerHead,
+  logicalAccount,
+  position,
+  subscription,
+  subscriptionPayment,
+  transferRequest,
+} from '../../src/modules/registry/infrastructure/schema.js';
 import { connectionConfig, withClient } from './admin.js';
 import * as data from './seed-data.js';
 import { seedIdentities } from './seed-identities.js';
 import { demoInvestorRows } from './seed-investors.js';
 import { demoIssuanceRows } from './seed-issuances.js';
+import { demoRegistryRows } from './seed-registry.js';
 import { demoSubscriptionRows } from './seed-subscriptions.js';
 import { databaseName, type DatabaseTarget, type ToolsEnv } from './tools-env.js';
 
@@ -87,6 +98,22 @@ export async function seedDatabase(env: ToolsEnv, target: DatabaseTarget): Promi
         .onConflictDoNothing();
       await tx.insert(subscription).values(subscriptions.subscriptions).onConflictDoNothing();
       await tx.insert(workflowTransition).values(subscriptions.transitions).onConflictDoNothing();
+      const registry = demoRegistryRows(northwind);
+      await tx.insert(issuance).values(registry.issuances).onConflictDoNothing();
+      await tx.insert(issuanceTerms).values(registry.terms).onConflictDoNothing();
+      await tx.insert(eligibilityRuleSet).values(registry.rules).onConflictDoNothing();
+      await tx.insert(eligibilityAssessment).values(registry.assessments).onConflictDoNothing();
+      await tx.insert(investorInvitation).values(registry.invitations).onConflictDoNothing();
+      await tx.insert(subscription).values(registry.subscriptions).onConflictDoNothing();
+      await tx.insert(allocationRound).values(registry.allocationRounds).onConflictDoNothing();
+      await tx.insert(allocation).values(registry.allocations).onConflictDoNothing();
+      await tx.insert(subscriptionPayment).values(registry.payments).onConflictDoNothing();
+      await tx.insert(logicalAccount).values(registry.accounts).onConflictDoNothing();
+      await tx.insert(position).values(registry.positions).onConflictDoNothing();
+      await tx.insert(ledgerHead).values(registry.ledgerHeads).onConflictDoNothing();
+      await tx.insert(ledgerEntry).values(registry.ledgerEntries).onConflictDoNothing();
+      await tx.insert(transferRequest).values(registry.transfers).onConflictDoNothing();
+      await tx.insert(workflowTransition).values(registry.transitions).onConflictDoNothing();
     });
   });
   await seedIdentities(env, target);

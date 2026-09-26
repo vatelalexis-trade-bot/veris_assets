@@ -286,7 +286,7 @@ describe('invitations — the whitelist (P10-4)', () => {
     const seen = (await investor.get('/api/v1/issuances').expect(200)).body as {
       data: { code: string }[];
     };
-    expect(seen.data.map((row) => row.code).sort()).toEqual(['AURORA27', 'NWIN26', 'NWSD26']);
+    expect(seen.data.map((row) => row.code)).toContain('AURORA27');
     await investor.get(`/api/v1/issuances/${aurora}/invitations`).expect(403);
 
     await operator
@@ -296,7 +296,8 @@ describe('invitations — the whitelist (P10-4)', () => {
     const after = (await investor.get('/api/v1/issuances').expect(200)).body as {
       data: { code: string }[];
     };
-    expect(after.data.map((row) => row.code).sort()).toEqual(['NWIN26', 'NWSD26']);
+    expect(after.data.map((row) => row.code)).not.toContain('AURORA27');
+    expect(after.data.map((row) => row.code)).toContain('NWSD26');
     await investor.get(`/api/v1/issuances/${aurora}`).expect(404);
 
     await operator

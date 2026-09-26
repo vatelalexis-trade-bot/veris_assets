@@ -9,6 +9,7 @@ import {
   PAYMENT_EVENTS,
   REGISTRY_EVENTS,
   SUBSCRIPTION_EVENTS,
+  TRANSFER_EVENTS,
 } from './subscription-event-types.js';
 import { SubscriptionsService } from './subscriptions.service.js';
 
@@ -21,6 +22,8 @@ type Payload = {
   proposedBy?: string;
   preparedBy?: string;
   requestedBy?: string;
+  fromInvestorId?: string;
+  toInvestorId?: string;
 };
 
 /**
@@ -134,6 +137,37 @@ export class SubscriptionEvents implements OnModuleInit {
         this.aboutIssuance(payload, userId, 'REGISTRY_ANOMALY'),
       );
     });
+    // Transfers: the reviewers, then both parties (the recipient never learns who sent).
+    this.relay.on(TRANSFER_EVENTS.submitted, async (tx, event) => {
+      const reviewers = [
+        ...(await this.users.activeUsersWithRole(tx, 'COMPLIANCE_OFFICER')),
+        ...(await this.users.activeUsersWithRole(tx, 'ISSUER_ADMIN')),
+      ];
+      return [...new Set(reviewers)].map((userId) =>
+        this.aboutTransfer(event, userId, 'TRANSFER_TO_REVIEW'),
+      );
+    });
+    this.relay.on(TRANSFER_EVENTS.executed, async (tx, event) => {
+      const payload = event.payload as Payload;
+      const senders = await this.investorAccounts(tx, { investorId: payload.fromInvestorId });
+      const recipients = await this.investorAccounts(tx, { investorId: payload.toInvestorId });
+      return [
+        ...senders.map((userId) => this.aboutTransfer(event, userId, 'TRANSFER_EXECUTED')),
+        ...recipients.map((userId) => this.aboutTransfer(event, userId, 'TRANSFER_RECEIVED')),
+      ];
+    });
+    for (const [eventType, type] of [
+      [TRANSFER_EVENTS.rejected, 'TRANSFER_REJECTED'],
+      [TRANSFER_EVENTS.cancelledByIssuer, 'TRANSFER_CANCELLED'],
+    ] as const) {
+      this.relay.on(eventType, async (tx, event) =>
+        (
+          await this.investorAccounts(tx, {
+            investorId: (event.payload as Payload).fromInvestorId,
+          })
+        ).map((userId) => this.aboutTransfer(event, userId, type)),
+      );
+    }
     // The investors are told by the issuance's own notification (ISSUANCE_CANCELLED).
     this.relay.on(ISSUANCE_EVENTS.cancelled, async (tx, event) => {
       await this.subscriptions.cancelForIssuance(tx, event.tenantId, event.aggregateId);
@@ -145,6 +179,21 @@ export class SubscriptionEvents implements OnModuleInit {
     return payload.investorId
       ? this.users.activeUsersOfInvestor(tx, payload.investorId)
       : Promise.resolve([]);
+  }
+
+  private aboutTransfer(
+    event: OutboxEventRecord,
+    userId: string,
+    type: NotificationRequest['type'],
+  ): NotificationRequest {
+    const payload = event.payload as Payload;
+    return {
+      userId,
+      type,
+      params: { code: payload.code ?? '', units: payload.units ?? '' },
+      resourceType: 'transfer',
+      resourceId: event.aggregateId,
+    };
   }
 
   private aboutIssuance(

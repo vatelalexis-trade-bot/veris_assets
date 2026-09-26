@@ -147,6 +147,18 @@ export class InvestorsService {
     return found;
   }
 
+  /**
+   * The investor of a recipient code (D-010), or null. Any investor of the tenant may use a code:
+   * the answer is only its identifier, never shown to the sender.
+   */
+  async byRecipientCode(tx: Transaction, code: string): Promise<string | null> {
+    const [found] = await tx
+      .select({ id: investor.id })
+      .from(investor)
+      .where(eq(investor.recipientCode, code.trim().toUpperCase()));
+    return found?.id ?? null;
+  }
+
   async exists(tx: Transaction, id: string): Promise<boolean> {
     const [found] = await tx.select({ id: investor.id }).from(investor).where(eq(investor.id, id));
     return found !== undefined;

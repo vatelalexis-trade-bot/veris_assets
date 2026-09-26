@@ -363,6 +363,71 @@ export const NOTIFICATION_TYPES = {
       },
     },
   },
+  TRANSFER_TO_REVIEW: {
+    category: 'WORKFLOW',
+    texts: {
+      'en-GB': {
+        title: 'Transfer to review',
+        body: 'A transfer of {units} units of the issuance {code} waits for a compliance review.',
+      },
+      'fr-FR': {
+        title: 'Transfert à examiner',
+        body: 'Un transfert de {units} unités de l’émission {code} attend un examen de conformité.',
+      },
+    },
+  },
+  TRANSFER_EXECUTED: {
+    category: 'INVESTMENT',
+    texts: {
+      'en-GB': {
+        title: 'Transfer executed',
+        body: 'Your transfer of {units} units of the issuance {code} was approved and executed.',
+      },
+      'fr-FR': {
+        title: 'Transfert exécuté',
+        body: 'Votre transfert de {units} unités de l’émission {code} a été approuvé et exécuté.',
+      },
+    },
+  },
+  TRANSFER_RECEIVED: {
+    category: 'INVESTMENT',
+    texts: {
+      'en-GB': {
+        title: 'Units received',
+        body: '{units} units of the issuance {code} were transferred to you.',
+      },
+      'fr-FR': {
+        title: 'Unités reçues',
+        body: '{units} unités de l’émission {code} vous ont été transférées.',
+      },
+    },
+  },
+  TRANSFER_REJECTED: {
+    category: 'INVESTMENT',
+    texts: {
+      'en-GB': {
+        title: 'Transfer rejected',
+        body: 'Your transfer of {units} units of the issuance {code} was rejected. Your units are available again.',
+      },
+      'fr-FR': {
+        title: 'Transfert rejeté',
+        body: 'Votre transfert de {units} unités de l’émission {code} a été rejeté. Vos unités sont de nouveau disponibles.',
+      },
+    },
+  },
+  TRANSFER_CANCELLED: {
+    category: 'INVESTMENT',
+    texts: {
+      'en-GB': {
+        title: 'Transfer cancelled',
+        body: 'Your transfer of {units} units of the issuance {code} was cancelled by the issuer. Your units are available again.',
+      },
+      'fr-FR': {
+        title: 'Transfert annulé',
+        body: 'Votre transfert de {units} unités de l’émission {code} a été annulé par l’émetteur. Vos unités sont de nouveau disponibles.',
+      },
+    },
+  },
   SUBSCRIPTION_SUBMITTED: {
     category: 'WORKFLOW',
     texts: {

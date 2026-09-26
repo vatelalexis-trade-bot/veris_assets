@@ -233,7 +233,7 @@ export class LedgerWriter {
         input.amount && current.investorId
           ? delta.held.isNegative()
             ? parseDecimal(input.amount).neg()
-            : delta.held.isPositive()
+            : delta.held.gt(0)
               ? parseDecimal(input.amount)
               : zero
           : zero;

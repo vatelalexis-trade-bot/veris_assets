@@ -63,7 +63,7 @@ export function correctionRefusal(input: {
     if (accounts.some((account) => account !== null && !input.accountsOfIssuance.has(account)))
       return 'ACCOUNT_NOT_OF_ISSUANCE';
     const quantity = parseDecimal(line.quantity);
-    if (!quantity.isInteger() || !quantity.isPositive()) return 'QUANTITY_NOT_INTEGER';
+    if (!quantity.isInteger() || !quantity.gt(0)) return 'QUANTITY_NOT_INTEGER';
   }
   return null;
 }

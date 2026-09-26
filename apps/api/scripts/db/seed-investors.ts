@@ -63,7 +63,7 @@ export function investorId(key: string): string {
 
 const userId = (email: string) => deterministicUuid(`user:${email}`);
 
-function recipientCode(key: string): string {
+export function recipientCode(key: string): string {
   const bytes = createHash('sha256').update(`recipient:${key}`).digest();
   return recipientCodeFrom([...bytes.subarray(0, 8)]);
 }

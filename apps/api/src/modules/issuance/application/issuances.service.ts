@@ -157,8 +157,24 @@ export class IssuancesService {
   }
 
   /** In the caller's transaction, within the user's scope; `lock` serialises the transitions. */
-  async find(tx: Transaction, id: string, lock = false): Promise<IssuanceDetail> {
-    const scope = this.scopeOf(currentUser());
+  find(tx: Transaction, id: string, lock = false): Promise<IssuanceDetail> {
+    return this.findWhere(tx, id, lock, this.scopeOf(currentUser()));
+  }
+
+  /**
+   * Without the investor's invitation scope, for the registry: a holder may have received its
+   * units by transfer without being invited. The caller checks what the user may do.
+   */
+  findForRegistry(tx: Transaction, id: string, lock = false): Promise<IssuanceDetail> {
+    return this.findWhere(tx, id, lock, undefined);
+  }
+
+  private async findWhere(
+    tx: Transaction,
+    id: string,
+    lock: boolean,
+    scope: SQL | undefined,
+  ): Promise<IssuanceDetail> {
     const where = scope ? and(eq(issuance.id, id), scope) : eq(issuance.id, id);
     // The issuance row alone is locked (PostgreSQL refuses "FOR UPDATE OF schema.table").
     if (lock) await tx.select({ id: issuance.id }).from(issuance).where(where).for('update');

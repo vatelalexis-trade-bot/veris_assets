@@ -40,6 +40,7 @@
       "investors": "Investors",
       "subscriptions": "Subscriptions",
       "registry": "Registry",
+      "transfers": "Transfers",
       "distributions": "Distributions",
       "documents": "Documents",
       "reports": "Reports",
@@ -518,7 +519,8 @@
       "issuance": "Issuance",
       "subscription": "Subscription",
       "allocation_round": "Allocation",
-      "correction_request": "Registry correction"
+      "correction_request": "Registry correction",
+      "transfer": "Transfer"
     },
     "sources": {
       "WEB": "Web application",
@@ -616,7 +618,15 @@
       "REGISTRY_CORRECTION_REQUESTED": "Registry correction proposed",
       "REGISTRY_CORRECTION_APPROVED": "Registry correction approved",
       "REGISTRY_CORRECTION_REJECTED": "Registry correction rejected",
-      "REGISTRY_RECONCILIATION_FAILED": "Registry anomaly found"
+      "REGISTRY_RECONCILIATION_FAILED": "Registry anomaly found",
+      "TRANSFER_CREATED": "Transfer drafted",
+      "TRANSFER_UPDATED": "Transfer draft changed",
+      "TRANSFER_SUBMITTED": "Transfer submitted",
+      "TRANSFER_COMPLIANCE_REVIEW": "Transfer under compliance review",
+      "TRANSFER_APPROVED": "Transfer approved",
+      "TRANSFER_EXECUTED": "Transfer executed",
+      "TRANSFER_REJECTED": "Transfer rejected",
+      "TRANSFER_CANCELLED": "Transfer cancelled"
     }
   },
   "investors": {
@@ -1307,6 +1317,87 @@
       "quantity": "Units",
       "noAccount": "—",
       "propose": "Propose the correction"
+    }
+  },
+  "transfers": {
+    "title": "Transfers",
+    "description": "Transfer requests between investors. Approve or reject them after the compliance review.",
+    "caption": "Transfer requests, newest first",
+    "empty": "No transfer request.",
+    "allStatuses": "All statuses",
+    "back": "Back to the transfers",
+    "backToPortfolio": "Back to the portfolio",
+    "detailTitle": "Transfer of {code} units",
+    "detailDescription": "{quantity} units",
+    "summary": "Request",
+    "history": "History",
+    "system": "System",
+    "unknownUser": "Unknown user",
+    "rejectionReason": "Reason for the rejection:",
+    "cancellationReason": "Reason for the cancellation:",
+    "blockedWhileReviewed": "The units are blocked while the request is reviewed.",
+    "recipientChecked": "The recipient's eligibility was checked and recorded.",
+    "columns": {
+      "issuance": "Issuance",
+      "parties": "From → to",
+      "recipientCode": "Recipient code",
+      "quantity": "Units",
+      "status": "Status",
+      "updatedAt": "Last change"
+    },
+    "fields": {
+      "issuance": "Issuance",
+      "recipientCode": "Recipient code",
+      "from": "From",
+      "to": "To",
+      "quantity": "Units",
+      "indicativePrice": "Indicative price per unit",
+      "submittedAt": "Submitted on",
+      "reviewedAt": "Decided on"
+    },
+    "actions": {
+      "approve": "Approve and execute",
+      "approveTitle": "Approve this transfer?",
+      "approveDescription": "The recipient's eligibility is checked again, then the units move to the recipient at once. This cannot be undone.",
+      "reject": "Reject",
+      "rejectTitle": "Reject this transfer?",
+      "rejectDescription": "The units become available to the sender again, who sees the reason.",
+      "cancel": "Cancel the request",
+      "cancelTitle": "Cancel this transfer request?",
+      "cancelDescription": "The request is withdrawn and the units become available again.",
+      "cancelByIssuerDescription": "The request is cancelled, the units become available to the sender again, who sees the reason.",
+      "reasonRequired": "Reason (required, shown to the sender)"
+    },
+    "portfolio": {
+      "title": "Portfolio",
+      "description": "Your positions in the issuances, and your transfer requests.",
+      "caption": "Your positions",
+      "empty": "You hold no units yet.",
+      "requests": "My transfer requests",
+      "transfer": "Transfer",
+      "columns": {
+        "issuance": "Issuance",
+        "held": "Held",
+        "blocked": "Blocked",
+        "available": "Available",
+        "acquisitionAmount": "Amount invested",
+        "actions": "Actions"
+      }
+    },
+    "form": {
+      "title": "Transfer units",
+      "description": "Transfer units to another investor with the recipient code it gave you. A compliance officer reviews every request.",
+      "noPosition": "You hold no units of this issuance.",
+      "holding": "{issuance}: {available} units available out of {held} held.",
+      "recipientCode": "Recipient code",
+      "recipientCodeHint": "The code shown in the recipient's profile, e.g. VA-ABCD-EFGH.",
+      "quantity": "Number of units",
+      "quantityInvalid": "Enter a whole number of units, between 1 and {available}.",
+      "indicativePrice": "Indicative price per unit (optional)",
+      "indicativePriceHint": "For information only: no payment is made through the platform.",
+      "priceInvalid": "Enter a positive amount, e.g. 1010.50.",
+      "submit": "Submit the request",
+      "back": "Back to the portfolio"
     }
   }
 }

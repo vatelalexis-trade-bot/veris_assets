@@ -141,6 +141,20 @@
       "when": 1790421089979,
       "tag": "0019_payments_corrections_security",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1790426576857,
+      "tag": "0020_transfers",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1790426579544,
+      "tag": "0021_transfers_security",
+      "breakpoints": true
     }
   ]
 }

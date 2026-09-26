@@ -48,6 +48,8 @@ const issuer: Portal = {
     { section: 'investors', icon: Users, permission: 'investor:read' },
     { section: 'subscriptions', icon: ClipboardCheck, permission: 'subscription:read' },
     { section: 'registry', icon: ScrollText, permission: 'registry:read' },
+    // Transfers to review (SPEC §11.1); not in the menu of §13.2 (decision D-077).
+    { section: 'transfers', icon: ArrowLeftRight, permission: 'transfer:read' },
     { section: 'distributions', icon: Receipt, permission: 'distribution:read' },
     { section: 'documents', icon: FileText, permission: 'document:read' },
     { section: 'reports', icon: BarChart3, permission: 'report:read' },
