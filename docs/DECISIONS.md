@@ -223,22 +223,59 @@ Validées par le porteur de projet (« ok pour tout »).
 
 ## 2026-09-25 — Phase 10 (émissions)
 
-Proposées, en attente de validation par le porteur de projet.
+Validées par le porteur de projet (« ok pour D-054 à D-058, on lance la phase 11 »).
 
-**D-054 — Proposée. Cycle de vie livré en phase 10.** La machine à états complète de la spec (7.1) est en place, mais seules les actions jouables aujourd'hui ont une route : soumettre, approuver (quatre yeux), renvoyer en brouillon (commentaire obligatoire), ouvrir et clôturer les souscriptions, annuler (commentaire obligatoire). L'allocation (phase 12), l'activation et l'échéance (phase 14) arriveront avec leurs phases. L'ouverture est refusée avant la date de début (`SUBSCRIPTION_WINDOW_NOT_STARTED`) et après la date de fin. La tâche `subscription-auto-close` clôture chaque jour (et au démarrage) les souscriptions dont la date de fin est passée, dans le fuseau de l'organisation. Seul un brouillon est modifiable.
+**D-054 — Acceptée. Cycle de vie livré en phase 10.** La machine à états complète de la spec (7.1) est en place, mais seules les actions jouables aujourd'hui ont une route : soumettre, approuver (quatre yeux), renvoyer en brouillon (commentaire obligatoire), ouvrir et clôturer les souscriptions, annuler (commentaire obligatoire). L'allocation (phase 12), l'activation et l'échéance (phase 14) arriveront avec leurs phases. L'ouverture est refusée avant la date de début (`SUBSCRIPTION_WINDOW_NOT_STARTED`) et après la date de fin. La tâche `subscription-auto-close` clôture chaque jour (et au démarrage) les souscriptions dont la date de fin est passée, dans le fuseau de l'organisation. Seul un brouillon est modifiable.
 
-**D-055 — Proposée. Invitations (whitelist).**
+**D-055 — Acceptée. Invitations (whitelist).**
 1. Un investisseur est invité après contrôle d'éligibilité ; s'il n'est pas éligible, l'invitation est refusée (`422 ELIGIBILITY_FAILED` avec les règles échouées et leurs valeurs), et la décision est tout de même enregistrée, dans une transaction à part, pour qu'elle survive au refus.
 2. Le plafond d'investisseurs n'est pas contrôlé à l'invitation (il limite les souscripteurs ; il le sera à la souscription, phase 11).
 3. On invite d'une émission approuvée jusqu'à la clôture des souscriptions. Une invitation retirée reste dans l'historique ; une nouvelle invitation refait le contrôle d'éligibilité.
 4. Un investisseur ne voit que les émissions où il est invité, jamais un brouillon ni une émission en cours d'approbation.
 
-**D-056 — Proposée. Assistant de création.**
+**D-056 — Acceptée. Assistant de création.**
 1. Le brouillon naît avec un nom et un code court (unique dans l'organisation, en majuscules) ; l'assistant enregistre ensuite automatiquement, environ une seconde après la dernière saisie, et se souvient de l'étape atteinte.
 2. L'émission a trois parties versionnées séparément (informations générales, conditions, règles d'éligibilité), chacune avec son `If-Match`, pour que l'enregistrement automatique d'une étape ne bloque pas les autres.
 3. Le taux est saisi en pourcentage (5 ou 5,25) et conservé en fraction (0,05), converti en décimal exact. La fréquence de distribution est à l'étape 2 ; la convention de décompte des jours, l'arrondi, le jour ouvré et la date d'enregistrement (D-012) à l'étape 4.
 4. Deux contrôles s'ajoutent à ceux de la spec (6.3) : champ nécessaire manquant (`REQUIRED_FIELD_MISSING`) et montant plus précis que la devise (`AMOUNT_TOO_PRECISE`). Les contrôles s'affichent à côté des champs et dans la revue, avec un lien vers l'étape à corriger.
 
-**D-057 — Proposée. Routes des émissions.** Ajoutées : `GET/POST /issuances/{id}/documents` (documents de l'émission, étape 5). `GET /issuances/{id}/terms` et `/eligibility-rules` ne sont pas créées : ces parties sont déjà renvoyées par `GET /issuances/{id}`, avec leur version. *Modifie `docs/API.md` §2.6.*
+**D-057 — Acceptée. Routes des émissions.** Ajoutées : `GET/POST /issuances/{id}/documents` (documents de l'émission, étape 5). `GET /issuances/{id}/terms` et `/eligibility-rules` ne sont pas créées : ces parties sont déjà renvoyées par `GET /issuances/{id}`, avec leur version. *Modifie `docs/API.md` §2.6.*
 
-**D-058 — Proposée. Tests de bout en bout.** Playwright 1.63.0, dossier `tests/e2e/`, commande `pnpm test:e2e`, nouveau job de CI « End-to-end scenarios ». L'application est compilée et démarrée comme en production (`scripts/e2e-server.sh`) ; en local, une démo déjà lancée est réutilisée. Le test se connecte par les vrais écrans, avec le code à deux facteurs fourni par la route des comptes de démo (D-016). Il utilise un code d'émission nouveau à chaque passage : il ne réinitialise pas la base de démo.
+**D-058 — Acceptée. Tests de bout en bout.** Playwright 1.63.0, dossier `tests/e2e/`, commande `pnpm test:e2e`, nouveau job de CI « End-to-end scenarios ». L'application est compilée et démarrée comme en production (`scripts/e2e-server.sh`) ; en local, une démo déjà lancée est réutilisée. Le test se connecte par les vrais écrans, avec le code à deux facteurs fourni par la route des comptes de démo (D-016). Il utilise un code d'émission nouveau à chaque passage : il ne réinitialise pas la base de démo.
+
+---
+
+## 2026-09-26 — Phase 11 (souscriptions)
+
+**D-059 — Acceptée. Paiement fictif livré en phase 12.** Choix du porteur de projet pendant la phase 11. Selon l'ordre de traitement de la spec (9.2) et D-009, le paiement fictif porte sur le montant **alloué** : il ne peut donc venir qu'après l'allocation (phase 12). P11-4 (préparation et confirmation quatre yeux du paiement, `PaymentProvider` factice) et les routes `payment/prepare` et `payment/confirm` passent en phase 12. En phase 11, une souscription s'arrête à « Approuvée », « Rejetée » ou « Annulée ». La machine à états complète est déjà en place.
+
+**D-060 — Proposée. Contrôles de la souscription (spec 9.3 et 9.4).**
+1. Les contrôles ont lieu à l'envoi du brouillon (et non à sa saisie), dans cet ordre, le premier échec étant renvoyé :
+   - émission ouverte ;
+   - dates de souscription ;
+   - unités entières (`QUANTITY_NOT_INTEGER`) ;
+   - montant = unités × valeur nominale (`AMOUNT_UNITS_MISMATCH`) ;
+   - minimum de souscription ;
+   - plafond par investisseur ;
+   - unités disponibles ;
+   - montant maximum de l'émission ;
+   - puis l'éligibilité.
+2. Plafond par investisseur : on additionne les souscriptions actives de l'investisseur sur l'émission (de « Soumise » à « Allouée ») et la nouvelle demande. Une souscription annulée ou rejetée ne compte plus.
+3. « Plafond global » et « disponibilité des unités » sont contrôlés **par demande** : une demande seule ne peut pas dépasser le montant maximum de l'émission ni son nombre total d'unités. Le **total** des demandes peut, lui, dépasser l'offre : c'est la sursouscription de la spec (9.4), réglée à l'allocation manuelle (phase 12).
+4. L'éligibilité est vérifiée et enregistrée à l'envoi, puis vérifiée de nouveau à l'approbation, car la situation de l'investisseur peut avoir changé entre-temps (par exemple un KYC expiré).
+5. Un envoi refusé pour éligibilité renvoie `422 ELIGIBILITY_FAILED` avec les règles échouées. La décision est enregistrée à part, pour survivre au refus (comme pour D-055), et le brouillon reste un brouillon : rien n'est transmis à l'émetteur. Un nouvel essai modifie le même brouillon.
+6. L'acceptation des documents et la déclaration d'éligibilité sont obligatoires à l'envoi. Leur absence donne `400 VALIDATION_FAILED` avec `DOCUMENTS_NOT_ACCEPTED` ou `ELIGIBILITY_NOT_DECLARED`. L'heure de chaque acceptation est conservée.
+7. La devise de la souscription est celle de l'émission.
+
+**D-061 — Proposée. Traitement et annulation.**
+1. La prise en charge (« En revue ») est faite par un opérateur ou un administrateur de l'émetteur (`subscription:review`). L'approbation et le rejet sont faits par un administrateur (`subscription:approve`) ; le rejet exige un motif, visible par l'investisseur.
+2. L'approbation d'une souscription n'est pas soumise aux quatre yeux : la spec ne le demande pas, et c'est l'investisseur qui a initié la demande. Les quatre yeux s'appliqueront à l'allocation et au paiement (phase 12).
+3. L'investisseur peut annuler seul, sans motif, tant que sa souscription n'est pas approuvée (brouillon, soumise, en revue). L'émetteur peut annuler jusqu'à « Paiement en attente » inclus, avec un motif obligatoire, visible par l'investisseur et notifié.
+4. L'annulation d'une émission annule automatiquement ses souscriptions en cours, par le système, avec le motif « émission annulée » ; chaque annulation est tracée dans l'audit. Les investisseurs sont prévenus par la notification d'annulation de l'émission.
+5. Notifications :
+   - à l'envoi, les opérateurs et administrateurs de l'émetteur ;
+   - à l'approbation, au rejet ou à l'annulation par l'émetteur, l'investisseur.
+
+**D-062 — Proposée. Compte de démo « Investor D » pour le scénario 2.** *Modifie D-017 (4 comptes investisseurs au lieu de 3).* `investor.d@example.com` est rattaché à Iris Asset Holdings GmbH (démo), dont le KYC a expiré il y a 11 jours et qui est invitée à l'émission NWSD26. Le scénario 2 (`tests/e2e/scenario-2-not-eligible.spec.ts`) se connecte avec ce compte, tente de souscrire et voit la raison du refus en clair.
+
+**D-063 — Proposée. Découpage de la phase 11.** P11-5 (clôture automatique) a déjà été livré en phase 10 (D-054). P11-7 (bulletin de souscription PDF, priorité S) est reporté à la phase 15 (exports), avec les autres documents générés.

@@ -189,8 +189,11 @@ Refus métier (détails de `VALIDATION_FAILED`) : `OWN_ACCOUNT`, `LAST_ADMINISTR
 | POST | `/subscriptions/{id}/start-review` | `subscription:review` | ✓ |
 | POST | `/subscriptions/{id}/approve` · `/reject` | `subscription:approve` | ✓ |
 | POST | `/subscriptions/{id}/cancel` | `subscription:cancel` (P) | ✓ |
-| POST | `/subscriptions/{id}/payment/prepare` | `payment:prepare` | ✓ |
-| POST | `/subscriptions/{id}/payment/confirm` | `payment:confirm` | ✓ |
+| GET | `/subscriptions/{id}/transitions` (historique des statuts) | `subscription:read` (P) | |
+| POST | `/subscriptions/{id}/payment/prepare` (phase 12, D-059) | `payment:prepare` | ✓ |
+| POST | `/subscriptions/{id}/payment/confirm` (phase 12, D-059) | `payment:confirm` | ✓ |
+
+Refus à l'envoi et à l'approbation : `422` avec le code du premier contrôle échoué (D-060), ou `ELIGIBILITY_FAILED` avec les règles échouées. Filtres de la liste : `issuanceId`, `investorId`, `status`.
 
 ### 2.8 `/allocations`, `/positions`, `/ledger`
 

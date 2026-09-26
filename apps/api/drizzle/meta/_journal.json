@@ -99,6 +99,20 @@
       "when": 1790367487466,
       "tag": "0013_issuances_security",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1790407446459,
+      "tag": "0014_subscriptions",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1790407454811,
+      "tag": "0015_subscriptions_security",
+      "breakpoints": true
     }
   ]
 }

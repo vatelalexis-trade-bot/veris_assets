@@ -338,7 +338,9 @@
     "ISSUANCE_CODE_TAKEN": "Another issuance already has this code.",
     "ALREADY_INVITED": "This investor is already invited.",
     "NOT_A_DOCUMENT_OF_ISSUANCE": "This document does not belong to the issuance.",
-    "SUBSCRIPTION_START_DATE": "Subscriptions open on the start date of the issuance."
+    "SUBSCRIPTION_START_DATE": "Subscriptions open on the start date of the issuance.",
+    "DOCUMENTS_NOT_ACCEPTED": "Accept the documents of the issuance.",
+    "ELIGIBILITY_NOT_DECLARED": "Declare that you meet the eligibility conditions."
   },
   "organizationTypes": {
     "ISSUER": "Issuer",
@@ -497,7 +499,8 @@
       "investor": "Investor",
       "kyc_case": "KYC/KYB case",
       "document": "Document",
-      "issuance": "Issuance"
+      "issuance": "Issuance",
+      "subscription": "Subscription"
     },
     "sources": {
       "WEB": "Web application",
@@ -573,7 +576,14 @@
       "ISSUANCE_CANCELLED": "Issuance cancelled",
       "ISSUANCE_DOCUMENT_ATTACHED": "Issuance document added",
       "INVESTOR_INVITED_TO_ISSUANCE": "Investor invited",
-      "INVESTOR_INVITATION_REVOKED": "Invitation revoked"
+      "INVESTOR_INVITATION_REVOKED": "Invitation revoked",
+      "SUBSCRIPTION_CREATED": "Subscription drafted",
+      "SUBSCRIPTION_UPDATED": "Subscription draft changed",
+      "SUBSCRIPTION_SUBMITTED": "Subscription submitted",
+      "SUBSCRIPTION_UNDER_REVIEW": "Subscription under review",
+      "SUBSCRIPTION_APPROVED": "Subscription approved",
+      "SUBSCRIPTION_REJECTED": "Subscription rejected",
+      "SUBSCRIPTION_CANCELLED": "Subscription cancelled"
     }
   },
   "investors": {
@@ -1031,6 +1041,87 @@
       "revoke": "Revoke",
       "revokeTitle": "Revoke the invitation of {name}?",
       "revokeDescription": "The investor no longer sees the issuance. Its existing subscriptions are kept."
+    },
+    "seeSubscriptions": "See the subscriptions"
+  },
+  "subscriptions": {
+    "title": "Subscriptions",
+    "description": "Subscription requests of the investors: review them, then approve or reject them.",
+    "ownTitle": "My subscriptions",
+    "ownDescription": "Your subscription requests and where they stand.",
+    "caption": "Subscriptions, newest first",
+    "empty": "No subscription yet.",
+    "allStatuses": "All statuses",
+    "allIssuances": "Show every issuance",
+    "back": "Back to the subscriptions",
+    "detailTitle": "Subscription to {code}",
+    "summary": "Request",
+    "history": "History",
+    "system": "System",
+    "unknownUser": "Unknown user",
+    "rejectionReason": "Reason for the rejection:",
+    "cancellationReason": "Reason for the cancellation:",
+    "issuanceCancelled": "the issuance was cancelled.",
+    "eligibilityChecked": "Eligibility checked and recorded when the request was submitted.",
+    "columns": {
+      "issuance": "Issuance",
+      "investor": "Investor",
+      "units": "Units",
+      "amount": "Amount",
+      "status": "Status",
+      "submittedAt": "Submitted on"
+    },
+    "fields": {
+      "issuance": "Issuance",
+      "investor": "Investor",
+      "units": "Units requested",
+      "amount": "Amount",
+      "paymentReference": "Payment reference",
+      "submittedAt": "Submitted on",
+      "decidedAt": "Decided on",
+      "comment": "Comment:"
+    },
+    "actions": {
+      "start-review": "Start the review",
+      "start-reviewTitle": "Start the review of this subscription?",
+      "start-reviewDescription": "The subscription moves to “Under review”. An administrator can then approve or reject it.",
+      "approve": "Approve",
+      "approveTitle": "Approve this subscription?",
+      "approveDescription": "The eligibility of the investor is checked again. The investor is told that the subscription is approved.",
+      "reject": "Reject",
+      "rejectTitle": "Reject this subscription?",
+      "rejectDescription": "The investor is told of the rejection and sees the reason.",
+      "cancel": "Cancel the subscription",
+      "cancelTitle": "Cancel this subscription?",
+      "cancelDescription": "The request is withdrawn and will not be processed. This cannot be undone.",
+      "cancelByIssuerDescription": "The investor is told of the cancellation and sees the reason. This cannot be undone.",
+      "reasonRequired": "Reason (required, shown to the investor)"
+    },
+    "opportunities": {
+      "title": "Investment opportunities",
+      "description": "The issuances you are invited to. Read the terms and documents before subscribing.",
+      "caption": "Issuances you are invited to",
+      "empty": "You are not invited to any issuance yet.",
+      "back": "Back to the opportunities",
+      "terms": "Main terms",
+      "documents": "Documents",
+      "subscribe": "Subscribe",
+      "notOpen": "Subscriptions to this issuance are not open.",
+      "noRight": "Your account cannot subscribe."
+    },
+    "form": {
+      "units": "Number of units",
+      "unitsHint": "Nominal value {nominal} per unit. Minimum subscription: {minimum}.",
+      "unitsInvalid": "Enter a whole number of units, greater than zero.",
+      "amount": "Amount to pay:",
+      "paymentReference": "Payment reference (optional)",
+      "paymentReferenceHint": "For example the account the payment will come from. No real payment is made in this demo.",
+      "comment": "Comment (optional)",
+      "documentsAccepted": "I have read and accept the documents of the issuance.",
+      "eligibilityDeclared": "I declare that I meet the eligibility conditions of the issuance.",
+      "submit": "Submit the subscription",
+      "refusedTitle": "Your subscription was not sent.",
+      "refusedHelp": "The eligibility rules of the issuance are not met. The request stays as a draft; contact the issuer or update your profile."
     }
   }
 }

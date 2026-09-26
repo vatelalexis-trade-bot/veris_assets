@@ -137,10 +137,10 @@ Vérifiable par : souscription de bout en bout.
 | P11-1 | Souscription côté investisseur (opportunités, formulaire, acceptation des documents) | M |
 | P11-2 | Contrôles 9.3 (dont plafonds cumulés, idempotence) ; machine à états (D-009) | M |
 | P11-3 | Traitement côté émetteur : prise en charge, approbation, rejet motivé | M |
-| P11-4 | Paiement fictif : préparation / confirmation quatre yeux ; `PaymentProvider` factice | M |
-| P11-5 | Clôture automatique à la date de fin (fuseau du tenant, D-015) | M |
-| P11-6 | Scénario 2 finalisé (souscription refusée avec code de règle) | M |
-| P11-7 | Bulletin de souscription PDF | S |
+| P11-4 | Paiement fictif : préparation / confirmation quatre yeux ; `PaymentProvider` factice — **déplacé en phase 12 (D-059)** | M |
+| P11-5 | Clôture automatique à la date de fin (fuseau du tenant, D-015) — **livré en phase 10 (D-054)** | M |
+| P11-6 | Scénario 2 finalisé (souscription refusée avec code de règle ; compte `investor.d`, D-062) | M |
+| P11-7 | Bulletin de souscription PDF — **reporté en phase 15 (D-063)** | S |
 
 ## Phase 12 — Allocation, registre, ledger, invariants
 Vérifiable par : scénario 3 vert.
@@ -155,6 +155,7 @@ Vérifiable par : scénario 3 vert.
 | P12-6 | Tests de concurrence (mises à jour simultanées d'une même position) ; couverture ≥ 90 % | M |
 | P12-7 | Corrections par contre-écriture avec quatre yeux | S |
 | P12-8 | Scénario 3 automatisé | M |
+| P12-9 | Paiement fictif sur le montant alloué : préparation / confirmation quatre yeux ; `PaymentProvider` factice (ex-P11-4, D-059) | M |
 
 ## Phase 13 — Transferts
 Vérifiable par : scénario 4 vert.
@@ -191,6 +192,7 @@ Vérifiable par : démo complète jouable.
 | P15-5 | Landing page depuis le prototype (D-019) + calculateur (hypothèses centralisées, graphiques, avertissement) | M |
 | P15-6 | Jeu de démo complet (section 28 + D-017), déterministe | M |
 | P15-7 | Choix de l'hébergement de démo (décision 33.12) | M |
+| P15-8 | Bulletin de souscription PDF (ex-P11-7, D-063) | S |
 
 ## Phase 16 — Durcissement et déploiement de démonstration
 Vérifiable par : checklist de la section 24 cochée.

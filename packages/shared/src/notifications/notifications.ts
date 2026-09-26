@@ -233,6 +233,58 @@ export const NOTIFICATION_TYPES = {
       },
     },
   },
+  SUBSCRIPTION_SUBMITTED: {
+    category: 'WORKFLOW',
+    texts: {
+      'en-GB': {
+        title: 'Subscription to review',
+        body: 'A new subscription to the issuance {code} waits for review.',
+      },
+      'fr-FR': {
+        title: 'Souscription à traiter',
+        body: 'Une nouvelle souscription à l’émission {code} attend d’être traitée.',
+      },
+    },
+  },
+  SUBSCRIPTION_APPROVED: {
+    category: 'INVESTMENT',
+    texts: {
+      'en-GB': {
+        title: 'Subscription approved',
+        body: 'Your subscription to the issuance {code} was approved. The units are allocated when subscriptions close.',
+      },
+      'fr-FR': {
+        title: 'Souscription approuvée',
+        body: 'Votre souscription à l’émission {code} a été approuvée. Les unités sont allouées à la clôture des souscriptions.',
+      },
+    },
+  },
+  SUBSCRIPTION_REJECTED: {
+    category: 'INVESTMENT',
+    texts: {
+      'en-GB': {
+        title: 'Subscription rejected',
+        body: 'Your subscription to the issuance {code} was rejected. See the reason in your subscriptions.',
+      },
+      'fr-FR': {
+        title: 'Souscription refusée',
+        body: 'Votre souscription à l’émission {code} a été refusée. Voir le motif dans vos souscriptions.',
+      },
+    },
+  },
+  SUBSCRIPTION_CANCELLED: {
+    category: 'INVESTMENT',
+    texts: {
+      'en-GB': {
+        title: 'Subscription cancelled',
+        body: 'Your subscription to the issuance {code} was cancelled by the issuer. See the reason in your subscriptions.',
+      },
+      'fr-FR': {
+        title: 'Souscription annulée',
+        body: 'Votre souscription à l’émission {code} a été annulée par l’émetteur. Voir le motif dans vos souscriptions.',
+      },
+    },
+  },
 } as const satisfies Record<string, NotificationDefinition>;
 
 export type NotificationType = keyof typeof NOTIFICATION_TYPES;

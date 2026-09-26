@@ -57,6 +57,11 @@ const VALID_BODIES: [RegExp, object][] = [
   [/^POST \/api\/v1\/kyc-cases\/:id\/(reject|send-back)$/, { comment: 'Probe' }],
   [/^POST \/api\/v1\/issuances\/:id\/(return-to-draft|cancel)$/, { comment: 'Probe' }],
   [
+    /^POST \/api\/v1\/subscriptions\/:id\/submit$/,
+    { documentsAccepted: true, eligibilityDeclared: true },
+  ],
+  [/^POST \/api\/v1\/subscriptions\/:id\/(reject|cancel)$/, { reason: 'Probe' }],
+  [
     /^POST \/api\/v1\/issuances\/:id\/invitations$/,
     { investorId: '0192a000-0000-7000-8000-000000000000' },
   ],
@@ -153,6 +158,24 @@ describe('scenario 5 — tenant isolation (SPEC §20, §29)', () => {
                'report.pdf', id FROM created
            )
            SELECT id FROM created`,
+        ),
+    ],
+    [
+      /^\/api\/v1\/subscriptions\/:id/,
+      () =>
+        idOf(
+          `WITH contoso AS (
+             SELECT id FROM iam.tenant WHERE legal_name LIKE 'Contoso%'
+           ), created AS (
+             INSERT INTO issuance.issuance (tenant_id, name, code, status)
+             SELECT id, 'Contoso Notes (demo)', 'CTS' || floor(random() * 1e6)::text, 'SUBSCRIPTION_OPEN'
+             FROM contoso RETURNING id, tenant_id
+           )
+           INSERT INTO registry.subscription (tenant_id, issuance_id, investor_id, status,
+             requested_units, requested_amount, currency)
+           SELECT created.tenant_id, created.id, i.id, 'SUBMITTED', 100, 100000, 'EUR'
+           FROM created, investor.investor i WHERE i.legal_name LIKE 'Quarry%'
+           RETURNING id`,
         ),
     ],
     [

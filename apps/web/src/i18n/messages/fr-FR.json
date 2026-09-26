@@ -338,7 +338,9 @@
     "ISSUANCE_CODE_TAKEN": "Une autre émission a déjà ce code.",
     "ALREADY_INVITED": "Cet investisseur est déjà invité.",
     "NOT_A_DOCUMENT_OF_ISSUANCE": "Ce document n’appartient pas à l’émission.",
-    "SUBSCRIPTION_START_DATE": "Les souscriptions s’ouvrent à la date de début prévue."
+    "SUBSCRIPTION_START_DATE": "Les souscriptions s’ouvrent à la date de début prévue.",
+    "DOCUMENTS_NOT_ACCEPTED": "Acceptez les documents de l’émission.",
+    "ELIGIBILITY_NOT_DECLARED": "Déclarez remplir les conditions d’éligibilité."
   },
   "organizationTypes": {
     "ISSUER": "Émetteur",
@@ -497,7 +499,8 @@
       "investor": "Investisseur",
       "kyc_case": "Dossier KYC/KYB",
       "document": "Document",
-      "issuance": "Émission"
+      "issuance": "Émission",
+      "subscription": "Souscription"
     },
     "sources": {
       "WEB": "Application web",
@@ -573,7 +576,14 @@
       "ISSUANCE_CANCELLED": "Émission annulée",
       "ISSUANCE_DOCUMENT_ATTACHED": "Document d’émission ajouté",
       "INVESTOR_INVITED_TO_ISSUANCE": "Investisseur invité",
-      "INVESTOR_INVITATION_REVOKED": "Invitation retirée"
+      "INVESTOR_INVITATION_REVOKED": "Invitation retirée",
+      "SUBSCRIPTION_CREATED": "Souscription préparée",
+      "SUBSCRIPTION_UPDATED": "Brouillon de souscription modifié",
+      "SUBSCRIPTION_SUBMITTED": "Souscription envoyée",
+      "SUBSCRIPTION_UNDER_REVIEW": "Souscription en examen",
+      "SUBSCRIPTION_APPROVED": "Souscription approuvée",
+      "SUBSCRIPTION_REJECTED": "Souscription rejetée",
+      "SUBSCRIPTION_CANCELLED": "Souscription annulée"
     }
   },
   "investors": {
@@ -1031,6 +1041,87 @@
       "revoke": "Retirer",
       "revokeTitle": "Retirer l’invitation de {name} ?",
       "revokeDescription": "L’investisseur ne voit plus l’émission. Ses souscriptions existantes sont conservées."
+    },
+    "seeSubscriptions": "Voir les souscriptions"
+  },
+  "subscriptions": {
+    "title": "Souscriptions",
+    "description": "Les demandes de souscription des investisseurs : examinez-les, puis approuvez-les ou rejetez-les.",
+    "ownTitle": "Mes souscriptions",
+    "ownDescription": "Vos demandes de souscription et leur avancement.",
+    "caption": "Souscriptions, les plus récentes en premier",
+    "empty": "Aucune souscription pour l’instant.",
+    "allStatuses": "Tous les statuts",
+    "allIssuances": "Afficher toutes les émissions",
+    "back": "Retour aux souscriptions",
+    "detailTitle": "Souscription à {code}",
+    "summary": "Demande",
+    "history": "Historique",
+    "system": "Système",
+    "unknownUser": "Utilisateur inconnu",
+    "rejectionReason": "Motif du rejet :",
+    "cancellationReason": "Motif de l’annulation :",
+    "issuanceCancelled": "l’émission a été annulée.",
+    "eligibilityChecked": "Éligibilité vérifiée et enregistrée lors de l’envoi de la demande.",
+    "columns": {
+      "issuance": "Émission",
+      "investor": "Investisseur",
+      "units": "Unités",
+      "amount": "Montant",
+      "status": "Statut",
+      "submittedAt": "Soumise le"
+    },
+    "fields": {
+      "issuance": "Émission",
+      "investor": "Investisseur",
+      "units": "Unités demandées",
+      "amount": "Montant",
+      "paymentReference": "Référence de paiement",
+      "submittedAt": "Soumise le",
+      "decidedAt": "Décidée le",
+      "comment": "Commentaire :"
+    },
+    "actions": {
+      "start-review": "Commencer l’examen",
+      "start-reviewTitle": "Commencer l’examen de cette souscription ?",
+      "start-reviewDescription": "La souscription passe « En revue ». Un administrateur peut ensuite l’approuver ou la rejeter.",
+      "approve": "Approuver",
+      "approveTitle": "Approuver cette souscription ?",
+      "approveDescription": "L’éligibilité de l’investisseur est vérifiée à nouveau. L’investisseur est informé de l’approbation.",
+      "reject": "Rejeter",
+      "rejectTitle": "Rejeter cette souscription ?",
+      "rejectDescription": "L’investisseur est informé du rejet et voit son motif.",
+      "cancel": "Annuler la souscription",
+      "cancelTitle": "Annuler cette souscription ?",
+      "cancelDescription": "La demande est retirée et ne sera pas traitée. C’est définitif.",
+      "cancelByIssuerDescription": "L’investisseur est informé de l’annulation et voit son motif. C’est définitif.",
+      "reasonRequired": "Motif (obligatoire, visible par l’investisseur)"
+    },
+    "opportunities": {
+      "title": "Opportunités d’investissement",
+      "description": "Les émissions auxquelles vous êtes invité. Lisez les conditions et les documents avant de souscrire.",
+      "caption": "Émissions auxquelles vous êtes invité",
+      "empty": "Vous n’êtes invité à aucune émission pour l’instant.",
+      "back": "Retour aux opportunités",
+      "terms": "Principales conditions",
+      "documents": "Documents",
+      "subscribe": "Souscrire",
+      "notOpen": "Les souscriptions à cette émission ne sont pas ouvertes.",
+      "noRight": "Votre compte ne peut pas souscrire."
+    },
+    "form": {
+      "units": "Nombre d’unités",
+      "unitsHint": "Valeur nominale {nominal} par unité. Souscription minimale : {minimum}.",
+      "unitsInvalid": "Saisissez un nombre entier d’unités, supérieur à zéro.",
+      "amount": "Montant à payer :",
+      "paymentReference": "Référence de paiement (facultatif)",
+      "paymentReferenceHint": "Par exemple le compte d’où viendra le paiement. Aucun paiement réel n’a lieu dans cette démo.",
+      "comment": "Commentaire (facultatif)",
+      "documentsAccepted": "J’ai lu et j’accepte les documents de l’émission.",
+      "eligibilityDeclared": "Je déclare remplir les conditions d’éligibilité de l’émission.",
+      "submit": "Envoyer la souscription",
+      "refusedTitle": "Votre souscription n’a pas été envoyée.",
+      "refusedHelp": "Les règles d’éligibilité de l’émission ne sont pas remplies. La demande reste en brouillon ; contactez l’émetteur ou mettez votre profil à jour."
     }
   }
 }

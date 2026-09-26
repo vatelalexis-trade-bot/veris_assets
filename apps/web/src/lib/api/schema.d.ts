@@ -1188,6 +1188,134 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/subscriptions': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['SubscriptionsController_list'];
+    put?: never;
+    post: operations['SubscriptionsController_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/subscriptions/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['SubscriptionsController_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch: operations['SubscriptionsController_update'];
+    trace?: never;
+  };
+  '/api/v1/subscriptions/{id}/submit': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['SubscriptionsController_submit'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/subscriptions/{id}/start-review': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['SubscriptionsController_startReview'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/subscriptions/{id}/approve': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['SubscriptionsController_approve'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/subscriptions/{id}/reject': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['SubscriptionsController_reject'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/subscriptions/{id}/cancel': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['SubscriptionsController_cancel'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/subscriptions/{id}/transitions': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['SubscriptionsController_transitions'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/audit-events': {
     parameters: {
       query?: never;
@@ -1341,7 +1469,11 @@ export interface operations {
                 | 'ISSUANCE_RETURNED'
                 | 'INVESTOR_INVITED'
                 | 'ISSUANCE_OPENED'
-                | 'ISSUANCE_CANCELLED';
+                | 'ISSUANCE_CANCELLED'
+                | 'SUBSCRIPTION_SUBMITTED'
+                | 'SUBSCRIPTION_APPROVED'
+                | 'SUBSCRIPTION_REJECTED'
+                | 'SUBSCRIPTION_CANCELLED';
               params: {
                 [key: string]: string;
               };
@@ -6595,6 +6727,690 @@ export interface operations {
             /** @enum {string} */
             status: 'REVOKED';
           };
+        };
+      };
+    };
+  };
+  SubscriptionsController_list: {
+    parameters: {
+      query?: {
+        status?:
+          | 'DRAFT'
+          | 'SUBMITTED'
+          | 'UNDER_REVIEW'
+          | 'APPROVED'
+          | 'REJECTED'
+          | 'PAYMENT_PENDING'
+          | 'PAYMENT_CONFIRMED'
+          | 'ALLOCATED'
+          | 'CANCELLED';
+        investorId?: string;
+        issuanceId?: string;
+        page?: number;
+        pageSize?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            data: {
+              /** Format: uuid */
+              id: string;
+              /** Format: uuid */
+              issuanceId: string;
+              issuanceName: string;
+              issuanceCode: string;
+              /** Format: uuid */
+              investorId: string;
+              investorName: string;
+              /** @enum {string} */
+              status:
+                | 'DRAFT'
+                | 'SUBMITTED'
+                | 'UNDER_REVIEW'
+                | 'APPROVED'
+                | 'REJECTED'
+                | 'PAYMENT_PENDING'
+                | 'PAYMENT_CONFIRMED'
+                | 'ALLOCATED'
+                | 'CANCELLED';
+              requestedUnits: string;
+              requestedAmount: string;
+              currency: string;
+              allocatedUnits: string | null;
+              amountDue: string | null;
+              paymentReference: string | null;
+              comment: string | null;
+              /** Format: date-time */
+              submittedAt: string | null;
+              /** Format: uuid */
+              eligibilityAssessmentId: string | null;
+              /** Format: date-time */
+              decidedAt: string | null;
+              rejectionReason: string | null;
+              cancellationReason: string | null;
+              version: number;
+              /** Format: date-time */
+              createdAt: string;
+              /** Format: date-time */
+              updatedAt: string;
+            }[];
+            meta: {
+              page: number;
+              pageSize: number;
+              total: number;
+            };
+          };
+        };
+      };
+    };
+  };
+  SubscriptionsController_create: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: uuid */
+          issuanceId: string;
+          requestedUnits: string;
+          requestedAmount: string;
+          paymentReference?: string | null;
+          comment?: string | null;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceName: string;
+            issuanceCode: string;
+            /** Format: uuid */
+            investorId: string;
+            investorName: string;
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'SUBMITTED'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'REJECTED'
+              | 'PAYMENT_PENDING'
+              | 'PAYMENT_CONFIRMED'
+              | 'ALLOCATED'
+              | 'CANCELLED';
+            requestedUnits: string;
+            requestedAmount: string;
+            currency: string;
+            allocatedUnits: string | null;
+            amountDue: string | null;
+            paymentReference: string | null;
+            comment: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: uuid */
+            eligibilityAssessmentId: string | null;
+            /** Format: date-time */
+            decidedAt: string | null;
+            rejectionReason: string | null;
+            cancellationReason: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+          };
+        };
+      };
+    };
+  };
+  SubscriptionsController_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceName: string;
+            issuanceCode: string;
+            /** Format: uuid */
+            investorId: string;
+            investorName: string;
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'SUBMITTED'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'REJECTED'
+              | 'PAYMENT_PENDING'
+              | 'PAYMENT_CONFIRMED'
+              | 'ALLOCATED'
+              | 'CANCELLED';
+            requestedUnits: string;
+            requestedAmount: string;
+            currency: string;
+            allocatedUnits: string | null;
+            amountDue: string | null;
+            paymentReference: string | null;
+            comment: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: uuid */
+            eligibilityAssessmentId: string | null;
+            /** Format: date-time */
+            decidedAt: string | null;
+            rejectionReason: string | null;
+            cancellationReason: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+          };
+        };
+      };
+    };
+  };
+  SubscriptionsController_update: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          requestedUnits?: string;
+          requestedAmount?: string;
+          paymentReference?: string | null;
+          comment?: string | null;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceName: string;
+            issuanceCode: string;
+            /** Format: uuid */
+            investorId: string;
+            investorName: string;
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'SUBMITTED'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'REJECTED'
+              | 'PAYMENT_PENDING'
+              | 'PAYMENT_CONFIRMED'
+              | 'ALLOCATED'
+              | 'CANCELLED';
+            requestedUnits: string;
+            requestedAmount: string;
+            currency: string;
+            allocatedUnits: string | null;
+            amountDue: string | null;
+            paymentReference: string | null;
+            comment: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: uuid */
+            eligibilityAssessmentId: string | null;
+            /** Format: date-time */
+            decidedAt: string | null;
+            rejectionReason: string | null;
+            cancellationReason: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+          };
+        };
+      };
+    };
+  };
+  SubscriptionsController_submit: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          documentsAccepted: boolean;
+          eligibilityDeclared: boolean;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceName: string;
+            issuanceCode: string;
+            /** Format: uuid */
+            investorId: string;
+            investorName: string;
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'SUBMITTED'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'REJECTED'
+              | 'PAYMENT_PENDING'
+              | 'PAYMENT_CONFIRMED'
+              | 'ALLOCATED'
+              | 'CANCELLED';
+            requestedUnits: string;
+            requestedAmount: string;
+            currency: string;
+            allocatedUnits: string | null;
+            amountDue: string | null;
+            paymentReference: string | null;
+            comment: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: uuid */
+            eligibilityAssessmentId: string | null;
+            /** Format: date-time */
+            decidedAt: string | null;
+            rejectionReason: string | null;
+            cancellationReason: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+          };
+        };
+      };
+    };
+  };
+  SubscriptionsController_startReview: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceName: string;
+            issuanceCode: string;
+            /** Format: uuid */
+            investorId: string;
+            investorName: string;
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'SUBMITTED'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'REJECTED'
+              | 'PAYMENT_PENDING'
+              | 'PAYMENT_CONFIRMED'
+              | 'ALLOCATED'
+              | 'CANCELLED';
+            requestedUnits: string;
+            requestedAmount: string;
+            currency: string;
+            allocatedUnits: string | null;
+            amountDue: string | null;
+            paymentReference: string | null;
+            comment: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: uuid */
+            eligibilityAssessmentId: string | null;
+            /** Format: date-time */
+            decidedAt: string | null;
+            rejectionReason: string | null;
+            cancellationReason: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+          };
+        };
+      };
+    };
+  };
+  SubscriptionsController_approve: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceName: string;
+            issuanceCode: string;
+            /** Format: uuid */
+            investorId: string;
+            investorName: string;
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'SUBMITTED'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'REJECTED'
+              | 'PAYMENT_PENDING'
+              | 'PAYMENT_CONFIRMED'
+              | 'ALLOCATED'
+              | 'CANCELLED';
+            requestedUnits: string;
+            requestedAmount: string;
+            currency: string;
+            allocatedUnits: string | null;
+            amountDue: string | null;
+            paymentReference: string | null;
+            comment: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: uuid */
+            eligibilityAssessmentId: string | null;
+            /** Format: date-time */
+            decidedAt: string | null;
+            rejectionReason: string | null;
+            cancellationReason: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+          };
+        };
+      };
+    };
+  };
+  SubscriptionsController_reject: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          reason: string;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceName: string;
+            issuanceCode: string;
+            /** Format: uuid */
+            investorId: string;
+            investorName: string;
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'SUBMITTED'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'REJECTED'
+              | 'PAYMENT_PENDING'
+              | 'PAYMENT_CONFIRMED'
+              | 'ALLOCATED'
+              | 'CANCELLED';
+            requestedUnits: string;
+            requestedAmount: string;
+            currency: string;
+            allocatedUnits: string | null;
+            amountDue: string | null;
+            paymentReference: string | null;
+            comment: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: uuid */
+            eligibilityAssessmentId: string | null;
+            /** Format: date-time */
+            decidedAt: string | null;
+            rejectionReason: string | null;
+            cancellationReason: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+          };
+        };
+      };
+    };
+  };
+  SubscriptionsController_cancel: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          reason?: string | null;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceName: string;
+            issuanceCode: string;
+            /** Format: uuid */
+            investorId: string;
+            investorName: string;
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'SUBMITTED'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'REJECTED'
+              | 'PAYMENT_PENDING'
+              | 'PAYMENT_CONFIRMED'
+              | 'ALLOCATED'
+              | 'CANCELLED';
+            requestedUnits: string;
+            requestedAmount: string;
+            currency: string;
+            allocatedUnits: string | null;
+            amountDue: string | null;
+            paymentReference: string | null;
+            comment: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: uuid */
+            eligibilityAssessmentId: string | null;
+            /** Format: date-time */
+            decidedAt: string | null;
+            rejectionReason: string | null;
+            cancellationReason: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+          };
+        };
+      };
+    };
+  };
+  SubscriptionsController_transitions: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @enum {string|null} */
+            fromStatus:
+              | 'DRAFT'
+              | 'SUBMITTED'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'REJECTED'
+              | 'PAYMENT_PENDING'
+              | 'PAYMENT_CONFIRMED'
+              | 'ALLOCATED'
+              | 'CANCELLED'
+              | null;
+            /** @enum {string} */
+            toStatus:
+              | 'DRAFT'
+              | 'SUBMITTED'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'REJECTED'
+              | 'PAYMENT_PENDING'
+              | 'PAYMENT_CONFIRMED'
+              | 'ALLOCATED'
+              | 'CANCELLED';
+            actorName: string | null;
+            /** Format: uuid */
+            actorUserId: string | null;
+            comment: string | null;
+            /** Format: date-time */
+            occurredAt: string;
+          }[];
         };
       };
     };

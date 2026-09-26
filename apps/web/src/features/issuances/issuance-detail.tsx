@@ -26,6 +26,7 @@ export interface IssuanceRights {
   canOperate: boolean;
   canCancel: boolean;
   canInvite: boolean;
+  canSeeSubscriptions: boolean;
 }
 
 type Action = 'approve' | 'open-subscription' | 'close-subscription';
@@ -102,6 +103,11 @@ export function IssuanceDetail({
         ) : null}
         {status === 'SUBSCRIPTION_OPEN' && rights.canOperate ? (
           <ActionButton id={id} action="close-subscription" onDone={refresh} />
+        ) : null}
+        {rights.canSeeSubscriptions && status !== 'DRAFT' && status !== 'UNDER_REVIEW' ? (
+          <Button asChild variant="secondary">
+            <Link href={`/issuer/subscriptions?issuanceId=${id}`}>{t('seeSubscriptions')}</Link>
+          </Button>
         ) : null}
         {cancellable && rights.canCancel ? (
           <CommentedActionButton id={id} action="cancel" onDone={refresh} />
@@ -356,7 +362,7 @@ function Overview({ issuance }: { issuance: IssuanceView }) {
   );
 }
 
-function DocumentsTab({ id }: { id: string }) {
+export function DocumentsTab({ id }: { id: string }) {
   const t = useTranslations('issuances');
   const [error, setError] = useState<unknown>(null);
   const documents = useQuery({

@@ -78,6 +78,13 @@ export const DEMO_ACCOUNTS: readonly DemoAccount[] = [
     locale: 'en-GB',
   },
   {
+    email: 'investor.d@example.com',
+    name: 'Investor D (demo)',
+    role: 'INVESTOR',
+    tenant: 'northwind',
+    locale: 'fr-FR',
+  },
+  {
     email: 'contoso.admin@example.com',
     name: 'Contoso Admin (demo)',
     role: 'ISSUER_ADMIN',

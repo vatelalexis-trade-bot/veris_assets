@@ -53,6 +53,8 @@ export const INVESTOR_OF_ACCOUNT: Record<string, string> = {
   'investor.a@example.com': investorId('alpine'),
   'investor.b@example.com': investorId('baltic'),
   'investor.c@example.com': investorId('cedar'),
+  // KYC/KYB expired: its subscription is refused (scenario 2 of SPEC §29).
+  'investor.d@example.com': investorId('iris'),
 };
 
 export function investorId(key: string): string {
@@ -92,7 +94,8 @@ export function demoInvestorRows(
       demo.kyc === 'EXPIRING'
         ? addDays(today, -345)
         : demo.kyc === 'EXPIRED'
-          ? addDays(today, -400)
+          ? // Expired 11 days ago: still valid when invited to the debt issuance (scenario 2).
+            addDays(today, -375)
           : addDays(today, -(30 + index * 9));
     const status: KycCaseStatus | null =
       demo.kyc === 'NONE' ? null : demo.kyc === 'EXPIRING' ? 'APPROVED' : demo.kyc;

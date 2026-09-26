@@ -124,7 +124,8 @@ export function demoIssuanceRows(northwind: string, now = new Date()) {
     },
   ];
 
-  const invited = ['alpine', 'baltic', 'cedar', 'danube', 'estuary'];
+  // Iris was invited while its KYC/KYB was still valid; it has expired since (scenario 2).
+  const invited = ['alpine', 'baltic', 'cedar', 'danube', 'estuary', 'iris'];
   const assessments = invited.map((key) => ({
     id: deterministicUuid(`assessment:nwsd26:${key}`),
     tenantId: northwind,
