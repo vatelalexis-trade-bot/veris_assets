@@ -17,6 +17,7 @@ import { formatAmount } from '@/features/issuances/format';
 import { Link } from '@/i18n/navigation';
 import { api } from '@/lib/api/client';
 import { useIdempotencyKey } from '@/lib/api/idempotency';
+import { PaymentPanel, type PaymentRights } from './payment-panel';
 import type { SubscriptionStatus, SubscriptionView } from './types';
 
 export interface SubscriptionRights {
@@ -25,7 +26,12 @@ export interface SubscriptionRights {
   canReview: boolean;
   canApprove: boolean;
   canCancel: boolean;
+  /** Issuer's staff only; null for the investor. */
+  payment: PaymentRights | null;
 }
+
+/** Statuses from which the fictitious payment is shown. */
+const WITH_PAYMENT: SubscriptionStatus[] = ['PAYMENT_PENDING', 'PAYMENT_CONFIRMED', 'ALLOCATED'];
 
 const CANCELLABLE_BY_INVESTOR: SubscriptionStatus[] = ['DRAFT', 'SUBMITTED', 'UNDER_REVIEW'];
 const CANCELLABLE_BY_ISSUER: SubscriptionStatus[] = [
@@ -149,6 +155,9 @@ export function SubscriptionDetail({ id, rights }: { id: string; rights: Subscri
           <ReasonButton id={id} action="cancel" onDone={refresh} />
         ) : null}
       </div>
+      {WITH_PAYMENT.includes(status) ? (
+        <PaymentPanel subscription={current} rights={rights.payment} />
+      ) : null}
       <div className="grid gap-6 lg:grid-cols-2">
         <section className="rounded-xl border border-border bg-surface p-4">
           <h2 className="mb-2 font-heading font-semibold">{t('summary')}</h2>

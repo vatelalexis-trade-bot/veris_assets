@@ -4,7 +4,12 @@ import type { NotificationRequest } from '../../../core/notifications/notificati
 import { OutboxRelay, type OutboxEventRecord } from '../../../core/outbox/outbox-relay.js';
 import { UserDirectory } from '../../iam/index.js';
 import { ISSUANCE_EVENTS } from '../../issuance/index.js';
-import { ALLOCATION_EVENTS, SUBSCRIPTION_EVENTS } from './subscription-event-types.js';
+import {
+  ALLOCATION_EVENTS,
+  PAYMENT_EVENTS,
+  REGISTRY_EVENTS,
+  SUBSCRIPTION_EVENTS,
+} from './subscription-event-types.js';
 import { SubscriptionsService } from './subscriptions.service.js';
 
 type Payload = {
@@ -14,6 +19,8 @@ type Payload = {
   units?: string;
   issuanceId?: string;
   proposedBy?: string;
+  preparedBy?: string;
+  requestedBy?: string;
 };
 
 /**
@@ -81,6 +88,50 @@ export class SubscriptionEvents implements OnModuleInit {
         payload.proposedBy
           ? [this.aboutIssuance(payload, payload.proposedBy, 'ALLOCATION_REJECTED')]
           : [],
+      );
+    });
+    // Four eyes: an administrator other than the preparer confirms the payment.
+    this.relay.on(PAYMENT_EVENTS.prepared, async (tx, event) => {
+      const payload = event.payload as Payload;
+      const admins = await this.users.activeUsersWithRole(tx, 'ISSUER_ADMIN');
+      return admins
+        .filter((userId) => userId !== payload.preparedBy)
+        .map((userId) => this.about(event, userId, 'PAYMENT_TO_CONFIRM'));
+    });
+    this.relay.on(PAYMENT_EVENTS.confirmed, async (tx, event) =>
+      (await this.investorAccounts(tx, event.payload as Payload)).map((userId) => ({
+        ...this.about(event, userId, 'SUBSCRIPTION_PAYMENT_CONFIRMED'),
+        params: {
+          code: (event.payload as Payload).code ?? '',
+          units: (event.payload as Payload).units ?? '',
+        },
+      })),
+    );
+    this.relay.on(REGISTRY_EVENTS.correctionProposed, async (tx, event) => {
+      const payload = event.payload as Payload;
+      const deciders = [
+        ...(await this.users.activeUsersWithRole(tx, 'COMPLIANCE_OFFICER')),
+        ...(await this.users.activeUsersWithRole(tx, 'ISSUER_ADMIN')),
+      ];
+      return [...new Set(deciders)]
+        .filter((userId) => userId !== payload.requestedBy)
+        .map((userId) => this.aboutIssuance(payload, userId, 'CORRECTION_TO_APPROVE'));
+    });
+    this.relay.on(REGISTRY_EVENTS.correctionDecided, (_tx, event) => {
+      const payload = event.payload as Payload;
+      const type = payload.decision === 'APPROVED' ? 'CORRECTION_APPROVED' : 'CORRECTION_REJECTED';
+      return Promise.resolve(
+        payload.requestedBy ? [this.aboutIssuance(payload, payload.requestedBy, type)] : [],
+      );
+    });
+    this.relay.on(REGISTRY_EVENTS.anomaly, async (tx, event) => {
+      const payload = event.payload as Payload;
+      const watchers = [
+        ...(await this.users.activeUsersWithRole(tx, 'ISSUER_ADMIN')),
+        ...(await this.users.activeUsersWithRole(tx, 'COMPLIANCE_OFFICER')),
+      ];
+      return [...new Set(watchers)].map((userId) =>
+        this.aboutIssuance(payload, userId, 'REGISTRY_ANOMALY'),
       );
     });
     // The investors are told by the issuance's own notification (ISSUANCE_CANCELLED).

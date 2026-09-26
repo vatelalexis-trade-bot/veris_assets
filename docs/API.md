@@ -190,8 +190,9 @@ Refus métier (détails de `VALIDATION_FAILED`) : `OWN_ACCOUNT`, `LAST_ADMINISTR
 | POST | `/subscriptions/{id}/approve` · `/reject` | `subscription:approve` | ✓ |
 | POST | `/subscriptions/{id}/cancel` | `subscription:cancel` (P) | ✓ |
 | GET | `/subscriptions/{id}/transitions` (historique des statuts) | `subscription:read` (P) | |
-| POST | `/subscriptions/{id}/payment/prepare` (phase 12, D-059) | `payment:prepare` | ✓ |
-| POST | `/subscriptions/{id}/payment/confirm` (phase 12, D-059) | `payment:confirm` | ✓ |
+| GET | `/subscriptions/{id}/payment` (état du paiement fictif, D-069) | `subscription:read` (P) | |
+| POST | `/subscriptions/{id}/payment/prepare` (D-069) | `payment:prepare` | ✓ |
+| POST | `/subscriptions/{id}/payment/confirm` (quatre yeux ; refus `PAYMENT_NOT_RECEIVED`, D-069) | `payment:confirm` | ✓ |
 
 Refus à l'envoi et à l'approbation : `422` avec le code du premier contrôle échoué (D-060), ou `ELIGIBILITY_FAILED` avec les règles échouées. Filtres de la liste : `issuanceId`, `investorId`, `status`.
 
@@ -208,9 +209,10 @@ Refus à l'envoi et à l'approbation : `422` avec le code du premier contrôle �
 | GET | `/allocations/{roundId}/confirmation` (document, phase 15, D-064) | `registry:read` (P) | |
 | GET | `/positions?issuanceId=…&investorId=…` · `/positions/{id}` | `registry:read` (P) | |
 | GET | `/ledger?issuanceId=…&type=…` · `/ledger/{id}` | `registry:read` (P : ses mouvements, sans le nom des autres investisseurs, D-067) | |
-| POST | `/ledger/corrections` (phase 12b) | `registry-correction:request` | ✓ |
+| GET | `/ledger/corrections?issuanceId=…&status=…` (D-070) | `registry:read` | |
+| POST | `/ledger/corrections` (contre-écriture + remplacements, D-070) | `registry-correction:request` | ✓ |
 | POST | `/ledger/corrections/{id}/approve` · `/reject` | `registry-correction:approve` | ✓ |
-| GET | `/ledger/reconciliation?issuanceId=…` (phase 12b) | `registry:read` | |
+| GET | `/ledger/reconciliation?issuanceId=…` (émetteur seulement, D-071) | `registry:read` | |
 
 ### 2.9 `/transfers`
 

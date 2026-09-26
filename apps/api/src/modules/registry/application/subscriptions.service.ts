@@ -29,7 +29,7 @@ import {
   subscriptionMachine,
   type SubscriptionStatus,
 } from '../domain/subscription-machine.js';
-import { allocationRound, subscription } from '../infrastructure/schema.js';
+import { allocationRound, subscription, subscriptionPayment } from '../infrastructure/schema.js';
 import { LedgerWriter } from './ledger-writer.js';
 import { SUBSCRIPTION_EVENTS } from './subscription-event-types.js';
 
@@ -390,6 +390,48 @@ export class SubscriptionsService {
     }
   }
 
+  /** For the other use cases of the module: the issuance then the subscription locked, in this order. */
+  async lockWithIssuance(
+    tx: Transaction,
+    id: string,
+  ): Promise<{ found: SubscriptionWithNames; detail: IssuanceDetail }> {
+    const peek = await this.find(tx, id);
+    const detail = await this.issuances.find(tx, peek.issuanceId, true);
+    return { found: await this.find(tx, id, true), detail };
+  }
+
+  /** One transition, recorded and audited in the caller's transaction (no event). */
+  async advance(
+    tx: Transaction,
+    tenantId: string,
+    found: SubscriptionWithNames,
+    to: SubscriptionStatus,
+    initiatorUserId: string | null = null,
+  ): Promise<SubscriptionWithNames> {
+    const from = found.status as SubscriptionStatus;
+    await this.workflow.transition(tx, subscriptionMachine, {
+      tenantId,
+      resourceId: found.id,
+      from,
+      to,
+      initiatorUserId,
+    });
+    await tx
+      .update(subscription)
+      .set({ status: to, version: sql`${subscription.version} + 1`, updatedAt: new Date() })
+      .where(eq(subscription.id, found.id));
+    await this.audit.recordIn(tx, {
+      tenantId,
+      action: `SUBSCRIPTION_${to}`,
+      resourceType: 'subscription',
+      resourceId: found.id,
+      oldValue: { status: from },
+      newValue: { status: to },
+      result: 'SUCCESS',
+    });
+    return { ...found, status: to };
+  }
+
   /** Payment never received (D-009): the blocked units go back to the issuer's treasury. */
   private async giveBackUnits(
     tx: Transaction,
@@ -423,6 +465,11 @@ export class SubscriptionsService {
       },
     ]);
     await this.ledger.assertConsistent(tx, issuanceId, detail.terms.totalUnits);
+    // A payment being confirmed will never be.
+    await tx
+      .update(subscriptionPayment)
+      .set({ status: 'FAILED', updatedAt: new Date() })
+      .where(eq(subscriptionPayment.subscriptionId, found.id));
   }
 
   /**

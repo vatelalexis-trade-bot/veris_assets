@@ -342,7 +342,8 @@ describe('scenario 3 — allocation (SPEC §29)', () => {
 
   it('shows an investor its own position and movements only', async () => {
     const investor = await ctx.signIn('investor.b@example.com');
-    const own = (await investor.get('/api/v1/positions').expect(200)).body as {
+    const own = (await investor.get(`/api/v1/positions?issuanceId=${notesId}`).expect(200))
+      .body as {
       data: { investorName: string; quantityHeld: string }[];
     };
     expect(own.data).toEqual([

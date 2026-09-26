@@ -16,6 +16,7 @@
     "typecheck": "pnpm -r typecheck",
     "test": "vitest run && pnpm -r test",
     "test:integration": "pnpm --filter @virtus/api test:integration",
+    "test:coverage": "pnpm --filter @virtus/api test:coverage",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "depcruise": "depcruise apps/api/src packages/shared/src",

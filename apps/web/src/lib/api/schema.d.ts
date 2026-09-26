@@ -1460,6 +1460,118 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/ledger/reconciliation': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['RegistryController_reconcile'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/ledger/corrections': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['RegistryController_listCorrections'];
+    put?: never;
+    post: operations['RegistryController_proposeCorrection'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/ledger/corrections/{id}/approve': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['RegistryController_approveCorrection'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/ledger/corrections/{id}/reject': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['RegistryController_rejectCorrection'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/subscriptions/{id}/payment': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['RegistryController_payment'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/subscriptions/{id}/payment/prepare': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['RegistryController_preparePayment'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/subscriptions/{id}/payment/confirm': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['RegistryController_confirmPayment'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/ledger/{id}': {
     parameters: {
       query?: never;
@@ -1634,6 +1746,12 @@ export interface operations {
                 | 'ALLOCATION_REJECTED'
                 | 'SUBSCRIPTION_ALLOCATED'
                 | 'SUBSCRIPTION_NOT_ALLOCATED'
+                | 'PAYMENT_TO_CONFIRM'
+                | 'SUBSCRIPTION_PAYMENT_CONFIRMED'
+                | 'CORRECTION_TO_APPROVE'
+                | 'CORRECTION_APPROVED'
+                | 'CORRECTION_REJECTED'
+                | 'REGISTRY_ANOMALY'
                 | 'SUBSCRIPTION_SUBMITTED'
                 | 'SUBSCRIPTION_APPROVED'
                 | 'SUBSCRIPTION_REJECTED'
@@ -8373,6 +8491,397 @@ export interface operations {
               pageSize: number;
               total: number;
             };
+          };
+        };
+      };
+    };
+  };
+  RegistryController_reconcile: {
+    parameters: {
+      query: {
+        issuanceId: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            issuanceId: string;
+            /** Format: date-time */
+            checkedAt: string;
+            consistent: boolean;
+            entries: number;
+            lastHash: string | null;
+            breaches: {
+              invariant: number;
+              detail: string;
+              /** Format: uuid */
+              accountId: string | null;
+              sequenceNo: number | null;
+            }[];
+          };
+        };
+      };
+    };
+  };
+  RegistryController_listCorrections: {
+    parameters: {
+      query?: {
+        status?: 'PROPOSED' | 'APPROVED' | 'REJECTED';
+        issuanceId?: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            /** Format: uuid */
+            targetEntryId: string;
+            replacements: {
+              /** Format: uuid */
+              sourceAccountId: string | null;
+              /** Format: uuid */
+              destinationAccountId: string | null;
+              quantity: string;
+            }[];
+            reason: string;
+            /** @enum {string} */
+            status: 'PROPOSED' | 'APPROVED' | 'REJECTED';
+            /** Format: uuid */
+            requestedBy: string;
+            requestedByName: string | null;
+            /** Format: uuid */
+            decidedBy: string | null;
+            decidedByName: string | null;
+            /** Format: date-time */
+            decidedAt: string | null;
+            decisionComment: string | null;
+            /** Format: date-time */
+            createdAt: string;
+          }[];
+        };
+      };
+    };
+  };
+  RegistryController_proposeCorrection: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: uuid */
+          targetEntryId: string;
+          reason: string;
+          /** @default [] */
+          replacements: {
+            /** Format: uuid */
+            sourceAccountId: string | null;
+            /** Format: uuid */
+            destinationAccountId: string | null;
+            quantity: string;
+          }[];
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            /** Format: uuid */
+            targetEntryId: string;
+            replacements: {
+              /** Format: uuid */
+              sourceAccountId: string | null;
+              /** Format: uuid */
+              destinationAccountId: string | null;
+              quantity: string;
+            }[];
+            reason: string;
+            /** @enum {string} */
+            status: 'PROPOSED' | 'APPROVED' | 'REJECTED';
+            /** Format: uuid */
+            requestedBy: string;
+            requestedByName: string | null;
+            /** Format: uuid */
+            decidedBy: string | null;
+            decidedByName: string | null;
+            /** Format: date-time */
+            decidedAt: string | null;
+            decisionComment: string | null;
+            /** Format: date-time */
+            createdAt: string;
+          };
+        };
+      };
+    };
+  };
+  RegistryController_approveCorrection: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          comment?: string | null;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            /** Format: uuid */
+            targetEntryId: string;
+            replacements: {
+              /** Format: uuid */
+              sourceAccountId: string | null;
+              /** Format: uuid */
+              destinationAccountId: string | null;
+              quantity: string;
+            }[];
+            reason: string;
+            /** @enum {string} */
+            status: 'PROPOSED' | 'APPROVED' | 'REJECTED';
+            /** Format: uuid */
+            requestedBy: string;
+            requestedByName: string | null;
+            /** Format: uuid */
+            decidedBy: string | null;
+            decidedByName: string | null;
+            /** Format: date-time */
+            decidedAt: string | null;
+            decisionComment: string | null;
+            /** Format: date-time */
+            createdAt: string;
+          };
+        };
+      };
+    };
+  };
+  RegistryController_rejectCorrection: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          comment: string;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            /** Format: uuid */
+            targetEntryId: string;
+            replacements: {
+              /** Format: uuid */
+              sourceAccountId: string | null;
+              /** Format: uuid */
+              destinationAccountId: string | null;
+              quantity: string;
+            }[];
+            reason: string;
+            /** @enum {string} */
+            status: 'PROPOSED' | 'APPROVED' | 'REJECTED';
+            /** Format: uuid */
+            requestedBy: string;
+            requestedByName: string | null;
+            /** Format: uuid */
+            decidedBy: string | null;
+            decidedByName: string | null;
+            /** Format: date-time */
+            decidedAt: string | null;
+            decisionComment: string | null;
+            /** Format: date-time */
+            createdAt: string;
+          };
+        };
+      };
+    };
+  };
+  RegistryController_payment: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            subscriptionId: string;
+            amount: string;
+            currency: string;
+            /** @enum {string} */
+            status: 'PENDING' | 'PREPARED' | 'CONFIRMED' | 'FAILED';
+            /** Format: uuid */
+            preparedBy: string | null;
+            /** Format: date-time */
+            preparedAt: string | null;
+            /** Format: uuid */
+            confirmedBy: string | null;
+            /** Format: date-time */
+            confirmedAt: string | null;
+            providerReference: string | null;
+          } | null;
+        };
+      };
+    };
+  };
+  RegistryController_preparePayment: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            subscriptionId: string;
+            amount: string;
+            currency: string;
+            /** @enum {string} */
+            status: 'PENDING' | 'PREPARED' | 'CONFIRMED' | 'FAILED';
+            /** Format: uuid */
+            preparedBy: string | null;
+            /** Format: date-time */
+            preparedAt: string | null;
+            /** Format: uuid */
+            confirmedBy: string | null;
+            /** Format: date-time */
+            confirmedAt: string | null;
+            providerReference: string | null;
+          };
+        };
+      };
+    };
+  };
+  RegistryController_confirmPayment: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            subscriptionId: string;
+            amount: string;
+            currency: string;
+            /** @enum {string} */
+            status: 'PENDING' | 'PREPARED' | 'CONFIRMED' | 'FAILED';
+            /** Format: uuid */
+            preparedBy: string | null;
+            /** Format: date-time */
+            preparedAt: string | null;
+            /** Format: uuid */
+            confirmedBy: string | null;
+            /** Format: date-time */
+            confirmedAt: string | null;
+            providerReference: string | null;
           };
         };
       };

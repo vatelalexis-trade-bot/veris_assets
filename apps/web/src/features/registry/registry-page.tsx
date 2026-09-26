@@ -7,12 +7,13 @@ import { ApiError } from '@/components/app/api-error';
 import { Select } from '@/components/ui/select';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import { api } from '@/lib/api/client';
+import type { CorrectionRights } from './corrections';
 import { RegistryView } from './registry-view';
 
 const WITH_REGISTRY = ['ALLOCATED', 'ACTIVE', 'MATURED'];
 
 /** The registry of the organisation, issuance by issuance (the choice is kept in the URL). */
-export function RegistryPage() {
+export function RegistryPage({ corrections }: { corrections: CorrectionRights }) {
   const t = useTranslations('registry');
   const router = useRouter();
   const pathname = usePathname();
@@ -51,6 +52,7 @@ export function RegistryPage() {
         key={selected.id}
         issuanceId={selected.id}
         totalUnits={selected.terms.totalUnits}
+        corrections={corrections}
       />
     </div>
   );

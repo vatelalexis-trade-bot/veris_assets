@@ -1,6 +1,7 @@
 import { checkTransition } from '@virtus/shared';
 import { describe, expect, it } from 'vitest';
 import { allocationAmount, allocationRoundMachine, checkAllocation } from './allocation.js';
+import { correctionMachine, correctionRefusal, counterEntry } from './correction.js';
 import { entryHash } from '../application/ledger-hash.js';
 import {
   checkInvariants,
@@ -234,5 +235,83 @@ describe('allocation rounds (SPEC §10.1, D-013)', () => {
     expect(
       checkTransition(allocationRoundMachine, { ...request, initiatorUserId: 'operator' }),
     ).toBeNull();
+  });
+});
+
+describe('corrections (SPEC §10.3)', () => {
+  const allocationEntry = {
+    type: 'ALLOCATION' as const,
+    sourceAccountId: TREASURY,
+    destinationAccountId: ALPINE,
+    quantity: '600',
+  };
+  const base = {
+    target: allocationEntry,
+    alreadyReversed: false,
+    pendingRequest: false,
+    replacements: [],
+    accountsOfIssuance: new Set([TREASURY, ALPINE, BALTIC]),
+  };
+
+  it('reverse the target: the same units back from the destination to the source', () => {
+    expect(counterEntry(allocationEntry)).toEqual({
+      sourceAccountId: ALPINE,
+      destinationAccountId: TREASURY,
+      quantity: '600',
+    });
+    // Replaying the ledger with the counter-entry and a replacement gives the corrected holdings.
+    const holdings = replay([
+      ...chain(),
+      { type: 'CORRECTION', ...counterEntry(allocationEntry) },
+      {
+        type: 'CORRECTION',
+        sourceAccountId: TREASURY,
+        destinationAccountId: BALTIC,
+        quantity: '600',
+      },
+    ]);
+    expect(holdings.get(ALPINE)!.held.toString()).toBe('0');
+    expect(holdings.get(BALTIC)!.held.toString()).toBe('1000');
+  });
+
+  it('refuse blocking movements, entries already corrected or with a pending request', () => {
+    expect(correctionRefusal(base)).toBeNull();
+    expect(correctionRefusal({ ...base, target: { ...allocationEntry, type: 'BLOCK' } })).toBe(
+      'CORRECTION_NOT_SUPPORTED_FOR_TYPE',
+    );
+    expect(correctionRefusal({ ...base, alreadyReversed: true })).toBe('ALREADY_CORRECTED');
+    expect(correctionRefusal({ ...base, pendingRequest: true })).toBe('CORRECTION_PENDING');
+  });
+
+  it('check the replacement movements', () => {
+    const line = { sourceAccountId: TREASURY, destinationAccountId: BALTIC, quantity: '10' };
+    expect(correctionRefusal({ ...base, replacements: [line] })).toBeNull();
+    expect(
+      correctionRefusal({
+        ...base,
+        replacements: [{ ...line, destinationAccountId: 'elsewhere' }],
+      }),
+    ).toBe('ACCOUNT_NOT_OF_ISSUANCE');
+    expect(
+      correctionRefusal({
+        ...base,
+        replacements: [{ sourceAccountId: null, destinationAccountId: null, quantity: '1' }],
+      }),
+    ).toBe('REPLACEMENT_WITHOUT_ACCOUNT');
+    expect(correctionRefusal({ ...base, replacements: [{ ...line, quantity: '0.5' }] })).toBe(
+      'QUANTITY_NOT_INTEGER',
+    );
+  });
+
+  it('are decided by someone else than the requester (four eyes)', () => {
+    const officer = { userId: 'officer', permissions: new Set(['registry-correction:approve']) };
+    expect(
+      checkTransition(correctionMachine, {
+        from: 'PROPOSED',
+        to: 'APPROVED',
+        actor: officer,
+        initiatorUserId: 'officer',
+      }),
+    ).toBe('FOUR_EYES_VIOLATION');
   });
 });

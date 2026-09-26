@@ -285,6 +285,84 @@ export const NOTIFICATION_TYPES = {
       },
     },
   },
+  PAYMENT_TO_CONFIRM: {
+    category: 'WORKFLOW',
+    texts: {
+      'en-GB': {
+        title: 'Payment to confirm',
+        body: 'The payment of a subscription to the issuance {code} is prepared and waits for the confirmation of another administrator.',
+      },
+      'fr-FR': {
+        title: 'Paiement à confirmer',
+        body: 'Le paiement d’une souscription à l’émission {code} est préparé et attend la confirmation d’un autre administrateur.',
+      },
+    },
+  },
+  SUBSCRIPTION_PAYMENT_CONFIRMED: {
+    category: 'INVESTMENT',
+    texts: {
+      'en-GB': {
+        title: 'Payment confirmed',
+        body: 'Your payment for the issuance {code} is confirmed: your {units} units are now available.',
+      },
+      'fr-FR': {
+        title: 'Paiement confirmé',
+        body: 'Votre paiement pour l’émission {code} est confirmé : vos {units} unités sont maintenant disponibles.',
+      },
+    },
+  },
+  CORRECTION_TO_APPROVE: {
+    category: 'WORKFLOW',
+    texts: {
+      'en-GB': {
+        title: 'Registry correction to approve',
+        body: 'A correction of the registry of the issuance {code} was proposed and waits for approval.',
+      },
+      'fr-FR': {
+        title: 'Correction du registre à approuver',
+        body: 'Une correction du registre de l’émission {code} a été proposée et attend une approbation.',
+      },
+    },
+  },
+  CORRECTION_APPROVED: {
+    category: 'WORKFLOW',
+    texts: {
+      'en-GB': {
+        title: 'Registry correction approved',
+        body: 'Your correction of the registry of the issuance {code} was approved and written.',
+      },
+      'fr-FR': {
+        title: 'Correction du registre approuvée',
+        body: 'Votre correction du registre de l’émission {code} a été approuvée et enregistrée.',
+      },
+    },
+  },
+  CORRECTION_REJECTED: {
+    category: 'WORKFLOW',
+    texts: {
+      'en-GB': {
+        title: 'Registry correction rejected',
+        body: 'Your correction of the registry of the issuance {code} was rejected. See the comment.',
+      },
+      'fr-FR': {
+        title: 'Correction du registre rejetée',
+        body: 'Votre correction du registre de l’émission {code} a été rejetée. Voir le commentaire.',
+      },
+    },
+  },
+  REGISTRY_ANOMALY: {
+    category: 'WORKFLOW',
+    texts: {
+      'en-GB': {
+        title: 'Registry anomaly',
+        body: 'The daily check found an inconsistency in the registry of the issuance {code}. Look at it without delay.',
+      },
+      'fr-FR': {
+        title: 'Anomalie du registre',
+        body: 'Le contrôle quotidien a trouvé une incohérence dans le registre de l’émission {code}. À examiner sans attendre.',
+      },
+    },
+  },
   SUBSCRIPTION_SUBMITTED: {
     category: 'WORKFLOW',
     texts: {

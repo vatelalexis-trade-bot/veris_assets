@@ -109,6 +109,9 @@ jobs:
       - name: Integration tests (roles, row level security, append-only, migrations, authentication)
         run: pnpm test:integration
 
+      - name: Registry coverage (at least 90 % of lines, statements and functions)
+        run: pnpm test:coverage
+
       - name: Demo database can be reset twice in a row
         run: pnpm db:reset && pnpm db:reset
 

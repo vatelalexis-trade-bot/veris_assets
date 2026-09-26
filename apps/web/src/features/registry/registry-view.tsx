@@ -8,6 +8,12 @@ import { ApiError } from '@/components/app/api-error';
 import { DataTable } from '@/components/app/data-table';
 import { formatAmount, formatBusinessDate } from '@/features/issuances/format';
 import { api } from '@/lib/api/client';
+import {
+  CorrectEntryButton,
+  CorrectionsList,
+  ReconciliationStatus,
+  type CorrectionRights,
+} from './corrections';
 import type { LedgerEntryView, PositionView } from './types';
 
 const LEDGER_PAGE_SIZE = 50;
@@ -19,9 +25,12 @@ const LEDGER_PAGE_SIZE = 50;
 export function RegistryView({
   issuanceId,
   totalUnits,
+  corrections,
 }: {
   issuanceId: string;
   totalUnits?: string | null;
+  /** Rights on corrections; the reconciliation and corrections are shown to the issuer only. */
+  corrections: CorrectionRights;
 }) {
   const t = useTranslations('registry');
   const locale = useLocale();
@@ -59,8 +68,12 @@ export function RegistryView({
         ? t('treasury')
         : (side.investorName ?? t('otherInvestor'));
 
+  const positionLabel = (position: PositionView) =>
+    position.accountType === 'ISSUER_TREASURY' ? t('treasury') : (position.investorName ?? '—');
+
   return (
     <div className="flex flex-col gap-6">
+      <ReconciliationStatus issuanceId={issuanceId} />
       <section className="flex flex-col gap-2">
         <h2 className="font-heading text-lg font-semibold">{t('positions')}</h2>
         {positions.data ? (
@@ -148,9 +161,26 @@ export function RegistryView({
                 </span>
               ),
             },
+            ...(corrections.canRequest
+              ? [
+                  {
+                    id: 'actions',
+                    header: t('columns.actions'),
+                    cell: (row: LedgerEntryView) =>
+                      row.type === 'BLOCK' || row.type === 'UNBLOCK' ? null : (
+                        <CorrectEntryButton
+                          entry={row}
+                          accounts={rows}
+                          accountLabel={positionLabel}
+                        />
+                      ),
+                  },
+                ]
+              : []),
           ]}
         />
       </section>
+      <CorrectionsList issuanceId={issuanceId} rights={corrections} />
     </div>
   );
 }

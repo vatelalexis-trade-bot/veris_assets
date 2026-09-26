@@ -134,6 +134,10 @@ export const ERROR_CATALOG = {
     message: 'The operation would break a registry invariant.',
   },
   QUANTITY_NOT_INTEGER: { status: 422, message: 'Quantities must be whole units.' },
+  PAYMENT_NOT_RECEIVED: {
+    status: 422,
+    message: 'The payment has not been received yet.',
+  },
   SUBSCRIPTIONS_TO_DECIDE: {
     status: 422,
     message: 'Some subscriptions still wait for a decision: approve or reject them first.',

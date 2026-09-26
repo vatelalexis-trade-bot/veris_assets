@@ -286,13 +286,15 @@ Validées par le porteur de projet (« OK pour les points D-060 à D-063 »).
 
 ## 2026-09-26 — Phase 12a (allocation, registre, ledger)
 
+Validées par le porteur de projet (« OK pour tout, on pourra ajuster plus tard »).
+
 **D-064 — Acceptée. Découpage de la phase 12.** Choix du porteur de projet au lancement de la phase.
 1. La phase 12 est livrée en deux fois :
    - **12a** : ledger (P12-1), allocation manuelle (P12-2), écritures de la validation (P12-3), écran registre (partie de P12-5) et scénario 3 (P12-8) ;
    - **12b** : paiement fictif (P12-9, ex-P11-4), `TokenRegistryProvider` (P12-4), job de rapprochement (P12-5), tests de concurrence et couverture de 90 % (P12-6), corrections par contre-écriture (P12-7).
 2. La confirmation d'allocation en PDF (spec 10.1) est reportée en phase 15, avec les autres documents générés (D-063).
 
-**D-065 — Proposée. Préparation d'une allocation (spec 10.1, 9.4).**
+**D-065 — Acceptée. Préparation d'une allocation (spec 10.1, 9.4).**
 1. Une allocation (« lot ») ne se prépare qu'une fois les souscriptions clôturées **et** toutes décidées. S'il reste des souscriptions soumises ou en revue, la préparation est refusée avec le nouveau code `422 SUBSCRIPTIONS_TO_DECIDE`.
 2. Le lot contient une ligne par souscription approuvée, pré-remplie avec les unités demandées : l'émetteur « renseigne ou confirme » (spec 10.1).
 3. Il y a au plus un lot en cours ou validé par émission. Un lot rejeté reste dans l'historique, et un nouveau lot peut alors être préparé.
@@ -306,7 +308,7 @@ Validées par le porteur de projet (« OK pour les points D-060 à D-063 »).
 7. Un brouillon peut être abandonné par celui qui le prépare (commentaire obligatoire) : il passe « Rejeté ». La route `POST /allocations/{id}/reject` demande donc `allocation:prepare`, et la machine à états exige `allocation:validate` pour rejeter un lot proposé. *Modifie `docs/API.md` §2.8.*
 8. `registry.allocation` est unique par (lot, souscription), et non plus par souscription seule, pour garder les lots rejetés. *Modifie `docs/DATA_MODEL.md` §3.5.*
 
-**D-066 — Proposée. Écritures du registre à la validation (précise D-009).**
+**D-066 — Acceptée. Écritures du registre à la validation (précise D-009).**
 1. Dans une seule transaction :
    - `ISSUANCE` du nombre total d'unités vers la trésorerie de l'émetteur, à la première allocation de l'émission ;
    - puis, pour chaque ligne non nulle, `ALLOCATION` (trésorerie → investisseur) et `BLOCK` ;
@@ -320,7 +322,7 @@ Validées par le porteur de projet (« OK pour les points D-060 à D-063 »).
 7. Le passage de l'émission à « Allouée » demande `allocation:validate`, comme dans `docs/DATA_MODEL.md` §4.1 (le code demandait `issuance:operate`).
 8. Les quantités du registre sont en `NUMERIC(20,4)` : décimales en base, entières dans le MVP (spec 10.5).
 
-**D-067 — Proposée. Consultation du registre.**
+**D-067 — Acceptée. Consultation du registre.**
 1. L'émetteur voit les positions et les mouvements, dans l'onglet « Registre » de chaque émission allouée et dans le menu « Registre ».
 2. Un investisseur ne voit que ses positions et les mouvements de ses comptes, sans jamais le nom d'un autre investisseur (comme D-010). Il ne voit pas les lots d'allocation : liste vide et 404.
 3. Notifications :
@@ -328,7 +330,56 @@ Validées par le porteur de projet (« OK pour les points D-060 à D-063 »).
    - lot rejeté : celui qui l'a proposé ;
    - unités allouées (avec leur nombre), ou aucune unité allouée : l'investisseur.
 
-**D-068 — Proposée. Données de démo et scénario 3.**
+**D-068 — Acceptée. Données de démo et scénario 3.**
 1. Nouvelle émission « Northwind Infrastructure Notes 2026 » (NWIN26) : 1 000 unités de 1 000 €, souscriptions clôturées, 1 200 unités demandées par des souscriptions approuvées (Alpine 500, Baltic 400, Cedar 300). Elle est prête à être allouée en démonstration.
 2. Sur NWSD26 : une souscription d'Alpine attend une revue, et une souscription de Cedar a été rejetée. La spec (28) demande une souscription rejetée dans la démo.
 3. Le scénario 3 automatisé prépare sa propre émission par l'API, avec un nouveau code à chaque passage : il peut être rejoué sans réinitialiser la base, comme le scénario 1 (D-058).
+
+---
+
+## 2026-09-26 — Phase 12b (paiement, corrections, rapprochement)
+
+**D-069 — Proposée. Paiement fictif (spec 9.2, 4.8, D-009).**
+1. Un opérateur ou un administrateur de l'émetteur (`payment:prepare`) prépare la confirmation du paiement du montant dû. Le fournisseur de paiement fictif rend une référence (`FAKE-PAY-…`).
+2. Un administrateur autre que celui qui l'a préparée (`payment:confirm`, quatre yeux) confirme ensuite, si le fournisseur indique le paiement reçu. Dans une seule transaction :
+   - `UNBLOCK` des unités ;
+   - la souscription passe « Paiement en attente » → « Paiement confirmé » → « Allouée » ;
+   - les unités deviennent disponibles pour l'investisseur, qui est prévenu.
+3. Si le fournisseur n'a pas reçu le paiement, la confirmation est refusée (nouveau code `422 PAYMENT_NOT_RECEIVED`) et rien ne change. Le mode du fournisseur se règle comme les autres : `PROVIDER_PAYMENT_MODE=success|reject|outage`.
+4. Une souscription annulée par l'émetteur pendant l'attente du paiement marque le paiement « échoué ».
+5. Nouvelle route `GET /subscriptions/{id}/payment` : l'investisseur voit l'état du paiement de ses propres souscriptions.
+
+**D-070 — Proposée. Corrections par contre-écriture (spec 10.3, 4.8).**
+1. Un administrateur de l'émetteur (`registry-correction:request`) propose d'annuler **un** mouvement, avec un motif, et éventuellement les mouvements qui auraient dû être écrits (« remplacements »).
+2. Un responsable conformité ou un autre administrateur (`registry-correction:approve`) approuve ou rejette. C'est toujours une autre personne que celle qui a proposé (quatre yeux) ; le rejet demande un commentaire.
+3. L'approbation écrit des mouvements `CORRECTION` :
+   - une contre-écriture qui renvoie les unités de la destination vers la source, et qui référence le mouvement corrigé ;
+   - puis les remplacements.
+
+   Le mouvement d'origine n'est jamais modifié, et les invariants sont vérifiés avant la fin de la transaction. Une correction impossible (par exemple parce qu'elle prendrait des unités non disponibles) est refusée et reste « à approuver ».
+4. Ce qui ne se corrige pas :
+   - un blocage ou un déblocage, qui s'annule par le mouvement inverse ;
+   - un mouvement déjà corrigé ;
+   - un mouvement qui a déjà une demande en attente.
+5. Les corrections portent sur les quantités. Les montants d'acquisition ne sont pas recalculés.
+6. Nouvelle route `GET /ledger/corrections?issuanceId=…&status=…`, réservée à l'émetteur (liste vide pour un investisseur).
+
+**D-071 — Proposée. Rapprochement du registre (spec 10.4).**
+1. La tâche quotidienne `registry-reconciliation` (3 h 15) reconstruit les positions de chaque émission à partir de son ledger, pour toutes les organisations, et vérifie la chaîne d'empreintes (invariants 1, 2, 3 et 5).
+2. Une anomalie est inscrite dans l'audit (`REGISTRY_RECONCILIATION_FAILED`) et signalée aux administrateurs et aux responsables conformité (notification obligatoire). Rien n'est réparé automatiquement : une réparation passe par une correction à quatre yeux.
+3. Le même contrôle se lance à la demande (`GET /ledger/reconciliation?issuanceId=…`, réservé à l'émetteur). Son résultat s'affiche en tête de l'écran registre.
+
+**D-072 — Proposée. `TokenRegistryProvider` (spec 26).**
+1. L'interface est dans `core/providers`, avec les opérations de la spec : `createAsset`, `mint`, `transfer`, `burn`, `freeze`, `unfreeze`, `getBalance`, `getTransactionStatus`.
+2. Chaque appel porte l'organisation et l'émission (déterminées par le serveur), et les comptes sont les comptes logiques du registre.
+3. `InternalLedgerProvider` est la seule implémentation : chaque opération est un mouvement écrit par le `LedgerWriter`, dans sa propre transaction.
+4. Les parcours métier (allocation, paiement, corrections) écrivent directement par le `LedgerWriter`, dans leur propre transaction : le registre interne reste la source de vérité. L'interface est le point d'extension d'un futur miroir blockchain. Aucune dépendance blockchain n'est ajoutée.
+
+**D-073 — Proposée. Tests de concurrence et couverture (spec 25, P12-6).**
+1. Des tests lancent des écritures simultanées sur une même position et vérifient qu'on ne bloque ou ne transfère jamais plus que disponible, que la séquence et la chaîne d'empreintes restent intactes, et qu'un paiement confirmé en même temps par deux administrateurs ne l'est qu'une fois :
+   - 5 blocages de 30 unités sur 100 disponibles ;
+   - 12 transferts de 100 unités sur 800 ;
+   - la double confirmation d'un même paiement.
+2. La couverture du module Registre se mesure avec `pnpm test:coverage`, sur ses tests unitaires et d'intégration ensemble. C'est une étape de la CI, qui utilise le module `@vitest/coverage-v8` 5.0.1 (même version que vitest).
+3. Les 90 % de la spec s'appliquent aux lignes, aux instructions et aux fonctions. Les branches ont un plancher de 75 % : ce sont surtout des valeurs par défaut défensives. Mesure au 2026-09-26 : lignes 97 %, instructions 95 %, fonctions 96 %, branches 78 %.
+4. Les déclarations de tables (`schema.ts`) sont exclues de la mesure : elles ne contiennent pas de logique.

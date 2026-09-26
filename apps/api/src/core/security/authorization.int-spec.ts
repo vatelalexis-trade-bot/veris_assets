@@ -62,6 +62,7 @@ const VALID_BODIES: [RegExp, object][] = [
   ],
   [/^POST \/api\/v1\/subscriptions\/:id\/(reject|cancel)$/, { reason: 'Probe' }],
   [/^POST \/api\/v1\/allocations\/:id\/reject$/, { comment: 'Probe' }],
+  [/^POST \/api\/v1\/ledger\/corrections\/:id\/reject$/, { comment: 'Probe' }],
   [
     /^POST \/api\/v1\/issuances\/:id\/invitations$/,
     { investorId: '0192a000-0000-7000-8000-000000000000' },
@@ -206,6 +207,25 @@ describe('scenario 5 — tenant isolation (SPEC §20, §29)', () => {
           `${CONTOSO_ACCOUNT}
            INSERT INTO registry.position (tenant_id, issuance_id, account_id, currency)
            SELECT tenant_id, issuance_id, id, 'EUR' FROM account RETURNING id`,
+        ),
+    ],
+    [
+      /^\/api\/v1\/ledger\/corrections\/:id/,
+      () =>
+        idOf(
+          `${CONTOSO_ACCOUNT}, entry AS (
+             INSERT INTO registry.ledger_entry (tenant_id, issuance_id, sequence_no, type,
+               destination_account_id, quantity, effective_date, recorded_at, business_reference,
+               previous_hash, entry_hash)
+             SELECT tenant_id, issuance_id, 1, 'ISSUANCE', id, 100, current_date, now(), 'probe',
+               repeat('0', 64), repeat('0', 64)
+             FROM account RETURNING id, tenant_id, issuance_id
+           )
+           INSERT INTO registry.correction_request (tenant_id, issuance_id, target_entry_id, reason,
+             requested_by)
+           SELECT entry.tenant_id, entry.issuance_id, entry.id, 'Probe', u.id
+           FROM entry, iam.user u WHERE u.email = 'contoso.operator@example.com'
+           RETURNING id`,
         ),
     ],
     [

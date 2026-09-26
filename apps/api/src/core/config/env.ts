@@ -56,6 +56,7 @@ const envSchema = z.object({
   // outage, to play every scenario of the demonstration.
   PROVIDER_KYC_MODE: providerMode,
   PROVIDER_FILE_SCANNER_MODE: providerMode,
+  PROVIDER_PAYMENT_MODE: providerMode,
 });
 
 export type Env = z.infer<typeof envSchema>;

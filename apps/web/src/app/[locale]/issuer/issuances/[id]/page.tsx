@@ -25,6 +25,8 @@ export default async function IssuancePage({
         canReadRegistry: Boolean(permissions['registry:read']),
         canPrepareAllocation: Boolean(permissions['allocation:prepare']),
         canValidateAllocation: Boolean(permissions['allocation:validate']),
+        canRequestCorrection: Boolean(permissions['registry-correction:request']),
+        canApproveCorrection: Boolean(permissions['registry-correction:approve']),
       }}
     />
   );

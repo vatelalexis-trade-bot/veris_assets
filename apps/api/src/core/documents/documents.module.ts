@@ -3,6 +3,7 @@ import { ENV, type Env } from '../config/env.js';
 import { DOCUMENT_STORAGE, S3DocumentStorage } from '../providers/document-storage.js';
 import { FakeFileScanner, FILE_SCANNER } from '../providers/file-scanner.js';
 import { FakeKycProvider, KYC_PROVIDER } from '../providers/kyc-provider.js';
+import { FakePaymentProvider, PAYMENT_PROVIDER } from '../providers/payment-provider.js';
 import { DocumentsController } from './documents.controller.js';
 import { DocumentsService } from './documents.service.js';
 import { UploadInterceptor } from './upload.interceptor.js';
@@ -29,10 +30,15 @@ import { UploadInterceptor } from './upload.interceptor.js';
       inject: [ENV],
       useFactory: (env: Env) => new FakeKycProvider(env.PROVIDER_KYC_MODE),
     },
+    {
+      provide: PAYMENT_PROVIDER,
+      inject: [ENV],
+      useFactory: (env: Env) => new FakePaymentProvider(env.PROVIDER_PAYMENT_MODE),
+    },
     DocumentsService,
     UploadInterceptor,
   ],
   controllers: [DocumentsController],
-  exports: [DocumentsService, KYC_PROVIDER],
+  exports: [DocumentsService, KYC_PROVIDER, PAYMENT_PROVIDER],
 })
 export class DocumentsModule {}

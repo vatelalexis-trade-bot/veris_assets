@@ -30,6 +30,8 @@ export const QUEUES = {
   idempotencyCleanup: { name: 'idempotency-cleanup', retryLimit: 2 },
   /** Daily: expires the KYC/KYB approvals past their date and warns 30 days before (SPEC §8.2). */
   kycExpiry: { name: 'kyc-expiry', retryLimit: 2 },
+  /** Daily: checks the registry invariants 1, 2, 3 and 5 of every issuance (SPEC §10.4). */
+  registryReconciliation: { name: 'registry-reconciliation', retryLimit: 2 },
   /** Daily and at start-up: closes the subscriptions past their end date (SPEC §7.1). */
   subscriptionAutoClose: { name: 'subscription-auto-close', retryLimit: 2 },
 } as const satisfies Record<string, Queue>;

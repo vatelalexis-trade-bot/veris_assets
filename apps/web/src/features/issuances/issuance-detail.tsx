@@ -32,6 +32,8 @@ export interface IssuanceRights {
   canReadRegistry: boolean;
   canPrepareAllocation: boolean;
   canValidateAllocation: boolean;
+  canRequestCorrection: boolean;
+  canApproveCorrection: boolean;
 }
 
 /** Statuses from which the allocation, then the registry, have something to show. */
@@ -171,7 +173,15 @@ export function IssuanceDetail({
         ) : null}
         {rights.canReadRegistry && REGISTRY_STATUSES.includes(status) ? (
           <Tabs.Content value="registry">
-            <RegistryView issuanceId={id} totalUnits={current.terms.totalUnits} />
+            <RegistryView
+              issuanceId={id}
+              totalUnits={current.terms.totalUnits}
+              corrections={{
+                canRequest: rights.canRequestCorrection,
+                canApprove: rights.canApproveCorrection,
+                currentUserId,
+              }}
+            />
           </Tabs.Content>
         ) : null}
         <Tabs.Content value="documents">

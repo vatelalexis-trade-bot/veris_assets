@@ -127,6 +127,20 @@
       "when": 1790416617616,
       "tag": "0017_registry_ledger_security",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1790421087503,
+      "tag": "0018_payments_corrections",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1790421089979,
+      "tag": "0019_payments_corrections_security",
+      "breakpoints": true
     }
   ]
 }

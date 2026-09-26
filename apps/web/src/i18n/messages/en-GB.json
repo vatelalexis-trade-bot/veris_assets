@@ -218,7 +218,8 @@
     "FILE_REJECTED_BY_SCAN": "The file was rejected by the security scan.",
     "MFA_ENROLLMENT_REQUIRED": "Set up two-factor authentication to continue.",
     "RESET_TOKEN_INVALID_OR_EXPIRED": "This password reset link is invalid or has expired. Request a new one.",
-    "SUBSCRIPTIONS_TO_DECIDE": "Some subscriptions still wait for a decision: approve or reject them first."
+    "SUBSCRIPTIONS_TO_DECIDE": "Some subscriptions still wait for a decision: approve or reject them first.",
+    "PAYMENT_NOT_RECEIVED": "The payment has not been received yet."
   },
   "eligibilityRules": {
     "PROFILE_INACTIVE": "The investor profile is not active.",
@@ -350,7 +351,12 @@
     "ELIGIBILITY_NOT_DECLARED": "Declare that you meet the eligibility conditions.",
     "ALLOCATION_ROUND_IN_PROGRESS": "An allocation is being prepared for this issuance: reject or abandon it first.",
     "SUBSCRIPTION_NOT_APPROVED": "A subscription of the allocation is no longer approved: reject the allocation and prepare a new one.",
-    "NOT_A_LINE_OF_ROUND": "This subscription is not part of the allocation."
+    "NOT_A_LINE_OF_ROUND": "This subscription is not part of the allocation.",
+    "CORRECTION_NOT_SUPPORTED_FOR_TYPE": "A block or an unblock is undone by the opposite movement, not by a correction.",
+    "ALREADY_CORRECTED": "This movement has already been corrected.",
+    "CORRECTION_PENDING": "A correction of this movement is already waiting for a decision.",
+    "REPLACEMENT_WITHOUT_ACCOUNT": "A replacement movement needs at least one account.",
+    "ACCOUNT_NOT_OF_ISSUANCE": "The accounts must belong to this issuance."
   },
   "organizationTypes": {
     "ISSUER": "Issuer",
@@ -511,7 +517,8 @@
       "document": "Document",
       "issuance": "Issuance",
       "subscription": "Subscription",
-      "allocation_round": "Allocation"
+      "allocation_round": "Allocation",
+      "correction_request": "Registry correction"
     },
     "sources": {
       "WEB": "Web application",
@@ -601,7 +608,15 @@
       "ALLOCATION_ROUND_VALIDATED": "Allocation validated",
       "ALLOCATION_ROUND_REJECTED": "Allocation rejected",
       "ISSUANCE_ALLOCATED": "Issuance allocated",
-      "SUBSCRIPTION_PAYMENT_PENDING": "Subscription waiting for payment"
+      "SUBSCRIPTION_PAYMENT_PENDING": "Subscription waiting for payment",
+      "PAYMENT_PREPARED": "Payment prepared",
+      "PAYMENT_CONFIRMED": "Payment confirmed",
+      "SUBSCRIPTION_PAYMENT_CONFIRMED": "Subscription paid",
+      "SUBSCRIPTION_ALLOCATED": "Subscription allocated",
+      "REGISTRY_CORRECTION_REQUESTED": "Registry correction proposed",
+      "REGISTRY_CORRECTION_APPROVED": "Registry correction approved",
+      "REGISTRY_CORRECTION_REJECTED": "Registry correction rejected",
+      "REGISTRY_RECONCILIATION_FAILED": "Registry anomaly found"
     }
   },
   "investors": {
@@ -1146,7 +1161,28 @@
       "refusedHelp": "The eligibility rules of the issuance are not met. The request stays as a draft; contact the issuer or update your profile."
     },
     "notAllocated": "no unit could be allocated.",
-    "cancelledByInvestor": "cancelled by the investor."
+    "cancelledByInvestor": "cancelled by the investor.",
+    "payment": {
+      "title": "Payment (fictitious)",
+      "fictitious": "No real payment is made in this demonstration: the payment is simulated.",
+      "none": "No payment is expected yet.",
+      "awaiting": "Waiting for the payment of {amount}.",
+      "status": {
+        "PENDING": "Payment of {amount} expected.",
+        "PREPARED": "Payment of {amount} prepared: waiting for the confirmation of an administrator.",
+        "CONFIRMED": "Payment of {amount} confirmed.",
+        "FAILED": "The payment of {amount} will not be received."
+      },
+      "reference": "Reference:",
+      "confirmedOn": "Confirmed on {date}.",
+      "prepare": "Prepare the payment confirmation",
+      "prepareTitle": "Prepare the payment confirmation?",
+      "prepareDescription": "The payment of {amount} is registered with the (fictitious) bank. Another Issuer Administrator then confirms it.",
+      "confirm": "Confirm the payment",
+      "confirmTitle": "Confirm the payment received?",
+      "confirmDescription": "The payment of {amount} is confirmed and the {units} units become available to the investor. This cannot be undone.",
+      "fourEyes": "You prepared this payment: another Issuer Administrator must confirm it."
+    }
   },
   "allocation": {
     "none": "No allocation has been prepared yet. Every subscription must be approved or rejected first.",
@@ -1217,7 +1253,8 @@
       "from": "From",
       "to": "To",
       "quantity": "Units",
-      "hash": "Hash"
+      "hash": "Hash",
+      "actions": "Actions"
     },
     "types": {
       "ISSUANCE": "Issuance of units",
@@ -1228,6 +1265,48 @@
       "REDEMPTION": "Redemption",
       "CANCELLATION": "Cancellation",
       "CORRECTION": "Correction"
+    },
+    "reconciliation": {
+      "consistent": "Registry consistent: {entries} movements checked at {date}, positions and hash chain match.",
+      "inconsistent": "The registry is inconsistent. Do not change it: tell the compliance officer.",
+      "checkAgain": "Check again",
+      "details": {
+        "NEGATIVE": "A position is negative (invariant {invariant}).",
+        "BLOCKED_ABOVE_HELD": "More units are blocked than held (invariant {invariant}).",
+        "POSITION_DIFFERS_FROM_LEDGER": "A position differs from the ledger movements (invariant {invariant}).",
+        "ALLOCATED_ABOVE_TOTAL_UNITS": "Investors hold more units than the issuance has (invariant {invariant}).",
+        "SEQUENCE_GAP": "A movement is missing before number {sequence} (invariant {invariant}).",
+        "HASH_MISMATCH": "Movement {sequence} was altered: its hash does not match (invariant {invariant})."
+      }
+    },
+    "corrections": {
+      "title": "Corrections",
+      "status": {
+        "PROPOSED": "To approve",
+        "APPROVED": "Approved",
+        "REJECTED": "Rejected"
+      },
+      "requestedBy": "Proposed by {name} on {date}",
+      "decidedBy": "Decided by {name}",
+      "replacements": "{count, plural, one {# replacement movement} other {# replacement movements}}",
+      "fourEyes": "You proposed this correction: a compliance officer or another administrator must decide.",
+      "approve": "Approve",
+      "approveTitle": "Approve this correction?",
+      "approveDescription": "The movement is reversed by a counter-entry and the replacement movements are written. The original movement is kept. This cannot be undone.",
+      "reject": "Reject",
+      "rejectTitle": "Reject this correction?",
+      "rejectDescription": "The administrator who proposed it is told and sees your comment.",
+      "commentRequired": "Comment (required)",
+      "correct": "Correct",
+      "proposeTitle": "Correct movement #{sequence}",
+      "proposeDescription": "The {quantity} units of this movement are sent back by a counter-entry. You can add the movement that should have been written. Another person approves the correction.",
+      "reason": "Reason (required)",
+      "replacement": "Replacement movement (optional)",
+      "from": "From",
+      "to": "To",
+      "quantity": "Units",
+      "noAccount": "—",
+      "propose": "Propose the correction"
     }
   }
 }

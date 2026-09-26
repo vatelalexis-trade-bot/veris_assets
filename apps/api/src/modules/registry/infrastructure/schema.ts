@@ -257,3 +257,79 @@ export const ledgerEntry = registrySchema.table(
     index('ledger_entry_destination').on(table.tenantId, table.destinationAccountId),
   ],
 );
+
+/**
+ * Fictitious payment of a subscription (SPEC §9.2, D-009): prepared by the issuer's staff for the
+ * amount due, then confirmed by an Issuer Administrator other than the preparer (four eyes). No
+ * real payment is ever made (SPEC §31.2).
+ */
+export const subscriptionPayment = registrySchema.table(
+  'subscription_payment',
+  {
+    id: id(),
+    tenantId: tenantId().references(() => tenant.id),
+    subscriptionId: uuid()
+      .notNull()
+      .unique()
+      .references(() => subscription.id),
+    amount: numeric({ precision: 24, scale: 4 }).notNull(),
+    currency: char({ length: 3 }).notNull(),
+    status: text().notNull().default('PENDING'),
+    preparedBy: uuid(),
+    preparedAt: utcTimestamp(),
+    confirmedBy: uuid(),
+    confirmedAt: utcTimestamp(),
+    providerReference: text(),
+    ...auditColumns(),
+  },
+  (table) => [
+    check(
+      'subscription_payment_status',
+      sql`${table.status} IN ('PENDING', 'PREPARED', 'CONFIRMED', 'FAILED')`,
+    ),
+    check('subscription_payment_amount_positive', sql`${table.amount} > 0`),
+    check('subscription_payment_four_eyes', sql`${table.confirmedBy} <> ${table.preparedBy}`),
+  ],
+);
+
+/**
+ * Correction of the ledger (SPEC §10.3, §4.8): proposed by an Issuer Administrator, approved by a
+ * Compliance Officer or another Issuer Administrator. Approval writes a counter-entry (CORRECTION)
+ * that reverses the target, then the replacement movements if any; the original entry never
+ * changes.
+ */
+export const correctionRequest = registrySchema.table(
+  'correction_request',
+  {
+    id: id(),
+    tenantId: tenantId().references(() => tenant.id),
+    issuanceId: uuid()
+      .notNull()
+      .references(() => issuance.id),
+    targetEntryId: uuid()
+      .notNull()
+      .references(() => ledgerEntry.id),
+    /** Replacement movements: `{ sourceAccountId, destinationAccountId, quantity }[]`. */
+    proposedEntries: jsonb()
+      .$type<
+        { sourceAccountId: string | null; destinationAccountId: string | null; quantity: string }[]
+      >()
+      .notNull()
+      .default([]),
+    reason: text().notNull(),
+    status: text().notNull().default('PROPOSED'),
+    requestedBy: uuid().notNull(),
+    decidedBy: uuid(),
+    decidedAt: utcTimestamp(),
+    decisionComment: text(),
+    ...auditColumns(),
+  },
+  (table) => [
+    check(
+      'correction_request_status',
+      sql`${table.status} IN ('PROPOSED', 'APPROVED', 'REJECTED')`,
+    ),
+    check('correction_request_four_eyes', sql`${table.decidedBy} <> ${table.requestedBy}`),
+    index('correction_request_issuance').on(table.tenantId, table.issuanceId, table.status),
+  ],
+);

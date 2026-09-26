@@ -15,3 +15,17 @@ export const ALLOCATION_EVENTS = {
   proposed: 'registry.allocation.proposed',
   rejected: 'registry.allocation.rejected',
 } as const;
+
+/** Fictitious payments. Payload: issuance `code`, `investorId`, `units`, `preparedBy`. */
+export const PAYMENT_EVENTS = {
+  prepared: 'registry.payment.prepared',
+  confirmed: 'registry.payment.confirmed',
+} as const;
+
+/** Registry corrections and anomalies. Payload: issuance `code`, `issuanceId`, `requestedBy`. */
+export const REGISTRY_EVENTS = {
+  correctionProposed: 'registry.correction.proposed',
+  /** Payload `decision`: APPROVED or REJECTED. */
+  correctionDecided: 'registry.correction.decided',
+  anomaly: 'registry.reconciliation.anomaly',
+} as const;

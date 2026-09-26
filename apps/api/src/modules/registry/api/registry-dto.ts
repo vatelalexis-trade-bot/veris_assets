@@ -2,8 +2,12 @@ import { CURRENCY_MINOR_UNITS, isCurrencyCode, parseDecimal } from '@virtus/shar
 import { z } from 'zod';
 import { paginationQuery } from '../../../core/http/pagination.js';
 import type { AllocationRoundDetail } from '../application/allocations.service.js';
+import type { CorrectionRow } from '../application/corrections.service.js';
+import type { PaymentRow } from '../application/payments.service.js';
+import type { ReconciliationResult } from '../application/registry-reconciliation.js';
 import type { LedgerEntryView, PositionRow } from '../application/registry-queries.js';
 import { ALLOCATION_ROUND_STATUSES, type AllocationRoundStatus } from '../domain/allocation.js';
+import { CORRECTION_STATUSES, type CorrectionStatus } from '../domain/correction.js';
 import { LEDGER_ENTRY_TYPES, type LedgerEntryType } from '../domain/ledger.js';
 
 /** Whole units as strings ("400"); the MVP has no fraction of unit (SPEC §10.5). */
@@ -223,5 +227,130 @@ export function toLedgerEntryView(row: LedgerEntryView): z.infer<typeof ledgerEn
     initiatedByUserId: row.initiatedByUserId,
     initiatedByService: row.initiatedByService,
     correlationId: row.correlationId,
+  };
+}
+
+const replacementLine = z.strictObject({
+  sourceAccountId: z.uuid().nullable(),
+  destinationAccountId: z.uuid().nullable(),
+  quantity: wholeUnits,
+});
+
+export const correctionCreateBody = z.strictObject({
+  targetEntryId: z.uuid(),
+  reason: z.string().trim().min(1).max(2000),
+  replacements: z.array(replacementLine).max(20).default([]),
+});
+
+export const optionalCommentBody = z.strictObject({
+  comment: z.string().trim().max(2000).nullable().optional(),
+});
+
+export const correctionsQuery = z.object({
+  issuanceId: z.uuid().optional(),
+  status: z.enum(CORRECTION_STATUSES).optional(),
+});
+
+export const reconciliationQuery = z.object({ issuanceId: z.uuid() });
+
+export const paymentView = z.object({
+  id: z.uuid(),
+  subscriptionId: z.uuid(),
+  amount: z.string(),
+  currency: z.string(),
+  status: z.enum(['PENDING', 'PREPARED', 'CONFIRMED', 'FAILED']),
+  preparedBy: z.uuid().nullable(),
+  preparedAt: z.iso.datetime().nullable(),
+  confirmedBy: z.uuid().nullable(),
+  confirmedAt: z.iso.datetime().nullable(),
+  providerReference: z.string().nullable(),
+});
+
+export const correctionView = z.object({
+  id: z.uuid(),
+  issuanceId: z.uuid(),
+  targetEntryId: z.uuid(),
+  replacements: z.array(
+    z.object({
+      sourceAccountId: z.uuid().nullable(),
+      destinationAccountId: z.uuid().nullable(),
+      quantity: z.string(),
+    }),
+  ),
+  reason: z.string(),
+  status: z.enum(CORRECTION_STATUSES),
+  requestedBy: z.uuid(),
+  requestedByName: z.string().nullable(),
+  decidedBy: z.uuid().nullable(),
+  decidedByName: z.string().nullable(),
+  decidedAt: z.iso.datetime().nullable(),
+  decisionComment: z.string().nullable(),
+  createdAt: z.iso.datetime(),
+});
+
+export const reconciliationView = z.object({
+  issuanceId: z.uuid(),
+  checkedAt: z.iso.datetime(),
+  consistent: z.boolean(),
+  entries: z.int(),
+  lastHash: z.string().nullable(),
+  breaches: z.array(
+    z.object({
+      invariant: z.int(),
+      detail: z.string(),
+      accountId: z.uuid().nullable(),
+      sequenceNo: z.int().nullable(),
+    }),
+  ),
+});
+
+export function toPaymentView(row: PaymentRow): z.infer<typeof paymentView> {
+  return {
+    id: row.id,
+    subscriptionId: row.subscriptionId,
+    amount: money(row.amount, row.currency),
+    currency: row.currency,
+    status: row.status as z.infer<typeof paymentView>['status'],
+    preparedBy: row.preparedBy,
+    preparedAt: row.preparedAt?.toISOString() ?? null,
+    confirmedBy: row.confirmedBy,
+    confirmedAt: row.confirmedAt?.toISOString() ?? null,
+    providerReference: row.providerReference,
+  };
+}
+
+export function toCorrectionView(row: CorrectionRow): z.infer<typeof correctionView> {
+  return {
+    id: row.id,
+    issuanceId: row.issuanceId,
+    targetEntryId: row.targetEntryId,
+    replacements: row.proposedEntries.map((line) => ({ ...line, quantity: units(line.quantity) })),
+    reason: row.reason,
+    status: row.status as CorrectionStatus,
+    requestedBy: row.requestedBy,
+    requestedByName: row.requestedByName,
+    decidedBy: row.decidedBy,
+    decidedByName: row.decidedByName,
+    decidedAt: row.decidedAt?.toISOString() ?? null,
+    decisionComment: row.decisionComment,
+    createdAt: row.createdAt.toISOString(),
+  };
+}
+
+export function toReconciliationView(
+  result: ReconciliationResult,
+): z.infer<typeof reconciliationView> {
+  return {
+    issuanceId: result.issuanceId,
+    checkedAt: result.checkedAt.toISOString(),
+    consistent: result.breaches.length === 0,
+    entries: result.entries,
+    lastHash: result.lastHash,
+    breaches: result.breaches.map((breach) => ({
+      invariant: breach.invariant,
+      detail: breach.detail,
+      accountId: 'accountId' in breach ? breach.accountId : null,
+      sequenceNo: 'sequenceNo' in breach ? breach.sequenceNo : null,
+    })),
   };
 }

@@ -3,6 +3,7 @@ import { AppError } from '../errors/app-error.js';
 import { CircuitBreaker } from './circuit-breaker.js';
 import { FakeFileScanner } from './file-scanner.js';
 import { FakeKycProvider } from './kyc-provider.js';
+import { FakePaymentProvider } from './payment-provider.js';
 
 const failing = () => Promise.reject(new Error('connection refused'));
 const codeOf = (error: unknown) => (error as AppError).code;
@@ -72,5 +73,26 @@ describe('fictitious file scanner', () => {
     await expect(new FakeFileScanner('outage').scan(Buffer.from('x'))).rejects.toBeInstanceOf(
       AppError,
     );
+  });
+});
+
+describe('fictitious payment provider', () => {
+  const instruction = { paymentId: 'payment-1', amount: '400000.00', currency: 'EUR' };
+
+  it('gives a stable reference and says whether the payment was received', async () => {
+    const provider = new FakePaymentProvider('success');
+    const { reference } = await provider.prepare(instruction);
+    expect(reference).toMatch(/^FAKE-PAY-[0-9A-F]{12}$/);
+    expect((await provider.prepare(instruction)).reference).toBe(reference);
+    expect(await provider.confirm()).toEqual({ received: true });
+    expect(await new FakePaymentProvider('reject').confirm()).toEqual({ received: false });
+  });
+
+  it('is unavailable in outage mode', async () => {
+    const provider = new FakePaymentProvider('outage');
+    await expect(provider.prepare(instruction)).rejects.toMatchObject({
+      code: 'PROVIDER_UNAVAILABLE',
+    });
+    await expect(provider.confirm()).rejects.toMatchObject({ code: 'PROVIDER_UNAVAILABLE' });
   });
 });

@@ -18,6 +18,7 @@ export default async function OwnSubscriptionPage({
         canReview: false,
         canApprove: false,
         canCancel: Boolean(permissions['subscription:cancel']),
+        payment: null,
       }}
     />
   );

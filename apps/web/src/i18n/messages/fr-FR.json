@@ -218,7 +218,8 @@
     "FILE_REJECTED_BY_SCAN": "Le fichier a été rejeté par le contrôle de sécurité.",
     "MFA_ENROLLMENT_REQUIRED": "Configurez l’authentification à deux facteurs pour continuer.",
     "RESET_TOKEN_INVALID_OR_EXPIRED": "Ce lien de réinitialisation est invalide ou a expiré. Demandez-en un nouveau.",
-    "SUBSCRIPTIONS_TO_DECIDE": "Des souscriptions attendent encore une décision : approuvez-les ou rejetez-les d’abord."
+    "SUBSCRIPTIONS_TO_DECIDE": "Des souscriptions attendent encore une décision : approuvez-les ou rejetez-les d’abord.",
+    "PAYMENT_NOT_RECEIVED": "Le paiement n’a pas encore été reçu."
   },
   "eligibilityRules": {
     "PROFILE_INACTIVE": "Le profil de l’investisseur n’est pas actif.",
@@ -350,7 +351,12 @@
     "ELIGIBILITY_NOT_DECLARED": "Déclarez remplir les conditions d’éligibilité.",
     "ALLOCATION_ROUND_IN_PROGRESS": "Une allocation est en préparation pour cette émission : rejetez-la ou abandonnez-la d’abord.",
     "SUBSCRIPTION_NOT_APPROVED": "Une souscription de l’allocation n’est plus approuvée : rejetez l’allocation et préparez-en une nouvelle.",
-    "NOT_A_LINE_OF_ROUND": "Cette souscription ne fait pas partie de l’allocation."
+    "NOT_A_LINE_OF_ROUND": "Cette souscription ne fait pas partie de l’allocation.",
+    "CORRECTION_NOT_SUPPORTED_FOR_TYPE": "Un blocage ou un déblocage s’annule par le mouvement inverse, pas par une correction.",
+    "ALREADY_CORRECTED": "Ce mouvement a déjà été corrigé.",
+    "CORRECTION_PENDING": "Une correction de ce mouvement attend déjà une décision.",
+    "REPLACEMENT_WITHOUT_ACCOUNT": "Un mouvement de remplacement demande au moins un compte.",
+    "ACCOUNT_NOT_OF_ISSUANCE": "Les comptes doivent appartenir à cette émission."
   },
   "organizationTypes": {
     "ISSUER": "Émetteur",
@@ -511,7 +517,8 @@
       "document": "Document",
       "issuance": "Émission",
       "subscription": "Souscription",
-      "allocation_round": "Allocation"
+      "allocation_round": "Allocation",
+      "correction_request": "Correction du registre"
     },
     "sources": {
       "WEB": "Application web",
@@ -601,7 +608,15 @@
       "ALLOCATION_ROUND_VALIDATED": "Allocation validée",
       "ALLOCATION_ROUND_REJECTED": "Allocation rejetée",
       "ISSUANCE_ALLOCATED": "Émission allouée",
-      "SUBSCRIPTION_PAYMENT_PENDING": "Souscription en attente de paiement"
+      "SUBSCRIPTION_PAYMENT_PENDING": "Souscription en attente de paiement",
+      "PAYMENT_PREPARED": "Paiement préparé",
+      "PAYMENT_CONFIRMED": "Paiement confirmé",
+      "SUBSCRIPTION_PAYMENT_CONFIRMED": "Souscription payée",
+      "SUBSCRIPTION_ALLOCATED": "Souscription allouée",
+      "REGISTRY_CORRECTION_REQUESTED": "Correction du registre proposée",
+      "REGISTRY_CORRECTION_APPROVED": "Correction du registre approuvée",
+      "REGISTRY_CORRECTION_REJECTED": "Correction du registre rejetée",
+      "REGISTRY_RECONCILIATION_FAILED": "Anomalie du registre détectée"
     }
   },
   "investors": {
@@ -1146,7 +1161,28 @@
       "refusedHelp": "Les règles d’éligibilité de l’émission ne sont pas remplies. La demande reste en brouillon ; contactez l’émetteur ou mettez votre profil à jour."
     },
     "notAllocated": "aucune unité n’a pu être allouée.",
-    "cancelledByInvestor": "annulée par l’investisseur."
+    "cancelledByInvestor": "annulée par l’investisseur.",
+    "payment": {
+      "title": "Paiement (fictif)",
+      "fictitious": "Aucun paiement réel n’a lieu dans cette démonstration : le paiement est simulé.",
+      "none": "Aucun paiement n’est encore attendu.",
+      "awaiting": "En attente du paiement de {amount}.",
+      "status": {
+        "PENDING": "Paiement de {amount} attendu.",
+        "PREPARED": "Paiement de {amount} préparé : en attente de la confirmation d’un administrateur.",
+        "CONFIRMED": "Paiement de {amount} confirmé.",
+        "FAILED": "Le paiement de {amount} ne sera pas reçu."
+      },
+      "reference": "Référence :",
+      "confirmedOn": "Confirmé le {date}.",
+      "prepare": "Préparer la confirmation du paiement",
+      "prepareTitle": "Préparer la confirmation du paiement ?",
+      "prepareDescription": "Le paiement de {amount} est annoncé à la banque (fictive). Un autre administrateur de l’émetteur le confirme ensuite.",
+      "confirm": "Confirmer le paiement",
+      "confirmTitle": "Confirmer le paiement reçu ?",
+      "confirmDescription": "Le paiement de {amount} est confirmé et les {units} unités deviennent disponibles pour l’investisseur. C’est définitif.",
+      "fourEyes": "Vous avez préparé ce paiement : un autre administrateur de l’émetteur doit le confirmer."
+    }
   },
   "allocation": {
     "none": "Aucune allocation n’a encore été préparée. Toutes les souscriptions doivent d’abord être approuvées ou rejetées.",
@@ -1217,7 +1253,8 @@
       "from": "De",
       "to": "Vers",
       "quantity": "Unités",
-      "hash": "Empreinte"
+      "hash": "Empreinte",
+      "actions": "Actions"
     },
     "types": {
       "ISSUANCE": "Création des unités",
@@ -1228,6 +1265,48 @@
       "REDEMPTION": "Remboursement",
       "CANCELLATION": "Annulation",
       "CORRECTION": "Correction"
+    },
+    "reconciliation": {
+      "consistent": "Registre cohérent : {entries} mouvements vérifiés à {date}, positions et chaîne d’empreintes concordent.",
+      "inconsistent": "Le registre est incohérent. Ne le modifiez pas : prévenez le responsable conformité.",
+      "checkAgain": "Vérifier à nouveau",
+      "details": {
+        "NEGATIVE": "Une position est négative (invariant {invariant}).",
+        "BLOCKED_ABOVE_HELD": "Plus d’unités sont bloquées que détenues (invariant {invariant}).",
+        "POSITION_DIFFERS_FROM_LEDGER": "Une position ne correspond pas aux mouvements du ledger (invariant {invariant}).",
+        "ALLOCATED_ABOVE_TOTAL_UNITS": "Les investisseurs détiennent plus d’unités que l’émission n’en compte (invariant {invariant}).",
+        "SEQUENCE_GAP": "Un mouvement manque avant le numéro {sequence} (invariant {invariant}).",
+        "HASH_MISMATCH": "Le mouvement {sequence} a été altéré : son empreinte ne correspond pas (invariant {invariant})."
+      }
+    },
+    "corrections": {
+      "title": "Corrections",
+      "status": {
+        "PROPOSED": "À approuver",
+        "APPROVED": "Approuvée",
+        "REJECTED": "Rejetée"
+      },
+      "requestedBy": "Proposée par {name} le {date}",
+      "decidedBy": "Décidée par {name}",
+      "replacements": "{count, plural, one {# mouvement de remplacement} other {# mouvements de remplacement}}",
+      "fourEyes": "Vous avez proposé cette correction : un responsable conformité ou un autre administrateur doit décider.",
+      "approve": "Approuver",
+      "approveTitle": "Approuver cette correction ?",
+      "approveDescription": "Le mouvement est annulé par une contre-écriture et les mouvements de remplacement sont enregistrés. Le mouvement d’origine est conservé. C’est définitif.",
+      "reject": "Rejeter",
+      "rejectTitle": "Rejeter cette correction ?",
+      "rejectDescription": "L’administrateur qui l’a proposée est prévenu et voit votre commentaire.",
+      "commentRequired": "Commentaire (obligatoire)",
+      "correct": "Corriger",
+      "proposeTitle": "Corriger le mouvement n° {sequence}",
+      "proposeDescription": "Les {quantity} unités de ce mouvement sont renvoyées par une contre-écriture. Vous pouvez ajouter le mouvement qui aurait dû être enregistré. Une autre personne approuve la correction.",
+      "reason": "Motif (obligatoire)",
+      "replacement": "Mouvement de remplacement (facultatif)",
+      "from": "De",
+      "to": "Vers",
+      "quantity": "Unités",
+      "noAccount": "—",
+      "propose": "Proposer la correction"
     }
   }
 }
