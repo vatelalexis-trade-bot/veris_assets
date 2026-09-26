@@ -183,6 +183,13 @@
       "when": 1790428693980,
       "tag": "0025_servicing_security",
       "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1790433936996,
+      "tag": "0026_reporting_views",
+      "breakpoints": true
     }
   ]
 }

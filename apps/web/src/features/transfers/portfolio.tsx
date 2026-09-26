@@ -10,6 +10,7 @@ import { formatAmount } from '@/features/issuances/format';
 import type { PositionView } from '@/features/registry/types';
 import { Link } from '@/i18n/navigation';
 import { api } from '@/lib/api/client';
+import { PortfolioOverview } from '@/features/reporting/portfolio-overview';
 import { TransfersList } from './transfers-list';
 
 /** The investor's positions (SPEC §14.2) and its transfer requests (SPEC §11). */
@@ -28,6 +29,7 @@ export function Portfolio({ canTransfer }: { canTransfer: boolean }) {
   });
   return (
     <div className="flex flex-col gap-8">
+      <PortfolioOverview />
       <section className="flex flex-col gap-2">
         {positions.isError ? <ApiError error={positions.error} /> : null}
         <DataTable<PositionView>
@@ -41,10 +43,13 @@ export function Portfolio({ canTransfer }: { canTransfer: boolean }) {
               id: 'issuance',
               header: t('columns.issuance'),
               cell: (row) => (
-                <>
+                <Link
+                  href={`/portal/portfolio/${row.id}`}
+                  className="text-primary-text hover:underline"
+                >
                   {row.issuanceName}
                   <span className="ml-2 font-mono text-xs text-muted">{row.issuanceCode}</span>
-                </>
+                </Link>
               ),
             },
             {

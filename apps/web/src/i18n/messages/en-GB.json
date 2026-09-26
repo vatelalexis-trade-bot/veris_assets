@@ -1564,5 +1564,114 @@
       "date": "Repayment date",
       "confirm": "Schedule the repayment"
     }
+  },
+  "reporting": {
+    "dashboard": {
+      "title": "Dashboard",
+      "description": "The figures of your organisation and what waits for a decision.",
+      "administered": "Assets administered",
+      "issuances": "Issuances",
+      "activeIssuances": "{count, plural, one {# active} other {# active}}",
+      "subscribed": "Subscribed",
+      "subscriptionRate": "{rate} of the targets",
+      "allocated": "Allocated",
+      "investors": "Investors",
+      "investorsDetail": "{holders} holders · {eligible} eligible · {rate} validated",
+      "averageTicket": "Average ticket",
+      "distributed": "Distributed",
+      "pending": "Operations waiting",
+      "pendingDetail": "{subscriptions} subscriptions · {payments} payments · {transfers} transfers",
+      "kycExpiring": "{count, plural, one {# KYC/KYB expires} other {# KYC/KYB expire}} within 30 days.",
+      "seeInvestors": "See the investors",
+      "upcoming": "Next payments",
+      "noUpcoming": "No payment within the next 90 days.",
+      "overdue": "due",
+      "activity": "Latest activity",
+      "system": "System",
+      "fullLog": "Open the audit log",
+      "issuanceTable": "Issuances",
+      "columns": {
+        "issuance": "Issuance",
+        "status": "Status",
+        "target": "Target",
+        "subscribed": "Subscribed",
+        "progress": "Progress",
+        "holders": "Holders",
+        "maturity": "Maturity"
+      }
+    },
+    "tasks": {
+      "title": "To do",
+      "description": "The decisions waiting for you, the most urgent first. What you initiated yourself waits for someone else.",
+      "empty": "Nothing waits for you.",
+      "emptyDescription": "New requests will appear here.",
+      "due": "Payment on {date}",
+      "waitingSince": "Waiting since {date}",
+      "kinds": {
+        "SUBSCRIPTION_TO_REVIEW": "Subscription to take under review",
+        "SUBSCRIPTION_TO_DECIDE": "Subscription to approve or reject",
+        "SUBSCRIPTION_PAYMENT_TO_CONFIRM": "Subscription payment to confirm",
+        "KYC_TO_DECIDE": "KYC/KYB case to decide",
+        "ISSUANCE_TO_APPROVE": "Issuance to approve",
+        "ALLOCATION_TO_VALIDATE": "Allocation to validate",
+        "TRANSFER_TO_REVIEW": "Transfer to review",
+        "CORRECTION_TO_APPROVE": "Registry correction to approve",
+        "DISTRIBUTION_TO_APPROVE": "Distribution to approve",
+        "DISTRIBUTION_PAYMENT_TO_CONFIRM": "Distribution payment to confirm"
+      }
+    },
+    "platform": {
+      "title": "Metrics",
+      "description": "Activity of the whole platform, every organisation together.",
+      "organisations": "Organisations",
+      "activeUsers": "Active users",
+      "issuances": "Issuances",
+      "active": "{count} active",
+      "investors": "Investors",
+      "nominalAdministered": "Nominal value administered",
+      "ledgerOperations": "Registry operations",
+      "failures": "Failed operations (30 days)",
+      "decisionTime": "Average subscription decision time",
+      "hours": "{hours} h"
+    },
+    "portfolio": {
+      "nominalHeld": "Nominal value held",
+      "positions": "Positions",
+      "received": "Distributions received",
+      "nextPayment": "Next payment",
+      "pending": "Requests in progress",
+      "kinds": {
+        "SUBSCRIPTION": "Subscription to {code}",
+        "TRANSFER": "Transfer of {code} units"
+      }
+    },
+    "position": {
+      "back": "Back to the portfolio",
+      "summary": "Position",
+      "issuer": "Issuer",
+      "held": "Units held",
+      "blocked": "Units blocked",
+      "nominalValue": "Nominal value",
+      "nominalAmount": "Nominal amount held",
+      "invested": "Amount invested",
+      "rate": "Rate",
+      "frequency": "Coupons",
+      "maturity": "Maturity",
+      "nextPayment": "Next payment",
+      "distributions": "Distributions received",
+      "noDistribution": "No distribution received yet.",
+      "movements": "Movements",
+      "noMovement": "No movement.",
+      "documents": "Documents of the issuance",
+      "documentsFromIssuer": "The documents of this issuance are available from the issuer.",
+      "noDocument": "No document for this issuance."
+    },
+    "transactions": {
+      "title": "Transactions",
+      "description": "Every movement of your units, in every issuance.",
+      "caption": "Your movements, newest first",
+      "empty": "No movement yet.",
+      "issuance": "Issuance"
+    }
   }
 }

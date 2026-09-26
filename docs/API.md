@@ -243,6 +243,15 @@ Refus à l'envoi et à l'approbation : `422` avec le code du premier contrôle �
 | GET | `/distributions/{id}/payment-instruction/csv` (mention démonstration) | `distribution:prepare` | |
 | POST | `/issuances/{id}/early-redemption` (`{ paymentDate }`, remboursement total anticipé, D-085) | `issuance:operate` | ✓ |
 
+### 2.10 bis Tableaux de bord et indicateurs (phase 15a, D-087 à D-090)
+
+| Méthode | Chemin | Permission | IK |
+|---|---|---|---|
+| GET | `/dashboard` (tableau de bord et indicateurs de l'émetteur) | `report:read` | |
+| GET | `/tasks` (file « À traiter » de l'utilisateur) | `task:read` | |
+| GET | `/platform/metrics` (indicateurs de la plateforme) | `platform-metrics:read` | |
+| GET | `/me/portfolio` · `/me/portfolio/{positionId}` (tableau de bord et position de l'investisseur) | `registry:read` (P) | |
+
 ### 2.11 `/documents`
 
 | Méthode | Chemin | Permission | IK |

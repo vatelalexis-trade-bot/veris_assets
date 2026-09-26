@@ -471,7 +471,9 @@ Validées par le porteur de projet (« ok pour tout, on verra à l'utilisation �
 
 ## 2026-09-26 — Phase 14b (remboursement du principal)
 
-**D-084 — Proposée. Remboursement du principal (spec 12.6, docs/DATA_MODEL.md §4.1 et §4.5).**
+Validées par le porteur de projet (« ok on y va »).
+
+**D-084 — Acceptée. Remboursement du principal (spec 12.6, docs/DATA_MODEL.md §4.1 et §4.5).**
 1. Une distribution de principal suit le même circuit qu'un coupon (photo, calcul, quatre yeux, paiement fictif). Chaque ligne vaut unités × valeur nominale.
 2. Elle ne peut être créée qu'une fois distribués tous les coupons dus avant elle (`COUPONS_NOT_DISTRIBUTED`).
 3. Avant le paiement, le registre vérifie :
@@ -482,9 +484,62 @@ Validées par le porteur de projet (« ok pour tout, on verra à l'utilisation �
    - les invariants sont vérifiés ;
    - l'émission passe « Échue » (MATURED).
 
-**D-085 — Proposée. Remboursement anticipé total (spec 12.6).**
+**D-085 — Acceptée. Remboursement anticipé total (spec 12.6).**
 1. Il est décidé par un administrateur de l'émetteur (`issuance:operate`) sur une émission active, pour une date comprise entre aujourd'hui et la veille de la maturité (`EARLY_REDEMPTION_DATE_INVALID` sinon).
 2. Les coupons et le principal non encore payés à partir de cette date sont annulés dans l'échéancier. Un nouveau principal est prévu à cette date, avec le même décalage de jour ouvré et de record date.
 3. Il est refusé si une distribution d'un paiement annulé est en cours (`DISTRIBUTION_IN_PROGRESS`).
 4. Les coupons dus avant la date se distribuent d'abord. Aucun intérêt couru entre le dernier coupon et la date n'est versé : ce serait une évolution à valider.
 5. Le remboursement suit ensuite D-084, et l'émission passe « Échue ».
+
+---
+
+## 2026-09-26 — Phase 15a (tableaux de bord, file « À traiter », portail investisseur)
+
+**D-086 — Acceptée. Découpage de la phase 15.** Choix du porteur de projet au lancement de la phase :
+- **15a** : tableaux de bord, file « À traiter » et indicateurs (P15-1, P15-4), portail investisseur complet (P15-2) ;
+- **15b** : exports CSV (P15-3) et documents PDF (P15-8 à P15-10) ;
+- **15c** : page d'accueil et calculateur (P15-5), jeu de démo complet (P15-6), propositions d'hébergement (P15-7).
+
+Le prototype HTML de la page d'accueil (D-019) n'est pas encore dans le dépôt : le porteur de projet le déposera dans `docs/prototype/` avant la 15c.
+
+**D-087 — Proposée. Indicateurs de l'émetteur (spec 13.1, 18).**
+1. Le module de reporting lit les autres modules uniquement par des vues SQL du schéma `reporting`, en lecture seule (docs/ARCHITECTURE.md §4.1). L'option `security_invoker` de ces vues applique l'isolation entre organisations des tables sous-jacentes.
+2. Définitions retenues :
+   - actifs administrés = unités détenues par les investisseurs × valeur nominale ;
+   - souscrit = montant demandé des souscriptions actives, sur les émissions ni en brouillon ni annulées ;
+   - taux de souscription = souscrit ÷ objectifs de ces émissions ;
+   - alloué = unités allouées × valeur nominale ;
+   - ticket moyen = souscrit ÷ nombre de souscriptions actives ;
+   - investisseurs = investisseurs enregistrés ; détenteurs = ceux qui détiennent des unités ;
+   - éligibles = statut d'éligibilité « éligible » ;
+   - taux de validation = KYC/KYB approuvés ÷ investisseurs ;
+   - alertes KYC/KYB = expirations dans les 30 jours ;
+   - prochaines échéances = paiements prévus dans les 90 jours, y compris ceux échus mais pas encore distribués.
+3. Les montants sont présentés par devise, jamais additionnés entre devises.
+
+**D-088 — Proposée. File « À traiter » (spec 13.5).**
+1. La file réunit les décisions en attente :
+   - souscriptions à prendre en charge ou à décider ;
+   - dossiers KYC/KYB ;
+   - émissions à approuver, allocations à valider ;
+   - transferts ;
+   - corrections du registre ;
+   - distributions ;
+   - paiements à confirmer.
+2. Chaque utilisateur n'y voit que ce que ses droits lui permettent de décider, et jamais ce qu'il a lui-même lancé (quatre yeux).
+3. Tri : d'abord par date de paiement (distributions), puis par ancienneté. Chaque ligne mène à l'écran où la décision se prend ; un dossier KYC mène à la fiche de l'investisseur.
+
+**D-089 — Proposée. Portail investisseur (spec 14).**
+1. Le menu investisseur de la spec (14.2) n'a pas d'entrée « Tableau de bord » : le tableau de bord (14.1) est donc en tête de la page « Portefeuille ». Il montre la valeur nominale détenue, le nombre de positions, les distributions reçues, le prochain paiement et les demandes en cours.
+2. Le détail d'une position (14.3) montre :
+   - l'émetteur, les unités, la valeur nominale et le montant investi, le taux, la fréquence, la maturité et le prochain paiement ;
+   - les distributions reçues et les mouvements ;
+   - les documents de l'émission, visibles si l'investisseur y est invité (D-055) : sinon, un renvoi vers l'émetteur.
+3. La page « Transactions » liste tous les mouvements de l'investisseur, sans le nom des autres investisseurs (D-067).
+
+**D-090 — Proposée. Indicateurs de la plateforme (spec 18).** Ils sont additionnés organisation par organisation, sans lever l'isolation :
+- organisations, utilisateurs actifs, émissions et émissions actives, investisseurs ;
+- valeur nominale administrée (en euros, seule devise des données du MVP) ;
+- opérations de registre ;
+- « erreurs techniques » = opérations en échec inscrites dans l'audit sur 30 jours ;
+- « temps de traitement » = délai moyen, en heures, entre l'envoi et la décision d'une souscription.

@@ -2020,6 +2020,86 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/dashboard': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['ReportingController_dashboard'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/tasks': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['ReportingController_tasks'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/platform/metrics': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['ReportingController_metrics'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/me/portfolio': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['ReportingController_portfolio'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/me/portfolio/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['ReportingController_position'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -11468,6 +11548,332 @@ export interface operations {
             } | null;
             ipAddress: string | null;
             userAgent: string | null;
+          };
+        };
+      };
+    };
+  };
+  ReportingController_dashboard: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            issuances: number;
+            activeIssuances: number;
+            administered: {
+              [key: string]: string;
+            };
+            target: {
+              [key: string]: string;
+            };
+            subscribed: {
+              [key: string]: string;
+            };
+            subscriptionRate: string | null;
+            allocated: {
+              [key: string]: string;
+            };
+            distributed: {
+              [key: string]: string;
+            };
+            averageTicket: {
+              [key: string]: string;
+            };
+            investors: number;
+            holders: number;
+            eligibleInvestors: number;
+            investorValidationRate: string | null;
+            kycExpiring: number;
+            pendingSubscriptions: number;
+            pendingPayments: number;
+            pendingTransfers: number;
+            pendingOperations: number;
+            upcomingPayments: {
+              /** Format: uuid */
+              scheduleId: string;
+              /** Format: uuid */
+              issuanceId: string;
+              code: string;
+              name: string;
+              sequence: number;
+              /** @enum {string} */
+              type: 'COUPON' | 'PRINCIPAL';
+              /** Format: date */
+              recordDate: string;
+              /** Format: date */
+              paymentDate: string;
+              /** Format: uuid */
+              distributionId: string | null;
+              distributionStatus: string | null;
+              overdue: boolean;
+            }[];
+            issuanceRows: {
+              /** Format: uuid */
+              issuanceId: string;
+              code: string;
+              name: string;
+              status: string;
+              currency: string | null;
+              target: string | null;
+              subscribed: string;
+              progress: string | null;
+              holders: number;
+              /** Format: date */
+              maturityDate: string | null;
+              /** Format: date */
+              subscriptionEndDate: string | null;
+            }[];
+            recentActivity: {
+              /** Format: uuid */
+              id: string;
+              action: string;
+              actorName: string | null;
+              resourceType: string | null;
+              /** Format: date-time */
+              occurredAt: string;
+              result: string;
+            }[];
+          };
+        };
+      };
+    };
+  };
+  ReportingController_tasks: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            kind: string;
+            resourceType: string;
+            /** Format: uuid */
+            resourceId: string;
+            reference: string | null;
+            /** Format: date-time */
+            waitingSince: string | null;
+            /** Format: date */
+            dueDate: string | null;
+          }[];
+        };
+      };
+    };
+  };
+  ReportingController_metrics: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            organisations: number;
+            activeUsers: number;
+            issuances: number;
+            activeIssuances: number;
+            investors: number;
+            nominalAdministered: string;
+            ledgerOperations: number;
+            failures30Days: number;
+            averageDecisionHours: string | null;
+          };
+        };
+      };
+    };
+  };
+  ReportingController_portfolio: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            nominalHeld: {
+              [key: string]: string;
+            };
+            positions: number;
+            distributionsReceived: {
+              [key: string]: string;
+            };
+            nextPayment: {
+              /** Format: date */
+              date: string;
+              code: string;
+              /** Format: uuid */
+              positionId: string;
+            } | null;
+            pendingRequests: {
+              /** @enum {string} */
+              kind: 'SUBSCRIPTION' | 'TRANSFER';
+              /** Format: uuid */
+              resourceId: string;
+              reference: string;
+              status: string;
+              /** Format: date-time */
+              updatedAt: string;
+            }[];
+            positionRows: {
+              /** Format: uuid */
+              positionId: string;
+              /** Format: uuid */
+              issuanceId: string;
+              code: string;
+              name: string;
+              status: string;
+              legalIssuerName: string | null;
+              currency: string;
+              nominalValue: string | null;
+              interestRate: string | null;
+              /** Format: date */
+              maturityDate: string | null;
+              distributionFrequency: string | null;
+              quantityHeld: string;
+              quantityBlocked: string;
+              quantityAvailable: string;
+              acquisitionAmount: string;
+              nominalAmount: string;
+              /** Format: date */
+              nextPaymentDate: string | null;
+            }[];
+          };
+        };
+      };
+    };
+  };
+  ReportingController_position: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            position: {
+              /** Format: uuid */
+              positionId: string;
+              /** Format: uuid */
+              issuanceId: string;
+              code: string;
+              name: string;
+              status: string;
+              legalIssuerName: string | null;
+              currency: string;
+              nominalValue: string | null;
+              interestRate: string | null;
+              /** Format: date */
+              maturityDate: string | null;
+              distributionFrequency: string | null;
+              quantityHeld: string;
+              quantityBlocked: string;
+              quantityAvailable: string;
+              acquisitionAmount: string;
+              nominalAmount: string;
+              /** Format: date */
+              nextPaymentDate: string | null;
+            };
+            movements: {
+              /** Format: uuid */
+              id: string;
+              /** Format: uuid */
+              issuanceId: string;
+              issuanceCode: string;
+              sequenceNo: number;
+              /** @enum {string} */
+              type:
+                | 'ISSUANCE'
+                | 'ALLOCATION'
+                | 'TRANSFER'
+                | 'BLOCK'
+                | 'UNBLOCK'
+                | 'REDEMPTION'
+                | 'CANCELLATION'
+                | 'CORRECTION';
+              source: {
+                /** Format: uuid */
+                accountId: string | null;
+                /** @enum {string|null} */
+                type: 'ISSUER_TREASURY' | 'INVESTOR' | null;
+                /** Format: uuid */
+                investorId: string | null;
+                investorName: string | null;
+              };
+              destination: {
+                /** Format: uuid */
+                accountId: string | null;
+                /** @enum {string|null} */
+                type: 'ISSUER_TREASURY' | 'INVESTOR' | null;
+                /** Format: uuid */
+                investorId: string | null;
+                investorName: string | null;
+              };
+              quantity: string;
+              /** Format: date */
+              effectiveDate: string;
+              /** Format: date-time */
+              recordedAt: string;
+              businessReference: string;
+              status: string;
+              /** Format: uuid */
+              reversesEntryId: string | null;
+              previousHash: string;
+              entryHash: string;
+              /** Format: uuid */
+              initiatedByUserId: string | null;
+              initiatedByService: string | null;
+              correlationId: string | null;
+            }[];
+            distributions: {
+              /** Format: uuid */
+              distributionId: string;
+              /** @enum {string} */
+              type: 'COUPON' | 'PRINCIPAL';
+              /** Format: date */
+              paymentDate: string;
+              grossAmount: string;
+              currency: string;
+            }[];
           };
         };
       };

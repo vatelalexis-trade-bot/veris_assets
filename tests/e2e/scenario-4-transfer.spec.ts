@@ -57,7 +57,7 @@ test('scenario 4 — transfer of 40 units approved by compliance', async ({ brow
   await investorA.goto('/en/portal/portfolio');
   const row = investorA.getByRole('row', { name: new RegExp(name) });
   await expect(row.getByRole('cell', { name: '100' }).first()).toBeVisible();
-  await row.getByRole('link', { name: /Transfer/ }).click();
+  await row.getByRole('link', { name: /^Transfer / }).click();
   await expect(investorA.getByText(`${name}: 100 units available out of 100 held.`)).toBeVisible();
   await investorA.getByLabel('Recipient code').fill(recipient.recipientCode);
   await investorA.getByLabel('Number of units').fill('40');

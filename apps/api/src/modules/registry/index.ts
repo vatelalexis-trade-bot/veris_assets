@@ -6,3 +6,4 @@ export { SubscriptionsService } from './application/subscriptions.service.js';
 export { logicalAccount, position } from './infrastructure/schema.js';
 export { RegistryQueries } from './application/registry-queries.js';
 export { RegistryRedemptions } from './application/redemptions.js';
+export { ledgerEntryView, toLedgerEntryView } from './api/registry-dto.js';

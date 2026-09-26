@@ -273,6 +273,15 @@ describe('scenario 5 — tenant isolation (SPEC §20, §29)', () => {
         ),
     ],
     [
+      /^\/api\/v1\/me\/portfolio\/:id/,
+      () =>
+        idOf(
+          `${CONTOSO_ACCOUNT}
+           INSERT INTO registry.position (tenant_id, issuance_id, account_id, currency)
+           SELECT tenant_id, issuance_id, id, 'EUR' FROM account RETURNING id`,
+        ),
+    ],
+    [
       /^\/api\/v1\/issuances\/:id/,
       () =>
         idOf(

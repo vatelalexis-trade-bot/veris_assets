@@ -181,7 +181,7 @@ Vérifiable par : scénario 6 vert. Livrée en deux fois (D-079) : 14a = P14-1 �
 | P14-7 | Scénario 6 automatisé ; couverture `servicing` ≥ 90 % | M |
 
 ## Phase 15 — Dashboards, portail investisseur, exports, landing
-Vérifiable par : démo complète jouable.
+Vérifiable par : démo complète jouable. Livrée en trois fois (D-086) : 15a = P15-1, P15-2, P15-4 ; 15b = P15-3, P15-8 à P15-10 ; 15c = P15-5 à P15-7.
 
 | ID | Élément | Prio |
 |---|---|:-:|

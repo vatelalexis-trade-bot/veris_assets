@@ -1564,5 +1564,114 @@
       "date": "Date de remboursement",
       "confirm": "Prévoir le remboursement"
     }
+  },
+  "reporting": {
+    "dashboard": {
+      "title": "Tableau de bord",
+      "description": "Les chiffres de votre organisation et ce qui attend une décision.",
+      "administered": "Actifs administrés",
+      "issuances": "Émissions",
+      "activeIssuances": "{count, plural, one {# active} other {# actives}}",
+      "subscribed": "Souscrit",
+      "subscriptionRate": "{rate} des objectifs",
+      "allocated": "Alloué",
+      "investors": "Investisseurs",
+      "investorsDetail": "{holders} détenteurs · {eligible} éligibles · {rate} validés",
+      "averageTicket": "Ticket moyen",
+      "distributed": "Distribué",
+      "pending": "Opérations en attente",
+      "pendingDetail": "{subscriptions} souscriptions · {payments} paiements · {transfers} transferts",
+      "kycExpiring": "{count, plural, one {# KYC/KYB expire} other {# KYC/KYB expirent}} dans les 30 jours.",
+      "seeInvestors": "Voir les investisseurs",
+      "upcoming": "Prochaines échéances",
+      "noUpcoming": "Aucun paiement dans les 90 prochains jours.",
+      "overdue": "échu",
+      "activity": "Dernières activités",
+      "system": "Système",
+      "fullLog": "Ouvrir le journal d’audit",
+      "issuanceTable": "Émissions",
+      "columns": {
+        "issuance": "Émission",
+        "status": "Statut",
+        "target": "Objectif",
+        "subscribed": "Souscrit",
+        "progress": "Progression",
+        "holders": "Détenteurs",
+        "maturity": "Maturité"
+      }
+    },
+    "tasks": {
+      "title": "À traiter",
+      "description": "Les décisions qui vous attendent, les plus urgentes en premier. Ce que vous avez lancé vous-même attend quelqu’un d’autre.",
+      "empty": "Rien ne vous attend.",
+      "emptyDescription": "Les nouvelles demandes apparaîtront ici.",
+      "due": "Paiement le {date}",
+      "waitingSince": "En attente depuis le {date}",
+      "kinds": {
+        "SUBSCRIPTION_TO_REVIEW": "Souscription à prendre en charge",
+        "SUBSCRIPTION_TO_DECIDE": "Souscription à approuver ou rejeter",
+        "SUBSCRIPTION_PAYMENT_TO_CONFIRM": "Paiement de souscription à confirmer",
+        "KYC_TO_DECIDE": "Dossier KYC/KYB à décider",
+        "ISSUANCE_TO_APPROVE": "Émission à approuver",
+        "ALLOCATION_TO_VALIDATE": "Allocation à valider",
+        "TRANSFER_TO_REVIEW": "Transfert à examiner",
+        "CORRECTION_TO_APPROVE": "Correction du registre à approuver",
+        "DISTRIBUTION_TO_APPROVE": "Distribution à approuver",
+        "DISTRIBUTION_PAYMENT_TO_CONFIRM": "Paiement de distribution à confirmer"
+      }
+    },
+    "platform": {
+      "title": "Indicateurs",
+      "description": "L’activité de toute la plateforme, toutes organisations confondues.",
+      "organisations": "Organisations",
+      "activeUsers": "Utilisateurs actifs",
+      "issuances": "Émissions",
+      "active": "{count} actives",
+      "investors": "Investisseurs",
+      "nominalAdministered": "Valeur nominale administrée",
+      "ledgerOperations": "Opérations de registre",
+      "failures": "Opérations en échec (30 jours)",
+      "decisionTime": "Délai moyen de décision d’une souscription",
+      "hours": "{hours} h"
+    },
+    "portfolio": {
+      "nominalHeld": "Valeur nominale détenue",
+      "positions": "Positions",
+      "received": "Distributions reçues",
+      "nextPayment": "Prochain paiement",
+      "pending": "Demandes en cours",
+      "kinds": {
+        "SUBSCRIPTION": "Souscription à {code}",
+        "TRANSFER": "Transfert d’unités {code}"
+      }
+    },
+    "position": {
+      "back": "Retour au portefeuille",
+      "summary": "Position",
+      "issuer": "Émetteur",
+      "held": "Unités détenues",
+      "blocked": "Unités bloquées",
+      "nominalValue": "Valeur nominale",
+      "nominalAmount": "Montant nominal détenu",
+      "invested": "Montant investi",
+      "rate": "Taux",
+      "frequency": "Coupons",
+      "maturity": "Maturité",
+      "nextPayment": "Prochain paiement",
+      "distributions": "Distributions reçues",
+      "noDistribution": "Aucune distribution reçue pour l’instant.",
+      "movements": "Mouvements",
+      "noMovement": "Aucun mouvement.",
+      "documents": "Documents de l’émission",
+      "documentsFromIssuer": "Les documents de cette émission sont disponibles auprès de l’émetteur.",
+      "noDocument": "Aucun document pour cette émission."
+    },
+    "transactions": {
+      "title": "Transactions",
+      "description": "Tous les mouvements de vos unités, dans toutes les émissions.",
+      "caption": "Vos mouvements, les plus récents en premier",
+      "empty": "Aucun mouvement pour l’instant.",
+      "issuance": "Émission"
+    }
   }
 }
