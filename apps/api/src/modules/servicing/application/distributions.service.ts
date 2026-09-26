@@ -30,6 +30,7 @@ import { issuance, IssuancesService, type IssuanceDetail } from '../../issuance/
 import { RegistryQueries, RegistryRedemptions, RegistrySnapshots } from '../../registry/index.js';
 import { periodFraction } from '../domain/day-count.js';
 import {
+  CALCULATION_VERSION,
   calculateDistribution,
   distributionMachine,
   paymentInstructionCsv,
@@ -43,9 +44,6 @@ import {
   paymentInstruction,
 } from '../infrastructure/schema.js';
 import { DISTRIBUTION_EVENTS } from './distribution-events.js';
-
-/** Version of the calculation rules, kept with every distribution. */
-export const CALCULATION_VERSION = 'servicing-calc-1';
 
 type DistributionRow = typeof distribution.$inferSelect;
 type ScheduleRow = typeof couponSchedule.$inferSelect;

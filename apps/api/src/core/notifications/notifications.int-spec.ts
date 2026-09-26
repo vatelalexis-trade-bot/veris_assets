@@ -219,9 +219,12 @@ describe('notifications of the signed-in user (docs/API.md §2.12)', () => {
     await clearQueue(QUEUES.outboxEvent.name);
 
     const inviterId = await idOfUser('northwind.admin1@example.com');
+    // This invitation's notification only: other files may leave accepted invitations queued.
     const notifications = await ctx.admin.query(
-      `SELECT title_key FROM core.notification WHERE user_id = $1 AND title_key = 'INVITATION_ACCEPTED'`,
-      [inviterId],
+      `SELECT title_key FROM core.notification
+       WHERE user_id = $1 AND title_key = 'INVITATION_ACCEPTED'
+         AND resource_id = (SELECT id FROM iam.user WHERE email = $2)`,
+      [inviterId, email],
     );
     expect(notifications.rowCount).toBe(1);
     const emailJobs = await queuedJobs<NotificationEmailJob>(QUEUES.notificationEmail.name);

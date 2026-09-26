@@ -149,7 +149,8 @@ export class RegistrySnapshots {
   }
 }
 
-function checksumOf(snapshot: {
+/** Checksum of a snapshot, also used by the demonstration data (scripts/db/seed-registry.ts). */
+export function checksumOf(snapshot: {
   recordDate: BusinessDate;
   lastSequenceIncluded: number;
   lines: readonly SnapshotLine[];

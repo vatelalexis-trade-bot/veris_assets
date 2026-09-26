@@ -548,21 +548,21 @@ Le prototype HTML de la page d'accueil (D-019) n'est pas encore dans le dépôt 
 
 ## 2026-09-26 — Phase 15b (exports CSV et documents PDF)
 
-Proposées par Claude, à valider par le porteur de projet.
+Validées par le porteur de projet (« Oui, toutes validées »).
 
-**D-091 — Proposée. Bibliothèque PDF : pdfkit 0.20.2.**
+**D-091 — Acceptée. Bibliothèque PDF : pdfkit 0.20.2.**
 1. Les PDF sont produits par le serveur avec pdfkit, maintenue et sans navigateur à installer. pdf-lib n'est plus maintenue depuis 2022 ; un navigateur sans interface (Playwright) serait lourd à faire tourner en production.
 2. Mise en page sobre : mot-symbole « VIRTUS ASSETS » en couleur primaire, titre, blocs libellé / valeur, tableaux, paragraphe. Police Helvetica standard (pas de fichier de police à embarquer). Le logo image n'y figure pas, en attendant sa version SVG.
 3. Chaque page porte la mention « DÉMONSTRATION — données fictives, sans valeur juridique » (spec 3.3).
 
-**D-092 — Proposée. Documents générés aux événements (spec 16).**
+**D-092 — Acceptée. Documents générés aux événements (spec 16).**
 1. Le bulletin de souscription est généré à l'envoi de la souscription, la confirmation d'allocation à la validation de l'allocation, et un avis par porteur au paiement d'une distribution (avis de remboursement du principal pour une distribution de principal).
 2. Ils sont rangés dans les documents de l'investisseur (visibles par lui), dans la langue de son premier compte actif. Générer deux fois le même événement ne crée qu'un document.
 3. Écart à docs/API.md : la route `GET /allocations/{roundId}/confirmation` n'existe pas ; la confirmation se télécharge comme tout document (`/documents`).
 4. Un document généré n'a pas d'auteur (`uploaded_by` vide) : il vient de la plateforme, pas d'un utilisateur.
 5. Les montants de l'avis de coupon sont bruts : la plateforme ne calcule pas d'impôts.
 
-**D-093 — Proposée. Exports CSV asynchrones (P15-3).**
+**D-093 — Acceptée. Exports CSV asynchrones (P15-3).**
 1. Quatre exports : registre (positions, trésorerie comprise), souscriptions, lignes de distribution, journal d'audit. Les trois premiers peuvent être limités à une émission.
 2. Droits : `report:export` (Administrateur émetteur, Auditeur), plus le droit de lecture du contenu exporté sur toute l'organisation (`registry:read`, `subscription:read`, `distribution:read`, `audit:read`).
 3. La demande crée une tâche de fond ; le fichier est rangé comme document interne de l'organisation (type « rapport ») et le demandeur est notifié (« Export prêt », catégorie Documents). Chacun ne voit que ses propres exports. Un échec est affiché, et la tâche est retentée deux fois.
@@ -570,3 +570,19 @@ Proposées par Claude, à valider par le porteur de projet.
 5. L'export d'audit ne contient ni adresse IP, ni navigateur, ni valeurs avant / après : un export sort de la plateforme, il porte le moins de données possible.
 6. Écart à docs/API.md : les routes sont `POST /exports`, `GET /exports`, `GET /exports/{id}` (et non `/reports/exports`) ; le téléchargement passe par le document (`/documents/{id}/download-url`).
 7. L'entrée de menu « Rapports » demande `report:export` (au lieu de `report:read`) : la page ne contient que les exports ; les indicateurs sont au tableau de bord.
+
+## 2026-09-26 — Phase 15c (jeu de démo complet)
+
+Proposée par Claude, à valider par le porteur de projet.
+
+**D-094 — Proposée. Contenu du jeu de démo complet (spec 28, P15-6).**
+1. Le jeu de démo existant est complété pour couvrir la section 28 :
+   - **éligibilité** : les investisseurs de Northwind au KYC/KYB approuvé sont déclarés éligibles par le Compliance Officer (14), Maple (KYC/KYB rejeté) non éligible ; les autres restent « non évalués ». Chaque décision est tracée (évaluation manuelle, historique, audit). Les investisseurs de Contoso restent non évalués : Contoso n'a pas de Compliance Officer ;
+   - **pays exclu** : l'invitation de Juniper Ventures (États-Unis) au projet solaire Aurora, qui exclut les États-Unis, est refusée, avec la raison conservée ;
+   - **coupons** : le premier coupon semestriel de « Northwind Green Notes » est versé (12 500 € pour 3 porteurs, dont 2 500 € pour Alpine), avec la photographie du registre, les lignes, et l'instruction fictive confirmée en quatre yeux. Le second coupon est échu, à distribuer : le scénario 6 porte désormais sur lui ;
+   - **second tenant** : Contoso a sa propre émission ouverte, « Contoso Real Estate Notes 2028 » (CRE28), avec ses deux investisseurs invités. Elle n'est jamais visible depuis Northwind ;
+   - **notifications** : 10 notifications pour les comptes de démo (souscription à traiter, transfert à examiner, dossier KYC, coupon versé, allocation), certaines déjà lues ;
+   - **audit** : le journal reprend chaque changement de statut semé, avec les actions qu'écrit l'application (par exemple `SUBSCRIPTION_APPROVED`, `DISTRIBUTION_PAID`). Un changement sans auteur est attribué à une tâche automatique.
+2. Déterminisme : identifiants fixes, et les dates restent relatives au jour de la réinitialisation, pour que les scénarios restent jouables à toute date. Recharger le jeu ne change rien (vérifié par un test).
+3. Pas de PDF pour l'historique semé : le chargement des données n'écrit pas de fichiers dans le stockage. Les documents générés (D-092) apparaissent pour toute nouvelle opération faite pendant la démo.
+4. « Helios Solar SPV 2027 », cité en exemple par la spec, reste créé par le scénario 1 (assistant de création), pour ne pas doublonner.

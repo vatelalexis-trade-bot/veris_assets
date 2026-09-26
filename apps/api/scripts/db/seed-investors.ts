@@ -3,6 +3,7 @@
 // rejected, not started) and a country the demo issuances will exclude; 2 in Contoso.
 import { createHash } from 'node:crypto';
 import { addDays, dateInTimeZone, type KycCaseStatus } from '@virtus/shared';
+import { ELIGIBILITY_ENGINE_VERSION } from '../../src/modules/investor-compliance/domain/eligibility.js';
 import { kycValidUntil } from '../../src/modules/investor-compliance/domain/kyc.js';
 import { recipientCodeFrom } from '../../src/modules/investor-compliance/domain/recipient-code.js';
 import { deterministicUuid } from './deterministic-id.js';
@@ -76,6 +77,34 @@ export function demoInvestorRows(
   const today = dateInTimeZone(now, 'Europe/Paris');
   const investors = [];
   const cases = [];
+  const eligibilityDecisions = {
+    assessments: [] as {
+      id: string;
+      tenantId: string;
+      investorId: string;
+      issuanceId: null;
+      context: string;
+      result: string;
+      rules: never[];
+      rulesVersion: string;
+      decidedByUserId: string;
+      decidedBySystem: boolean;
+      justification: string;
+      assessedAt: Date;
+    }[],
+    transitions: [] as {
+      id: string;
+      tenantId: string;
+      resourceType: string;
+      resourceId: string;
+      fromStatus: string;
+      toStatus: string;
+      actorUserId: string;
+      actorRole: string;
+      comment: string;
+      occurredAt: Date;
+    }[],
+  };
   for (const [index, demo] of INVESTORS.entries()) {
     const id = investorId(demo.key);
     const tenantId = tenantIds[demo.tenant];
@@ -102,6 +131,52 @@ export function demoInvestorRows(
     const validUntil =
       status === 'APPROVED' || status === 'EXPIRED' ? kycValidUntil(decidedOn) : null;
     const decided = status === 'APPROVED' || status === 'EXPIRED' || status === 'REJECTED';
+    // General eligibility decided by the Compliance Officer the day after the KYC/KYB decision:
+    // eligible once approved, not eligible once rejected; the others are not assessed yet.
+    // (Northwind only: Contoso has no Compliance Officer.)
+    const eligibility =
+      demo.tenant !== 'northwind'
+        ? 'NOT_ASSESSED'
+        : status === 'APPROVED'
+          ? 'ELIGIBLE'
+          : status === 'REJECTED'
+            ? 'NOT_ELIGIBLE'
+            : 'NOT_ASSESSED';
+    if (eligibility !== 'NOT_ASSESSED') {
+      const decidedAt = new Date(`${addDays(decidedOn, 1)}T10:00:00Z`);
+      const justification =
+        eligibility === 'ELIGIBLE'
+          ? 'KYC/KYB approved, professional investor (demo).'
+          : 'KYC/KYB rejected: beneficial ownership not established (demo).';
+      const assessment = deterministicUuid(`assessment:manual:${demo.key}`);
+      eligibilityDecisions.assessments.push({
+        id: assessment,
+        tenantId,
+        investorId: id,
+        issuanceId: null,
+        context: 'MANUAL',
+        result: eligibility,
+        rules: [],
+        // The general rules of a Compliance Officer's decision (eligibility.service.ts).
+        rulesVersion: `${ELIGIBILITY_ENGINE_VERSION}/rules-0`,
+        decidedByUserId: staff.decider,
+        decidedBySystem: false,
+        justification,
+        assessedAt: decidedAt,
+      });
+      eligibilityDecisions.transitions.push({
+        id: deterministicUuid(`transition:eligibility:${demo.key}`),
+        tenantId,
+        resourceType: 'investor_eligibility',
+        resourceId: id,
+        fromStatus: 'NOT_ASSESSED',
+        toStatus: eligibility,
+        actorUserId: staff.decider,
+        actorRole: 'COMPLIANCE_OFFICER',
+        comment: justification,
+        occurredAt: decidedAt,
+      });
+    }
     investors.push({
       id,
       tenantId,
@@ -131,7 +206,7 @@ export function demoInvestorRows(
             ? 'MEDIUM'
             : 'LOW'
           : null,
-      eligibilityStatus: 'NOT_ASSESSED',
+      eligibilityStatus: eligibility,
       recipientCode: recipientCode(demo.key),
       createdBy: staff.preparer,
     });
@@ -184,5 +259,5 @@ export function demoInvestorRows(
       ownershipPercentage: ['40.00', '25.00'][index]!,
     },
   ]);
-  return { investors, cases, representatives, beneficialOwners };
+  return { investors, cases, representatives, beneficialOwners, eligibilityDecisions };
 }

@@ -257,9 +257,11 @@ describe('invitations — the whitelist (P10-4)', () => {
         meta: expect.objectContaining({ country: 'US' }),
       }),
     ]);
+    // The decision is kept (the demo data holds an earlier refusal of the same invitation).
     const kept = await ctx.admin.query(
       `SELECT result FROM investor.eligibility_assessment
-       WHERE investor_id = $1 AND issuance_id = $2 AND context = 'INVITATION'`,
+       WHERE investor_id = $1 AND issuance_id = $2 AND context = 'INVITATION'
+         AND assessed_at > now() - interval '1 minute'`,
       [juniper, aurora],
     );
     expect(kept.rows).toEqual([{ result: 'NOT_ELIGIBLE' }]);

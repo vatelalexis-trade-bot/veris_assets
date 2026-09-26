@@ -63,6 +63,9 @@ export const distributionMachine = defineStateMachine<DistributionStatus>({
   ],
 });
 
+/** Version of the calculation rules, kept with every distribution. */
+export const CALCULATION_VERSION = 'servicing-calc-1';
+
 export interface Holder {
   accountId: string;
   investorId: string;

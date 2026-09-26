@@ -1,7 +1,7 @@
 // Scenario 6 of SPEC §29 — coupon, in a real browser (docs/BACKLOG.md P14-7).
 // Given an ACTIVE issuance at 5 % semi-annual in 30E/360, nominal 1 000 €, and an investor
-// holding 100 units at the record date (demo issuance "Northwind Green Notes", whose first
-// coupon is due), when the distribution is calculated, reviewed and approved, then the investor's
+// holding 100 units at the record date (demo issuance "Northwind Green Notes": its first coupon
+// was paid, its second is due), when the distribution is calculated, reviewed and approved, then the investor's
 // line is exactly 2 500.00 €, the total equals the sum of the lines (rounding difference shown),
 // the fictitious payment instruction and the CSV are generated, and a recalculation from the
 // snapshot gives the same result.
@@ -35,12 +35,13 @@ test('scenario 6 — coupon of 2 500.00 € on 100 units, four eyes, CSV', async
     'GET',
     `/api/v1/issuances/${notes.id}/coupon-schedule`,
   );
+  expect(schedule[0]!.status, 'The first coupon is paid in the demo data.').toBe('DISTRIBUTED');
   expect(
-    schedule[0]!.distributionId,
-    'The first coupon was already distributed: reset the demo (pnpm db:reset).',
+    schedule[1]!.distributionId,
+    'The second coupon was already distributed: reset the demo (pnpm db:reset).',
   ).toBeNull();
 
-  // The operator creates and calculates the distribution of the first coupon.
+  // The operator creates and calculates the distribution of the coupon due.
   await operator.goto(`/en/issuer/issuances/${notes.id}`);
   await operator.getByRole('tab', { name: 'Coupons' }).click();
   await operator.getByRole('button', { name: 'Create the distribution' }).first().click();

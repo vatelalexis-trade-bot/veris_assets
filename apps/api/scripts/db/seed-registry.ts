@@ -1,7 +1,8 @@
 // Demonstration registry (SPEC §28): "Northwind Private Debt Fund I" is allocated and paid, with
 // positions and their ledger, and a transfer waiting for the compliance review; "Northwind Green
-// Notes" is active, its first semi-annual coupon due (scenario 6). The movements are chained with
-// the application's own hash, so the daily reconciliation finds them consistent.
+// Notes" is active: its first semi-annual coupon was paid (snapshot, lines, confirmed fictitious
+// instruction) and its second is due (scenario 6). The movements are chained with the
+// application's own hash, so the daily reconciliation finds them consistent.
 import {
   addDays,
   addMonths,
@@ -10,8 +11,15 @@ import {
   type BusinessDate,
 } from '@virtus/shared';
 import { entryHash } from '../../src/modules/registry/application/ledger-hash.js';
+import { checksumOf } from '../../src/modules/registry/application/snapshots.js';
 import { ZERO_HASH, type LedgerEntryType } from '../../src/modules/registry/domain/ledger.js';
 import { ELIGIBILITY_ENGINE_VERSION } from '../../src/modules/investor-compliance/domain/eligibility.js';
+import { periodFraction } from '../../src/modules/servicing/domain/day-count.js';
+import {
+  CALCULATION_VERSION,
+  calculateDistribution,
+  type Holder,
+} from '../../src/modules/servicing/domain/distribution.js';
 import { generateSchedule } from '../../src/modules/servicing/domain/schedule.js';
 import { deterministicUuid } from './deterministic-id.js';
 import { investorId, recipientCode } from './seed-investors.js';
@@ -36,6 +44,8 @@ interface FundOptions {
   dayCount: '30E_360' | 'ACT_365F';
   issueDate: BusinessDate;
   maturityDate: BusinessDate;
+  /** Coupons already distributed and paid (an ACTIVE issuance only). */
+  paidCoupons?: number;
   /** Days before today of the allocation (the ledger's effective dates). */
   allocatedDaysAgo: number;
   /** Units of each holder, allocated and paid: [investor key, units, user account]. */
@@ -45,10 +55,11 @@ interface FundOptions {
 
 export function demoRegistryRows(northwind: string, now = new Date()) {
   const today = dateInTimeZone(now, 'Europe/Paris');
-  // The first coupon of the green notes ended on a 15th a few days ago: 180 days in 30E/360.
+  // The second coupon of the green notes ended on a 15th a few days ago, the first one six months
+  // earlier: 180 days each in 30E/360.
   const couponEnd =
     today.slice(8) >= '18' ? `${today.slice(0, 8)}15` : `${addMonths(today, -1).slice(0, 8)}15`;
-  const greenIssue = addMonths(couponEnd, -6);
+  const greenIssue = addMonths(couponEnd, -12);
   const funds: FundOptions[] = [
     {
       key: 'nwpd1',
@@ -89,6 +100,7 @@ export function demoRegistryRows(northwind: string, now = new Date()) {
       issueDate: greenIssue,
       maturityDate: addMonths(greenIssue, 36),
       allocatedDaysAgo: daysBefore(today, greenIssue) + 5,
+      paidCoupons: 1,
       holders: [
         ['alpine', '100', userId('investor.a@example.com')],
         ['baltic', '250', userId('investor.b@example.com')],
@@ -429,7 +441,10 @@ function fundRows(northwind: string, today: BusinessDate, options: FundOptions) 
       ]
     : [];
 
-  // An active issuance has its coupon schedule, generated at its activation.
+  // An active issuance has its coupon schedule, generated at its activation; its first coupons
+  // may already be paid.
+  const paid = options.paidCoupons ?? 0;
+  const distributionOf = (sequence: number) => deterministicUuid(`distribution:${key}:${sequence}`);
   const schedules =
     options.status === 'ACTIVE'
       ? generateSchedule({
@@ -443,9 +458,26 @@ function fundRows(northwind: string, today: BusinessDate, options: FundOptions) 
           id: deterministicUuid(`coupon:${key}:${row.sequence}`),
           tenantId: northwind,
           issuanceId: fund,
-          status: 'SCHEDULED',
+          status: row.sequence <= paid ? 'DISTRIBUTED' : 'SCHEDULED',
+          distributionId: row.sequence <= paid ? distributionOf(row.sequence) : null,
         }))
       : [];
+  const servicing = paidCoupons(
+    schedules.filter((row) => row.sequence <= paid),
+    {
+      northwind,
+      fund,
+      key,
+      options,
+      holders: holders.map(([investor, units]) => ({
+        accountId: accountId(investor),
+        investorId: investorId(investor),
+        quantity: units,
+      })),
+      ledgerEntries,
+      distributionOf,
+    },
+  );
 
   const step = (
     resourceType: string,
@@ -499,6 +531,16 @@ function fundRows(northwind: string, today: BusinessDate, options: FundOptions) 
         ['PAYMENT_CONFIRMED', 'ALLOCATED', ADMIN2, 'ISSUER_ADMIN', ago(35 - index, 15)],
       ]),
     ),
+    ...servicing.history.flatMap((row) =>
+      step('distribution', row.id, `${key}:distribution:${row.id}`, [
+        [null, 'DRAFT', OPERATOR, 'ISSUER_OPERATOR', row.calculatedAt],
+        ['DRAFT', 'CALCULATED', OPERATOR, 'ISSUER_OPERATOR', row.calculatedAt],
+        ['CALCULATED', 'UNDER_REVIEW', ADMIN, 'ISSUER_ADMIN', row.calculatedAt],
+        ['UNDER_REVIEW', 'APPROVED', ADMIN2, 'ISSUER_ADMIN', row.approvedAt],
+        ['APPROVED', 'PAYMENT_INSTRUCTION_GENERATED', ADMIN, 'ISSUER_ADMIN', row.approvedAt],
+        ['PAYMENT_INSTRUCTION_GENERATED', 'PAID', ADMIN2, 'ISSUER_ADMIN', row.paidAt],
+      ]),
+    ),
     ...(pending
       ? step('transfer', transfer, `${key}:transfer`, [
           [null, 'DRAFT', investorA, 'INVESTOR', at(1, 9)],
@@ -523,6 +565,146 @@ function fundRows(northwind: string, today: BusinessDate, options: FundOptions) 
     ledgerEntries,
     transfers,
     schedules,
+    snapshots: servicing.snapshots,
+    snapshotLines: servicing.snapshotLines,
+    distributions: servicing.distributions,
+    distributionLines: servicing.lines,
+    paymentInstructions: servicing.instructions,
     transitions,
+  };
+}
+
+/**
+ * Paid coupons (SPEC §12.2 to §12.5): the snapshot of the registry at the record date, the lines
+ * calculated by the application's own rules, the distribution approved and its fictitious
+ * instruction confirmed with four eyes (administrator 1 prepares, administrator 2 decides).
+ */
+function paidCoupons(
+  coupons: readonly {
+    id: string;
+    sequence: number;
+    periodStart: BusinessDate;
+    periodEnd: BusinessDate;
+    paymentDate: BusinessDate;
+    recordDate: BusinessDate;
+  }[],
+  context: {
+    northwind: string;
+    fund: string;
+    key: string;
+    options: FundOptions;
+    holders: Holder[];
+    ledgerEntries: readonly { sequenceNo: number; effectiveDate: BusinessDate }[];
+    distributionOf: (sequence: number) => string;
+  },
+) {
+  const { northwind, fund, key, options } = context;
+  const rows = coupons.map((coupon) => {
+    const snapshotId = deterministicUuid(`snapshot:${key}:${coupon.sequence}`);
+    const lastSequenceIncluded = context.ledgerEntries
+      .filter((entry) => entry.effectiveDate <= coupon.recordDate)
+      .reduce((last, entry) => (entry.sequenceNo > last ? entry.sequenceNo : last), 0);
+    const lines = context.holders
+      .map((holder) => ({
+        accountId: holder.accountId,
+        investorId: holder.investorId,
+        quantityHeld: holder.quantity,
+      }))
+      .sort((a, b) => (a.accountId < b.accountId ? -1 : 1));
+    const dayCount = options.dayCount;
+    const fraction = periodFraction(dayCount, coupon.periodStart, coupon.periodEnd);
+    const calculation = calculateDistribution({
+      type: 'COUPON',
+      holders: context.holders,
+      nominalValue: '1000.00',
+      rate: options.interestRate,
+      fraction,
+      roundingMethod: 'HALF_EVEN',
+      minorUnits: 2,
+    });
+    const distributionId = context.distributionOf(coupon.sequence);
+    // Calculated the business day after the record date, approved the next day, paid on the date.
+    const calculatedAt = new Date(`${addDays(coupon.recordDate, 1)}T09:00:00.000Z`);
+    const approvedAt = new Date(`${addDays(coupon.recordDate, 2)}T10:00:00.000Z`);
+    const paidAt = new Date(`${coupon.paymentDate}T15:00:00.000Z`);
+    return {
+      history: { id: distributionId, calculatedAt, approvedAt, paidAt },
+      snapshot: {
+        id: snapshotId,
+        tenantId: northwind,
+        issuanceId: fund,
+        recordDate: coupon.recordDate,
+        lastSequenceIncluded,
+        takenAt: calculatedAt,
+        checksum: checksumOf({ recordDate: coupon.recordDate, lastSequenceIncluded, lines }),
+      },
+      snapshotLines: lines.map((line) => ({ ...line, snapshotId, tenantId: northwind })),
+      distribution: {
+        id: distributionId,
+        tenantId: northwind,
+        issuanceId: fund,
+        couponScheduleId: coupon.id,
+        type: 'COUPON',
+        status: 'PAID',
+        snapshotId,
+        calculationNo: 1,
+        dayCount,
+        periodFraction: fraction.toString(),
+        rate: options.interestRate,
+        nominalValue: '1000.00',
+        currency: 'EUR',
+        roundingMethod: 'HALF_EVEN',
+        totalGrossAmount: calculation.totalGross,
+        totalUnroundedAmount: calculation.totalUnrounded,
+        roundingDifference: calculation.roundingDifference,
+        beneficiaryCount: calculation.beneficiaryCount,
+        calculationVersion: CALCULATION_VERSION,
+        calculatedAt,
+        preparedBy: ADMIN,
+        approvedBy: ADMIN2,
+        approvedAt,
+        createdBy: OPERATOR,
+        createdAt: calculatedAt,
+        updatedAt: paidAt,
+        version: 6,
+      },
+      lines: calculation.lines.map((line) => ({
+        id: deterministicUuid(`distribution-line:${key}:${coupon.sequence}:${line.accountId}`),
+        tenantId: northwind,
+        distributionId,
+        calculationNo: 1,
+        investorId: line.investorId,
+        accountId: line.accountId,
+        eligibleQuantity: line.quantity,
+        grossAmountUnrounded: line.grossAmountUnrounded,
+        grossAmount: line.grossAmount,
+        currency: 'EUR',
+        anomalyCode: line.anomalyCode,
+      })),
+      instruction: {
+        id: deterministicUuid(`payment-instruction:${key}:${coupon.sequence}`),
+        tenantId: northwind,
+        distributionId,
+        status: 'CONFIRMED',
+        totalAmount: calculation.totalGross,
+        currency: 'EUR',
+        lineCount: calculation.lines.length,
+        generatedAt: approvedAt,
+        preparedBy: ADMIN,
+        preparedAt: approvedAt,
+        confirmedBy: ADMIN2,
+        confirmedAt: paidAt,
+        providerReference: `FAKE-PAY-DEMO${key.toUpperCase()}C${coupon.sequence}`,
+        createdBy: ADMIN,
+      },
+    };
+  });
+  return {
+    snapshots: rows.map((row) => row.snapshot),
+    snapshotLines: rows.flatMap((row) => row.snapshotLines),
+    distributions: rows.map((row) => row.distribution),
+    history: rows.map((row) => row.history),
+    lines: rows.flatMap((row) => row.lines),
+    instructions: rows.map((row) => row.instruction),
   };
 }
