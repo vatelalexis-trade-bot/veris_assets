@@ -68,6 +68,13 @@ export const STATUS_TONES = {
     VALIDATED: 'success',
     REJECTED: 'error',
   },
+  /** CSV export generated in the background (P15-3). */
+  export: {
+    QUEUED: 'neutral',
+    RUNNING: 'info',
+    DONE: 'success',
+    FAILED: 'error',
+  },
   /** Result of an audit log entry (SPEC §17.2). */
   auditResult: {
     SUCCESS: 'success',

@@ -88,7 +88,7 @@ Toutes les entités de la section 21 de la spec sont présentes. Correspondances
 **`core.workflow_transition`** [AO] — `id`, `tenant_id`, `resource_type`, `resource_id`, `from_status`, `to_status`, `actor_user_id` (nullable si système), `actor_role`, `comment`, `correlation_id`, `occurred_at`.
 
 **`core.document`** — `id`, `tenant_id`, `type` (`ISSUANCE_DOCUMENT`, `INVESTOR_DOCUMENT`, `KYC_EVIDENCE`, `SUBSCRIPTION_FORM`, `ALLOCATION_CONFIRMATION`, `POSITION_STATEMENT`, `COUPON_NOTICE`, `REPORT`), `name`, `confidentiality` (`INVESTOR_VISIBLE`, `INTERNAL`, `CONFIDENTIAL`), `owner_type`, `issuance_id`, `investor_id`, `status` (`ACTIVE`, `ARCHIVED`), `current_version`, `expires_at`, colonnes communes.
-**`core.document_version`** [AO] — `id`, `tenant_id`, `document_id`, `version`, `storage_key`, `mime_type` (détecté), `size_bytes`, `checksum_sha256`, `scan_status` (`CLEAN`, `REJECTED`), `uploaded_by`, `uploaded_at`.
+**`core.document_version`** [AO] — `id`, `tenant_id`, `document_id`, `version`, `storage_key`, `mime_type` (détecté), `size_bytes`, `checksum_sha256`, `scan_status` (`CLEAN`, `REJECTED`), `uploaded_by` (vide pour un document généré par la plateforme, D-092), `uploaded_at`.
 
 **`core.notification`** — `id`, `tenant_id`, `user_id`, `category`, `event_type`, `title_key`, `params` (jsonb), `resource_type`, `resource_id`, `read_at`, `created_at`.
 **`core.notification_preference`** — `user_id`, `category`, `in_app`, `email` (les catégories obligatoires sont forcées par le code).
@@ -163,6 +163,11 @@ Le snapshot est reconstruit à partir des mouvements dont `effective_date <= rec
 - Cas de contrôle : 100 × 1 000 × 0,05 × 180/360 = 2 500,00 EUR.
 - Arrondi par ligne selon `rounding_method` ; `rounding_difference = total_unrounded_amount − total_gross_amount`.
 - Seules les positions des comptes `INVESTOR` sont éligibles (unités bloquées incluses) ; la trésorerie de l'émetteur est exclue.
+
+### 3.7 `reporting` (Reporting & Audit)
+
+Vues en lecture seule (`security_invoker`) sur les autres modules, pour les tableaux de bord (D-087) et les exports (D-093).
+**`reporting.export_request`** — `id`, `tenant_id`, `requested_by`, `kind` (`REGISTRY`, `SUBSCRIPTIONS`, `DISTRIBUTIONS`, `AUDIT`), `params` (JSON : `issuanceId`), `status` (`QUEUED`, `RUNNING`, `DONE`, `FAILED`), `document_id` (fichier CSV, type `REPORT`), `row_count`, `error`, `created_at`, `finished_at`.
 
 ---
 

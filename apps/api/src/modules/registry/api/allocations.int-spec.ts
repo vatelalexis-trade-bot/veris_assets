@@ -8,6 +8,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { QUEUES } from '../../../core/jobs/queues.js';
 import type { OutboxJob } from '../../../core/outbox/outbox.js';
 import { OutboxRelay } from '../../../core/outbox/outbox-relay.js';
+import { generatedDocuments } from '../../../test/generated-documents.js';
 import { startIntegrationApp, type IntegrationApp } from '../../../test/integration-app.js';
 import { LedgerWriter } from '../application/ledger-writer.js';
 
@@ -338,6 +339,16 @@ describe('scenario 3 — allocation (SPEC §29)', () => {
 
     await deliverEvents();
     expect(await notified('investor.a@example.com', 'SUBSCRIPTION_ALLOCATED')).toBe(true);
+    // Each allocated investor gets its allocation confirmation (P15-9).
+    const confirmations = await generatedDocuments(
+      ctx,
+      'ALLOCATION_CONFIRMATION',
+      'investor.a@example.com',
+      notesId,
+    );
+    expect(confirmations).toEqual([
+      expect.objectContaining({ confidentiality: 'INVESTOR_VISIBLE', header: '%PDF-' }),
+    ]);
   });
 
   it('shows an investor its own position and movements only', async () => {

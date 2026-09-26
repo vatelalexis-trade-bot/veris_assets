@@ -155,6 +155,19 @@ export const NOTIFICATION_TYPES = {
       },
     },
   },
+  EXPORT_READY: {
+    category: 'DOCUMENT',
+    texts: {
+      'en-GB': {
+        title: 'Export ready',
+        body: 'The CSV export you asked for is ready. Download it from the Reports page.',
+      },
+      'fr-FR': {
+        title: 'Export prêt',
+        body: 'L’export CSV que vous avez demandé est prêt. Téléchargez-le depuis la page Rapports.',
+      },
+    },
+  },
   ISSUANCE_REVIEW_REQUESTED: {
     category: 'WORKFLOW',
     texts: {

@@ -89,7 +89,10 @@ export class JobQueue implements OnModuleInit, OnApplicationShutdown {
     handler: (data: T) => Promise<void>,
   ): Promise<void> {
     if (!this.workersEnabled) return;
-    await this.boss.work<T>(queue, { pollingIntervalSeconds: 2 }, async ([job]: Job<T>[]) => {
+    // Every 2 seconds, even while LISTEN/NOTIFY is on (pg-boss then waits 30 s by default): the
+    // jobs added inside a business transaction do not always wake the workers.
+    const polling = { pollingIntervalSeconds: 2, notifyPollingIntervalSeconds: 2 };
+    await this.boss.work<T>(queue, polling, async ([job]: Job<T>[]) => {
       if (!job) return;
       await runWithRequestContext({ correlationId: randomUUID(), source: 'JOB' }, () =>
         handler(job.data),

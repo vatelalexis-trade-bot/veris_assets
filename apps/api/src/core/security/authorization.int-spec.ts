@@ -318,6 +318,15 @@ describe('scenario 5 — tenant isolation (SPEC §20, §29)', () => {
         ),
     ],
     [
+      /^\/api\/v1\/exports\/:id/,
+      () =>
+        idOf(
+          `INSERT INTO reporting.export_request (tenant_id, requested_by, kind)
+           SELECT tenant_id, id, 'AUDIT' FROM iam.user WHERE email = 'contoso.admin@example.com'
+           RETURNING id`,
+        ),
+    ],
+    [
       /^\/api\/v1\/notifications\/:id/,
       () =>
         idOf(

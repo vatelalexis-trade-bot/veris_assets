@@ -13,6 +13,7 @@ import { RegistryQueries } from './application/registry-queries.js';
 import { RegistryReconciliation } from './application/registry-reconciliation.js';
 import { RegistryRedemptions } from './application/redemptions.js';
 import { RegistrySnapshots } from './application/snapshots.js';
+import { SubscriptionDocuments } from './application/subscription-documents.js';
 import { SubscriptionEvents } from './application/subscription-events.js';
 import { SubscriptionsService } from './application/subscriptions.service.js';
 import { TransfersService } from './application/transfers.service.js';
@@ -28,6 +29,7 @@ import { InternalLedgerProvider } from './infrastructure/internal-ledger-provide
   providers: [
     SubscriptionsService,
     SubscriptionEvents,
+    SubscriptionDocuments,
     LedgerWriter,
     AllocationsService,
     RegistryQueries,

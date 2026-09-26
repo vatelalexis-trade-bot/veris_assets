@@ -163,6 +163,12 @@
       "PROPOSED": "Proposed",
       "VALIDATED": "Validated",
       "REJECTED": "Rejected"
+    },
+    "export": {
+      "QUEUED": "Queued",
+      "RUNNING": "In progress",
+      "DONE": "Ready",
+      "FAILED": "Failed"
     }
   },
   "errors": {
@@ -527,7 +533,8 @@
       "allocation_round": "Allocation",
       "correction_request": "Registry correction",
       "transfer": "Transfer",
-      "distribution": "Distribution"
+      "distribution": "Distribution",
+      "export": "Export"
     },
     "sources": {
       "WEB": "Web application",
@@ -647,7 +654,10 @@
       "DISTRIBUTION_PAID": "Distribution paid",
       "DISTRIBUTION_FAILED": "Distribution payment failed",
       "ISSUANCE_MATURED": "Issuance matured",
-      "ISSUANCE_EARLY_REDEMPTION_SCHEDULED": "Early redemption scheduled"
+      "ISSUANCE_EARLY_REDEMPTION_SCHEDULED": "Early redemption scheduled",
+      "DOCUMENT_GENERATED": "Document generated",
+      "EXPORT_REQUESTED": "Export requested",
+      "EXPORT_GENERATED": "Export generated"
     }
   },
   "investors": {
@@ -1672,6 +1682,32 @@
       "caption": "Your movements, newest first",
       "empty": "No movement yet.",
       "issuance": "Issuance"
+    },
+    "exports": {
+      "title": "Reports",
+      "description": "CSV exports of the organisation’s data, generated in the background. You are notified when an export is ready.",
+      "kind": "Export",
+      "issuance": "Issuance",
+      "allIssuances": "All issuances",
+      "submit": "Request the export",
+      "hint": "Files are kept as internal documents of the organisation. They contain fictitious demonstration data.",
+      "caption": "Your exports",
+      "empty": "You have not requested any export yet.",
+      "download": "Download",
+      "kinds": {
+        "REGISTRY": "Registry (positions)",
+        "SUBSCRIPTIONS": "Subscriptions",
+        "DISTRIBUTIONS": "Distribution lines",
+        "AUDIT": "Audit log"
+      },
+      "columns": {
+        "kind": "Export",
+        "issuance": "Issuance",
+        "createdAt": "Requested on",
+        "rows": "Rows",
+        "status": "Status",
+        "file": "File"
+      }
     }
   }
 }

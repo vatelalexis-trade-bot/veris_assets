@@ -34,6 +34,8 @@ export const QUEUES = {
   registryReconciliation: { name: 'registry-reconciliation', retryLimit: 2 },
   /** Daily and at start-up: closes the subscriptions past their end date (SPEC §7.1). */
   subscriptionAutoClose: { name: 'subscription-auto-close', retryLimit: 2 },
+  /** One CSV export asked for by a user (P15-3); retried twice, then marked FAILED. */
+  exportGeneration: { name: 'export-generation', retryLimit: 2, retryDelay: 10, notify: true },
 } as const satisfies Record<string, Queue>;
 
 export type QueueName = (typeof QUEUES)[keyof typeof QUEUES]['name'];

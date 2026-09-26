@@ -7,6 +7,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { QUEUES } from '../../../core/jobs/queues.js';
 import type { OutboxJob } from '../../../core/outbox/outbox.js';
 import { OutboxRelay } from '../../../core/outbox/outbox-relay.js';
+import { generatedDocuments } from '../../../test/generated-documents.js';
 import { startIntegrationApp, type IntegrationApp } from '../../../test/integration-app.js';
 
 type Agent = ReturnType<typeof request.agent>;
@@ -20,6 +21,7 @@ const key = () => randomUUID();
 interface SubscriptionView {
   id: string;
   status: string;
+  issuanceId: string;
   requestedAmount: string;
   eligibilityAssessmentId: string | null;
   rejectionReason: string | null;
@@ -128,6 +130,16 @@ describe('a subscription from end to end ("souscription de bout en bout")', () =
     expect(assessment.rows[0]).toEqual({ context: 'SUBSCRIPTION', result: 'ELIGIBLE' });
     await deliverEvents();
     expect(await notified('northwind.operator@example.com', 'SUBSCRIPTION_SUBMITTED')).toBe(true);
+    // The subscription form is kept in the investor's documents (P15-8).
+    const forms = await generatedDocuments(
+      ctx,
+      'SUBSCRIPTION_FORM',
+      'investor.a@example.com',
+      submitted.issuanceId,
+    );
+    expect(forms.filter((form) => form.name.endsWith(`${created.id.slice(0, 8)}.pdf`))).toEqual([
+      expect.objectContaining({ confidentiality: 'INVESTOR_VISIBLE', header: '%PDF-' }),
+    ]);
 
     await operator
       .post(`/api/v1/subscriptions/${created.id}/start-review`)

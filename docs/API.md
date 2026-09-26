@@ -206,7 +206,6 @@ Refus à l'envoi et à l'approbation : `422` avec le code du premier contrôle �
 | POST | `/allocations/{roundId}/validate` (quatre yeux) | `allocation:validate` | ✓ |
 | POST | `/allocations/{roundId}/reject` (commentaire ; brouillon abandonné par le préparateur, lot proposé rejeté par un administrateur, D-065) | `allocation:prepare` (+ `allocation:validate` pour un lot proposé) | ✓ |
 | GET | `/allocations/{roundId}/transitions` (historique) | `registry:read` | |
-| GET | `/allocations/{roundId}/confirmation` (document, phase 15, D-064) | `registry:read` (P) | |
 | GET | `/positions?issuanceId=…&investorId=…` · `/positions/{id}` | `registry:read` (P) | |
 | GET | `/ledger?issuanceId=…&type=…` · `/ledger/{id}` | `registry:read` (P : ses mouvements, sans le nom des autres investisseurs, D-067) | |
 | GET | `/ledger/corrections?issuanceId=…&status=…` (D-070) | `registry:read` | |
@@ -270,17 +269,16 @@ Refus à l'envoi et à l'approbation : `422` avec le code du premier contrôle �
 | POST | `/notifications/{id}/read` · `/notifications/read-all` | `notification:read` |
 | GET / PUT | `/notifications/preferences` (désactiver une catégorie obligatoire : détail `MANDATORY_CATEGORY`) | `notification:read` |
 
-### 2.13 `/audit-events` et `/reports`
+### 2.13 `/audit-events` et `/exports`
 
 | Méthode | Chemin | Permission | IK |
 |---|---|---|---|
 | GET | `/audit-events` (filtres : `action`, `resourceType`, `resourceId`, `actorUserId`, `result`, `from`, `to`) · `/{id}` (avec valeurs avant/après masquées) | `audit:read` | |
 | GET | `/audit-events/actions` (actions présentes, pour le filtre, D-044) | `audit:read` | |
-| GET | `/reports/issuer-dashboard` | `report:read` | |
-| GET | `/reports/investor-dashboard` | (P) | |
-| GET | `/reports/tasks` (file « À traiter » de l'utilisateur) | `task:read` | |
-| POST | `/reports/exports` (type : registre, souscriptions, distributions, audit) → job asynchrone | `report:export` | ✓ |
-| GET | `/reports/exports/{id}` (statut + URL de téléchargement) | `report:export` | |
+| POST | `/exports` (`kind` : `REGISTRY`, `SUBSCRIPTIONS`, `DISTRIBUTIONS`, `AUDIT` ; `issuanceId` facultatif) → tâche de fond (D-093) | `report:export` + lecture du contenu | ✓ |
+| GET | `/exports` (ses exports) · `/exports/{id}` (statut, `documentId` une fois prêt) | `report:export` | |
+
+Les tableaux de bord et la file « À traiter » sont en 2.10 bis (phase 15a). Les documents générés (bulletin de souscription, confirmation d'allocation, avis de coupon) et les fichiers d'export se téléchargent par `/documents` (D-092, D-093).
 
 ### 2.14 Public (landing)
 

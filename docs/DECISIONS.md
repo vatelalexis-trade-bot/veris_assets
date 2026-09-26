@@ -495,6 +495,8 @@ Validées par le porteur de projet (« ok on y va »).
 
 ## 2026-09-26 — Phase 15a (tableaux de bord, file « À traiter », portail investisseur)
 
+Validées par le porteur de projet (« ok pour tout »).
+
 **D-086 — Acceptée. Découpage de la phase 15.** Choix du porteur de projet au lancement de la phase :
 - **15a** : tableaux de bord, file « À traiter » et indicateurs (P15-1, P15-4), portail investisseur complet (P15-2) ;
 - **15b** : exports CSV (P15-3) et documents PDF (P15-8 à P15-10) ;
@@ -502,7 +504,7 @@ Validées par le porteur de projet (« ok on y va »).
 
 Le prototype HTML de la page d'accueil (D-019) n'est pas encore dans le dépôt : le porteur de projet le déposera dans `docs/prototype/` avant la 15c.
 
-**D-087 — Proposée. Indicateurs de l'émetteur (spec 13.1, 18).**
+**D-087 — Acceptée. Indicateurs de l'émetteur (spec 13.1, 18).**
 1. Le module de reporting lit les autres modules uniquement par des vues SQL du schéma `reporting`, en lecture seule (docs/ARCHITECTURE.md §4.1). L'option `security_invoker` de ces vues applique l'isolation entre organisations des tables sous-jacentes.
 2. Définitions retenues :
    - actifs administrés = unités détenues par les investisseurs × valeur nominale ;
@@ -517,7 +519,7 @@ Le prototype HTML de la page d'accueil (D-019) n'est pas encore dans le dépôt 
    - prochaines échéances = paiements prévus dans les 90 jours, y compris ceux échus mais pas encore distribués.
 3. Les montants sont présentés par devise, jamais additionnés entre devises.
 
-**D-088 — Proposée. File « À traiter » (spec 13.5).**
+**D-088 — Acceptée. File « À traiter » (spec 13.5).**
 1. La file réunit les décisions en attente :
    - souscriptions à prendre en charge ou à décider ;
    - dossiers KYC/KYB ;
@@ -529,7 +531,7 @@ Le prototype HTML de la page d'accueil (D-019) n'est pas encore dans le dépôt 
 2. Chaque utilisateur n'y voit que ce que ses droits lui permettent de décider, et jamais ce qu'il a lui-même lancé (quatre yeux).
 3. Tri : d'abord par date de paiement (distributions), puis par ancienneté. Chaque ligne mène à l'écran où la décision se prend ; un dossier KYC mène à la fiche de l'investisseur.
 
-**D-089 — Proposée. Portail investisseur (spec 14).**
+**D-089 — Acceptée. Portail investisseur (spec 14).**
 1. Le menu investisseur de la spec (14.2) n'a pas d'entrée « Tableau de bord » : le tableau de bord (14.1) est donc en tête de la page « Portefeuille ». Il montre la valeur nominale détenue, le nombre de positions, les distributions reçues, le prochain paiement et les demandes en cours.
 2. Le détail d'une position (14.3) montre :
    - l'émetteur, les unités, la valeur nominale et le montant investi, le taux, la fréquence, la maturité et le prochain paiement ;
@@ -537,9 +539,34 @@ Le prototype HTML de la page d'accueil (D-019) n'est pas encore dans le dépôt 
    - les documents de l'émission, visibles si l'investisseur y est invité (D-055) : sinon, un renvoi vers l'émetteur.
 3. La page « Transactions » liste tous les mouvements de l'investisseur, sans le nom des autres investisseurs (D-067).
 
-**D-090 — Proposée. Indicateurs de la plateforme (spec 18).** Ils sont additionnés organisation par organisation, sans lever l'isolation :
+**D-090 — Acceptée. Indicateurs de la plateforme (spec 18).** Ils sont additionnés organisation par organisation, sans lever l'isolation :
 - organisations, utilisateurs actifs, émissions et émissions actives, investisseurs ;
 - valeur nominale administrée (en euros, seule devise des données du MVP) ;
 - opérations de registre ;
 - « erreurs techniques » = opérations en échec inscrites dans l'audit sur 30 jours ;
 - « temps de traitement » = délai moyen, en heures, entre l'envoi et la décision d'une souscription.
+
+## 2026-09-26 — Phase 15b (exports CSV et documents PDF)
+
+Proposées par Claude, à valider par le porteur de projet.
+
+**D-091 — Proposée. Bibliothèque PDF : pdfkit 0.20.2.**
+1. Les PDF sont produits par le serveur avec pdfkit, maintenue et sans navigateur à installer. pdf-lib n'est plus maintenue depuis 2022 ; un navigateur sans interface (Playwright) serait lourd à faire tourner en production.
+2. Mise en page sobre : mot-symbole « VIRTUS ASSETS » en couleur primaire, titre, blocs libellé / valeur, tableaux, paragraphe. Police Helvetica standard (pas de fichier de police à embarquer). Le logo image n'y figure pas, en attendant sa version SVG.
+3. Chaque page porte la mention « DÉMONSTRATION — données fictives, sans valeur juridique » (spec 3.3).
+
+**D-092 — Proposée. Documents générés aux événements (spec 16).**
+1. Le bulletin de souscription est généré à l'envoi de la souscription, la confirmation d'allocation à la validation de l'allocation, et un avis par porteur au paiement d'une distribution (avis de remboursement du principal pour une distribution de principal).
+2. Ils sont rangés dans les documents de l'investisseur (visibles par lui), dans la langue de son premier compte actif. Générer deux fois le même événement ne crée qu'un document.
+3. Écart à docs/API.md : la route `GET /allocations/{roundId}/confirmation` n'existe pas ; la confirmation se télécharge comme tout document (`/documents`).
+4. Un document généré n'a pas d'auteur (`uploaded_by` vide) : il vient de la plateforme, pas d'un utilisateur.
+5. Les montants de l'avis de coupon sont bruts : la plateforme ne calcule pas d'impôts.
+
+**D-093 — Proposée. Exports CSV asynchrones (P15-3).**
+1. Quatre exports : registre (positions, trésorerie comprise), souscriptions, lignes de distribution, journal d'audit. Les trois premiers peuvent être limités à une émission.
+2. Droits : `report:export` (Administrateur émetteur, Auditeur), plus le droit de lecture du contenu exporté sur toute l'organisation (`registry:read`, `subscription:read`, `distribution:read`, `audit:read`).
+3. La demande crée une tâche de fond ; le fichier est rangé comme document interne de l'organisation (type « rapport ») et le demandeur est notifié (« Export prêt », catégorie Documents). Chacun ne voit que ses propres exports. Un échec est affiché, et la tâche est retentée deux fois.
+4. Format : UTF-8 avec BOM (les accents s'affichent dans Excel), virgule, première ligne de mention « DEMONSTRATION », dates ISO UTC, montants en décimal exact. Une cellule commençant par `=`, `+`, `-` ou `@` (hors nombres) est préfixée d'une apostrophe, pour qu'un tableur ne l'exécute jamais comme une formule.
+5. L'export d'audit ne contient ni adresse IP, ni navigateur, ni valeurs avant / après : un export sort de la plateforme, il porte le moins de données possible.
+6. Écart à docs/API.md : les routes sont `POST /exports`, `GET /exports`, `GET /exports/{id}` (et non `/reports/exports`) ; le téléchargement passe par le document (`/documents/{id}/download-url`).
+7. L'entrée de menu « Rapports » demande `report:export` (au lieu de `report:read`) : la page ne contient que les exports ; les indicateurs sont au tableau de bord.

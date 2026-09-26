@@ -239,7 +239,8 @@ export const documentVersion = coreSchema.table(
     checksumSha256: char({ length: 64 }).notNull(),
     scanStatus: text().notNull(),
     fileName: text().notNull(),
-    uploadedBy: uuid().notNull(),
+    /** Null for the documents the platform generates itself (notices, exports). */
+    uploadedBy: uuid(),
     uploadedAt: utcTimestamp().notNull().defaultNow(),
   },
   (table) => [

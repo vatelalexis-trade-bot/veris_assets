@@ -52,7 +52,7 @@ const issuer: Portal = {
     { section: 'transfers', icon: ArrowLeftRight, permission: 'transfer:read' },
     { section: 'distributions', icon: Receipt, permission: 'distribution:read' },
     { section: 'documents', icon: FileText, permission: 'document:read' },
-    { section: 'reports', icon: BarChart3, permission: 'report:read' },
+    { section: 'reports', icon: BarChart3, permission: 'report:export' },
     { section: 'audit', icon: KeyRound, permission: 'audit:read' },
     { section: 'settings', icon: Settings, permission: 'user:read' },
   ],

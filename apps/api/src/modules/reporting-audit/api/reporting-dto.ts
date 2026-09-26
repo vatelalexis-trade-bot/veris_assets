@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { EXPORT_KINDS, EXPORT_STATUSES } from '@virtus/shared';
 import { ledgerEntryView } from '../../registry/index.js';
 
 /** Amounts per currency, e.g. `{ "EUR": "1250000.00" }`. */
@@ -136,4 +137,22 @@ export const investorPositionView = z.object({
       currency: z.string(),
     }),
   ),
+});
+
+export const exportCreateBody = z.strictObject({
+  kind: z.enum(EXPORT_KINDS),
+  /** Limits the export to one issuance (not for AUDIT). */
+  issuanceId: z.uuid().optional(),
+});
+
+export const exportView = z.object({
+  id: z.uuid(),
+  kind: z.enum(EXPORT_KINDS),
+  issuanceId: z.uuid().nullable(),
+  status: z.enum(EXPORT_STATUSES),
+  documentId: z.uuid().nullable(),
+  rowCount: z.int().nullable(),
+  error: z.string().nullable(),
+  createdAt: z.iso.datetime(),
+  finishedAt: z.iso.datetime().nullable(),
 });

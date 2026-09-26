@@ -1,6 +1,16 @@
 // Reporting views (drizzle/0026_reporting_views.sql), read-only. Written by hand in SQL: this file
 // only declares their columns for typed queries, and is not seen by drizzle-kit.
-import { bigint, char, date, numeric, pgSchema, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import {
+  bigint,
+  char,
+  date,
+  integer,
+  numeric,
+  pgSchema,
+  text,
+  timestamp,
+  uuid,
+} from 'drizzle-orm/pg-core';
 
 const reporting = pgSchema('reporting');
 const decimal = () => numeric();
@@ -98,7 +108,7 @@ export const scheduledPayment = reporting
     issuanceId: uuid().notNull(),
     code: text().notNull(),
     name: text().notNull(),
-    sequence: bigint({ mode: 'number' }).notNull(),
+    sequence: integer().notNull(),
     type: text().notNull(),
     recordDate: date().notNull(),
     paymentDate: date().notNull(),
@@ -130,5 +140,89 @@ export const tenantActivity = reporting
     ledgerOperations: count().notNull(),
     failures30Days: bigint('failures_30_days', { mode: 'number' }).notNull(),
     averageDecisionHours: decimal(),
+  })
+  .existing();
+
+// Views of the CSV exports (drizzle/0029_exports_security.sql).
+const instant = () => timestamp({ withTimezone: true, mode: 'date' });
+
+export const registryExport = reporting
+  .view('registry_export', {
+    tenantId: uuid(),
+    issuanceId: uuid().notNull(),
+    issuanceCode: text().notNull(),
+    accountType: text().notNull(),
+    accountId: uuid().notNull(),
+    investorId: uuid(),
+    investorName: text(),
+    quantityHeld: decimal().notNull(),
+    quantityBlocked: decimal().notNull(),
+    quantityAvailable: decimal().notNull(),
+    nominalValue: decimal(),
+    nominalAmount: decimal(),
+    currency: char({ length: 3 }),
+    updatedAt: instant(),
+  })
+  .existing();
+
+export const subscriptionExport = reporting
+  .view('subscription_export', {
+    tenantId: uuid(),
+    subscriptionId: uuid().notNull(),
+    issuanceId: uuid().notNull(),
+    issuanceCode: text().notNull(),
+    investorId: uuid().notNull(),
+    investorName: text().notNull(),
+    status: text().notNull(),
+    requestedUnits: decimal().notNull(),
+    requestedAmount: decimal().notNull(),
+    allocatedUnits: decimal(),
+    amountDue: decimal(),
+    currency: char({ length: 3 }),
+    paymentReference: text(),
+    submittedAt: instant(),
+    decidedAt: instant(),
+    rejectionReason: text(),
+    cancellationReason: text(),
+    createdAt: instant(),
+  })
+  .existing();
+
+export const distributionLineExport = reporting
+  .view('distribution_line_export', {
+    tenantId: uuid(),
+    distributionId: uuid().notNull(),
+    issuanceId: uuid().notNull(),
+    issuanceCode: text().notNull(),
+    sequence: integer().notNull(),
+    type: text().notNull(),
+    status: text().notNull(),
+    recordDate: date().notNull(),
+    paymentDate: date().notNull(),
+    investorId: uuid().notNull(),
+    investorName: text(),
+    accountId: uuid().notNull(),
+    eligibleQuantity: decimal().notNull(),
+    grossAmountUnrounded: decimal().notNull(),
+    grossAmount: decimal().notNull(),
+    currency: char({ length: 3 }),
+  })
+  .existing();
+
+export const auditExport = reporting
+  .view('audit_export', {
+    tenantId: uuid(),
+    auditEventId: uuid().notNull(),
+    occurredAt: instant().notNull(),
+    actorUserId: uuid(),
+    actorName: text(),
+    actorRole: text(),
+    action: text().notNull(),
+    resourceType: text(),
+    resourceId: uuid(),
+    result: text().notNull(),
+    reason: text(),
+    source: text(),
+    correlationId: uuid(),
   })
   .existing();

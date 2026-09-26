@@ -11,6 +11,7 @@ import {
   PAYMENT_PROVIDER,
   type PaymentProvider,
 } from '../../../core/providers/payment-provider.js';
+import { generatedDocuments } from '../../../test/generated-documents.js';
 import { startIntegrationApp, type IntegrationApp } from '../../../test/integration-app.js';
 import { allocate, closedIssuance, type ClosedIssuance } from '../../../test/registry-fixtures.js';
 
@@ -254,6 +255,18 @@ describe('scenario 6 — coupon (SPEC §29)', () => {
     expect(after[0]).toMatchObject({ status: 'DISTRIBUTED' });
     await deliverEvents();
     expect(await notified('investor.a@example.com', 'DISTRIBUTION_PAID')).toBe(true);
+    // Each holder gets its coupon notice (P15-10), and sees it in its documents.
+    const notices = await generatedDocuments(
+      ctx,
+      'COUPON_NOTICE',
+      'investor.a@example.com',
+      notes.issuanceId,
+    );
+    expect(notices).toEqual([expect.objectContaining({ header: '%PDF-' })]);
+    const investor = await ctx.signIn('investor.a@example.com');
+    const listed = (await investor.get(`/api/v1/documents?type=COUPON_NOTICE`).expect(200))
+      .body as { data: { id: string }[] };
+    expect(listed.data.map((row) => row.id)).toContain(notices[0]!.id);
   });
 
   it('shows an investor its own line only', async () => {

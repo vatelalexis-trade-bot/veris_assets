@@ -2100,6 +2100,38 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/exports': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['ExportsController_list'];
+    put?: never;
+    post: operations['ExportsController_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/exports/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['ExportsController_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -2200,6 +2232,7 @@ export interface operations {
                 | 'KYC_EXPIRING_SOON'
                 | 'KYC_EXPIRED'
                 | 'DOCUMENT_ADDED'
+                | 'EXPORT_READY'
                 | 'ISSUANCE_REVIEW_REQUESTED'
                 | 'ISSUANCE_APPROVED'
                 | 'ISSUANCE_RETURNED'
@@ -2452,7 +2485,7 @@ export interface operations {
                 sizeBytes: number;
                 checksumSha256: string;
                 /** Format: uuid */
-                uploadedBy: string;
+                uploadedBy: string | null;
                 /** Format: date-time */
                 uploadedAt: string;
               };
@@ -2544,7 +2577,7 @@ export interface operations {
               sizeBytes: number;
               checksumSha256: string;
               /** Format: uuid */
-              uploadedBy: string;
+              uploadedBy: string | null;
               /** Format: date-time */
               uploadedAt: string;
             };
@@ -2622,7 +2655,7 @@ export interface operations {
               sizeBytes: number;
               checksumSha256: string;
               /** Format: uuid */
-              uploadedBy: string;
+              uploadedBy: string | null;
               /** Format: date-time */
               uploadedAt: string;
             };
@@ -2635,7 +2668,7 @@ export interface operations {
               sizeBytes: number;
               checksumSha256: string;
               /** Format: uuid */
-              uploadedBy: string;
+              uploadedBy: string | null;
               /** Format: date-time */
               uploadedAt: string;
             }[];
@@ -2702,7 +2735,7 @@ export interface operations {
               sizeBytes: number;
               checksumSha256: string;
               /** Format: uuid */
-              uploadedBy: string;
+              uploadedBy: string | null;
               /** Format: date-time */
               uploadedAt: string;
             };
@@ -11874,6 +11907,128 @@ export interface operations {
               grossAmount: string;
               currency: string;
             }[];
+          };
+        };
+      };
+    };
+  };
+  ExportsController_list: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** @enum {string} */
+            kind: 'REGISTRY' | 'SUBSCRIPTIONS' | 'DISTRIBUTIONS' | 'AUDIT';
+            /** Format: uuid */
+            issuanceId: string | null;
+            /** @enum {string} */
+            status: 'QUEUED' | 'RUNNING' | 'DONE' | 'FAILED';
+            /** Format: uuid */
+            documentId: string | null;
+            rowCount: number | null;
+            error: string | null;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            finishedAt: string | null;
+          }[];
+        };
+      };
+    };
+  };
+  ExportsController_create: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          /** @enum {string} */
+          kind: 'REGISTRY' | 'SUBSCRIPTIONS' | 'DISTRIBUTIONS' | 'AUDIT';
+          /** Format: uuid */
+          issuanceId?: string;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** @enum {string} */
+            kind: 'REGISTRY' | 'SUBSCRIPTIONS' | 'DISTRIBUTIONS' | 'AUDIT';
+            /** Format: uuid */
+            issuanceId: string | null;
+            /** @enum {string} */
+            status: 'QUEUED' | 'RUNNING' | 'DONE' | 'FAILED';
+            /** Format: uuid */
+            documentId: string | null;
+            rowCount: number | null;
+            error: string | null;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            finishedAt: string | null;
+          };
+        };
+      };
+    };
+  };
+  ExportsController_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** @enum {string} */
+            kind: 'REGISTRY' | 'SUBSCRIPTIONS' | 'DISTRIBUTIONS' | 'AUDIT';
+            /** Format: uuid */
+            issuanceId: string | null;
+            /** @enum {string} */
+            status: 'QUEUED' | 'RUNNING' | 'DONE' | 'FAILED';
+            /** Format: uuid */
+            documentId: string | null;
+            rowCount: number | null;
+            error: string | null;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            finishedAt: string | null;
           };
         };
       };

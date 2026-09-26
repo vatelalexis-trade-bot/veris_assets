@@ -1,0 +1,1 @@
+ALTER TABLE "core"."document_version" ALTER COLUMN "uploaded_by" DROP NOT NULL;

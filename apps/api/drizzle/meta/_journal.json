@@ -190,6 +190,27 @@
       "when": 1790433936996,
       "tag": "0026_reporting_views",
       "breakpoints": true
+    },
+    {
+      "idx": 27,
+      "version": "7",
+      "when": 1790442741788,
+      "tag": "0027_generated_documents",
+      "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "7",
+      "when": 1790444765710,
+      "tag": "0028_exports",
+      "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "7",
+      "when": 1790444778940,
+      "tag": "0029_exports_security",
+      "breakpoints": true
     }
   ]
 }

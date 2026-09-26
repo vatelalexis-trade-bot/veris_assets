@@ -163,6 +163,12 @@
       "PROPOSED": "Proposée",
       "VALIDATED": "Validée",
       "REJECTED": "Rejetée"
+    },
+    "export": {
+      "QUEUED": "En attente",
+      "RUNNING": "En cours",
+      "DONE": "Prêt",
+      "FAILED": "Échec"
     }
   },
   "errors": {
@@ -527,7 +533,8 @@
       "allocation_round": "Allocation",
       "correction_request": "Correction du registre",
       "transfer": "Transfert",
-      "distribution": "Distribution"
+      "distribution": "Distribution",
+      "export": "Export"
     },
     "sources": {
       "WEB": "Application web",
@@ -647,7 +654,10 @@
       "DISTRIBUTION_PAID": "Distribution versée",
       "DISTRIBUTION_FAILED": "Échec du paiement de distribution",
       "ISSUANCE_MATURED": "Émission échue",
-      "ISSUANCE_EARLY_REDEMPTION_SCHEDULED": "Remboursement anticipé prévu"
+      "ISSUANCE_EARLY_REDEMPTION_SCHEDULED": "Remboursement anticipé prévu",
+      "DOCUMENT_GENERATED": "Document généré",
+      "EXPORT_REQUESTED": "Export demandé",
+      "EXPORT_GENERATED": "Export généré"
     }
   },
   "investors": {
@@ -1672,6 +1682,32 @@
       "caption": "Vos mouvements, les plus récents en premier",
       "empty": "Aucun mouvement pour l’instant.",
       "issuance": "Émission"
+    },
+    "exports": {
+      "title": "Rapports",
+      "description": "Exports CSV des données de l’organisation, générés en arrière-plan. Vous êtes notifié quand un export est prêt.",
+      "kind": "Export",
+      "issuance": "Émission",
+      "allIssuances": "Toutes les émissions",
+      "submit": "Demander l’export",
+      "hint": "Les fichiers sont conservés comme documents internes de l’organisation. Ils contiennent des données fictives de démonstration.",
+      "caption": "Vos exports",
+      "empty": "Vous n’avez encore demandé aucun export.",
+      "download": "Télécharger",
+      "kinds": {
+        "REGISTRY": "Registre (positions)",
+        "SUBSCRIPTIONS": "Souscriptions",
+        "DISTRIBUTIONS": "Lignes de distribution",
+        "AUDIT": "Journal d’audit"
+      },
+      "columns": {
+        "kind": "Export",
+        "issuance": "Émission",
+        "createdAt": "Demandé le",
+        "rows": "Lignes",
+        "status": "Statut",
+        "file": "Fichier"
+      }
     }
   }
 }
