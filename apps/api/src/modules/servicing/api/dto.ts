@@ -10,6 +10,7 @@ import type { ScheduleRow } from '../application/schedules.service.js';
 import { DISTRIBUTION_STATUSES, type DistributionStatus } from '../domain/distribution.js';
 
 export const distributionCreateBody = z.strictObject({ couponScheduleId: z.uuid() });
+export const earlyRedemptionBody = z.strictObject({ paymentDate: z.iso.date() });
 export const commentBody = z.strictObject({ comment: z.string().trim().min(1).max(2000) });
 export const distributionsQuery = paginationQuery.extend({
   issuanceId: z.uuid().optional(),

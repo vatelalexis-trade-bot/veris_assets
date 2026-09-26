@@ -196,7 +196,11 @@ export function IssuanceDetail({
         ) : null}
         {rights.canReadDistributions && SCHEDULE_STATUSES.includes(status) ? (
           <Tabs.Content value="coupons">
-            <ScheduleTab issuanceId={id} canPrepare={rights.canPrepareDistribution} />
+            <ScheduleTab
+              issuanceId={id}
+              canPrepare={rights.canPrepareDistribution}
+              canRedeemEarly={status === 'ACTIVE' && rights.canOperate}
+            />
           </Tabs.Content>
         ) : null}
         <Tabs.Content value="documents">

@@ -359,7 +359,11 @@
     "REPLACEMENT_WITHOUT_ACCOUNT": "Un mouvement de remplacement demande au moins un compte.",
     "ACCOUNT_NOT_OF_ISSUANCE": "Les comptes doivent appartenir à cette émission.",
     "RECORD_DATE_NOT_REACHED": "La record date n’est pas encore atteinte : les détenteurs ne sont pas connus.",
-    "PRINCIPAL_REPAYMENT_NOT_AVAILABLE_YET": "Le remboursement du principal n’est pas encore disponible."
+    "COUPONS_NOT_DISTRIBUTED": "Tous les coupons dus avant le principal doivent d’abord être distribués.",
+    "UNITS_BLOCKED": "Des unités sont bloquées (un transfert en revue) : décidez-le ou annulez-le d’abord.",
+    "HOLDINGS_CHANGED_SINCE_RECORD_DATE": "Les avoirs ont changé depuis la record date : renvoyez la distribution en brouillon et recalculez-la.",
+    "EARLY_REDEMPTION_DATE_INVALID": "Choisissez une date entre aujourd’hui et la veille de la maturité.",
+    "DISTRIBUTION_IN_PROGRESS": "Une distribution d’un paiement ultérieur est en cours : annulez-la d’abord."
   },
   "organizationTypes": {
     "ISSUER": "Émetteur",
@@ -641,7 +645,9 @@
       "DISTRIBUTION_PAYMENT_INSTRUCTION_GENERATED": "Instruction de paiement générée",
       "DISTRIBUTION_PAYMENT_PREPARED": "Paiement de distribution préparé",
       "DISTRIBUTION_PAID": "Distribution versée",
-      "DISTRIBUTION_FAILED": "Échec du paiement de distribution"
+      "DISTRIBUTION_FAILED": "Échec du paiement de distribution",
+      "ISSUANCE_MATURED": "Émission échue",
+      "ISSUANCE_EARLY_REDEMPTION_SCHEDULED": "Remboursement anticipé prévu"
     }
   },
   "investors": {
@@ -1550,6 +1556,13 @@
       "activate": "Activer l’émission",
       "title": "Activer cette émission ?",
       "description": "Toutes les souscriptions allouées doivent être payées. L’échéancier des coupons est alors généré à partir des conditions."
+    },
+    "earlyRedemption": {
+      "open": "Remboursement anticipé",
+      "title": "Rembourser toute l’émission par anticipation ?",
+      "description": "Les coupons et le principal non encore payés à partir de cette date sont annulés, et le principal y est prévu. Les coupons dus avant sont distribués d’abord. Aucun intérêt couru n’est versé.",
+      "date": "Date de remboursement",
+      "confirm": "Prévoir le remboursement"
     }
   }
 }

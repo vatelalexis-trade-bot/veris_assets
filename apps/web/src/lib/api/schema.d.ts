@@ -1716,6 +1716,22 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/issuances/{id}/early-redemption': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['DistributionsController_earlyRedemption'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/issuances/{id}/coupon-schedule': {
     parameters: {
       query?: never;
@@ -9934,6 +9950,66 @@ export interface operations {
       cookie?: never;
     };
     requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            sequence: number;
+            /** @enum {string} */
+            type: 'COUPON' | 'PRINCIPAL';
+            /** Format: date */
+            periodStart: string;
+            /** Format: date */
+            periodEnd: string;
+            /** Format: date */
+            paymentDate: string;
+            /** Format: date */
+            recordDate: string;
+            /** @enum {string} */
+            status: 'SCHEDULED' | 'DISTRIBUTED' | 'CANCELLED';
+            /** Format: uuid */
+            distributionId: string | null;
+            /** @enum {string|null} */
+            distributionStatus:
+              | 'DRAFT'
+              | 'CALCULATED'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'PAYMENT_INSTRUCTION_GENERATED'
+              | 'PAID'
+              | 'FAILED'
+              | 'CANCELLED'
+              | null;
+          }[];
+        };
+      };
+    };
+  };
+  DistributionsController_earlyRedemption: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: date */
+          paymentDate: string;
+        };
+      };
+    };
     responses: {
       200: {
         headers: {

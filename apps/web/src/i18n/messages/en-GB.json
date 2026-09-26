@@ -359,7 +359,11 @@
     "REPLACEMENT_WITHOUT_ACCOUNT": "A replacement movement needs at least one account.",
     "ACCOUNT_NOT_OF_ISSUANCE": "The accounts must belong to this issuance.",
     "RECORD_DATE_NOT_REACHED": "The record date is not reached yet: the holders are not known.",
-    "PRINCIPAL_REPAYMENT_NOT_AVAILABLE_YET": "The repayment of the principal is not available yet."
+    "COUPONS_NOT_DISTRIBUTED": "Every coupon due before the principal must be distributed first.",
+    "UNITS_BLOCKED": "Units are blocked (a transfer under review): decide or cancel it first.",
+    "HOLDINGS_CHANGED_SINCE_RECORD_DATE": "The holdings changed since the record date: send the distribution back to draft and calculate it again.",
+    "EARLY_REDEMPTION_DATE_INVALID": "Choose a date from today to before the maturity date.",
+    "DISTRIBUTION_IN_PROGRESS": "A distribution of a later payment is in progress: cancel it first."
   },
   "organizationTypes": {
     "ISSUER": "Issuer",
@@ -641,7 +645,9 @@
       "DISTRIBUTION_PAYMENT_INSTRUCTION_GENERATED": "Payment instruction generated",
       "DISTRIBUTION_PAYMENT_PREPARED": "Distribution payment prepared",
       "DISTRIBUTION_PAID": "Distribution paid",
-      "DISTRIBUTION_FAILED": "Distribution payment failed"
+      "DISTRIBUTION_FAILED": "Distribution payment failed",
+      "ISSUANCE_MATURED": "Issuance matured",
+      "ISSUANCE_EARLY_REDEMPTION_SCHEDULED": "Early redemption scheduled"
     }
   },
   "investors": {
@@ -1550,6 +1556,13 @@
       "activate": "Activate the issuance",
       "title": "Activate this issuance?",
       "description": "Every allocated subscription must be paid. The coupon schedule is then generated from the terms."
+    },
+    "earlyRedemption": {
+      "open": "Early redemption",
+      "title": "Redeem the whole issuance early?",
+      "description": "The coupons and the principal not paid yet from this date on are cancelled, and the principal is scheduled on it. Coupons due before it are distributed first. No accrued interest is paid.",
+      "date": "Repayment date",
+      "confirm": "Schedule the repayment"
     }
   }
 }

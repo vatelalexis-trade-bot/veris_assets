@@ -339,16 +339,6 @@ describe('the life of a distribution (docs/DATA_MODEL.md §4.5)', () => {
     expect(history.map((row) => row.toStatus)).toContain('FAILED');
   });
 
-  it('does not distribute the principal before the phase 14b', async () => {
-    await dueToday(schedule[2]!.id);
-    const refused = await post(operator, '/distributions', {
-      couponScheduleId: schedule[2]!.id,
-    }).expect(409);
-    expect(errorOf(refused).details[0]).toMatchObject({
-      code: 'PRINCIPAL_REPAYMENT_NOT_AVAILABLE_YET',
-    });
-  });
-
   it('keeps the snapshots and the lines append-only in the database', async () => {
     await expect(
       ctx.admin.query(`UPDATE registry.registry_snapshot_line SET quantity_held = 1`),

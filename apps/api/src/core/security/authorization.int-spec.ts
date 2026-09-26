@@ -65,6 +65,7 @@ const VALID_BODIES: [RegExp, object][] = [
   [/^POST \/api\/v1\/ledger\/corrections\/:id\/reject$/, { comment: 'Probe' }],
   [/^POST \/api\/v1\/transfers\/:id\/(reject|cancel)$/, { reason: 'Probe' }],
   [/^POST \/api\/v1\/distributions\/:id\/(return-to-draft|cancel)$/, { comment: 'Probe' }],
+  [/^POST \/api\/v1\/issuances\/:id\/early-redemption$/, { paymentDate: '2030-01-01' }],
   [
     /^POST \/api\/v1\/issuances\/:id\/invitations$/,
     { investorId: '0192a000-0000-7000-8000-000000000000' },

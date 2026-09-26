@@ -27,6 +27,7 @@ import {
   distributionCreateBody,
   distributionsQuery,
   distributionView,
+  earlyRedemptionBody,
   lineView,
   recalculationView,
   scheduleView,
@@ -65,6 +66,20 @@ export class DistributionsController {
   async activate(@Param('id', id) issuanceId: string): Promise<z.infer<typeof scheduleView>[]> {
     await this.schedules.activate(issuanceId);
     return (await this.schedules.list(issuanceId)).map(toScheduleView);
+  }
+
+  /** Total early redemption (SPEC §12.6): the principal is scheduled on the given date. */
+  @Post('issuances/:id/early-redemption')
+  @Idempotent()
+  @HttpCode(HttpStatus.OK)
+  @RequirePermission('issuance:operate')
+  @ApiBody({ schema: toOpenApiSchema(earlyRedemptionBody) })
+  @ApiOkResponse({ schema: toOpenApiSchema(z.array(scheduleView)) })
+  async earlyRedemption(
+    @Param('id', id) issuanceId: string,
+    @Body(new ZodValidationPipe(earlyRedemptionBody)) body: z.infer<typeof earlyRedemptionBody>,
+  ): Promise<z.infer<typeof scheduleView>[]> {
+    return (await this.schedules.earlyRedemption(issuanceId, body.paymentDate)).map(toScheduleView);
   }
 
   @Get('issuances/:id/coupon-schedule')

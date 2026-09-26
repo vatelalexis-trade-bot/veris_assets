@@ -168,7 +168,7 @@ Vérifiable par : scénario 4 vert. Livrée (D-074 à D-078).
 | P13-4 | Scénario 4 automatisé (dont rejeu idempotent) | M |
 
 ## Phase 14 — Échéancier, coupons, distributions
-Vérifiable par : scénario 6 vert. Livrée en deux fois (D-079) : 14a = P14-1 à P14-4, P14-7 ; 14b = P14-5.
+Vérifiable par : scénario 6 vert. Livrée en deux fois (D-079) : 14a = P14-1 à P14-4, P14-7 ; 14b = P14-5 (D-084, D-085). Livrée.
 
 | ID | Élément | Prio |
 |---|---|:-:|

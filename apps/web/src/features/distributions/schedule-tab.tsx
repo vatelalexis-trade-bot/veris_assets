@@ -2,11 +2,15 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useLocale, useTranslations } from 'next-intl';
+import { Dialog } from 'radix-ui';
+import { useState } from 'react';
 import { ApiError } from '@/components/app/api-error';
 import { ConfirmDialog } from '@/components/app/confirm-dialog';
 import { DataTable } from '@/components/app/data-table';
 import { StatusBadge } from '@/components/app/status-badge';
+import { FormField } from '@/components/app/form-field';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { formatBusinessDate } from '@/features/issuances/format';
 import { Link, useRouter } from '@/i18n/navigation';
 import { api } from '@/lib/api/client';
@@ -17,9 +21,12 @@ import type { ScheduleView } from './types';
 export function ScheduleTab({
   issuanceId,
   canPrepare,
+  canRedeemEarly,
 }: {
   issuanceId: string;
   canPrepare: boolean;
+  /** The issuance is active and the user may operate it. */
+  canRedeemEarly: boolean;
 }) {
   const t = useTranslations('distributions.schedule');
   const locale = useLocale();
@@ -35,6 +42,7 @@ export function ScheduleTab({
   });
   return (
     <div className="flex flex-col gap-3">
+      {canRedeemEarly ? <EarlyRedemption issuanceId={issuanceId} /> : null}
       {schedule.isError ? <ApiError error={schedule.error} /> : null}
       <DataTable<ScheduleView>
         caption={t('caption')}
@@ -165,5 +173,72 @@ export function ActivateButton({ issuanceId }: { issuanceId: string }) {
       />
       {activate.isError ? <ApiError error={activate.error} /> : null}
     </div>
+  );
+}
+
+/** Total early redemption (SPEC §12.6): the principal is scheduled on the chosen date. */
+function EarlyRedemption({ issuanceId }: { issuanceId: string }) {
+  const t = useTranslations('distributions.earlyRedemption');
+  const tCommon = useTranslations('common');
+  const queryClient = useQueryClient();
+  const idempotency = useIdempotencyKey();
+  const [open, setOpen] = useState(false);
+  const [date, setDate] = useState('');
+  const redeem = useMutation({
+    mutationFn: async () => {
+      const { error } = await api.POST('/api/v1/issuances/{id}/early-redemption', {
+        params: { path: { id: issuanceId }, header: idempotency.header() },
+        body: { paymentDate: date },
+      });
+      idempotency.answered();
+      if (error) throw error;
+    },
+    onSuccess: async () => {
+      setOpen(false);
+      await queryClient.invalidateQueries({ queryKey: ['coupon-schedule', issuanceId] });
+    },
+  });
+  return (
+    <Dialog.Root
+      open={open}
+      onOpenChange={(next) => {
+        setOpen(next);
+        redeem.reset();
+      }}
+    >
+      <div>
+        <Dialog.Trigger asChild>
+          <Button variant="secondary">{t('open')}</Button>
+        </Dialog.Trigger>
+      </div>
+      <Dialog.Portal>
+        <Dialog.Overlay className="fixed inset-0 z-40 bg-background/80" />
+        <Dialog.Content className="fixed top-1/2 left-1/2 z-50 flex w-[min(92vw,30rem)] -translate-x-1/2 -translate-y-1/2 flex-col gap-4 rounded-xl border border-border bg-surface p-6">
+          <Dialog.Title className="text-lg font-semibold">{t('title')}</Dialog.Title>
+          <Dialog.Description className="text-sm text-muted">{t('description')}</Dialog.Description>
+          <FormField label={t('date')}>
+            <Input
+              type="date"
+              value={date}
+              onChange={(event) => setDate(event.target.value)}
+              className="w-48"
+            />
+          </FormField>
+          {redeem.isError ? <ApiError error={redeem.error} /> : null}
+          <div className="flex justify-end gap-2">
+            <Dialog.Close asChild>
+              <Button variant="secondary">{tCommon('cancel')}</Button>
+            </Dialog.Close>
+            <Button
+              variant="destructive"
+              disabled={!date || redeem.isPending}
+              onClick={() => redeem.mutate()}
+            >
+              {t('confirm')}
+            </Button>
+          </div>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 }

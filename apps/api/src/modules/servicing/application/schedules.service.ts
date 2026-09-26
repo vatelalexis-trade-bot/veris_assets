@@ -1,6 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
-import type { BusinessDayConvention, DistributionFrequency } from '@virtus/shared';
-import { and, asc, eq } from 'drizzle-orm';
+import {
+  followingBusinessDay,
+  subtractBusinessDays,
+  type BusinessDate,
+  type BusinessDayConvention,
+  type DistributionFrequency,
+} from '@virtus/shared';
+import { and, asc, eq, inArray } from 'drizzle-orm';
 import { AuditWriter } from '../../../core/audit/audit-writer.js';
 import {
   DATABASE,
@@ -9,6 +15,7 @@ import {
   withCurrentTenant,
 } from '../../../core/database/database.js';
 import { AppError } from '../../../core/errors/app-error.js';
+import { TenantDirectory } from '../../iam/index.js';
 import { IssuancesService, type IssuanceDetail } from '../../issuance/index.js';
 import { SubscriptionsService } from '../../registry/index.js';
 import { generateSchedule } from '../domain/schedule.js';
@@ -30,6 +37,7 @@ export class SchedulesService {
     private readonly issuances: IssuancesService,
     private readonly subscriptions: SubscriptionsService,
     private readonly audit: AuditWriter,
+    private readonly tenants: TenantDirectory,
   ) {}
 
   activate(issuanceId: string): Promise<IssuanceDetail> {
@@ -67,6 +75,68 @@ export class SchedulesService {
         result: 'SUCCESS',
       });
       return activated;
+    });
+  }
+
+  /**
+   * Total early redemption (SPEC §12.6), decided manually: the coupons and the principal not yet
+   * paid on or after the date are cancelled, and the principal is scheduled on that date. The
+   * coupons due before it are distributed first; no accrued interest is paid (D-085).
+   */
+  earlyRedemption(issuanceId: string, date: BusinessDate): Promise<ScheduleRow[]> {
+    return withCurrentTenant(this.db, async (tx, tenantId) => {
+      const detail = await this.issuances.find(tx, issuanceId, true);
+      if (detail.issuance.status !== 'ACTIVE') throw new AppError('INVALID_STATE_TRANSITION');
+      const today = await this.tenants.todayOf(tx, tenantId);
+      if (date < today || date >= detail.terms.maturityDate!) {
+        throw new AppError('VALIDATION_FAILED', [
+          {
+            code: 'EARLY_REDEMPTION_DATE_INVALID',
+            field: 'paymentDate',
+            meta: { today, maturityDate: detail.terms.maturityDate! },
+          },
+        ]);
+      }
+      const rows = await this.rows(tx, issuanceId);
+      const replaced = rows.filter((row) => row.status === 'SCHEDULED' && row.paymentDate >= date);
+      if (replaced.some((row) => row.distributionId !== null)) {
+        throw new AppError('INVALID_STATE_TRANSITION', [
+          { code: 'DISTRIBUTION_IN_PROGRESS', field: null },
+        ]);
+      }
+      if (replaced.length > 0) {
+        await tx
+          .update(couponSchedule)
+          .set({ status: 'CANCELLED' })
+          .where(
+            inArray(
+              couponSchedule.id,
+              replaced.map((row) => row.id),
+            ),
+          );
+      }
+      const { terms } = detail;
+      const paymentDate =
+        terms.businessDayConvention === 'FOLLOWING' ? followingBusinessDay(date) : date;
+      await tx.insert(couponSchedule).values({
+        tenantId,
+        issuanceId,
+        sequence: rows.reduce((last, row) => (row.sequence > last ? row.sequence : last), 0) + 1,
+        type: 'PRINCIPAL',
+        periodStart: terms.issueDate!,
+        periodEnd: date,
+        paymentDate,
+        recordDate: subtractBusinessDays(paymentDate, terms.recordDateOffsetBusinessDays),
+      });
+      await this.audit.recordIn(tx, {
+        tenantId,
+        action: 'ISSUANCE_EARLY_REDEMPTION_SCHEDULED',
+        resourceType: 'issuance',
+        resourceId: issuanceId,
+        newValue: { paymentDate, cancelledPayments: replaced.length },
+        result: 'SUCCESS',
+      });
+      return this.rows(tx, issuanceId);
     });
   }
 

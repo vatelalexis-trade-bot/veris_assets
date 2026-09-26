@@ -429,20 +429,22 @@ Validées par le porteur de projet (« ok pour tout »).
 
 ## 2026-09-26 — Phase 14a (échéancier, coupons, distributions)
 
-**D-079 — Proposée. Découpage de la phase 14.**
+Validées par le porteur de projet (« ok pour tout, on verra à l'utilisation »).
+
+**D-079 — Acceptée. Découpage de la phase 14.**
 1. La phase 14 est livrée en deux fois, comme la phase 12 (D-064) :
    - **14a** : échéancier à l'activation (P14-1), calcul (P14-2), photo du registre et distribution à quatre yeux (P14-3), instruction de paiement fictive et CSV (P14-4), scénario 6 et couverture (P14-7) ;
    - **14b** : remboursement du principal, passage à « Échue » et remboursement anticipé (P14-5).
 2. En 14a, créer une distribution de principal est refusé (`PRINCIPAL_REPAYMENT_NOT_AVAILABLE_YET`).
 3. L'avis de coupon en PDF (P14-6) est reporté en phase 15, avec les autres documents générés (D-063, D-064).
 
-**D-080 — Proposée. Activation et échéancier (spec 7.1, 12.1, D-009, D-012).**
+**D-080 — Acceptée. Activation et échéancier (spec 7.1, 12.1, D-009, D-012).**
 1. L'activation (`POST /issuances/{id}/activate`, `issuance:operate`) fait passer l'émission de « Allouée » à « Active ». Elle est refusée tant qu'une souscription attend son paiement (`PENDING_PAYMENTS_REMAINING`). Dans la même transaction, elle génère l'échéancier.
 2. Les périodes se comptent à partir de la date d'émission, tous les 1, 3, 6 ou 12 mois. La dernière période, plus courte si besoin, finit à la maturité. Une fréquence `BULLET` donne un seul coupon. Une ligne « Principal » est ajoutée à la maturité.
 3. Les dates de période ne sont pas ajustées, donc le montant ne change pas. La date de paiement est décalée au jour ouvré suivant si la convention est `FOLLOWING`. La record date est la date de paiement moins le nombre de jours ouvrés choisi (D-012).
 4. Le champ « délai de grâce » (`grace_period_days`) n'est pas utilisé par le calendrier : son usage reste à préciser.
 
-**D-081 — Proposée. Calcul d'une distribution (spec 12.2, 12.3).**
+**D-081 — Acceptée. Calcul d'une distribution (spec 12.2, 12.3).**
 1. La photo du registre (« snapshot ») reprend les mouvements dont la date effective est au plus tard la record date, jusqu'au dernier mouvement enregistré au moment de la photo.
 2. Seuls les comptes des investisseurs comptent : la trésorerie de l'émetteur est exclue, et les unités bloquées sont incluses.
 3. Le calcul n'est possible qu'à partir de la record date (`RECORD_DATE_NOT_REACHED` avant).
@@ -451,7 +453,7 @@ Validées par le porteur de projet (« ok pour tout »).
 6. Un nouveau calcul, après un renvoi en brouillon, écrit de nouvelles lignes numérotées : les anciennes sont gardées. Les lignes et les photos ne peuvent être modifiées ni supprimées, et la base de données le garantit. La version des règles de calcul est enregistrée avec chaque distribution.
 7. Le recalcul de contrôle reconstruit la photo depuis le ledger et recalcule les lignes, sans rien écrire. Il est réservé à l'émetteur.
 
-**D-082 — Proposée. Circuit d'une distribution et du paiement (spec 4.8, 12.4, 12.5).**
+**D-082 — Acceptée. Circuit d'une distribution et du paiement (spec 4.8, 12.4, 12.5).**
 1. Une seule distribution par paiement prévu (`DISTRIBUTION_ALREADY_EXISTS`). Une distribution annulée (commentaire obligatoire) libère le paiement prévu.
 2. L'approbation est faite par un autre administrateur que celui qui a soumis. Ajout d'un renvoi en brouillon (« En revue » → « Brouillon », commentaire obligatoire) pour recalculer, par exemple après une correction du registre.
 3. Paiement fictif :
@@ -460,7 +462,29 @@ Validées par le porteur de projet (« ok pour tout »).
    - si le paiement n'est pas reçu, la distribution passe « Échec », ce qui est conservé, et une nouvelle instruction peut être générée.
 4. Écart par rapport à `docs/API.md` §2.10 : les routes du paiement sont rattachées à la distribution (`/distributions/{id}/payment-instruction`, `…/prepare`, `…/confirm`, `…/csv`). Le CSV est produit à la demande à partir des lignes, avec la mention démonstration, et n'est pas stocké comme document.
 
-**D-083 — Proposée. Démo et scénario 6.**
+**D-083 — Acceptée. Démo et scénario 6.**
 1. Nouvelle émission active « Northwind Green Notes » (NWGN) : 5 % semestriel en 30E/360, nominal 1 000 €, Alpine 100 unités, Baltic 250, Cedar 150. Son premier coupon, du 15 au 15, est échu au moment du chargement de la démo : exactement 180/360, donc 2 500,00 € pour Alpine.
 2. Le scénario 6 automatisé s'appuie sur cette émission. Les avoirs y sont datés dans le passé : on ne peut pas les recréer par l'API, et le scénario demande donc une démo fraîche (`pnpm db:reset`) pour être rejoué. La CI part toujours d'une base neuve.
 3. Le portail investisseur montre ses distributions avec sa seule ligne.
+
+---
+
+## 2026-09-26 — Phase 14b (remboursement du principal)
+
+**D-084 — Proposée. Remboursement du principal (spec 12.6, docs/DATA_MODEL.md §4.1 et §4.5).**
+1. Une distribution de principal suit le même circuit qu'un coupon (photo, calcul, quatre yeux, paiement fictif). Chaque ligne vaut unités × valeur nominale.
+2. Elle ne peut être créée qu'une fois distribués tous les coupons dus avant elle (`COUPONS_NOT_DISTRIBUTED`).
+3. Avant le paiement, le registre vérifie :
+   - qu'aucune unité n'est bloquée (`UNITS_BLOCKED` : un transfert en revue doit d'abord être décidé ou annulé) ;
+   - que les avoirs n'ont pas changé depuis la record date (`HOLDINGS_CHANGED_SINCE_RECORD_DATE` : la distribution se renvoie alors en brouillon pour être recalculée).
+4. Au paiement, dans la même transaction :
+   - des mouvements `REDEMPTION` remettent toutes les positions à zéro, y compris les unités invendues de la trésorerie, et les montants d'acquisition avec elles ;
+   - les invariants sont vérifiés ;
+   - l'émission passe « Échue » (MATURED).
+
+**D-085 — Proposée. Remboursement anticipé total (spec 12.6).**
+1. Il est décidé par un administrateur de l'émetteur (`issuance:operate`) sur une émission active, pour une date comprise entre aujourd'hui et la veille de la maturité (`EARLY_REDEMPTION_DATE_INVALID` sinon).
+2. Les coupons et le principal non encore payés à partir de cette date sont annulés dans l'échéancier. Un nouveau principal est prévu à cette date, avec le même décalage de jour ouvré et de record date.
+3. Il est refusé si une distribution d'un paiement annulé est en cours (`DISTRIBUTION_IN_PROGRESS`).
+4. Les coupons dus avant la date se distribuent d'abord. Aucun intérêt couru entre le dernier coupon et la date n'est versé : ce serait une évolution à valider.
+5. Le remboursement suit ensuite D-084, et l'émission passe « Échue ».

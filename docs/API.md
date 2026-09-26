@@ -241,7 +241,7 @@ Refus à l'envoi et à l'approbation : `422` avec le code du premier contrôle �
 | POST | `/distributions/{id}/payment-instruction` (génération, aussi après un échec) · `/payment-instruction/prepare` | `distribution:prepare` | ✓ |
 | POST | `/distributions/{id}/payment-instruction/confirm` (quatre yeux ; non reçu → FAILED) | `payment:confirm` | ✓ |
 | GET | `/distributions/{id}/payment-instruction/csv` (mention démonstration) | `distribution:prepare` | |
-| POST | `/issuances/{id}/early-redemption` (remboursement total anticipé, phase 14b) | `issuance:operate` | ✓ |
+| POST | `/issuances/{id}/early-redemption` (`{ paymentDate }`, remboursement total anticipé, D-085) | `issuance:operate` | ✓ |
 
 ### 2.11 `/documents`
 

@@ -6,7 +6,7 @@ import {
   type DayCount,
   type RoundingMethod,
 } from '@virtus/shared';
-import { and, asc, count, desc, eq, exists, sql, type SQL } from 'drizzle-orm';
+import { and, asc, count, desc, eq, exists, lte, sql, type SQL } from 'drizzle-orm';
 import { AuditWriter } from '../../../core/audit/audit-writer.js';
 import { currentUser, type RequestUser } from '../../../core/context/request-context.js';
 import {
@@ -27,7 +27,7 @@ import {
 import { Workflow } from '../../../core/workflow/workflow.js';
 import { TenantDirectory, UserDirectory } from '../../iam/index.js';
 import { issuance, IssuancesService, type IssuanceDetail } from '../../issuance/index.js';
-import { RegistryQueries, RegistrySnapshots } from '../../registry/index.js';
+import { RegistryQueries, RegistryRedemptions, RegistrySnapshots } from '../../registry/index.js';
 import { periodFraction } from '../domain/day-count.js';
 import {
   calculateDistribution,
@@ -82,6 +82,7 @@ export class DistributionsService {
     @Inject(PAYMENT_PROVIDER) private readonly payments: PaymentProvider,
     private readonly issuances: IssuancesService,
     private readonly snapshots: RegistrySnapshots,
+    private readonly redemptions: RegistryRedemptions,
     private readonly registry: RegistryQueries,
     private readonly tenants: TenantDirectory,
     private readonly workflow: Workflow,
@@ -167,11 +168,8 @@ export class DistributionsService {
       if (detail.issuance.status !== 'ACTIVE' || schedule!.status !== 'SCHEDULED')
         throw new AppError('INVALID_STATE_TRANSITION');
       if (schedule!.distributionId) throw new AppError('DISTRIBUTION_ALREADY_EXISTS');
-      if (schedule!.type === 'PRINCIPAL') {
-        throw new AppError('INVALID_STATE_TRANSITION', [
-          { code: 'PRINCIPAL_REPAYMENT_NOT_AVAILABLE_YET', field: null },
-        ]);
-      }
+      // The principal comes last: every coupon due before it must have been distributed.
+      if (schedule!.type === 'PRINCIPAL') await this.requireCouponsDistributed(tx, schedule!);
       const userId = currentUser().userId;
       const [created] = await tx
         .insert(distribution)
@@ -396,7 +394,7 @@ export class DistributionsService {
   /** The issuer's staff tell the (fictitious) bank what to pay. */
   prepareInstruction(id: string): Promise<DistributionDetail> {
     return withCurrentTenant(this.db, async (tx, tenantId) => {
-      const found = await this.lockDistribution(tx, id);
+      const found = await this.lockWithIssuance(tx, id);
       const instruction = found.instruction;
       if (
         found.distribution.status !== 'PAYMENT_INSTRUCTION_GENERATED' ||
@@ -442,7 +440,7 @@ export class DistributionsService {
    */
   confirmInstruction(id: string): Promise<DistributionDetail> {
     return withCurrentTenant(this.db, async (tx, tenantId) => {
-      const found = await this.lockDistribution(tx, id);
+      const found = await this.lockWithIssuance(tx, id);
       const instruction = found.instruction;
       if (
         found.distribution.status !== 'PAYMENT_INSTRUCTION_GENERATED' ||
@@ -457,6 +455,11 @@ export class DistributionsService {
         to: 'PAID',
         initiatorUserId: instruction.preparedBy,
       });
+      // A repayment of the principal must be possible before anything is paid.
+      if (found.distribution.type === 'PRINCIPAL') {
+        const snapshot = await this.snapshots.read(tx, found.distribution.snapshotId!);
+        await this.redemptions.check(tx, tenantId, found.distribution.issuanceId, snapshot.lines);
+      }
       const { received } = await this.provider.call(() =>
         this.payments.confirm(instruction.providerReference!),
       );
@@ -551,6 +554,45 @@ export class DistributionsService {
       result: 'SUCCESS',
     });
     await this.publish(tx, tenantId, DISTRIBUTION_EVENTS.paid, found);
+    if (found.distribution.type === 'PRINCIPAL') await this.repay(tx, tenantId, found);
+  }
+
+  /**
+   * The principal is paid (SPEC §12.6): REDEMPTION of every position, then the issuance is
+   * MATURED — at maturity or after a total early redemption.
+   */
+  private async repay(tx: Transaction, tenantId: string, found: DistributionDetail): Promise<void> {
+    const issuanceId = found.distribution.issuanceId;
+    const detail = await this.issuances.find(tx, issuanceId, true);
+    const snapshot = await this.snapshots.read(tx, found.distribution.snapshotId!);
+    await this.redemptions.redeemAll(
+      tx,
+      tenantId,
+      issuanceId,
+      snapshot.lines,
+      detail.terms.totalUnits,
+      `distribution:${found.distribution.id}`,
+    );
+    await this.issuances.markMatured(tx, tenantId, issuanceId);
+  }
+
+  private async requireCouponsDistributed(tx: Transaction, principal: ScheduleRow): Promise<void> {
+    const [due] = await tx
+      .select({ id: couponSchedule.id })
+      .from(couponSchedule)
+      .where(
+        and(
+          eq(couponSchedule.issuanceId, principal.issuanceId),
+          eq(couponSchedule.type, 'COUPON'),
+          eq(couponSchedule.status, 'SCHEDULED'),
+          lte(couponSchedule.paymentDate, principal.paymentDate),
+        ),
+      );
+    if (due) {
+      throw new AppError('INVALID_STATE_TRANSITION', [
+        { code: 'COUPONS_NOT_DISTRIBUTED', field: null },
+      ]);
+    }
   }
 
   /** The provider did not receive the payment: FAILED is kept, in its own transaction. */
@@ -702,6 +744,13 @@ export class DistributionsService {
       .innerJoin(couponSchedule, eq(couponSchedule.id, distribution.couponScheduleId))
       .innerJoin(issuance, eq(issuance.id, distribution.issuanceId))
       .leftJoin(paymentInstruction, eq(paymentInstruction.distributionId, distribution.id));
+  }
+
+  /** The issuance first, then the distribution: the same order as every other write. */
+  private async lockWithIssuance(tx: Transaction, id: string): Promise<DistributionDetail> {
+    const peek = await this.find(tx, id);
+    await this.issuances.find(tx, peek.distribution.issuanceId, true);
+    return this.lockDistribution(tx, id);
   }
 
   private async lockDistribution(tx: Transaction, id: string): Promise<DistributionDetail> {
