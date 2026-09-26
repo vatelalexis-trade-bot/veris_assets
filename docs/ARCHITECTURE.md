@@ -54,7 +54,7 @@ Les décisions référencées `D-xxx` sont dans `docs/DECISIONS.md`. Modèle de 
 | Asynchrone | pg-boss | BullMQ + Redis | Une pièce de moins ; jobs sauvegardés avec la base ; cohérent avec l'outbox |
 | Documents | S3 compatible | Stockage en base ; disque local | URL temporaires, fournisseurs européens interchangeables |
 | Authentification | Better Auth | Keycloak ; Auth.js ; maison | Éprouvé, TypeScript, TOTP intégré ; Keycloak trop lourd pour le Codespace |
-| Déploiement | Images Docker ; PaaS européen à confirmer après la phase 15 | VPS + compose ; Kubernetes | Peu d'administration pour un porteur non développeur |
+| Déploiement | Images Docker sur un VPS OVHcloud avec Docker Compose (D-095) | PaaS européen (Clever Cloud, Scaleway) ; Kubernetes ; offres gratuites | Seule option gardant PostgreSQL 18 et les quatre rôles sans changer le code ; administration couverte par des scripts (phase 16) |
 | Monitoring | pino + OpenTelemetry + Sentry | Suite Grafana auto-hébergée | Standard neutre, mise en place rapide |
 
 Points de vigilance : Drizzle est en 0.x et Better Auth en 1.x → versions figées, montées de version volontaires et testées.

@@ -573,9 +573,9 @@ Validées par le porteur de projet (« Oui, toutes validées »).
 
 ## 2026-09-26 — Phase 15c (jeu de démo complet)
 
-Proposée par Claude, à valider par le porteur de projet.
+Validée par le porteur de projet (« ok pour tout »).
 
-**D-094 — Proposée. Contenu du jeu de démo complet (spec 28, P15-6).**
+**D-094 — Acceptée. Contenu du jeu de démo complet (spec 28, P15-6).**
 1. Le jeu de démo existant est complété pour couvrir la section 28 :
    - **éligibilité** : les investisseurs de Northwind au KYC/KYB approuvé sont déclarés éligibles par le Compliance Officer (14), Maple (KYC/KYB rejeté) non éligible ; les autres restent « non évalués ». Chaque décision est tracée (évaluation manuelle, historique, audit). Les investisseurs de Contoso restent non évalués : Contoso n'a pas de Compliance Officer ;
    - **pays exclu** : l'invitation de Juniper Ventures (États-Unis) au projet solaire Aurora, qui exclut les États-Unis, est refusée, avec la raison conservée ;
@@ -586,3 +586,9 @@ Proposée par Claude, à valider par le porteur de projet.
 2. Déterminisme : identifiants fixes, et les dates restent relatives au jour de la réinitialisation, pour que les scénarios restent jouables à toute date. Recharger le jeu ne change rien (vérifié par un test).
 3. Pas de PDF pour l'historique semé : le chargement des données n'écrit pas de fichiers dans le stockage. Les documents générés (D-092) apparaissent pour toute nouvelle opération faite pendant la démo.
 4. « Helios Solar SPV 2027 », cité en exemple par la spec, reste créé par le scénario 1 (assistant de création), pour ne pas doublonner.
+
+**D-095 — Acceptée. Hébergement de la démo : un VPS OVHcloud (spec 33.12, P15-7).** Choix du porteur de projet, sur la comparaison de `docs/HOSTING.md`.
+1. La démo tourne sur un serveur virtuel OVHcloud (VPS-2 visé : 4 vCPU, 8 Go, sauvegarde quotidienne incluse ; offre et prix confirmés à la commande), dans un centre de données européen, avec la même configuration Docker que le Codespace : PostgreSQL 18 et ses quatre rôles, Redis, Garage, Mailpit protégé par mot de passe, HTTPS automatique.
+2. Écarté : les plateformes gérées (Clever Cloud : un seul utilisateur de base ; Scaleway : pas de PostgreSQL 18) et les offres gratuites (mise en veille, expiration des données, ou fournisseur non européen).
+3. Modifie docs/ARCHITECTURE.md §2.1 (« PaaS européen à confirmer ») : un VPS demande plus d'administration ; la phase 16 livre les scripts (installation en une commande, mises à jour de sécurité automatiques, sauvegarde quotidienne de la base, déploiement depuis GitHub) et un guide en français.
+4. Le porteur de projet commande le serveur et le nom de domaine ; aucun secret n'est commité.
