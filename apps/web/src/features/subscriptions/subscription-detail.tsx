@@ -94,6 +94,12 @@ export function SubscriptionDetail({ id, rights }: { id: string; rights: Subscri
         ] as [string, ReactNode][])),
     [t('fields.units'), current.requestedUnits],
     [t('fields.amount'), formatAmount(current.requestedAmount, current.currency, locale)],
+    ...(current.allocatedUnits !== null
+      ? ([
+          [t('fields.allocatedUnits'), current.allocatedUnits],
+          [t('fields.amountDue'), formatAmount(current.amountDue, current.currency, locale)],
+        ] as [string, ReactNode][])
+      : []),
     [t('fields.paymentReference'), current.paymentReference ?? '—'],
     [t('fields.submittedAt'), dateTime(current.submittedAt)],
     [t('fields.decidedAt'), dateTime(current.decidedAt)],
@@ -119,7 +125,11 @@ export function SubscriptionDetail({ id, rights }: { id: string; rights: Subscri
           <span className="font-medium">{t('cancellationReason')}</span>{' '}
           {current.cancellationReason === 'ISSUANCE_CANCELLED'
             ? t('issuanceCancelled')
-            : current.cancellationReason}
+            : current.cancellationReason === 'NOT_ALLOCATED'
+              ? t('notAllocated')
+              : current.cancellationReason === 'CANCELLED_BY_INVESTOR'
+                ? t('cancelledByInvestor')
+                : current.cancellationReason}
         </p>
       ) : null}
       <div className="flex flex-wrap gap-2">
@@ -332,7 +342,11 @@ function History({ id }: { id: string }) {
               })}{' '}
               · {row.actorName ?? (row.actorUserId ? t('unknownUser') : t('system'))}
             </p>
-            {row.comment ? <p className="whitespace-pre-wrap">{row.comment}</p> : null}
+            {row.comment ? (
+              <p className="whitespace-pre-wrap">
+                {row.comment === 'NOT_ALLOCATED' ? t('notAllocated') : row.comment}
+              </p>
+            ) : null}
           </li>
         ))}
       </ol>

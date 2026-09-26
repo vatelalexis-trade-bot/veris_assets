@@ -61,6 +61,7 @@ const VALID_BODIES: [RegExp, object][] = [
     { documentsAccepted: true, eligibilityDeclared: true },
   ],
   [/^POST \/api\/v1\/subscriptions\/:id\/(reject|cancel)$/, { reason: 'Probe' }],
+  [/^POST \/api\/v1\/allocations\/:id\/reject$/, { comment: 'Probe' }],
   [
     /^POST \/api\/v1\/issuances\/:id\/invitations$/,
     { investorId: '0192a000-0000-7000-8000-000000000000' },
@@ -119,6 +120,17 @@ describe('role × permission matrix on every protected route', () => {
   }, 120_000);
 });
 
+/** A closed issuance of Contoso, then its treasury account (registry resources of phase 12). */
+const CONTOSO_ISSUANCE = `WITH created AS (
+    INSERT INTO issuance.issuance (tenant_id, name, code, status)
+    SELECT id, 'Contoso Notes (demo)', 'CTR' || floor(random() * 1e6)::text, 'SUBSCRIPTION_CLOSED'
+    FROM iam.tenant WHERE legal_name LIKE 'Contoso%' RETURNING id, tenant_id
+  )`;
+const CONTOSO_ACCOUNT = `${CONTOSO_ISSUANCE}, account AS (
+    INSERT INTO registry.logical_account (tenant_id, issuance_id, type)
+    SELECT tenant_id, id, 'ISSUER_TREASURY' FROM created RETURNING id, tenant_id, issuance_id
+  )`;
+
 describe('scenario 5 — tenant isolation (SPEC §20, §29)', () => {
   // Identifier of a resource of the other tenant (Contoso) for every route that takes one.
   // A new route with an identifier makes the coverage test fail until a case is added here.
@@ -176,6 +188,37 @@ describe('scenario 5 — tenant isolation (SPEC §20, §29)', () => {
            SELECT created.tenant_id, created.id, i.id, 'SUBMITTED', 100, 100000, 'EUR'
            FROM created, investor.investor i WHERE i.legal_name LIKE 'Quarry%'
            RETURNING id`,
+        ),
+    ],
+    [
+      /^\/api\/v1\/allocations\/:id/,
+      () =>
+        idOf(
+          `${CONTOSO_ISSUANCE}
+           INSERT INTO registry.allocation_round (tenant_id, issuance_id)
+           SELECT tenant_id, id FROM created RETURNING id`,
+        ),
+    ],
+    [
+      /^\/api\/v1\/positions\/:id/,
+      () =>
+        idOf(
+          `${CONTOSO_ACCOUNT}
+           INSERT INTO registry.position (tenant_id, issuance_id, account_id, currency)
+           SELECT tenant_id, issuance_id, id, 'EUR' FROM account RETURNING id`,
+        ),
+    ],
+    [
+      /^\/api\/v1\/ledger\/:id/,
+      () =>
+        idOf(
+          `${CONTOSO_ACCOUNT}
+           INSERT INTO registry.ledger_entry (tenant_id, issuance_id, sequence_no, type,
+             destination_account_id, quantity, effective_date, recorded_at, business_reference,
+             previous_hash, entry_hash)
+           SELECT tenant_id, issuance_id, 1, 'ISSUANCE', id, 100, current_date, now(), 'probe',
+             repeat('0', 64), repeat('0', 64)
+           FROM account RETURNING id`,
         ),
     ],
     [

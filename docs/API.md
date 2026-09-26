@@ -202,13 +202,15 @@ Refus à l'envoi et à l'approbation : `422` avec le code du premier contrôle �
 | GET | `/issuances/{id}/allocation-rounds` · `/allocations/{roundId}` | `registry:read` | |
 | POST | `/issuances/{id}/allocation-rounds` (brouillon) · PATCH `/allocations/{roundId}` | `allocation:prepare` | ✓ |
 | POST | `/allocations/{roundId}/propose` | `allocation:prepare` | ✓ |
-| POST | `/allocations/{roundId}/validate` · `/reject` | `allocation:validate` | ✓ |
-| GET | `/allocations/{roundId}/confirmation` (document) | `registry:read` (P) | |
-| GET | `/positions` · `/positions/{id}` | `registry:read` (P) | |
-| GET | `/ledger?issuanceId=…` · `/ledger/{id}` | `registry:read` (P : ses mouvements) | |
-| POST | `/ledger/corrections` | `registry-correction:request` | ✓ |
+| POST | `/allocations/{roundId}/validate` (quatre yeux) | `allocation:validate` | ✓ |
+| POST | `/allocations/{roundId}/reject` (commentaire ; brouillon abandonné par le préparateur, lot proposé rejeté par un administrateur, D-065) | `allocation:prepare` (+ `allocation:validate` pour un lot proposé) | ✓ |
+| GET | `/allocations/{roundId}/transitions` (historique) | `registry:read` | |
+| GET | `/allocations/{roundId}/confirmation` (document, phase 15, D-064) | `registry:read` (P) | |
+| GET | `/positions?issuanceId=…&investorId=…` · `/positions/{id}` | `registry:read` (P) | |
+| GET | `/ledger?issuanceId=…&type=…` · `/ledger/{id}` | `registry:read` (P : ses mouvements, sans le nom des autres investisseurs, D-067) | |
+| POST | `/ledger/corrections` (phase 12b) | `registry-correction:request` | ✓ |
 | POST | `/ledger/corrections/{id}/approve` · `/reject` | `registry-correction:approve` | ✓ |
-| GET | `/ledger/reconciliation?issuanceId=…` | `registry:read` | |
+| GET | `/ledger/reconciliation?issuanceId=…` (phase 12b) | `registry:read` | |
 
 ### 2.9 `/transfers`
 

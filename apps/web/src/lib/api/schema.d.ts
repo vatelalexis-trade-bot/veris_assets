@@ -1316,6 +1316,166 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/issuances/{id}/allocation-rounds': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['RegistryController_rounds'];
+    put?: never;
+    post: operations['RegistryController_createRound'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/allocations/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['RegistryController_round'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch: operations['RegistryController_updateRound'];
+    trace?: never;
+  };
+  '/api/v1/allocations/{id}/propose': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['RegistryController_propose'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/allocations/{id}/validate': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['RegistryController_validate'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/allocations/{id}/reject': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['RegistryController_reject'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/allocations/{id}/transitions': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['RegistryController_transitions'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/positions': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['RegistryController_positions'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/positions/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['RegistryController_position'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/ledger': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['RegistryController_ledger'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/ledger/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['RegistryController_entry'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/audit-events': {
     parameters: {
       query?: never;
@@ -1470,6 +1630,10 @@ export interface operations {
                 | 'INVESTOR_INVITED'
                 | 'ISSUANCE_OPENED'
                 | 'ISSUANCE_CANCELLED'
+                | 'ALLOCATION_TO_VALIDATE'
+                | 'ALLOCATION_REJECTED'
+                | 'SUBSCRIPTION_ALLOCATED'
+                | 'SUBSCRIPTION_NOT_ALLOCATED'
                 | 'SUBSCRIPTION_SUBMITTED'
                 | 'SUBSCRIPTION_APPROVED'
                 | 'SUBSCRIPTION_REJECTED'
@@ -7411,6 +7575,876 @@ export interface operations {
             /** Format: date-time */
             occurredAt: string;
           }[];
+        };
+      };
+    };
+  };
+  RegistryController_rounds: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            /** @enum {string} */
+            status: 'DRAFT' | 'PROPOSED' | 'VALIDATED' | 'REJECTED';
+            method: string;
+            minimumWaiverJustification: string | null;
+            /** Format: uuid */
+            proposedBy: string | null;
+            proposedByName: string | null;
+            /** Format: date-time */
+            proposedAt: string | null;
+            /** Format: uuid */
+            validatedBy: string | null;
+            validatedByName: string | null;
+            /** Format: date-time */
+            validatedAt: string | null;
+            rejectionComment: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            issuance: {
+              /** Format: uuid */
+              id: string;
+              name: string;
+              code: string;
+              status: string;
+              currency: string;
+              nominalValue: string;
+              totalUnits: string;
+              minimumAmount: string | null;
+            };
+            lines: {
+              /** Format: uuid */
+              subscriptionId: string;
+              /** Format: uuid */
+              investorId: string;
+              investorName: string;
+              requestedUnits: string;
+              allocatedUnits: string;
+              amount: string;
+              subscriptionStatus: string;
+            }[];
+            totals: {
+              requestedUnits: string;
+              allocatedUnits: string;
+              allocatedAmount: string;
+            };
+            failures: {
+              code: string;
+              /** Format: uuid */
+              subscriptionId: string | null;
+              meta: {
+                [key: string]: string;
+              } | null;
+            }[];
+          }[];
+        };
+      };
+    };
+  };
+  RegistryController_createRound: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            /** @enum {string} */
+            status: 'DRAFT' | 'PROPOSED' | 'VALIDATED' | 'REJECTED';
+            method: string;
+            minimumWaiverJustification: string | null;
+            /** Format: uuid */
+            proposedBy: string | null;
+            proposedByName: string | null;
+            /** Format: date-time */
+            proposedAt: string | null;
+            /** Format: uuid */
+            validatedBy: string | null;
+            validatedByName: string | null;
+            /** Format: date-time */
+            validatedAt: string | null;
+            rejectionComment: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            issuance: {
+              /** Format: uuid */
+              id: string;
+              name: string;
+              code: string;
+              status: string;
+              currency: string;
+              nominalValue: string;
+              totalUnits: string;
+              minimumAmount: string | null;
+            };
+            lines: {
+              /** Format: uuid */
+              subscriptionId: string;
+              /** Format: uuid */
+              investorId: string;
+              investorName: string;
+              requestedUnits: string;
+              allocatedUnits: string;
+              amount: string;
+              subscriptionStatus: string;
+            }[];
+            totals: {
+              requestedUnits: string;
+              allocatedUnits: string;
+              allocatedAmount: string;
+            };
+            failures: {
+              code: string;
+              /** Format: uuid */
+              subscriptionId: string | null;
+              meta: {
+                [key: string]: string;
+              } | null;
+            }[];
+          };
+        };
+      };
+    };
+  };
+  RegistryController_round: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            /** @enum {string} */
+            status: 'DRAFT' | 'PROPOSED' | 'VALIDATED' | 'REJECTED';
+            method: string;
+            minimumWaiverJustification: string | null;
+            /** Format: uuid */
+            proposedBy: string | null;
+            proposedByName: string | null;
+            /** Format: date-time */
+            proposedAt: string | null;
+            /** Format: uuid */
+            validatedBy: string | null;
+            validatedByName: string | null;
+            /** Format: date-time */
+            validatedAt: string | null;
+            rejectionComment: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            issuance: {
+              /** Format: uuid */
+              id: string;
+              name: string;
+              code: string;
+              status: string;
+              currency: string;
+              nominalValue: string;
+              totalUnits: string;
+              minimumAmount: string | null;
+            };
+            lines: {
+              /** Format: uuid */
+              subscriptionId: string;
+              /** Format: uuid */
+              investorId: string;
+              investorName: string;
+              requestedUnits: string;
+              allocatedUnits: string;
+              amount: string;
+              subscriptionStatus: string;
+            }[];
+            totals: {
+              requestedUnits: string;
+              allocatedUnits: string;
+              allocatedAmount: string;
+            };
+            failures: {
+              code: string;
+              /** Format: uuid */
+              subscriptionId: string | null;
+              meta: {
+                [key: string]: string;
+              } | null;
+            }[];
+          };
+        };
+      };
+    };
+  };
+  RegistryController_updateRound: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          lines?: {
+            /** Format: uuid */
+            subscriptionId: string;
+            allocatedUnits: string;
+          }[];
+          minimumWaiverJustification?: string | null;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            /** @enum {string} */
+            status: 'DRAFT' | 'PROPOSED' | 'VALIDATED' | 'REJECTED';
+            method: string;
+            minimumWaiverJustification: string | null;
+            /** Format: uuid */
+            proposedBy: string | null;
+            proposedByName: string | null;
+            /** Format: date-time */
+            proposedAt: string | null;
+            /** Format: uuid */
+            validatedBy: string | null;
+            validatedByName: string | null;
+            /** Format: date-time */
+            validatedAt: string | null;
+            rejectionComment: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            issuance: {
+              /** Format: uuid */
+              id: string;
+              name: string;
+              code: string;
+              status: string;
+              currency: string;
+              nominalValue: string;
+              totalUnits: string;
+              minimumAmount: string | null;
+            };
+            lines: {
+              /** Format: uuid */
+              subscriptionId: string;
+              /** Format: uuid */
+              investorId: string;
+              investorName: string;
+              requestedUnits: string;
+              allocatedUnits: string;
+              amount: string;
+              subscriptionStatus: string;
+            }[];
+            totals: {
+              requestedUnits: string;
+              allocatedUnits: string;
+              allocatedAmount: string;
+            };
+            failures: {
+              code: string;
+              /** Format: uuid */
+              subscriptionId: string | null;
+              meta: {
+                [key: string]: string;
+              } | null;
+            }[];
+          };
+        };
+      };
+    };
+  };
+  RegistryController_propose: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            /** @enum {string} */
+            status: 'DRAFT' | 'PROPOSED' | 'VALIDATED' | 'REJECTED';
+            method: string;
+            minimumWaiverJustification: string | null;
+            /** Format: uuid */
+            proposedBy: string | null;
+            proposedByName: string | null;
+            /** Format: date-time */
+            proposedAt: string | null;
+            /** Format: uuid */
+            validatedBy: string | null;
+            validatedByName: string | null;
+            /** Format: date-time */
+            validatedAt: string | null;
+            rejectionComment: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            issuance: {
+              /** Format: uuid */
+              id: string;
+              name: string;
+              code: string;
+              status: string;
+              currency: string;
+              nominalValue: string;
+              totalUnits: string;
+              minimumAmount: string | null;
+            };
+            lines: {
+              /** Format: uuid */
+              subscriptionId: string;
+              /** Format: uuid */
+              investorId: string;
+              investorName: string;
+              requestedUnits: string;
+              allocatedUnits: string;
+              amount: string;
+              subscriptionStatus: string;
+            }[];
+            totals: {
+              requestedUnits: string;
+              allocatedUnits: string;
+              allocatedAmount: string;
+            };
+            failures: {
+              code: string;
+              /** Format: uuid */
+              subscriptionId: string | null;
+              meta: {
+                [key: string]: string;
+              } | null;
+            }[];
+          };
+        };
+      };
+    };
+  };
+  RegistryController_validate: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            /** @enum {string} */
+            status: 'DRAFT' | 'PROPOSED' | 'VALIDATED' | 'REJECTED';
+            method: string;
+            minimumWaiverJustification: string | null;
+            /** Format: uuid */
+            proposedBy: string | null;
+            proposedByName: string | null;
+            /** Format: date-time */
+            proposedAt: string | null;
+            /** Format: uuid */
+            validatedBy: string | null;
+            validatedByName: string | null;
+            /** Format: date-time */
+            validatedAt: string | null;
+            rejectionComment: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            issuance: {
+              /** Format: uuid */
+              id: string;
+              name: string;
+              code: string;
+              status: string;
+              currency: string;
+              nominalValue: string;
+              totalUnits: string;
+              minimumAmount: string | null;
+            };
+            lines: {
+              /** Format: uuid */
+              subscriptionId: string;
+              /** Format: uuid */
+              investorId: string;
+              investorName: string;
+              requestedUnits: string;
+              allocatedUnits: string;
+              amount: string;
+              subscriptionStatus: string;
+            }[];
+            totals: {
+              requestedUnits: string;
+              allocatedUnits: string;
+              allocatedAmount: string;
+            };
+            failures: {
+              code: string;
+              /** Format: uuid */
+              subscriptionId: string | null;
+              meta: {
+                [key: string]: string;
+              } | null;
+            }[];
+          };
+        };
+      };
+    };
+  };
+  RegistryController_reject: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          comment: string;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            /** @enum {string} */
+            status: 'DRAFT' | 'PROPOSED' | 'VALIDATED' | 'REJECTED';
+            method: string;
+            minimumWaiverJustification: string | null;
+            /** Format: uuid */
+            proposedBy: string | null;
+            proposedByName: string | null;
+            /** Format: date-time */
+            proposedAt: string | null;
+            /** Format: uuid */
+            validatedBy: string | null;
+            validatedByName: string | null;
+            /** Format: date-time */
+            validatedAt: string | null;
+            rejectionComment: string | null;
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            issuance: {
+              /** Format: uuid */
+              id: string;
+              name: string;
+              code: string;
+              status: string;
+              currency: string;
+              nominalValue: string;
+              totalUnits: string;
+              minimumAmount: string | null;
+            };
+            lines: {
+              /** Format: uuid */
+              subscriptionId: string;
+              /** Format: uuid */
+              investorId: string;
+              investorName: string;
+              requestedUnits: string;
+              allocatedUnits: string;
+              amount: string;
+              subscriptionStatus: string;
+            }[];
+            totals: {
+              requestedUnits: string;
+              allocatedUnits: string;
+              allocatedAmount: string;
+            };
+            failures: {
+              code: string;
+              /** Format: uuid */
+              subscriptionId: string | null;
+              meta: {
+                [key: string]: string;
+              } | null;
+            }[];
+          };
+        };
+      };
+    };
+  };
+  RegistryController_transitions: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @enum {string|null} */
+            fromStatus: 'DRAFT' | 'PROPOSED' | 'VALIDATED' | 'REJECTED' | null;
+            /** @enum {string} */
+            toStatus: 'DRAFT' | 'PROPOSED' | 'VALIDATED' | 'REJECTED';
+            actorName: string | null;
+            /** Format: uuid */
+            actorUserId: string | null;
+            comment: string | null;
+            /** Format: date-time */
+            occurredAt: string;
+          }[];
+        };
+      };
+    };
+  };
+  RegistryController_positions: {
+    parameters: {
+      query?: {
+        investorId?: string;
+        issuanceId?: string;
+        page?: number;
+        pageSize?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            data: {
+              /** Format: uuid */
+              id: string;
+              /** Format: uuid */
+              issuanceId: string;
+              issuanceName: string;
+              issuanceCode: string;
+              /** Format: uuid */
+              accountId: string;
+              /** @enum {string} */
+              accountType: 'ISSUER_TREASURY' | 'INVESTOR';
+              /** Format: uuid */
+              investorId: string | null;
+              investorName: string | null;
+              quantityHeld: string;
+              quantityBlocked: string;
+              quantityAvailable: string;
+              acquisitionAmount: string;
+              currency: string;
+              version: number;
+              /** Format: date-time */
+              updatedAt: string;
+            }[];
+            meta: {
+              page: number;
+              pageSize: number;
+              total: number;
+            };
+          };
+        };
+      };
+    };
+  };
+  RegistryController_position: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceName: string;
+            issuanceCode: string;
+            /** Format: uuid */
+            accountId: string;
+            /** @enum {string} */
+            accountType: 'ISSUER_TREASURY' | 'INVESTOR';
+            /** Format: uuid */
+            investorId: string | null;
+            investorName: string | null;
+            quantityHeld: string;
+            quantityBlocked: string;
+            quantityAvailable: string;
+            acquisitionAmount: string;
+            currency: string;
+            version: number;
+            /** Format: date-time */
+            updatedAt: string;
+          };
+        };
+      };
+    };
+  };
+  RegistryController_ledger: {
+    parameters: {
+      query?: {
+        type?:
+          | 'ISSUANCE'
+          | 'ALLOCATION'
+          | 'TRANSFER'
+          | 'BLOCK'
+          | 'UNBLOCK'
+          | 'REDEMPTION'
+          | 'CANCELLATION'
+          | 'CORRECTION';
+        issuanceId?: string;
+        page?: number;
+        pageSize?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            data: {
+              /** Format: uuid */
+              id: string;
+              /** Format: uuid */
+              issuanceId: string;
+              issuanceCode: string;
+              sequenceNo: number;
+              /** @enum {string} */
+              type:
+                | 'ISSUANCE'
+                | 'ALLOCATION'
+                | 'TRANSFER'
+                | 'BLOCK'
+                | 'UNBLOCK'
+                | 'REDEMPTION'
+                | 'CANCELLATION'
+                | 'CORRECTION';
+              source: {
+                /** Format: uuid */
+                accountId: string | null;
+                /** @enum {string|null} */
+                type: 'ISSUER_TREASURY' | 'INVESTOR' | null;
+                /** Format: uuid */
+                investorId: string | null;
+                investorName: string | null;
+              };
+              destination: {
+                /** Format: uuid */
+                accountId: string | null;
+                /** @enum {string|null} */
+                type: 'ISSUER_TREASURY' | 'INVESTOR' | null;
+                /** Format: uuid */
+                investorId: string | null;
+                investorName: string | null;
+              };
+              quantity: string;
+              /** Format: date */
+              effectiveDate: string;
+              /** Format: date-time */
+              recordedAt: string;
+              businessReference: string;
+              status: string;
+              /** Format: uuid */
+              reversesEntryId: string | null;
+              previousHash: string;
+              entryHash: string;
+              /** Format: uuid */
+              initiatedByUserId: string | null;
+              initiatedByService: string | null;
+              correlationId: string | null;
+            }[];
+            meta: {
+              page: number;
+              pageSize: number;
+              total: number;
+            };
+          };
+        };
+      };
+    };
+  };
+  RegistryController_entry: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceCode: string;
+            sequenceNo: number;
+            /** @enum {string} */
+            type:
+              | 'ISSUANCE'
+              | 'ALLOCATION'
+              | 'TRANSFER'
+              | 'BLOCK'
+              | 'UNBLOCK'
+              | 'REDEMPTION'
+              | 'CANCELLATION'
+              | 'CORRECTION';
+            source: {
+              /** Format: uuid */
+              accountId: string | null;
+              /** @enum {string|null} */
+              type: 'ISSUER_TREASURY' | 'INVESTOR' | null;
+              /** Format: uuid */
+              investorId: string | null;
+              investorName: string | null;
+            };
+            destination: {
+              /** Format: uuid */
+              accountId: string | null;
+              /** @enum {string|null} */
+              type: 'ISSUER_TREASURY' | 'INVESTOR' | null;
+              /** Format: uuid */
+              investorId: string | null;
+              investorName: string | null;
+            };
+            quantity: string;
+            /** Format: date */
+            effectiveDate: string;
+            /** Format: date-time */
+            recordedAt: string;
+            businessReference: string;
+            status: string;
+            /** Format: uuid */
+            reversesEntryId: string | null;
+            previousHash: string;
+            entryHash: string;
+            /** Format: uuid */
+            initiatedByUserId: string | null;
+            initiatedByService: string | null;
+            correlationId: string | null;
+          };
         };
       };
     };

@@ -1,6 +1,7 @@
 // Demonstration issuances (SPEC §28): a private debt issuance open to subscriptions, with invited
-// investors, and a solar project approved but not yet open. "Helios Solar SPV 2027" is left to
-// scenario 1, which creates it.
+// investors, a solar project approved but not yet open, and infrastructure notes whose
+// subscriptions are closed and oversubscribed, ready to be allocated (scenario 3). "Helios Solar
+// SPV 2027" is left to scenario 1, which creates it.
 import { addDays, addMonths, dateInTimeZone } from '@virtus/shared';
 import { ELIGIBILITY_ENGINE_VERSION } from '../../src/modules/investor-compliance/domain/eligibility.js';
 import { deterministicUuid } from './deterministic-id.js';
@@ -14,6 +15,7 @@ export function demoIssuanceRows(northwind: string, now = new Date()) {
   const today = dateInTimeZone(now, 'Europe/Paris');
   const debt = deterministicUuid('issuance:northwind-senior-debt-2026');
   const solar = deterministicUuid('issuance:aurora-solar-2027');
+  const notes = deterministicUuid('issuance:northwind-infrastructure-notes-2026');
   const at = (day: string, hour = 10) => new Date(`${day}T${String(hour).padStart(2, '0')}:00:00Z`);
 
   const issuances = [
@@ -55,9 +57,29 @@ export function demoIssuanceRows(northwind: string, now = new Date()) {
       approvedAt: at(addDays(today, -3)),
       createdBy: OPERATOR,
     },
+    {
+      id: notes,
+      tenantId: northwind,
+      name: 'Northwind Infrastructure Notes 2026',
+      code: 'NWIN26',
+      description: 'Notes financing fibre networks in rural France (demo).',
+      assetCategory: 'INFRASTRUCTURE',
+      countryCode: 'FR',
+      currency: 'EUR',
+      legalIssuerName: 'Northwind Infrastructure Notes SAS (demo)',
+      spvName: null,
+      status: 'SUBSCRIPTION_CLOSED',
+      wizardStep: 'REVIEW',
+      submittedBy: OPERATOR,
+      submittedAt: at(addDays(today, -60)),
+      approvedBy: ADMIN,
+      approvedAt: at(addDays(today, -58)),
+      createdBy: OPERATOR,
+    },
   ];
 
   const debtIssue = addDays(today, 50);
+  const notesIssue = addDays(today, 20);
   const solarStart = addDays(today, 10);
   const terms = [
     {
@@ -100,6 +122,26 @@ export function demoIssuanceRows(northwind: string, now = new Date()) {
       maxAmountPerInvestor: '1000000.00',
       createdBy: OPERATOR,
     },
+    {
+      issuanceId: notes,
+      tenantId: northwind,
+      targetAmount: '1000000.00',
+      minimumAmount: '500000.00',
+      maximumAmount: '1000000.00',
+      nominalValue: '1000.00',
+      totalUnits: '1000',
+      interestRate: '0.045',
+      rateType: 'FIXED',
+      distributionFrequency: 'SEMI_ANNUAL',
+      dayCount: '30E_360',
+      issueDate: notesIssue,
+      maturityDate: addMonths(notesIssue, 36),
+      subscriptionStartDate: addDays(today, -45),
+      subscriptionEndDate: addDays(today, -3),
+      minSubscriptionAmount: '100000.00',
+      maxAmountPerInvestor: '600000.00',
+      createdBy: OPERATOR,
+    },
   ];
 
   const rules = [
@@ -122,10 +164,19 @@ export function demoIssuanceRows(northwind: string, now = new Date()) {
       maxInvestors: 30,
       createdBy: OPERATOR,
     },
+    {
+      issuanceId: notes,
+      tenantId: northwind,
+      kycMinRemainingValidityDays: 30,
+      transfersAllowed: true,
+      maxInvestors: 20,
+      createdBy: OPERATOR,
+    },
   ];
 
   // Iris was invited while its KYC/KYB was still valid; it has expired since (scenario 2).
   const invited = ['alpine', 'baltic', 'cedar', 'danube', 'estuary', 'iris'];
+  const invitedToNotes = ['alpine', 'baltic', 'cedar'];
   const assessments = invited.map((key) => ({
     id: deterministicUuid(`assessment:nwsd26:${key}`),
     tenantId: northwind,
@@ -138,6 +189,14 @@ export function demoIssuanceRows(northwind: string, now = new Date()) {
     decidedBySystem: true,
     assessedAt: at(addDays(today, -25)),
   }));
+  assessments.push(
+    ...invitedToNotes.map((key) => ({
+      ...assessments.find((row) => row.investorId === investorId(key))!,
+      id: deterministicUuid(`assessment:nwin26:${key}`),
+      issuanceId: notes,
+      assessedAt: at(addDays(today, -44)),
+    })),
+  );
   const invitations = invited.map((key) => ({
     id: deterministicUuid(`invitation:nwsd26:${key}`),
     tenantId: northwind,
@@ -148,6 +207,19 @@ export function demoIssuanceRows(northwind: string, now = new Date()) {
     invitedAt: at(addDays(today, -25)),
     createdBy: OPERATOR,
   }));
+
+  invitations.push(
+    ...invitedToNotes.map((key) => ({
+      id: deterministicUuid(`invitation:nwin26:${key}`),
+      tenantId: northwind,
+      issuanceId: notes,
+      investorId: investorId(key),
+      eligibilityAssessmentId: deterministicUuid(`assessment:nwin26:${key}`),
+      invitedBy: OPERATOR,
+      invitedAt: at(addDays(today, -44)),
+      createdBy: OPERATOR,
+    })),
+  );
 
   const steps = (id: string, key: string, statuses: [string | null, string, string, string][]) =>
     statuses.map(([from, to, actor, day], index) => ({
@@ -172,6 +244,13 @@ export function demoIssuanceRows(northwind: string, now = new Date()) {
       [null, 'DRAFT', OPERATOR, addDays(today, -9)],
       ['DRAFT', 'UNDER_REVIEW', OPERATOR, addDays(today, -5)],
       ['UNDER_REVIEW', 'APPROVED', ADMIN, addDays(today, -3)],
+    ]),
+    ...steps(notes, 'nwin26', [
+      [null, 'DRAFT', OPERATOR, addDays(today, -65)],
+      ['DRAFT', 'UNDER_REVIEW', OPERATOR, addDays(today, -60)],
+      ['UNDER_REVIEW', 'APPROVED', ADMIN, addDays(today, -58)],
+      ['APPROVED', 'SUBSCRIPTION_OPEN', ADMIN, addDays(today, -45)],
+      ['SUBSCRIPTION_OPEN', 'SUBSCRIPTION_CLOSED', ADMIN, addDays(today, -2)],
     ]),
   ];
   return { issuances, terms, rules, assessments, invitations, transitions };

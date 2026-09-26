@@ -156,6 +156,12 @@
       "SUCCESS": "Réussie",
       "DENIED": "Refusée",
       "FAILED": "Échouée"
+    },
+    "allocationRound": {
+      "DRAFT": "Brouillon",
+      "PROPOSED": "Proposée",
+      "VALIDATED": "Validée",
+      "REJECTED": "Rejetée"
     }
   },
   "errors": {
@@ -211,7 +217,8 @@
     "FILE_TOO_LARGE": "Le fichier est trop volumineux.",
     "FILE_REJECTED_BY_SCAN": "Le fichier a été rejeté par le contrôle de sécurité.",
     "MFA_ENROLLMENT_REQUIRED": "Configurez l’authentification à deux facteurs pour continuer.",
-    "RESET_TOKEN_INVALID_OR_EXPIRED": "Ce lien de réinitialisation est invalide ou a expiré. Demandez-en un nouveau."
+    "RESET_TOKEN_INVALID_OR_EXPIRED": "Ce lien de réinitialisation est invalide ou a expiré. Demandez-en un nouveau.",
+    "SUBSCRIPTIONS_TO_DECIDE": "Des souscriptions attendent encore une décision : approuvez-les ou rejetez-les d’abord."
   },
   "eligibilityRules": {
     "PROFILE_INACTIVE": "Le profil de l’investisseur n’est pas actif.",
@@ -340,7 +347,10 @@
     "NOT_A_DOCUMENT_OF_ISSUANCE": "Ce document n’appartient pas à l’émission.",
     "SUBSCRIPTION_START_DATE": "Les souscriptions s’ouvrent à la date de début prévue.",
     "DOCUMENTS_NOT_ACCEPTED": "Acceptez les documents de l’émission.",
-    "ELIGIBILITY_NOT_DECLARED": "Déclarez remplir les conditions d’éligibilité."
+    "ELIGIBILITY_NOT_DECLARED": "Déclarez remplir les conditions d’éligibilité.",
+    "ALLOCATION_ROUND_IN_PROGRESS": "Une allocation est en préparation pour cette émission : rejetez-la ou abandonnez-la d’abord.",
+    "SUBSCRIPTION_NOT_APPROVED": "Une souscription de l’allocation n’est plus approuvée : rejetez l’allocation et préparez-en une nouvelle.",
+    "NOT_A_LINE_OF_ROUND": "Cette souscription ne fait pas partie de l’allocation."
   },
   "organizationTypes": {
     "ISSUER": "Émetteur",
@@ -500,7 +510,8 @@
       "kyc_case": "Dossier KYC/KYB",
       "document": "Document",
       "issuance": "Émission",
-      "subscription": "Souscription"
+      "subscription": "Souscription",
+      "allocation_round": "Allocation"
     },
     "sources": {
       "WEB": "Application web",
@@ -583,7 +594,14 @@
       "SUBSCRIPTION_UNDER_REVIEW": "Souscription en examen",
       "SUBSCRIPTION_APPROVED": "Souscription approuvée",
       "SUBSCRIPTION_REJECTED": "Souscription rejetée",
-      "SUBSCRIPTION_CANCELLED": "Souscription annulée"
+      "SUBSCRIPTION_CANCELLED": "Souscription annulée",
+      "ALLOCATION_ROUND_CREATED": "Allocation préparée",
+      "ALLOCATION_ROUND_UPDATED": "Allocation modifiée",
+      "ALLOCATION_ROUND_PROPOSED": "Allocation proposée",
+      "ALLOCATION_ROUND_VALIDATED": "Allocation validée",
+      "ALLOCATION_ROUND_REJECTED": "Allocation rejetée",
+      "ISSUANCE_ALLOCATED": "Émission allouée",
+      "SUBSCRIPTION_PAYMENT_PENDING": "Souscription en attente de paiement"
     }
   },
   "investors": {
@@ -1025,7 +1043,9 @@
       "overview": "Aperçu",
       "invitations": "Investisseurs invités",
       "documents": "Documents",
-      "history": "Historique"
+      "history": "Historique",
+      "allocation": "Allocation",
+      "registry": "Registre"
     },
     "invitations": {
       "investor": "Investisseur",
@@ -1079,7 +1099,9 @@
       "paymentReference": "Référence de paiement",
       "submittedAt": "Soumise le",
       "decidedAt": "Décidée le",
-      "comment": "Commentaire :"
+      "comment": "Commentaire :",
+      "allocatedUnits": "Unités allouées",
+      "amountDue": "Montant dû"
     },
     "actions": {
       "start-review": "Commencer l’examen",
@@ -1122,6 +1144,90 @@
       "submit": "Envoyer la souscription",
       "refusedTitle": "Votre souscription n’a pas été envoyée.",
       "refusedHelp": "Les règles d’éligibilité de l’émission ne sont pas remplies. La demande reste en brouillon ; contactez l’émetteur ou mettez votre profil à jour."
+    },
+    "notAllocated": "aucune unité n’a pu être allouée.",
+    "cancelledByInvestor": "annulée par l’investisseur."
+  },
+  "allocation": {
+    "none": "Aucune allocation n’a encore été préparée. Toutes les souscriptions doivent d’abord être approuvées ou rejetées.",
+    "notClosed": "L’allocation se prépare une fois les souscriptions clôturées.",
+    "prepare": "Préparer l’allocation",
+    "previousRounds": "Allocations rejetées",
+    "allocatedTotal": "{units} unités allouées",
+    "roundTitle": "Allocation manuelle",
+    "allocatedUnits": "Unités allouées",
+    "unitsOf": "{units} sur {total}",
+    "allocatedAmount": "Montant alloué",
+    "requestedUnits": "Unités demandées",
+    "linesCaption": "Unités allouées à chaque souscription approuvée",
+    "columns": {
+      "investor": "Investisseur",
+      "requested": "Demandées",
+      "allocated": "Allouées",
+      "amount": "Montant"
+    },
+    "unitsFor": "Unités allouées à {investor}",
+    "overRequest": "Plus que la demande",
+    "supplyDetail": "({units} unités pour {total} disponibles)",
+    "justification": "Justification (montant minimum non atteint)",
+    "justificationHint": "Le montant minimum de l’émission est de {minimum}. Pour poursuivre malgré tout, expliquez pourquoi ; la justification est conservée dans le journal d’audit.",
+    "proposedBy": "Proposée par {name} le {date}.",
+    "validatedBy": "Validée par {name} le {date}.",
+    "save": "Enregistrer",
+    "saveFirst": "Enregistrez vos modifications avant de proposer l’allocation.",
+    "propose": "Proposer à la validation",
+    "proposeTitle": "Proposer cette allocation ?",
+    "proposeDescription": "L’allocation ne pourra plus être modifiée. Un autre administrateur de l’émetteur la valide ou la rejette.",
+    "validate": "Valider l’allocation",
+    "validateTitle": "Valider cette allocation ?",
+    "validateDescription": "{units} unités sont créées dans le registre, allouées aux investisseurs et bloquées jusqu’à la confirmation de leur paiement. C’est définitif.",
+    "fourEyes": "Vous avez proposé cette allocation : un autre administrateur de l’émetteur doit la valider.",
+    "reject": "Rejeter",
+    "rejectTitle": "Rejeter cette allocation ?",
+    "rejectDescription": "La personne qui l’a préparée est prévenue et voit votre commentaire. Une nouvelle allocation pourra être préparée.",
+    "abandon": "Abandonner le brouillon",
+    "abandonTitle": "Abandonner ce brouillon ?",
+    "abandonDescription": "Le brouillon reste dans l’historique comme rejeté. Une nouvelle allocation pourra être préparée.",
+    "commentRequired": "Commentaire (obligatoire)"
+  },
+  "registry": {
+    "title": "Registre",
+    "description": "Qui détient les unités de chaque émission, et tous les mouvements du ledger. Le ledger ne peut pas être modifié : les corrections sont de nouvelles écritures.",
+    "issuance": "Émission",
+    "noIssuance": "Aucune émission n’a encore été allouée.",
+    "positions": "Positions",
+    "positionsCaption": "Positions de l’émission",
+    "heldByInvestors": "{held} unités sur {total} détenues par les investisseurs.",
+    "heldByInvestorsNoTotal": "{held} unités détenues par les investisseurs.",
+    "noPosition": "Aucune position pour l’instant.",
+    "treasury": "Trésorerie de l’émetteur",
+    "otherInvestor": "Un autre investisseur",
+    "ledger": "Mouvements du ledger",
+    "ledgerHelp": "Chaque mouvement porte l’empreinte (hash) du précédent : toute altération peut être détectée.",
+    "ledgerCaption": "Mouvements du ledger, les plus récents en premier",
+    "noEntry": "Aucun mouvement pour l’instant.",
+    "columns": {
+      "account": "Compte",
+      "held": "Détenues",
+      "blocked": "Bloquées",
+      "available": "Disponibles",
+      "acquisitionAmount": "Montant d’acquisition",
+      "effectiveDate": "Date",
+      "type": "Mouvement",
+      "from": "De",
+      "to": "Vers",
+      "quantity": "Unités",
+      "hash": "Empreinte"
+    },
+    "types": {
+      "ISSUANCE": "Création des unités",
+      "ALLOCATION": "Allocation",
+      "TRANSFER": "Transfert",
+      "BLOCK": "Blocage",
+      "UNBLOCK": "Déblocage",
+      "REDEMPTION": "Remboursement",
+      "CANCELLATION": "Annulation",
+      "CORRECTION": "Correction"
     }
   }
 }

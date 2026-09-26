@@ -156,6 +156,12 @@
       "SUCCESS": "Succeeded",
       "DENIED": "Denied",
       "FAILED": "Failed"
+    },
+    "allocationRound": {
+      "DRAFT": "Draft",
+      "PROPOSED": "Proposed",
+      "VALIDATED": "Validated",
+      "REJECTED": "Rejected"
     }
   },
   "errors": {
@@ -211,7 +217,8 @@
     "FILE_TOO_LARGE": "The file is too large.",
     "FILE_REJECTED_BY_SCAN": "The file was rejected by the security scan.",
     "MFA_ENROLLMENT_REQUIRED": "Set up two-factor authentication to continue.",
-    "RESET_TOKEN_INVALID_OR_EXPIRED": "This password reset link is invalid or has expired. Request a new one."
+    "RESET_TOKEN_INVALID_OR_EXPIRED": "This password reset link is invalid or has expired. Request a new one.",
+    "SUBSCRIPTIONS_TO_DECIDE": "Some subscriptions still wait for a decision: approve or reject them first."
   },
   "eligibilityRules": {
     "PROFILE_INACTIVE": "The investor profile is not active.",
@@ -340,7 +347,10 @@
     "NOT_A_DOCUMENT_OF_ISSUANCE": "This document does not belong to the issuance.",
     "SUBSCRIPTION_START_DATE": "Subscriptions open on the start date of the issuance.",
     "DOCUMENTS_NOT_ACCEPTED": "Accept the documents of the issuance.",
-    "ELIGIBILITY_NOT_DECLARED": "Declare that you meet the eligibility conditions."
+    "ELIGIBILITY_NOT_DECLARED": "Declare that you meet the eligibility conditions.",
+    "ALLOCATION_ROUND_IN_PROGRESS": "An allocation is being prepared for this issuance: reject or abandon it first.",
+    "SUBSCRIPTION_NOT_APPROVED": "A subscription of the allocation is no longer approved: reject the allocation and prepare a new one.",
+    "NOT_A_LINE_OF_ROUND": "This subscription is not part of the allocation."
   },
   "organizationTypes": {
     "ISSUER": "Issuer",
@@ -500,7 +510,8 @@
       "kyc_case": "KYC/KYB case",
       "document": "Document",
       "issuance": "Issuance",
-      "subscription": "Subscription"
+      "subscription": "Subscription",
+      "allocation_round": "Allocation"
     },
     "sources": {
       "WEB": "Web application",
@@ -583,7 +594,14 @@
       "SUBSCRIPTION_UNDER_REVIEW": "Subscription under review",
       "SUBSCRIPTION_APPROVED": "Subscription approved",
       "SUBSCRIPTION_REJECTED": "Subscription rejected",
-      "SUBSCRIPTION_CANCELLED": "Subscription cancelled"
+      "SUBSCRIPTION_CANCELLED": "Subscription cancelled",
+      "ALLOCATION_ROUND_CREATED": "Allocation prepared",
+      "ALLOCATION_ROUND_UPDATED": "Allocation changed",
+      "ALLOCATION_ROUND_PROPOSED": "Allocation proposed",
+      "ALLOCATION_ROUND_VALIDATED": "Allocation validated",
+      "ALLOCATION_ROUND_REJECTED": "Allocation rejected",
+      "ISSUANCE_ALLOCATED": "Issuance allocated",
+      "SUBSCRIPTION_PAYMENT_PENDING": "Subscription waiting for payment"
     }
   },
   "investors": {
@@ -1025,7 +1043,9 @@
       "overview": "Overview",
       "invitations": "Invited investors",
       "documents": "Documents",
-      "history": "History"
+      "history": "History",
+      "allocation": "Allocation",
+      "registry": "Registry"
     },
     "invitations": {
       "investor": "Investor",
@@ -1079,7 +1099,9 @@
       "paymentReference": "Payment reference",
       "submittedAt": "Submitted on",
       "decidedAt": "Decided on",
-      "comment": "Comment:"
+      "comment": "Comment:",
+      "allocatedUnits": "Units allocated",
+      "amountDue": "Amount due"
     },
     "actions": {
       "start-review": "Start the review",
@@ -1122,6 +1144,90 @@
       "submit": "Submit the subscription",
       "refusedTitle": "Your subscription was not sent.",
       "refusedHelp": "The eligibility rules of the issuance are not met. The request stays as a draft; contact the issuer or update your profile."
+    },
+    "notAllocated": "no unit could be allocated.",
+    "cancelledByInvestor": "cancelled by the investor."
+  },
+  "allocation": {
+    "none": "No allocation has been prepared yet. Every subscription must be approved or rejected first.",
+    "notClosed": "The allocation is prepared once subscriptions are closed.",
+    "prepare": "Prepare the allocation",
+    "previousRounds": "Rejected allocations",
+    "allocatedTotal": "{units} units allocated",
+    "roundTitle": "Manual allocation",
+    "allocatedUnits": "Units allocated",
+    "unitsOf": "{units} of {total}",
+    "allocatedAmount": "Amount allocated",
+    "requestedUnits": "Units requested",
+    "linesCaption": "Units allocated to each approved subscription",
+    "columns": {
+      "investor": "Investor",
+      "requested": "Requested",
+      "allocated": "Allocated",
+      "amount": "Amount"
+    },
+    "unitsFor": "Units allocated to {investor}",
+    "overRequest": "More than requested",
+    "supplyDetail": "({units} units for {total} available)",
+    "justification": "Justification (minimum amount not reached)",
+    "justificationHint": "The minimum amount of the issuance is {minimum}. To go on anyway, explain why; the justification is kept in the audit log.",
+    "proposedBy": "Proposed by {name} on {date}.",
+    "validatedBy": "Validated by {name} on {date}.",
+    "save": "Save",
+    "saveFirst": "Save your changes before proposing the allocation.",
+    "propose": "Propose for validation",
+    "proposeTitle": "Propose this allocation?",
+    "proposeDescription": "The allocation can no longer be changed. Another Issuer Administrator validates or rejects it.",
+    "validate": "Validate the allocation",
+    "validateTitle": "Validate this allocation?",
+    "validateDescription": "{units} units are created in the registry, allocated to the investors and blocked until their payment is confirmed. This cannot be undone.",
+    "fourEyes": "You proposed this allocation: another Issuer Administrator must validate it.",
+    "reject": "Reject",
+    "rejectTitle": "Reject this allocation?",
+    "rejectDescription": "The preparer is told and sees your comment. A new allocation can then be prepared.",
+    "abandon": "Abandon the draft",
+    "abandonTitle": "Abandon this draft?",
+    "abandonDescription": "The draft is kept in the history as rejected. A new allocation can then be prepared.",
+    "commentRequired": "Comment (required)"
+  },
+  "registry": {
+    "title": "Registry",
+    "description": "Who holds the units of each issuance, and every movement of the ledger. The ledger cannot be changed: corrections are new entries.",
+    "issuance": "Issuance",
+    "noIssuance": "No issuance has been allocated yet.",
+    "positions": "Positions",
+    "positionsCaption": "Positions of the issuance",
+    "heldByInvestors": "{held} of {total} units held by investors.",
+    "heldByInvestorsNoTotal": "{held} units held by investors.",
+    "noPosition": "No position yet.",
+    "treasury": "Issuer treasury",
+    "otherInvestor": "Another investor",
+    "ledger": "Ledger movements",
+    "ledgerHelp": "Each movement carries the hash of the previous one, so any alteration can be detected.",
+    "ledgerCaption": "Ledger movements, newest first",
+    "noEntry": "No movement yet.",
+    "columns": {
+      "account": "Account",
+      "held": "Held",
+      "blocked": "Blocked",
+      "available": "Available",
+      "acquisitionAmount": "Acquisition amount",
+      "effectiveDate": "Date",
+      "type": "Movement",
+      "from": "From",
+      "to": "To",
+      "quantity": "Units",
+      "hash": "Hash"
+    },
+    "types": {
+      "ISSUANCE": "Issuance of units",
+      "ALLOCATION": "Allocation",
+      "TRANSFER": "Transfer",
+      "BLOCK": "Block",
+      "UNBLOCK": "Unblock",
+      "REDEMPTION": "Redemption",
+      "CANCELLATION": "Cancellation",
+      "CORRECTION": "Correction"
     }
   }
 }

@@ -22,6 +22,9 @@ export default async function IssuancePage({
         canCancel: Boolean(permissions['issuance:cancel']),
         canInvite: Boolean(permissions['invitation:manage']),
         canSeeSubscriptions: Boolean(permissions['subscription:read']),
+        canReadRegistry: Boolean(permissions['registry:read']),
+        canPrepareAllocation: Boolean(permissions['allocation:prepare']),
+        canValidateAllocation: Boolean(permissions['allocation:validate']),
       }}
     />
   );

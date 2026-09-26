@@ -21,8 +21,9 @@ export const issuanceMachine = defineStateMachine<IssuanceStatus>({
     { from: ['APPROVED'], to: 'SUBSCRIPTION_OPEN', permission: 'issuance:operate' },
     // Also made by the system at the end date (daily job).
     { from: ['SUBSCRIPTION_OPEN'], to: 'SUBSCRIPTION_CLOSED', permission: 'issuance:operate' },
-    // Allocation (phase 12), activation and maturity (phase 14).
-    { from: ['SUBSCRIPTION_CLOSED'], to: 'ALLOCATED', permission: 'issuance:operate' },
+    // With the validation of the allocation (registry, docs/DATA_MODEL.md §4.1).
+    { from: ['SUBSCRIPTION_CLOSED'], to: 'ALLOCATED', permission: 'allocation:validate' },
+    // Activation and maturity (phase 14).
     { from: ['ALLOCATED'], to: 'ACTIVE', permission: 'issuance:operate' },
     { from: ['ACTIVE'], to: 'MATURED', permission: 'issuance:operate' },
     {

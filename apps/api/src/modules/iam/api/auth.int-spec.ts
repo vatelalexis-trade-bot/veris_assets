@@ -305,6 +305,18 @@ describe('password reset', () => {
       .send({ token, newPassword: 'another fresh passphrase here' })
       .expect(422);
     expect(errorCode(reused)).toBe('RESET_TOKEN_INVALID_OR_EXPIRED');
+
+    // The demo password is set back (every demo account shares it): other test files sign this
+    // account in.
+    await ctx.admin.query(
+      `UPDATE iam.account SET password = (
+         SELECT a.password FROM iam.account a JOIN iam.user u ON u.id = a.user_id
+         WHERE u.email = 'investor.b@example.com' AND a.provider_id = 'credential')
+       WHERE provider_id = 'credential'
+         AND user_id = (SELECT id FROM iam.user WHERE email = $1)`,
+      [email],
+    );
+    await request(server()).post('/api/v1/auth/sign-in').send({ email, password }).expect(200);
   });
 
   it('answers the same way for an unknown email, without sending anything', async () => {

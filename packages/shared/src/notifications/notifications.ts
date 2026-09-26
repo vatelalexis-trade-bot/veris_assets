@@ -233,6 +233,58 @@ export const NOTIFICATION_TYPES = {
       },
     },
   },
+  ALLOCATION_TO_VALIDATE: {
+    category: 'WORKFLOW',
+    texts: {
+      'en-GB': {
+        title: 'Allocation to validate',
+        body: 'An allocation of the issuance {code} was proposed and waits for the validation of another administrator.',
+      },
+      'fr-FR': {
+        title: 'Allocation à valider',
+        body: 'Une allocation de l’émission {code} a été proposée et attend la validation d’un autre administrateur.',
+      },
+    },
+  },
+  ALLOCATION_REJECTED: {
+    category: 'WORKFLOW',
+    texts: {
+      'en-GB': {
+        title: 'Allocation rejected',
+        body: 'The allocation of the issuance {code} you proposed was rejected. See the comment and prepare a new one.',
+      },
+      'fr-FR': {
+        title: 'Allocation rejetée',
+        body: 'L’allocation de l’émission {code} que vous avez proposée a été rejetée. Voir le commentaire et en préparer une nouvelle.',
+      },
+    },
+  },
+  SUBSCRIPTION_ALLOCATED: {
+    category: 'INVESTMENT',
+    texts: {
+      'en-GB': {
+        title: 'Units allocated',
+        body: '{units} units of the issuance {code} are allocated to you. They stay blocked until your payment is confirmed.',
+      },
+      'fr-FR': {
+        title: 'Unités allouées',
+        body: '{units} unités de l’émission {code} vous sont allouées. Elles restent bloquées jusqu’à la confirmation de votre paiement.',
+      },
+    },
+  },
+  SUBSCRIPTION_NOT_ALLOCATED: {
+    category: 'INVESTMENT',
+    texts: {
+      'en-GB': {
+        title: 'No units allocated',
+        body: 'No unit of the issuance {code} could be allocated to your subscription, which is cancelled.',
+      },
+      'fr-FR': {
+        title: 'Aucune unité allouée',
+        body: 'Aucune unité de l’émission {code} n’a pu être allouée à votre souscription, qui est annulée.',
+      },
+    },
+  },
   SUBSCRIPTION_SUBMITTED: {
     category: 'WORKFLOW',
     texts: {

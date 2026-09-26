@@ -383,42 +383,66 @@ export class IssuancesService {
     ) => Promise<{ event: string | null; payload?: Record<string, string> }>,
   ): Promise<IssuanceDetail> {
     return withCurrentTenant(this.db, async (tx, tenantId) => {
-      const found = await this.find(tx, id, true);
-      const from = found.issuance.status as IssuanceStatus;
-      await this.workflow.transition(tx, issuanceMachine, {
-        tenantId,
-        resourceId: id,
-        from,
-        to,
-        comment,
-        initiatorUserId: found.issuance.submittedBy,
-      });
-      const { event, payload } = await apply(tx, found);
-      await tx
-        .update(issuance)
-        .set({ status: to, version: sql`${issuance.version} + 1`, updatedAt: new Date() })
-        .where(eq(issuance.id, id));
-      await this.audit.recordIn(tx, {
-        tenantId,
-        action: `ISSUANCE_${to === 'DRAFT' ? 'RETURNED_TO_DRAFT' : to}`,
-        resourceType: 'issuance',
-        resourceId: id,
-        oldValue: { status: from },
-        newValue: { status: to },
-        result: 'SUCCESS',
-        ...(comment ? { reason: 'COMMENTED' } : {}),
-      });
-      if (event) {
-        await this.outbox.publish(tx, {
-          tenantId,
-          eventType: event,
-          aggregateType: 'issuance',
-          aggregateId: id,
-          payload: { code: found.issuance.code, ...(payload ?? {}) },
-        });
-      }
+      await this.applyTransition(tx, tenantId, await this.find(tx, id, true), to, comment, apply);
       return this.find(tx, id);
     });
+  }
+
+  /**
+   * The allocation of the issuance was validated (registry, SPEC §10.1): SUBSCRIPTION_CLOSED →
+   * ALLOCATED in the caller's transaction, with the ledger entries.
+   */
+  async markAllocated(tx: Transaction, tenantId: string, id: string): Promise<void> {
+    await this.applyTransition(tx, tenantId, await this.find(tx, id, true), 'ALLOCATED', null, () =>
+      Promise.resolve({ event: null }),
+    );
+  }
+
+  private async applyTransition(
+    tx: Transaction,
+    tenantId: string,
+    found: IssuanceDetail,
+    to: IssuanceStatus,
+    comment: string | null,
+    apply: (
+      tx: Transaction,
+      found: IssuanceDetail,
+    ) => Promise<{ event: string | null; payload?: Record<string, string> }>,
+  ): Promise<void> {
+    const id = found.issuance.id;
+    const from = found.issuance.status as IssuanceStatus;
+    await this.workflow.transition(tx, issuanceMachine, {
+      tenantId,
+      resourceId: id,
+      from,
+      to,
+      comment,
+      initiatorUserId: found.issuance.submittedBy,
+    });
+    const { event, payload } = await apply(tx, found);
+    await tx
+      .update(issuance)
+      .set({ status: to, version: sql`${issuance.version} + 1`, updatedAt: new Date() })
+      .where(eq(issuance.id, id));
+    await this.audit.recordIn(tx, {
+      tenantId,
+      action: `ISSUANCE_${to === 'DRAFT' ? 'RETURNED_TO_DRAFT' : to}`,
+      resourceType: 'issuance',
+      resourceId: id,
+      oldValue: { status: from },
+      newValue: { status: to },
+      result: 'SUCCESS',
+      ...(comment ? { reason: 'COMMENTED' } : {}),
+    });
+    if (event) {
+      await this.outbox.publish(tx, {
+        tenantId,
+        eventType: event,
+        aggregateType: 'issuance',
+        aggregateId: id,
+        payload: { code: found.issuance.code, ...(payload ?? {}) },
+      });
+    }
   }
 
   /** History of the statuses (SPEC §7: who, when, comment). */

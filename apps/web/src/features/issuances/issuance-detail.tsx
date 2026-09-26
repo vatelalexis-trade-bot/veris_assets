@@ -17,6 +17,8 @@ import { Link } from '@/i18n/navigation';
 import { api } from '@/lib/api/client';
 import { useIdempotencyKey } from '@/lib/api/idempotency';
 import { formatAmount, formatBusinessDate, formatRate } from './format';
+import { AllocationTab } from '@/features/registry/allocation-tab';
+import { RegistryView } from '@/features/registry/registry-view';
 import { InvitationsTab } from './invitations-tab';
 import type { IssuanceView } from './types';
 
@@ -27,7 +29,14 @@ export interface IssuanceRights {
   canCancel: boolean;
   canInvite: boolean;
   canSeeSubscriptions: boolean;
+  canReadRegistry: boolean;
+  canPrepareAllocation: boolean;
+  canValidateAllocation: boolean;
 }
+
+/** Statuses from which the allocation, then the registry, have something to show. */
+const ALLOCATION_STATUSES = ['SUBSCRIPTION_CLOSED', 'ALLOCATED', 'ACTIVE', 'MATURED'];
+const REGISTRY_STATUSES = ['ALLOCATED', 'ACTIVE', 'MATURED'];
 
 type Action = 'approve' | 'open-subscription' | 'close-subscription';
 type CommentedAction = 'return-to-draft' | 'cancel';
@@ -123,6 +132,10 @@ export function IssuanceDetail({
             [
               'overview',
               ...(rights.canInvite ? ['invitations'] : []),
+              ...(rights.canReadRegistry && ALLOCATION_STATUSES.includes(status)
+                ? ['allocation']
+                : []),
+              ...(rights.canReadRegistry && REGISTRY_STATUSES.includes(status) ? ['registry'] : []),
               'documents',
               'history',
             ] as const
@@ -142,6 +155,23 @@ export function IssuanceDetail({
         {rights.canInvite ? (
           <Tabs.Content value="invitations">
             <InvitationsTab issuance={current} />
+          </Tabs.Content>
+        ) : null}
+        {rights.canReadRegistry && ALLOCATION_STATUSES.includes(status) ? (
+          <Tabs.Content value="allocation">
+            <AllocationTab
+              issuance={current}
+              currentUserId={currentUserId}
+              rights={{
+                canPrepare: rights.canPrepareAllocation,
+                canValidate: rights.canValidateAllocation,
+              }}
+            />
+          </Tabs.Content>
+        ) : null}
+        {rights.canReadRegistry && REGISTRY_STATUSES.includes(status) ? (
+          <Tabs.Content value="registry">
+            <RegistryView issuanceId={id} totalUnits={current.terms.totalUnits} />
           </Tabs.Content>
         ) : null}
         <Tabs.Content value="documents">

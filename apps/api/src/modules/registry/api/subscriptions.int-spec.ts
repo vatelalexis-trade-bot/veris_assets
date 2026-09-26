@@ -184,7 +184,8 @@ describe('a subscription from end to end ("souscription de bout en bout")', () =
   });
 
   it('never lets an investor subscribe to an issuance it is not invited to', async () => {
-    const investor = await ctx.signIn('investor.a@example.com');
+    // Iris is never invited to the solar project (other test files invite Alpine to it).
+    const investor = await ctx.signIn('investor.d@example.com');
     const aurora = await idOf(`SELECT id FROM issuance.issuance WHERE code = 'AURORA27'`);
     await investor
       .post('/api/v1/subscriptions')

@@ -247,9 +247,11 @@ Validées par le porteur de projet (« ok pour D-054 à D-058, on lance la phase
 
 ## 2026-09-26 — Phase 11 (souscriptions)
 
+Validées par le porteur de projet (« OK pour les points D-060 à D-063 »).
+
 **D-059 — Acceptée. Paiement fictif livré en phase 12.** Choix du porteur de projet pendant la phase 11. Selon l'ordre de traitement de la spec (9.2) et D-009, le paiement fictif porte sur le montant **alloué** : il ne peut donc venir qu'après l'allocation (phase 12). P11-4 (préparation et confirmation quatre yeux du paiement, `PaymentProvider` factice) et les routes `payment/prepare` et `payment/confirm` passent en phase 12. En phase 11, une souscription s'arrête à « Approuvée », « Rejetée » ou « Annulée ». La machine à états complète est déjà en place.
 
-**D-060 — Proposée. Contrôles de la souscription (spec 9.3 et 9.4).**
+**D-060 — Acceptée. Contrôles de la souscription (spec 9.3 et 9.4).**
 1. Les contrôles ont lieu à l'envoi du brouillon (et non à sa saisie), dans cet ordre, le premier échec étant renvoyé :
    - émission ouverte ;
    - dates de souscription ;
@@ -267,7 +269,7 @@ Validées par le porteur de projet (« ok pour D-054 à D-058, on lance la phase
 6. L'acceptation des documents et la déclaration d'éligibilité sont obligatoires à l'envoi. Leur absence donne `400 VALIDATION_FAILED` avec `DOCUMENTS_NOT_ACCEPTED` ou `ELIGIBILITY_NOT_DECLARED`. L'heure de chaque acceptation est conservée.
 7. La devise de la souscription est celle de l'émission.
 
-**D-061 — Proposée. Traitement et annulation.**
+**D-061 — Acceptée. Traitement et annulation.**
 1. La prise en charge (« En revue ») est faite par un opérateur ou un administrateur de l'émetteur (`subscription:review`). L'approbation et le rejet sont faits par un administrateur (`subscription:approve`) ; le rejet exige un motif, visible par l'investisseur.
 2. L'approbation d'une souscription n'est pas soumise aux quatre yeux : la spec ne le demande pas, et c'est l'investisseur qui a initié la demande. Les quatre yeux s'appliqueront à l'allocation et au paiement (phase 12).
 3. L'investisseur peut annuler seul, sans motif, tant que sa souscription n'est pas approuvée (brouillon, soumise, en revue). L'émetteur peut annuler jusqu'à « Paiement en attente » inclus, avec un motif obligatoire, visible par l'investisseur et notifié.
@@ -276,6 +278,57 @@ Validées par le porteur de projet (« ok pour D-054 à D-058, on lance la phase
    - à l'envoi, les opérateurs et administrateurs de l'émetteur ;
    - à l'approbation, au rejet ou à l'annulation par l'émetteur, l'investisseur.
 
-**D-062 — Proposée. Compte de démo « Investor D » pour le scénario 2.** *Modifie D-017 (4 comptes investisseurs au lieu de 3).* `investor.d@example.com` est rattaché à Iris Asset Holdings GmbH (démo), dont le KYC a expiré il y a 11 jours et qui est invitée à l'émission NWSD26. Le scénario 2 (`tests/e2e/scenario-2-not-eligible.spec.ts`) se connecte avec ce compte, tente de souscrire et voit la raison du refus en clair.
+**D-062 — Acceptée. Compte de démo « Investor D » pour le scénario 2.** *Modifie D-017 (4 comptes investisseurs au lieu de 3).* `investor.d@example.com` est rattaché à Iris Asset Holdings GmbH (démo), dont le KYC a expiré il y a 11 jours et qui est invitée à l'émission NWSD26. Le scénario 2 (`tests/e2e/scenario-2-not-eligible.spec.ts`) se connecte avec ce compte, tente de souscrire et voit la raison du refus en clair.
 
-**D-063 — Proposée. Découpage de la phase 11.** P11-5 (clôture automatique) a déjà été livré en phase 10 (D-054). P11-7 (bulletin de souscription PDF, priorité S) est reporté à la phase 15 (exports), avec les autres documents générés.
+**D-063 — Acceptée. Découpage de la phase 11.** P11-5 (clôture automatique) a déjà été livré en phase 10 (D-054). P11-7 (bulletin de souscription PDF, priorité S) est reporté à la phase 15 (exports), avec les autres documents générés.
+
+---
+
+## 2026-09-26 — Phase 12a (allocation, registre, ledger)
+
+**D-064 — Acceptée. Découpage de la phase 12.** Choix du porteur de projet au lancement de la phase.
+1. La phase 12 est livrée en deux fois :
+   - **12a** : ledger (P12-1), allocation manuelle (P12-2), écritures de la validation (P12-3), écran registre (partie de P12-5) et scénario 3 (P12-8) ;
+   - **12b** : paiement fictif (P12-9, ex-P11-4), `TokenRegistryProvider` (P12-4), job de rapprochement (P12-5), tests de concurrence et couverture de 90 % (P12-6), corrections par contre-écriture (P12-7).
+2. La confirmation d'allocation en PDF (spec 10.1) est reportée en phase 15, avec les autres documents générés (D-063).
+
+**D-065 — Proposée. Préparation d'une allocation (spec 10.1, 9.4).**
+1. Une allocation (« lot ») ne se prépare qu'une fois les souscriptions clôturées **et** toutes décidées. S'il reste des souscriptions soumises ou en revue, la préparation est refusée avec le nouveau code `422 SUBSCRIPTIONS_TO_DECIDE`.
+2. Le lot contient une ligne par souscription approuvée, pré-remplie avec les unités demandées : l'émetteur « renseigne ou confirme » (spec 10.1).
+3. Il y a au plus un lot en cours ou validé par émission. Un lot rejeté reste dans l'historique, et un nouveau lot peut alors être préparé.
+4. Tant qu'un lot est en préparation ou proposé, une souscription approuvée ne peut pas être annulée (`409`, détail `ALLOCATION_ROUND_IN_PROGRESS`) : les lignes du lot resteraient sinon périmées.
+5. Contrôles, faits à la proposition et refaits à la validation :
+   - unités entières ;
+   - jamais plus que demandé (`ALLOCATION_EXCEEDS_REQUEST`) ;
+   - total au plus égal aux unités de l'émission (`ALLOCATION_EXCEEDS_SUPPLY`) ;
+   - si le montant alloué est sous le montant minimum de l'émission, une justification est obligatoire (`MINIMUM_NOT_REACHED_JUSTIFICATION_REQUIRED`, D-013). La justification est saisie avec le lot, validée par l'administrateur et conservée dans l'audit.
+6. Quatre yeux : le lot est validé par un administrateur de l'émetteur autre que celui qui l'a proposé. C'est vérifié par le serveur et aussi par une contrainte en base.
+7. Un brouillon peut être abandonné par celui qui le prépare (commentaire obligatoire) : il passe « Rejeté ». La route `POST /allocations/{id}/reject` demande donc `allocation:prepare`, et la machine à états exige `allocation:validate` pour rejeter un lot proposé. *Modifie `docs/API.md` §2.8.*
+8. `registry.allocation` est unique par (lot, souscription), et non plus par souscription seule, pour garder les lots rejetés. *Modifie `docs/DATA_MODEL.md` §3.5.*
+
+**D-066 — Proposée. Écritures du registre à la validation (précise D-009).**
+1. Dans une seule transaction :
+   - `ISSUANCE` du nombre total d'unités vers la trésorerie de l'émetteur, à la première allocation de l'émission ;
+   - puis, pour chaque ligne non nulle, `ALLOCATION` (trésorerie → investisseur) et `BLOCK` ;
+   - les souscriptions passent « Paiement en attente », avec le montant dû ; une ligne à 0 unité annule la souscription avec le motif `NOT_ALLOCATED` ;
+   - l'émission passe « Allouée ».
+2. Le montant d'acquisition d'une position est unités allouées × valeur nominale.
+3. Avant la fin de la transaction, les invariants 1, 2, 3 et 5 de la spec (10.4) sont recalculés à partir du ledger. Tout écart annule l'opération (`REGISTRY_INVARIANT_VIOLATION`).
+4. Chaînage : `entry_hash = SHA-256(previous_hash | représentation JSON canonique)`. La représentation liste les champs dans un ordre fixe, avec les quantités normalisées et les clés de métadonnées triées. Le hash de départ vaut 64 zéros.
+5. La date effective d'un mouvement est la date du jour dans le fuseau de l'organisation (D-015).
+6. Si l'émetteur annule une souscription en « Paiement en attente », les mouvements `UNBLOCK` puis `CANCELLATION` rendent les unités à la trésorerie (D-009). Ce cas est livré dès la 12a pour que le registre ne diverge jamais.
+7. Le passage de l'émission à « Allouée » demande `allocation:validate`, comme dans `docs/DATA_MODEL.md` §4.1 (le code demandait `issuance:operate`).
+8. Les quantités du registre sont en `NUMERIC(20,4)` : décimales en base, entières dans le MVP (spec 10.5).
+
+**D-067 — Proposée. Consultation du registre.**
+1. L'émetteur voit les positions et les mouvements, dans l'onglet « Registre » de chaque émission allouée et dans le menu « Registre ».
+2. Un investisseur ne voit que ses positions et les mouvements de ses comptes, sans jamais le nom d'un autre investisseur (comme D-010). Il ne voit pas les lots d'allocation : liste vide et 404.
+3. Notifications :
+   - lot proposé : les autres administrateurs de l'émetteur ;
+   - lot rejeté : celui qui l'a proposé ;
+   - unités allouées (avec leur nombre), ou aucune unité allouée : l'investisseur.
+
+**D-068 — Proposée. Données de démo et scénario 3.**
+1. Nouvelle émission « Northwind Infrastructure Notes 2026 » (NWIN26) : 1 000 unités de 1 000 €, souscriptions clôturées, 1 200 unités demandées par des souscriptions approuvées (Alpine 500, Baltic 400, Cedar 300). Elle est prête à être allouée en démonstration.
+2. Sur NWSD26 : une souscription d'Alpine attend une revue, et une souscription de Cedar a été rejetée. La spec (28) demande une souscription rejetée dans la démo.
+3. Le scénario 3 automatisé prépare sa propre émission par l'API, avec un nouveau code à chaque passage : il peut être rejoué sans réinitialiser la base, comme le scénario 1 (D-058).

@@ -143,7 +143,7 @@ Vérifiable par : souscription de bout en bout.
 | P11-7 | Bulletin de souscription PDF — **reporté en phase 15 (D-063)** | S |
 
 ## Phase 12 — Allocation, registre, ledger, invariants
-Vérifiable par : scénario 3 vert.
+Vérifiable par : scénario 3 vert. Livrée en deux fois (D-064) : 12a = P12-1, P12-2, P12-3, écran registre de P12-5, P12-8 ; 12b = le reste.
 
 | ID | Élément | Prio |
 |---|---|:-:|
@@ -151,7 +151,7 @@ Vérifiable par : scénario 3 vert.
 | P12-2 | Lots d'allocation manuelle, contrôle des totaux, dérogation minimum (D-013), quatre yeux | M |
 | P12-3 | Validation → ISSUANCE + ALLOCATION + BLOCK en une transaction ; paiement → UNBLOCK (D-009) | M |
 | P12-4 | `TokenRegistryProvider` / `InternalLedgerProvider` | M |
-| P12-5 | Job de rapprochement (invariants 1, 2, 3, 5) ; écran registre ; confirmation d'allocation PDF | M |
+| P12-5 | Job de rapprochement (invariants 1, 2, 3, 5) ; écran registre ; confirmation d'allocation PDF — **PDF reporté en phase 15 (D-064)** | M |
 | P12-6 | Tests de concurrence (mises à jour simultanées d'une même position) ; couverture ≥ 90 % | M |
 | P12-7 | Corrections par contre-écriture avec quatre yeux | S |
 | P12-8 | Scénario 3 automatisé | M |
@@ -193,6 +193,7 @@ Vérifiable par : démo complète jouable.
 | P15-6 | Jeu de démo complet (section 28 + D-017), déterministe | M |
 | P15-7 | Choix de l'hébergement de démo (décision 33.12) | M |
 | P15-8 | Bulletin de souscription PDF (ex-P11-7, D-063) | S |
+| P15-9 | Confirmation d'allocation PDF (ex-P12-5, D-064) | M |
 
 ## Phase 16 — Durcissement et déploiement de démonstration
 Vérifiable par : checklist de la section 24 cochée.

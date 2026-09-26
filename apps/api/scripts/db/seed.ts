@@ -21,11 +21,13 @@ import {
   investorRepresentative,
   kycCase,
 } from '../../src/modules/investor-compliance/infrastructure/schema.js';
+import { subscription } from '../../src/modules/registry/infrastructure/schema.js';
 import { connectionConfig, withClient } from './admin.js';
 import * as data from './seed-data.js';
 import { seedIdentities } from './seed-identities.js';
 import { demoInvestorRows } from './seed-investors.js';
 import { demoIssuanceRows } from './seed-issuances.js';
+import { demoSubscriptionRows } from './seed-subscriptions.js';
 import { databaseName, type DatabaseTarget, type ToolsEnv } from './tools-env.js';
 
 export async function seedDatabase(env: ToolsEnv, target: DatabaseTarget): Promise<void> {
@@ -78,6 +80,13 @@ export async function seedDatabase(env: ToolsEnv, target: DatabaseTarget): Promi
       await tx.insert(eligibilityAssessment).values(issuances.assessments).onConflictDoNothing();
       await tx.insert(investorInvitation).values(issuances.invitations).onConflictDoNothing();
       await tx.insert(workflowTransition).values(issuances.transitions).onConflictDoNothing();
+      const subscriptions = demoSubscriptionRows(northwind);
+      await tx
+        .insert(eligibilityAssessment)
+        .values(subscriptions.assessments)
+        .onConflictDoNothing();
+      await tx.insert(subscription).values(subscriptions.subscriptions).onConflictDoNothing();
+      await tx.insert(workflowTransition).values(subscriptions.transitions).onConflictDoNothing();
     });
   });
   await seedIdentities(env, target);

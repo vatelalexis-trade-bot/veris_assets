@@ -61,6 +61,13 @@ export const STATUS_TONES = {
     FAILED: 'error',
     CANCELLED: 'error',
   },
+  /** Round of manual allocation (docs/DATA_MODEL.md §4.6). */
+  allocationRound: {
+    DRAFT: 'neutral',
+    PROPOSED: 'warning',
+    VALIDATED: 'success',
+    REJECTED: 'error',
+  },
   /** Result of an audit log entry (SPEC §17.2). */
   auditResult: {
     SUCCESS: 'success',
