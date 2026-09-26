@@ -11,6 +11,7 @@ import {
   jsonb,
   numeric,
   pgSchema,
+  primaryKey,
   text,
   unique,
   uniqueIndex,
@@ -379,5 +380,44 @@ export const transferRequest = registrySchema.table(
     check('transfer_request_not_to_self', sql`${table.fromInvestorId} <> ${table.toInvestorId}`),
     index('transfer_request_issuance_status').on(table.tenantId, table.issuanceId, table.status),
     index('transfer_request_from').on(table.tenantId, table.fromInvestorId),
+  ],
+);
+
+/**
+ * The holders of an issuance at a record date (SPEC §12.3), rebuilt from the ledger movements with
+ * an effective date on or before it and a sequence up to `last_sequence_included`. Append-only:
+ * a distribution calculated again from its snapshot gives the same result.
+ */
+export const registrySnapshot = registrySchema.table('registry_snapshot', {
+  id: id(),
+  tenantId: tenantId().references(() => tenant.id),
+  issuanceId: uuid()
+    .notNull()
+    .references(() => issuance.id),
+  recordDate: date().notNull(),
+  lastSequenceIncluded: bigint({ mode: 'number' }).notNull(),
+  takenAt: utcTimestamp().notNull().defaultNow(),
+  /** SHA-256 of the lines, to prove the snapshot can be rebuilt identically. */
+  checksum: text().notNull(),
+});
+
+export const registrySnapshotLine = registrySchema.table(
+  'registry_snapshot_line',
+  {
+    snapshotId: uuid()
+      .notNull()
+      .references(() => registrySnapshot.id),
+    tenantId: tenantId().references(() => tenant.id),
+    accountId: uuid()
+      .notNull()
+      .references(() => logicalAccount.id),
+    investorId: uuid()
+      .notNull()
+      .references(() => investor.id),
+    quantityHeld: units().notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.snapshotId, table.accountId] }),
+    check('registry_snapshot_line_positive', sql`${table.quantityHeld} > 0`),
   ],
 );

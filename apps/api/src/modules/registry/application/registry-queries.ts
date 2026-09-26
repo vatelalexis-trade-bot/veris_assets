@@ -137,6 +137,16 @@ export class RegistryQueries {
     });
   }
 
+  /** Legal names of investors, for the other modules (servicing lines, payment instructions). */
+  async investorNames(tx: Transaction, ids: readonly string[]): Promise<Map<string, string>> {
+    if (ids.length === 0) return new Map();
+    const rows = await tx
+      .select({ id: investor.id, name: investor.legalName })
+      .from(investor)
+      .where(inArray(investor.id, [...ids]));
+    return new Map(rows.map((row) => [row.id, row.name]));
+  }
+
   /** Movements touching one of the investor's accounts. */
   private async ownAccountsCondition(tx: Transaction, own: string | null): Promise<SQL> {
     if (!own) return sql`false`;

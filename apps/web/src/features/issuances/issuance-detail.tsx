@@ -19,6 +19,7 @@ import { useIdempotencyKey } from '@/lib/api/idempotency';
 import { formatAmount, formatBusinessDate, formatRate } from './format';
 import { AllocationTab } from '@/features/registry/allocation-tab';
 import { RegistryView } from '@/features/registry/registry-view';
+import { ActivateButton, ScheduleTab } from '@/features/distributions/schedule-tab';
 import { InvitationsTab } from './invitations-tab';
 import type { IssuanceView } from './types';
 
@@ -34,7 +35,12 @@ export interface IssuanceRights {
   canValidateAllocation: boolean;
   canRequestCorrection: boolean;
   canApproveCorrection: boolean;
+  canReadDistributions: boolean;
+  canPrepareDistribution: boolean;
 }
+
+/** Statuses with a coupon schedule. */
+const SCHEDULE_STATUSES = ['ACTIVE', 'MATURED'];
 
 /** Statuses from which the allocation, then the registry, have something to show. */
 const ALLOCATION_STATUSES = ['SUBSCRIPTION_CLOSED', 'ALLOCATED', 'ACTIVE', 'MATURED'];
@@ -120,6 +126,7 @@ export function IssuanceDetail({
             <Link href={`/issuer/subscriptions?issuanceId=${id}`}>{t('seeSubscriptions')}</Link>
           </Button>
         ) : null}
+        {status === 'ALLOCATED' && rights.canOperate ? <ActivateButton issuanceId={id} /> : null}
         {cancellable && rights.canCancel ? (
           <CommentedActionButton id={id} action="cancel" onDone={refresh} />
         ) : null}
@@ -138,6 +145,9 @@ export function IssuanceDetail({
                 ? ['allocation']
                 : []),
               ...(rights.canReadRegistry && REGISTRY_STATUSES.includes(status) ? ['registry'] : []),
+              ...(rights.canReadDistributions && SCHEDULE_STATUSES.includes(status)
+                ? ['coupons']
+                : []),
               'documents',
               'history',
             ] as const
@@ -182,6 +192,11 @@ export function IssuanceDetail({
                 currentUserId,
               }}
             />
+          </Tabs.Content>
+        ) : null}
+        {rights.canReadDistributions && SCHEDULE_STATUSES.includes(status) ? (
+          <Tabs.Content value="coupons">
+            <ScheduleTab issuanceId={id} canPrepare={rights.canPrepareDistribution} />
           </Tabs.Content>
         ) : null}
         <Tabs.Content value="documents">

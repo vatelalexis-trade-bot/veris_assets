@@ -40,6 +40,7 @@ import { demoIssuanceRows } from './seed-issuances.js';
 import { demoRegistryRows } from './seed-registry.js';
 import { demoSubscriptionRows } from './seed-subscriptions.js';
 import { databaseName, type DatabaseTarget, type ToolsEnv } from './tools-env.js';
+import { couponSchedule } from '../../src/modules/servicing/infrastructure/schema.js';
 
 export async function seedDatabase(env: ToolsEnv, target: DatabaseTarget): Promise<void> {
   await withClient(connectionConfig(env, databaseName(env, target), 'migrator'), async (client) => {
@@ -112,7 +113,9 @@ export async function seedDatabase(env: ToolsEnv, target: DatabaseTarget): Promi
       await tx.insert(position).values(registry.positions).onConflictDoNothing();
       await tx.insert(ledgerHead).values(registry.ledgerHeads).onConflictDoNothing();
       await tx.insert(ledgerEntry).values(registry.ledgerEntries).onConflictDoNothing();
-      await tx.insert(transferRequest).values(registry.transfers).onConflictDoNothing();
+      if (registry.transfers.length > 0)
+        await tx.insert(transferRequest).values(registry.transfers).onConflictDoNothing();
+      await tx.insert(couponSchedule).values(registry.schedules).onConflictDoNothing();
       await tx.insert(workflowTransition).values(registry.transitions).onConflictDoNothing();
     });
   });

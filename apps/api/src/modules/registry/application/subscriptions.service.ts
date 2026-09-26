@@ -345,6 +345,17 @@ export class SubscriptionsService {
     return rows.map(flatten);
   }
 
+  /** Subscriptions of an issuance still waiting for their payment (D-009: no activation then). */
+  async pendingPaymentCount(tx: Transaction, issuanceId: string): Promise<number> {
+    const [row] = await tx
+      .select({ total: count() })
+      .from(subscription)
+      .where(
+        and(eq(subscription.issuanceId, issuanceId), eq(subscription.status, 'PAYMENT_PENDING')),
+      );
+    return row?.total ?? 0;
+  }
+
   /** Subscriptions of an issuance still waiting for a decision of the issuer. */
   async undecidedCount(tx: Transaction, issuanceId: string): Promise<number> {
     const [row] = await tx

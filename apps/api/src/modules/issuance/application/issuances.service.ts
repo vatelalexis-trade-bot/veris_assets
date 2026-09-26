@@ -414,6 +414,27 @@ export class IssuancesService {
     );
   }
 
+  /** Activation (SPEC §7.1, phase 14): ALLOCATED → ACTIVE in the caller's transaction. */
+  async markActive(tx: Transaction, tenantId: string, id: string): Promise<IssuanceDetail> {
+    const found = await this.find(tx, id, true);
+    await this.applyTransition(tx, tenantId, found, 'ACTIVE', null, () =>
+      Promise.resolve({ event: null }),
+    );
+    return this.find(tx, id);
+  }
+
+  /** Maturity (SPEC §12.6): ACTIVE → MATURED once the principal is repaid, in the caller's transaction. */
+  async markMatured(tx: Transaction, tenantId: string, id: string): Promise<void> {
+    await this.applyTransition(
+      tx,
+      tenantId,
+      await this.findForRegistry(tx, id, true),
+      'MATURED',
+      null,
+      () => Promise.resolve({ event: null }),
+    );
+  }
+
   private async applyTransition(
     tx: Transaction,
     tenantId: string,

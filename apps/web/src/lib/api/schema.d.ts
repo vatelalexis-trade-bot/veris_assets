@@ -1700,6 +1700,262 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/issuances/{id}/activate': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['DistributionsController_activate'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/issuances/{id}/coupon-schedule': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['DistributionsController_schedule'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/distributions': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['DistributionsController_list'];
+    put?: never;
+    post: operations['DistributionsController_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/distributions/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['DistributionsController_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/distributions/{id}/lines': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['DistributionsController_lines'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/distributions/{id}/calculate': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['DistributionsController_calculate'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/distributions/{id}/submit-for-review': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['DistributionsController_submit'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/distributions/{id}/approve': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['DistributionsController_approve'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/distributions/{id}/return-to-draft': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['DistributionsController_returnToDraft'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/distributions/{id}/cancel': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['DistributionsController_cancel'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/distributions/{id}/recalculate-check': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['DistributionsController_recalculationCheck'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/distributions/{id}/transitions': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['DistributionsController_transitions'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/distributions/{id}/payment-instruction': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['DistributionsController_generateInstruction'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/distributions/{id}/payment-instruction/prepare': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['DistributionsController_prepareInstruction'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/distributions/{id}/payment-instruction/confirm': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['DistributionsController_confirmInstruction'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/distributions/{id}/payment-instruction/csv': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['DistributionsController_csv'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/audit-events': {
     parameters: {
       query?: never;
@@ -1869,6 +2125,9 @@ export interface operations {
                 | 'TRANSFER_RECEIVED'
                 | 'TRANSFER_REJECTED'
                 | 'TRANSFER_CANCELLED'
+                | 'DISTRIBUTION_TO_APPROVE'
+                | 'DISTRIBUTION_PAYMENT_TO_CONFIRM'
+                | 'DISTRIBUTION_PAID'
                 | 'SUBSCRIPTION_SUBMITTED'
                 | 'SUBSCRIPTION_APPROVED'
                 | 'SUBSCRIPTION_REJECTED'
@@ -9658,6 +9917,1358 @@ export interface operations {
             /** Format: date-time */
             occurredAt: string;
           }[];
+        };
+      };
+    };
+  };
+  DistributionsController_activate: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            sequence: number;
+            /** @enum {string} */
+            type: 'COUPON' | 'PRINCIPAL';
+            /** Format: date */
+            periodStart: string;
+            /** Format: date */
+            periodEnd: string;
+            /** Format: date */
+            paymentDate: string;
+            /** Format: date */
+            recordDate: string;
+            /** @enum {string} */
+            status: 'SCHEDULED' | 'DISTRIBUTED' | 'CANCELLED';
+            /** Format: uuid */
+            distributionId: string | null;
+            /** @enum {string|null} */
+            distributionStatus:
+              | 'DRAFT'
+              | 'CALCULATED'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'PAYMENT_INSTRUCTION_GENERATED'
+              | 'PAID'
+              | 'FAILED'
+              | 'CANCELLED'
+              | null;
+          }[];
+        };
+      };
+    };
+  };
+  DistributionsController_schedule: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            sequence: number;
+            /** @enum {string} */
+            type: 'COUPON' | 'PRINCIPAL';
+            /** Format: date */
+            periodStart: string;
+            /** Format: date */
+            periodEnd: string;
+            /** Format: date */
+            paymentDate: string;
+            /** Format: date */
+            recordDate: string;
+            /** @enum {string} */
+            status: 'SCHEDULED' | 'DISTRIBUTED' | 'CANCELLED';
+            /** Format: uuid */
+            distributionId: string | null;
+            /** @enum {string|null} */
+            distributionStatus:
+              | 'DRAFT'
+              | 'CALCULATED'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'PAYMENT_INSTRUCTION_GENERATED'
+              | 'PAID'
+              | 'FAILED'
+              | 'CANCELLED'
+              | null;
+          }[];
+        };
+      };
+    };
+  };
+  DistributionsController_list: {
+    parameters: {
+      query?: {
+        status?:
+          | 'DRAFT'
+          | 'CALCULATED'
+          | 'UNDER_REVIEW'
+          | 'APPROVED'
+          | 'PAYMENT_INSTRUCTION_GENERATED'
+          | 'PAID'
+          | 'FAILED'
+          | 'CANCELLED';
+        issuanceId?: string;
+        page?: number;
+        pageSize?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            data: {
+              /** Format: uuid */
+              id: string;
+              /** Format: uuid */
+              issuanceId: string;
+              issuanceName: string;
+              issuanceCode: string;
+              /** @enum {string} */
+              type: 'COUPON' | 'PRINCIPAL';
+              /** @enum {string} */
+              status:
+                | 'DRAFT'
+                | 'CALCULATED'
+                | 'UNDER_REVIEW'
+                | 'APPROVED'
+                | 'PAYMENT_INSTRUCTION_GENERATED'
+                | 'PAID'
+                | 'FAILED'
+                | 'CANCELLED';
+              schedule: {
+                /** Format: uuid */
+                id: string;
+                sequence: number;
+                /** Format: date */
+                periodStart: string;
+                /** Format: date */
+                periodEnd: string;
+                /** Format: date */
+                paymentDate: string;
+                /** Format: date */
+                recordDate: string;
+              };
+              dayCount: string | null;
+              periodFraction: string | null;
+              rate: string | null;
+              nominalValue: string | null;
+              currency: string;
+              roundingMethod: string | null;
+              totalGrossAmount: string | null;
+              totalUnroundedAmount: string | null;
+              roundingDifference: string | null;
+              beneficiaryCount: number | null;
+              calculationVersion: string | null;
+              /** Format: date-time */
+              calculatedAt: string | null;
+              /** Format: uuid */
+              snapshotId: string | null;
+              /** Format: uuid */
+              preparedBy: string | null;
+              /** Format: uuid */
+              approvedBy: string | null;
+              /** Format: date-time */
+              approvedAt: string | null;
+              statusComment: string | null;
+              instruction: {
+                /** Format: uuid */
+                id: string;
+                /** @enum {string} */
+                status: 'GENERATED' | 'PREPARED' | 'CONFIRMED' | 'FAILED';
+                totalAmount: string;
+                currency: string;
+                lineCount: number;
+                /** Format: date-time */
+                generatedAt: string;
+                /** Format: uuid */
+                preparedBy: string | null;
+                /** Format: date-time */
+                preparedAt: string | null;
+                /** Format: uuid */
+                confirmedBy: string | null;
+                /** Format: date-time */
+                confirmedAt: string | null;
+                providerReference: string | null;
+              } | null;
+              version: number;
+            }[];
+            meta: {
+              page: number;
+              pageSize: number;
+              total: number;
+            };
+          };
+        };
+      };
+    };
+  };
+  DistributionsController_create: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: uuid */
+          couponScheduleId: string;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceName: string;
+            issuanceCode: string;
+            /** @enum {string} */
+            type: 'COUPON' | 'PRINCIPAL';
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'CALCULATED'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'PAYMENT_INSTRUCTION_GENERATED'
+              | 'PAID'
+              | 'FAILED'
+              | 'CANCELLED';
+            schedule: {
+              /** Format: uuid */
+              id: string;
+              sequence: number;
+              /** Format: date */
+              periodStart: string;
+              /** Format: date */
+              periodEnd: string;
+              /** Format: date */
+              paymentDate: string;
+              /** Format: date */
+              recordDate: string;
+            };
+            dayCount: string | null;
+            periodFraction: string | null;
+            rate: string | null;
+            nominalValue: string | null;
+            currency: string;
+            roundingMethod: string | null;
+            totalGrossAmount: string | null;
+            totalUnroundedAmount: string | null;
+            roundingDifference: string | null;
+            beneficiaryCount: number | null;
+            calculationVersion: string | null;
+            /** Format: date-time */
+            calculatedAt: string | null;
+            /** Format: uuid */
+            snapshotId: string | null;
+            /** Format: uuid */
+            preparedBy: string | null;
+            /** Format: uuid */
+            approvedBy: string | null;
+            /** Format: date-time */
+            approvedAt: string | null;
+            statusComment: string | null;
+            instruction: {
+              /** Format: uuid */
+              id: string;
+              /** @enum {string} */
+              status: 'GENERATED' | 'PREPARED' | 'CONFIRMED' | 'FAILED';
+              totalAmount: string;
+              currency: string;
+              lineCount: number;
+              /** Format: date-time */
+              generatedAt: string;
+              /** Format: uuid */
+              preparedBy: string | null;
+              /** Format: date-time */
+              preparedAt: string | null;
+              /** Format: uuid */
+              confirmedBy: string | null;
+              /** Format: date-time */
+              confirmedAt: string | null;
+              providerReference: string | null;
+            } | null;
+            version: number;
+          };
+        };
+      };
+    };
+  };
+  DistributionsController_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceName: string;
+            issuanceCode: string;
+            /** @enum {string} */
+            type: 'COUPON' | 'PRINCIPAL';
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'CALCULATED'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'PAYMENT_INSTRUCTION_GENERATED'
+              | 'PAID'
+              | 'FAILED'
+              | 'CANCELLED';
+            schedule: {
+              /** Format: uuid */
+              id: string;
+              sequence: number;
+              /** Format: date */
+              periodStart: string;
+              /** Format: date */
+              periodEnd: string;
+              /** Format: date */
+              paymentDate: string;
+              /** Format: date */
+              recordDate: string;
+            };
+            dayCount: string | null;
+            periodFraction: string | null;
+            rate: string | null;
+            nominalValue: string | null;
+            currency: string;
+            roundingMethod: string | null;
+            totalGrossAmount: string | null;
+            totalUnroundedAmount: string | null;
+            roundingDifference: string | null;
+            beneficiaryCount: number | null;
+            calculationVersion: string | null;
+            /** Format: date-time */
+            calculatedAt: string | null;
+            /** Format: uuid */
+            snapshotId: string | null;
+            /** Format: uuid */
+            preparedBy: string | null;
+            /** Format: uuid */
+            approvedBy: string | null;
+            /** Format: date-time */
+            approvedAt: string | null;
+            statusComment: string | null;
+            instruction: {
+              /** Format: uuid */
+              id: string;
+              /** @enum {string} */
+              status: 'GENERATED' | 'PREPARED' | 'CONFIRMED' | 'FAILED';
+              totalAmount: string;
+              currency: string;
+              lineCount: number;
+              /** Format: date-time */
+              generatedAt: string;
+              /** Format: uuid */
+              preparedBy: string | null;
+              /** Format: date-time */
+              preparedAt: string | null;
+              /** Format: uuid */
+              confirmedBy: string | null;
+              /** Format: date-time */
+              confirmedAt: string | null;
+              providerReference: string | null;
+            } | null;
+            version: number;
+          };
+        };
+      };
+    };
+  };
+  DistributionsController_lines: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            investorId: string;
+            investorName: string | null;
+            eligibleQuantity: string;
+            grossAmountUnrounded: string;
+            grossAmount: string;
+            currency: string;
+            anomalyCode: string | null;
+          }[];
+        };
+      };
+    };
+  };
+  DistributionsController_calculate: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceName: string;
+            issuanceCode: string;
+            /** @enum {string} */
+            type: 'COUPON' | 'PRINCIPAL';
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'CALCULATED'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'PAYMENT_INSTRUCTION_GENERATED'
+              | 'PAID'
+              | 'FAILED'
+              | 'CANCELLED';
+            schedule: {
+              /** Format: uuid */
+              id: string;
+              sequence: number;
+              /** Format: date */
+              periodStart: string;
+              /** Format: date */
+              periodEnd: string;
+              /** Format: date */
+              paymentDate: string;
+              /** Format: date */
+              recordDate: string;
+            };
+            dayCount: string | null;
+            periodFraction: string | null;
+            rate: string | null;
+            nominalValue: string | null;
+            currency: string;
+            roundingMethod: string | null;
+            totalGrossAmount: string | null;
+            totalUnroundedAmount: string | null;
+            roundingDifference: string | null;
+            beneficiaryCount: number | null;
+            calculationVersion: string | null;
+            /** Format: date-time */
+            calculatedAt: string | null;
+            /** Format: uuid */
+            snapshotId: string | null;
+            /** Format: uuid */
+            preparedBy: string | null;
+            /** Format: uuid */
+            approvedBy: string | null;
+            /** Format: date-time */
+            approvedAt: string | null;
+            statusComment: string | null;
+            instruction: {
+              /** Format: uuid */
+              id: string;
+              /** @enum {string} */
+              status: 'GENERATED' | 'PREPARED' | 'CONFIRMED' | 'FAILED';
+              totalAmount: string;
+              currency: string;
+              lineCount: number;
+              /** Format: date-time */
+              generatedAt: string;
+              /** Format: uuid */
+              preparedBy: string | null;
+              /** Format: date-time */
+              preparedAt: string | null;
+              /** Format: uuid */
+              confirmedBy: string | null;
+              /** Format: date-time */
+              confirmedAt: string | null;
+              providerReference: string | null;
+            } | null;
+            version: number;
+          };
+        };
+      };
+    };
+  };
+  DistributionsController_submit: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceName: string;
+            issuanceCode: string;
+            /** @enum {string} */
+            type: 'COUPON' | 'PRINCIPAL';
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'CALCULATED'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'PAYMENT_INSTRUCTION_GENERATED'
+              | 'PAID'
+              | 'FAILED'
+              | 'CANCELLED';
+            schedule: {
+              /** Format: uuid */
+              id: string;
+              sequence: number;
+              /** Format: date */
+              periodStart: string;
+              /** Format: date */
+              periodEnd: string;
+              /** Format: date */
+              paymentDate: string;
+              /** Format: date */
+              recordDate: string;
+            };
+            dayCount: string | null;
+            periodFraction: string | null;
+            rate: string | null;
+            nominalValue: string | null;
+            currency: string;
+            roundingMethod: string | null;
+            totalGrossAmount: string | null;
+            totalUnroundedAmount: string | null;
+            roundingDifference: string | null;
+            beneficiaryCount: number | null;
+            calculationVersion: string | null;
+            /** Format: date-time */
+            calculatedAt: string | null;
+            /** Format: uuid */
+            snapshotId: string | null;
+            /** Format: uuid */
+            preparedBy: string | null;
+            /** Format: uuid */
+            approvedBy: string | null;
+            /** Format: date-time */
+            approvedAt: string | null;
+            statusComment: string | null;
+            instruction: {
+              /** Format: uuid */
+              id: string;
+              /** @enum {string} */
+              status: 'GENERATED' | 'PREPARED' | 'CONFIRMED' | 'FAILED';
+              totalAmount: string;
+              currency: string;
+              lineCount: number;
+              /** Format: date-time */
+              generatedAt: string;
+              /** Format: uuid */
+              preparedBy: string | null;
+              /** Format: date-time */
+              preparedAt: string | null;
+              /** Format: uuid */
+              confirmedBy: string | null;
+              /** Format: date-time */
+              confirmedAt: string | null;
+              providerReference: string | null;
+            } | null;
+            version: number;
+          };
+        };
+      };
+    };
+  };
+  DistributionsController_approve: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceName: string;
+            issuanceCode: string;
+            /** @enum {string} */
+            type: 'COUPON' | 'PRINCIPAL';
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'CALCULATED'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'PAYMENT_INSTRUCTION_GENERATED'
+              | 'PAID'
+              | 'FAILED'
+              | 'CANCELLED';
+            schedule: {
+              /** Format: uuid */
+              id: string;
+              sequence: number;
+              /** Format: date */
+              periodStart: string;
+              /** Format: date */
+              periodEnd: string;
+              /** Format: date */
+              paymentDate: string;
+              /** Format: date */
+              recordDate: string;
+            };
+            dayCount: string | null;
+            periodFraction: string | null;
+            rate: string | null;
+            nominalValue: string | null;
+            currency: string;
+            roundingMethod: string | null;
+            totalGrossAmount: string | null;
+            totalUnroundedAmount: string | null;
+            roundingDifference: string | null;
+            beneficiaryCount: number | null;
+            calculationVersion: string | null;
+            /** Format: date-time */
+            calculatedAt: string | null;
+            /** Format: uuid */
+            snapshotId: string | null;
+            /** Format: uuid */
+            preparedBy: string | null;
+            /** Format: uuid */
+            approvedBy: string | null;
+            /** Format: date-time */
+            approvedAt: string | null;
+            statusComment: string | null;
+            instruction: {
+              /** Format: uuid */
+              id: string;
+              /** @enum {string} */
+              status: 'GENERATED' | 'PREPARED' | 'CONFIRMED' | 'FAILED';
+              totalAmount: string;
+              currency: string;
+              lineCount: number;
+              /** Format: date-time */
+              generatedAt: string;
+              /** Format: uuid */
+              preparedBy: string | null;
+              /** Format: date-time */
+              preparedAt: string | null;
+              /** Format: uuid */
+              confirmedBy: string | null;
+              /** Format: date-time */
+              confirmedAt: string | null;
+              providerReference: string | null;
+            } | null;
+            version: number;
+          };
+        };
+      };
+    };
+  };
+  DistributionsController_returnToDraft: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          comment: string;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceName: string;
+            issuanceCode: string;
+            /** @enum {string} */
+            type: 'COUPON' | 'PRINCIPAL';
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'CALCULATED'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'PAYMENT_INSTRUCTION_GENERATED'
+              | 'PAID'
+              | 'FAILED'
+              | 'CANCELLED';
+            schedule: {
+              /** Format: uuid */
+              id: string;
+              sequence: number;
+              /** Format: date */
+              periodStart: string;
+              /** Format: date */
+              periodEnd: string;
+              /** Format: date */
+              paymentDate: string;
+              /** Format: date */
+              recordDate: string;
+            };
+            dayCount: string | null;
+            periodFraction: string | null;
+            rate: string | null;
+            nominalValue: string | null;
+            currency: string;
+            roundingMethod: string | null;
+            totalGrossAmount: string | null;
+            totalUnroundedAmount: string | null;
+            roundingDifference: string | null;
+            beneficiaryCount: number | null;
+            calculationVersion: string | null;
+            /** Format: date-time */
+            calculatedAt: string | null;
+            /** Format: uuid */
+            snapshotId: string | null;
+            /** Format: uuid */
+            preparedBy: string | null;
+            /** Format: uuid */
+            approvedBy: string | null;
+            /** Format: date-time */
+            approvedAt: string | null;
+            statusComment: string | null;
+            instruction: {
+              /** Format: uuid */
+              id: string;
+              /** @enum {string} */
+              status: 'GENERATED' | 'PREPARED' | 'CONFIRMED' | 'FAILED';
+              totalAmount: string;
+              currency: string;
+              lineCount: number;
+              /** Format: date-time */
+              generatedAt: string;
+              /** Format: uuid */
+              preparedBy: string | null;
+              /** Format: date-time */
+              preparedAt: string | null;
+              /** Format: uuid */
+              confirmedBy: string | null;
+              /** Format: date-time */
+              confirmedAt: string | null;
+              providerReference: string | null;
+            } | null;
+            version: number;
+          };
+        };
+      };
+    };
+  };
+  DistributionsController_cancel: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          comment: string;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceName: string;
+            issuanceCode: string;
+            /** @enum {string} */
+            type: 'COUPON' | 'PRINCIPAL';
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'CALCULATED'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'PAYMENT_INSTRUCTION_GENERATED'
+              | 'PAID'
+              | 'FAILED'
+              | 'CANCELLED';
+            schedule: {
+              /** Format: uuid */
+              id: string;
+              sequence: number;
+              /** Format: date */
+              periodStart: string;
+              /** Format: date */
+              periodEnd: string;
+              /** Format: date */
+              paymentDate: string;
+              /** Format: date */
+              recordDate: string;
+            };
+            dayCount: string | null;
+            periodFraction: string | null;
+            rate: string | null;
+            nominalValue: string | null;
+            currency: string;
+            roundingMethod: string | null;
+            totalGrossAmount: string | null;
+            totalUnroundedAmount: string | null;
+            roundingDifference: string | null;
+            beneficiaryCount: number | null;
+            calculationVersion: string | null;
+            /** Format: date-time */
+            calculatedAt: string | null;
+            /** Format: uuid */
+            snapshotId: string | null;
+            /** Format: uuid */
+            preparedBy: string | null;
+            /** Format: uuid */
+            approvedBy: string | null;
+            /** Format: date-time */
+            approvedAt: string | null;
+            statusComment: string | null;
+            instruction: {
+              /** Format: uuid */
+              id: string;
+              /** @enum {string} */
+              status: 'GENERATED' | 'PREPARED' | 'CONFIRMED' | 'FAILED';
+              totalAmount: string;
+              currency: string;
+              lineCount: number;
+              /** Format: date-time */
+              generatedAt: string;
+              /** Format: uuid */
+              preparedBy: string | null;
+              /** Format: date-time */
+              preparedAt: string | null;
+              /** Format: uuid */
+              confirmedBy: string | null;
+              /** Format: date-time */
+              confirmedAt: string | null;
+              providerReference: string | null;
+            } | null;
+            version: number;
+          };
+        };
+      };
+    };
+  };
+  DistributionsController_recalculationCheck: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            snapshotReproducible: boolean;
+            identical: boolean;
+            totalGrossAmount: string | null;
+            differences: {
+              /** Format: uuid */
+              accountId: string;
+              stored: string | null;
+              recalculated: string | null;
+            }[];
+          };
+        };
+      };
+    };
+  };
+  DistributionsController_transitions: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @enum {string|null} */
+            fromStatus:
+              | 'DRAFT'
+              | 'CALCULATED'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'PAYMENT_INSTRUCTION_GENERATED'
+              | 'PAID'
+              | 'FAILED'
+              | 'CANCELLED'
+              | null;
+            /** @enum {string} */
+            toStatus:
+              | 'DRAFT'
+              | 'CALCULATED'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'PAYMENT_INSTRUCTION_GENERATED'
+              | 'PAID'
+              | 'FAILED'
+              | 'CANCELLED';
+            actorName: string | null;
+            /** Format: uuid */
+            actorUserId: string | null;
+            comment: string | null;
+            /** Format: date-time */
+            occurredAt: string;
+          }[];
+        };
+      };
+    };
+  };
+  DistributionsController_generateInstruction: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceName: string;
+            issuanceCode: string;
+            /** @enum {string} */
+            type: 'COUPON' | 'PRINCIPAL';
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'CALCULATED'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'PAYMENT_INSTRUCTION_GENERATED'
+              | 'PAID'
+              | 'FAILED'
+              | 'CANCELLED';
+            schedule: {
+              /** Format: uuid */
+              id: string;
+              sequence: number;
+              /** Format: date */
+              periodStart: string;
+              /** Format: date */
+              periodEnd: string;
+              /** Format: date */
+              paymentDate: string;
+              /** Format: date */
+              recordDate: string;
+            };
+            dayCount: string | null;
+            periodFraction: string | null;
+            rate: string | null;
+            nominalValue: string | null;
+            currency: string;
+            roundingMethod: string | null;
+            totalGrossAmount: string | null;
+            totalUnroundedAmount: string | null;
+            roundingDifference: string | null;
+            beneficiaryCount: number | null;
+            calculationVersion: string | null;
+            /** Format: date-time */
+            calculatedAt: string | null;
+            /** Format: uuid */
+            snapshotId: string | null;
+            /** Format: uuid */
+            preparedBy: string | null;
+            /** Format: uuid */
+            approvedBy: string | null;
+            /** Format: date-time */
+            approvedAt: string | null;
+            statusComment: string | null;
+            instruction: {
+              /** Format: uuid */
+              id: string;
+              /** @enum {string} */
+              status: 'GENERATED' | 'PREPARED' | 'CONFIRMED' | 'FAILED';
+              totalAmount: string;
+              currency: string;
+              lineCount: number;
+              /** Format: date-time */
+              generatedAt: string;
+              /** Format: uuid */
+              preparedBy: string | null;
+              /** Format: date-time */
+              preparedAt: string | null;
+              /** Format: uuid */
+              confirmedBy: string | null;
+              /** Format: date-time */
+              confirmedAt: string | null;
+              providerReference: string | null;
+            } | null;
+            version: number;
+          };
+        };
+      };
+    };
+  };
+  DistributionsController_prepareInstruction: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceName: string;
+            issuanceCode: string;
+            /** @enum {string} */
+            type: 'COUPON' | 'PRINCIPAL';
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'CALCULATED'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'PAYMENT_INSTRUCTION_GENERATED'
+              | 'PAID'
+              | 'FAILED'
+              | 'CANCELLED';
+            schedule: {
+              /** Format: uuid */
+              id: string;
+              sequence: number;
+              /** Format: date */
+              periodStart: string;
+              /** Format: date */
+              periodEnd: string;
+              /** Format: date */
+              paymentDate: string;
+              /** Format: date */
+              recordDate: string;
+            };
+            dayCount: string | null;
+            periodFraction: string | null;
+            rate: string | null;
+            nominalValue: string | null;
+            currency: string;
+            roundingMethod: string | null;
+            totalGrossAmount: string | null;
+            totalUnroundedAmount: string | null;
+            roundingDifference: string | null;
+            beneficiaryCount: number | null;
+            calculationVersion: string | null;
+            /** Format: date-time */
+            calculatedAt: string | null;
+            /** Format: uuid */
+            snapshotId: string | null;
+            /** Format: uuid */
+            preparedBy: string | null;
+            /** Format: uuid */
+            approvedBy: string | null;
+            /** Format: date-time */
+            approvedAt: string | null;
+            statusComment: string | null;
+            instruction: {
+              /** Format: uuid */
+              id: string;
+              /** @enum {string} */
+              status: 'GENERATED' | 'PREPARED' | 'CONFIRMED' | 'FAILED';
+              totalAmount: string;
+              currency: string;
+              lineCount: number;
+              /** Format: date-time */
+              generatedAt: string;
+              /** Format: uuid */
+              preparedBy: string | null;
+              /** Format: date-time */
+              preparedAt: string | null;
+              /** Format: uuid */
+              confirmedBy: string | null;
+              /** Format: date-time */
+              confirmedAt: string | null;
+              providerReference: string | null;
+            } | null;
+            version: number;
+          };
+        };
+      };
+    };
+  };
+  DistributionsController_confirmInstruction: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            issuanceId: string;
+            issuanceName: string;
+            issuanceCode: string;
+            /** @enum {string} */
+            type: 'COUPON' | 'PRINCIPAL';
+            /** @enum {string} */
+            status:
+              | 'DRAFT'
+              | 'CALCULATED'
+              | 'UNDER_REVIEW'
+              | 'APPROVED'
+              | 'PAYMENT_INSTRUCTION_GENERATED'
+              | 'PAID'
+              | 'FAILED'
+              | 'CANCELLED';
+            schedule: {
+              /** Format: uuid */
+              id: string;
+              sequence: number;
+              /** Format: date */
+              periodStart: string;
+              /** Format: date */
+              periodEnd: string;
+              /** Format: date */
+              paymentDate: string;
+              /** Format: date */
+              recordDate: string;
+            };
+            dayCount: string | null;
+            periodFraction: string | null;
+            rate: string | null;
+            nominalValue: string | null;
+            currency: string;
+            roundingMethod: string | null;
+            totalGrossAmount: string | null;
+            totalUnroundedAmount: string | null;
+            roundingDifference: string | null;
+            beneficiaryCount: number | null;
+            calculationVersion: string | null;
+            /** Format: date-time */
+            calculatedAt: string | null;
+            /** Format: uuid */
+            snapshotId: string | null;
+            /** Format: uuid */
+            preparedBy: string | null;
+            /** Format: uuid */
+            approvedBy: string | null;
+            /** Format: date-time */
+            approvedAt: string | null;
+            statusComment: string | null;
+            instruction: {
+              /** Format: uuid */
+              id: string;
+              /** @enum {string} */
+              status: 'GENERATED' | 'PREPARED' | 'CONFIRMED' | 'FAILED';
+              totalAmount: string;
+              currency: string;
+              lineCount: number;
+              /** Format: date-time */
+              generatedAt: string;
+              /** Format: uuid */
+              preparedBy: string | null;
+              /** Format: date-time */
+              preparedAt: string | null;
+              /** Format: uuid */
+              confirmedBy: string | null;
+              /** Format: date-time */
+              confirmedAt: string | null;
+              providerReference: string | null;
+            } | null;
+            version: number;
+          };
+        };
+      };
+    };
+  };
+  DistributionsController_csv: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'text/csv': string;
         };
       };
     };

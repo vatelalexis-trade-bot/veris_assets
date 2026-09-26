@@ -43,3 +43,41 @@ export function addMonths(date: BusinessDate, months: number): BusinessDate {
   const lastDay = new Date(Date.UTC(year, month - 1 + months + 1, 0)).getUTCDate();
   return format(new Date(Date.UTC(year, month - 1 + months, day < lastDay ? day : lastDay)));
 }
+
+/** Saturday or Sunday (the MVP has no holiday calendar, SPEC §12.2). */
+export function isWeekend(date: BusinessDate): boolean {
+  const [year, month, day] = parts(date);
+  const weekday = new Date(Date.UTC(year, month - 1, day)).getUTCDay();
+  return weekday === 0 || weekday === 6;
+}
+
+/** The date itself, or the next business day when it falls on a weekend ("following"). */
+export function followingBusinessDay(date: BusinessDate): BusinessDate {
+  let current = date;
+  while (isWeekend(current)) current = addDays(current, 1);
+  return current;
+}
+
+/** `count` business days (Monday–Friday) before a date (decision D-012). */
+export function subtractBusinessDays(date: BusinessDate, count: number): BusinessDate {
+  let current = date;
+  let left = count;
+  while (left > 0) {
+    current = addDays(current, -1);
+    if (!isWeekend(current)) left -= 1;
+  }
+  return current;
+}
+
+/** Calendar days from `start` to `end` (negative when `end` is before `start`). */
+export function daysBetween(start: BusinessDate, end: BusinessDate): number {
+  const [y1, m1, d1] = parts(start);
+  const [y2, m2, d2] = parts(end);
+  // Whole days in UTC (no daylight saving time): the division is always exact.
+  return (Date.UTC(y2, m2 - 1, d2) - Date.UTC(y1, m1 - 1, d1)) / 86_400_000;
+}
+
+/** Year, month and day of a business date, for day count conventions. */
+export function dateParts(date: BusinessDate): [number, number, number] {
+  return parts(date);
+}

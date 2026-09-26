@@ -390,7 +390,9 @@ Validées par le porteur de projet (« ok pour tout »).
 
 ## 2026-09-26 — Phase 13 (transferts)
 
-**D-074 — Proposée. Destinataire d'un transfert et confidentialité (précise D-010).**
+Validées par le porteur de projet (« ok pour tout »).
+
+**D-074 — Acceptée. Destinataire d'un transfert et confidentialité (précise D-010).**
 1. Le destinataire est désigné par son code destinataire. Ce peut être n'importe quel investisseur de l'organisation, même s'il n'est pas invité à l'émission : l'invitation donne le droit de souscrire, et pour un transfert c'est le moteur d'éligibilité qui décide.
 2. L'expéditeur ne voit jamais le nom ni l'identifiant du destinataire : seulement le code qu'il a saisi.
 3. Un destinataire refusé donne `RECIPIENT_NOT_ELIGIBLE`, sans le détail des règles. Le dépassement du maximum par investisseur donne le même code, pour ne rien révéler des avoirs du destinataire.
@@ -398,7 +400,7 @@ Validées par le porteur de projet (« ok pour tout »).
 5. Le destinataire est prévenu des unités reçues, sans le nom de l'expéditeur.
 6. Un investisseur ne voit que les demandes qu'il a faites.
 
-**D-075 — Proposée. Contrôles et écritures d'un transfert (spec 11.1, 11.3, D-014).**
+**D-075 — Acceptée. Contrôles et écritures d'un transfert (spec 11.1, 11.3, D-014).**
 1. À l'envoi, dans une seule transaction :
    - émission allouée ou active, avec les transferts autorisés, sinon `TRANSFER_NOT_ALLOWED` ;
    - période de blocage terminée, sinon `LOCKUP_PERIOD_ACTIVE` : un transfert est accepté le jour même de la fin ;
@@ -412,13 +414,53 @@ Validées par le porteur de projet (« ok pour tout »).
 4. Un rejet (motif obligatoire) ou une annulation débloque les unités. L'investisseur annule sans motif ; l'émetteur annule avec un motif, que l'investisseur voit.
 5. Un brouillon est modifiable (nouvelle route `PATCH /transfers/{id}`) : après un refus, le même brouillon est réutilisé. Le prix indicatif n'est qu'une information : aucun règlement n'est simulé (spec 11.3).
 
-**D-076 — Proposée. Portefeuille de l'investisseur.**
+**D-076 — Acceptée. Portefeuille de l'investisseur.**
 1. L'entrée « Portefeuille » du portail investisseur montre dès maintenant les positions (détenues, bloquées, disponibles, montant investi) et les demandes de transfert, avec un bouton « Transférer ». Le détail complet d'une position (spec 14.3) reste en phase 15.
 2. Le registre lit une émission sans le filtre des invitations, puisqu'un détenteur peut avoir reçu ses unités par transfert. C'est le registre qui vérifie ce que l'utilisateur peut faire.
 
-**D-077 — Proposée. Menu « Transferts » de l'émetteur.** *Modifie la spec 13.2.* Une entrée « Transferts » (`transfer:read`) est ajoutée au menu de l'émetteur, après « Registre ». Elle s'ouvre sur les demandes en revue de conformité, pour les responsables conformité et les administrateurs. La file « À traiter » (phase 15) les reprendra.
+**D-077 — Acceptée. Menu « Transferts » de l'émetteur.** *Modifie la spec 13.2.* Une entrée « Transferts » (`transfer:read`) est ajoutée au menu de l'émetteur, après « Registre ». Elle s'ouvre sur les demandes en revue de conformité, pour les responsables conformité et les administrateurs. La file « À traiter » (phase 15) les reprendra.
 
-**D-078 — Proposée. Données de démo et scénario 4.**
+**D-078 — Acceptée. Données de démo et scénario 4.**
 1. Nouvelle émission « Northwind Private Debt Fund I » (NWPD1) : allouée et payée (Alpine 800, Baltic 600, Cedar 400 unités, 200 restant en trésorerie), avec son ledger chaîné et cohérent.
 2. Un transfert de 100 unités d'Alpine vers Danube attend la revue de conformité, comme le demande la spec (28).
 3. Le scénario 4 automatisé prépare sa propre émission par l'API, il peut donc être rejoué. La préparation par l'API est maintenant partagée avec le scénario 3.
+
+---
+
+## 2026-09-26 — Phase 14a (échéancier, coupons, distributions)
+
+**D-079 — Proposée. Découpage de la phase 14.**
+1. La phase 14 est livrée en deux fois, comme la phase 12 (D-064) :
+   - **14a** : échéancier à l'activation (P14-1), calcul (P14-2), photo du registre et distribution à quatre yeux (P14-3), instruction de paiement fictive et CSV (P14-4), scénario 6 et couverture (P14-7) ;
+   - **14b** : remboursement du principal, passage à « Échue » et remboursement anticipé (P14-5).
+2. En 14a, créer une distribution de principal est refusé (`PRINCIPAL_REPAYMENT_NOT_AVAILABLE_YET`).
+3. L'avis de coupon en PDF (P14-6) est reporté en phase 15, avec les autres documents générés (D-063, D-064).
+
+**D-080 — Proposée. Activation et échéancier (spec 7.1, 12.1, D-009, D-012).**
+1. L'activation (`POST /issuances/{id}/activate`, `issuance:operate`) fait passer l'émission de « Allouée » à « Active ». Elle est refusée tant qu'une souscription attend son paiement (`PENDING_PAYMENTS_REMAINING`). Dans la même transaction, elle génère l'échéancier.
+2. Les périodes se comptent à partir de la date d'émission, tous les 1, 3, 6 ou 12 mois. La dernière période, plus courte si besoin, finit à la maturité. Une fréquence `BULLET` donne un seul coupon. Une ligne « Principal » est ajoutée à la maturité.
+3. Les dates de période ne sont pas ajustées, donc le montant ne change pas. La date de paiement est décalée au jour ouvré suivant si la convention est `FOLLOWING`. La record date est la date de paiement moins le nombre de jours ouvrés choisi (D-012).
+4. Le champ « délai de grâce » (`grace_period_days`) n'est pas utilisé par le calendrier : son usage reste à préciser.
+
+**D-081 — Proposée. Calcul d'une distribution (spec 12.2, 12.3).**
+1. La photo du registre (« snapshot ») reprend les mouvements dont la date effective est au plus tard la record date, jusqu'au dernier mouvement enregistré au moment de la photo.
+2. Seuls les comptes des investisseurs comptent : la trésorerie de l'émetteur est exclue, et les unités bloquées sont incluses.
+3. Le calcul n'est possible qu'à partir de la record date (`RECORD_DATE_NOT_REACHED` avant).
+4. Montant par ligne : unités × valeur nominale × taux × fraction de période, en décimal exact, puis arrondi aux centimes avec la méthode de l'émission. L'écart d'arrondi est le total non arrondi moins le total arrondi. Il est affiché, avec toutes ses décimales.
+5. La seule anomalie signalée est une ligne arrondie à zéro. D'autres (KYC expiré, par exemple) demanderaient au module de consulter les investisseurs, ce que l'architecture ne lui permet pas encore.
+6. Un nouveau calcul, après un renvoi en brouillon, écrit de nouvelles lignes numérotées : les anciennes sont gardées. Les lignes et les photos ne peuvent être modifiées ni supprimées, et la base de données le garantit. La version des règles de calcul est enregistrée avec chaque distribution.
+7. Le recalcul de contrôle reconstruit la photo depuis le ledger et recalcule les lignes, sans rien écrire. Il est réservé à l'émetteur.
+
+**D-082 — Proposée. Circuit d'une distribution et du paiement (spec 4.8, 12.4, 12.5).**
+1. Une seule distribution par paiement prévu (`DISTRIBUTION_ALREADY_EXISTS`). Une distribution annulée (commentaire obligatoire) libère le paiement prévu.
+2. L'approbation est faite par un autre administrateur que celui qui a soumis. Ajout d'un renvoi en brouillon (« En revue » → « Brouillon », commentaire obligatoire) pour recalculer, par exemple après une correction du registre.
+3. Paiement fictif :
+   - l'instruction est générée, puis préparée (`distribution:prepare`) ;
+   - elle est confirmée par un autre administrateur (`payment:confirm`, quatre yeux) ;
+   - si le paiement n'est pas reçu, la distribution passe « Échec », ce qui est conservé, et une nouvelle instruction peut être générée.
+4. Écart par rapport à `docs/API.md` §2.10 : les routes du paiement sont rattachées à la distribution (`/distributions/{id}/payment-instruction`, `…/prepare`, `…/confirm`, `…/csv`). Le CSV est produit à la demande à partir des lignes, avec la mention démonstration, et n'est pas stocké comme document.
+
+**D-083 — Proposée. Démo et scénario 6.**
+1. Nouvelle émission active « Northwind Green Notes » (NWGN) : 5 % semestriel en 30E/360, nominal 1 000 €, Alpine 100 unités, Baltic 250, Cedar 150. Son premier coupon, du 15 au 15, est échu au moment du chargement de la démo : exactement 180/360, donc 2 500,00 € pour Alpine.
+2. Le scénario 6 automatisé s'appuie sur cette émission. Les avoirs y sont datés dans le passé : on ne peut pas les recréer par l'API, et le scénario demande donc une démo fraîche (`pnpm db:reset`) pour être rejoué. La CI part toujours d'une base neuve.
+3. Le portail investisseur montre ses distributions avec sa seule ligne.

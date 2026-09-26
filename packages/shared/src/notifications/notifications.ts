@@ -428,6 +428,45 @@ export const NOTIFICATION_TYPES = {
       },
     },
   },
+  DISTRIBUTION_TO_APPROVE: {
+    category: 'WORKFLOW',
+    texts: {
+      'en-GB': {
+        title: 'Distribution to approve',
+        body: 'A distribution of the issuance {code} was calculated and waits for the approval of another administrator.',
+      },
+      'fr-FR': {
+        title: 'Distribution à approuver',
+        body: 'Une distribution de l’émission {code} a été calculée et attend l’approbation d’un autre administrateur.',
+      },
+    },
+  },
+  DISTRIBUTION_PAYMENT_TO_CONFIRM: {
+    category: 'WORKFLOW',
+    texts: {
+      'en-GB': {
+        title: 'Distribution payment to confirm',
+        body: 'The payment of a distribution of the issuance {code} is prepared and waits for the confirmation of another administrator.',
+      },
+      'fr-FR': {
+        title: 'Paiement de distribution à confirmer',
+        body: 'Le paiement d’une distribution de l’émission {code} est préparé et attend la confirmation d’un autre administrateur.',
+      },
+    },
+  },
+  DISTRIBUTION_PAID: {
+    category: 'DISTRIBUTION',
+    texts: {
+      'en-GB': {
+        title: 'Distribution paid',
+        body: 'A distribution of the issuance {code} was paid to you. See the detail in your distributions.',
+      },
+      'fr-FR': {
+        title: 'Distribution versée',
+        body: 'Une distribution de l’émission {code} vous a été versée. Voir le détail dans vos distributions.',
+      },
+    },
+  },
   SUBSCRIPTION_SUBMITTED: {
     category: 'WORKFLOW',
     texts: {

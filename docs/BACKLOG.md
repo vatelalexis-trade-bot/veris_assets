@@ -168,7 +168,7 @@ Vérifiable par : scénario 4 vert. Livrée (D-074 à D-078).
 | P13-4 | Scénario 4 automatisé (dont rejeu idempotent) | M |
 
 ## Phase 14 — Échéancier, coupons, distributions
-Vérifiable par : scénario 6 vert.
+Vérifiable par : scénario 6 vert. Livrée en deux fois (D-079) : 14a = P14-1 à P14-4, P14-7 ; 14b = P14-5.
 
 | ID | Élément | Prio |
 |---|---|:-:|
@@ -177,7 +177,7 @@ Vérifiable par : scénario 6 vert.
 | P14-3 | Snapshot reproductible ; distribution (machine à états, quatre yeux) ; recalcul de contrôle | M |
 | P14-4 | Instruction de paiement fictive + CSV (mention démo) | M |
 | P14-5 | Remboursement du principal (PRINCIPAL + REDEMPTION) ; passage MATURED ; remboursement anticipé total | M |
-| P14-6 | Avis de coupon PDF | S |
+| P14-6 | Avis de coupon PDF — **reporté en phase 15 (D-079)** | S |
 | P14-7 | Scénario 6 automatisé ; couverture `servicing` ≥ 90 % | M |
 
 ## Phase 15 — Dashboards, portail investisseur, exports, landing
@@ -194,6 +194,7 @@ Vérifiable par : démo complète jouable.
 | P15-7 | Choix de l'hébergement de démo (décision 33.12) | M |
 | P15-8 | Bulletin de souscription PDF (ex-P11-7, D-063) | S |
 | P15-9 | Confirmation d'allocation PDF (ex-P12-5, D-064) | M |
+| P15-10 | Avis de coupon PDF (ex-P14-6, D-079) | S |
 
 ## Phase 16 — Durcissement et déploiement de démonstration
 Vérifiable par : checklist de la section 24 cochée.

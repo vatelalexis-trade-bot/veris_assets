@@ -11,6 +11,7 @@ import { LedgerWriter } from './application/ledger-writer.js';
 import { PaymentsService } from './application/payments.service.js';
 import { RegistryQueries } from './application/registry-queries.js';
 import { RegistryReconciliation } from './application/registry-reconciliation.js';
+import { RegistrySnapshots } from './application/snapshots.js';
 import { SubscriptionEvents } from './application/subscription-events.js';
 import { SubscriptionsService } from './application/subscriptions.service.js';
 import { TransfersService } from './application/transfers.service.js';
@@ -33,10 +34,17 @@ import { InternalLedgerProvider } from './infrastructure/internal-ledger-provide
     CorrectionsService,
     RegistryReconciliation,
     TransfersService,
+    RegistrySnapshots,
     // The only token registry of the MVP (SPEC §26).
     { provide: TOKEN_REGISTRY_PROVIDER, useClass: InternalLedgerProvider },
   ],
   controllers: [SubscriptionsController, RegistryController, TransfersController],
-  exports: [SubscriptionsService, LedgerWriter, RegistryQueries, TOKEN_REGISTRY_PROVIDER],
+  exports: [
+    SubscriptionsService,
+    LedgerWriter,
+    RegistryQueries,
+    RegistrySnapshots,
+    TOKEN_REGISTRY_PROVIDER,
+  ],
 })
 export class RegistryModule {}

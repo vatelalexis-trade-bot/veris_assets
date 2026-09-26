@@ -1,5 +1,16 @@
 import { Module } from '@nestjs/common';
+import { IamModule } from '../iam/index.js';
+import { IssuanceModule } from '../issuance/index.js';
+import { RegistryModule } from '../registry/index.js';
+import { DistributionsController } from './api/distributions.controller.js';
+import { DistributionEvents } from './application/distribution-events-handler.js';
+import { DistributionsService } from './application/distributions.service.js';
+import { SchedulesService } from './application/schedules.service.js';
 
-/** Coupon schedules, distributions and mock payment instructions. Content arrives in later phases (docs/BACKLOG.md). */
-@Module({})
+/** Activation, coupon schedules, distributions and fictitious payment instructions (SPEC §12). */
+@Module({
+  imports: [IamModule, IssuanceModule, RegistryModule],
+  providers: [SchedulesService, DistributionsService, DistributionEvents],
+  controllers: [DistributionsController],
+})
 export class ServicingModule {}

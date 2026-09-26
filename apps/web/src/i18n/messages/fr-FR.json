@@ -357,7 +357,9 @@
     "ALREADY_CORRECTED": "Ce mouvement a déjà été corrigé.",
     "CORRECTION_PENDING": "Une correction de ce mouvement attend déjà une décision.",
     "REPLACEMENT_WITHOUT_ACCOUNT": "Un mouvement de remplacement demande au moins un compte.",
-    "ACCOUNT_NOT_OF_ISSUANCE": "Les comptes doivent appartenir à cette émission."
+    "ACCOUNT_NOT_OF_ISSUANCE": "Les comptes doivent appartenir à cette émission.",
+    "RECORD_DATE_NOT_REACHED": "La record date n’est pas encore atteinte : les détenteurs ne sont pas connus.",
+    "PRINCIPAL_REPAYMENT_NOT_AVAILABLE_YET": "Le remboursement du principal n’est pas encore disponible."
   },
   "organizationTypes": {
     "ISSUER": "Émetteur",
@@ -520,7 +522,8 @@
       "subscription": "Souscription",
       "allocation_round": "Allocation",
       "correction_request": "Correction du registre",
-      "transfer": "Transfert"
+      "transfer": "Transfert",
+      "distribution": "Distribution"
     },
     "sources": {
       "WEB": "Application web",
@@ -626,7 +629,19 @@
       "TRANSFER_APPROVED": "Transfert approuvé",
       "TRANSFER_EXECUTED": "Transfert exécuté",
       "TRANSFER_REJECTED": "Transfert rejeté",
-      "TRANSFER_CANCELLED": "Transfert annulé"
+      "TRANSFER_CANCELLED": "Transfert annulé",
+      "COUPON_SCHEDULE_GENERATED": "Échéancier des coupons généré",
+      "ISSUANCE_ACTIVE": "Émission activée",
+      "DISTRIBUTION_CREATED": "Distribution créée",
+      "DISTRIBUTION_CALCULATED": "Distribution calculée",
+      "DISTRIBUTION_UNDER_REVIEW": "Distribution soumise",
+      "DISTRIBUTION_APPROVED": "Distribution approuvée",
+      "DISTRIBUTION_DRAFT": "Distribution renvoyée en brouillon",
+      "DISTRIBUTION_CANCELLED": "Distribution annulée",
+      "DISTRIBUTION_PAYMENT_INSTRUCTION_GENERATED": "Instruction de paiement générée",
+      "DISTRIBUTION_PAYMENT_PREPARED": "Paiement de distribution préparé",
+      "DISTRIBUTION_PAID": "Distribution versée",
+      "DISTRIBUTION_FAILED": "Échec du paiement de distribution"
     }
   },
   "investors": {
@@ -1070,7 +1085,8 @@
       "documents": "Documents",
       "history": "Historique",
       "allocation": "Allocation",
-      "registry": "Registre"
+      "registry": "Registre",
+      "coupons": "Coupons"
     },
     "invitations": {
       "investor": "Investisseur",
@@ -1398,6 +1414,142 @@
       "priceInvalid": "Saisissez un montant positif, par exemple 1010,50.",
       "submit": "Envoyer la demande",
       "back": "Retour au portefeuille"
+    }
+  },
+  "distributions": {
+    "title": "Distributions",
+    "description": "Coupons et remboursements des émissions : calculés sur une photo du registre, approuvés à quatre yeux, payés par une instruction fictive.",
+    "ownTitle": "Distributions",
+    "ownDescription": "Les coupons qui vous ont été versés.",
+    "caption": "Distributions, les paiements les plus récents en premier",
+    "empty": "Aucune distribution pour l’instant.",
+    "allStatuses": "Tous les statuts",
+    "back": "Retour aux distributions",
+    "detailTitle": "{code} — paiement n° {sequence}",
+    "statusComment": "Commentaire :",
+    "figures": "Calcul",
+    "history": "Historique",
+    "system": "Système",
+    "unknownUser": "Utilisateur inconnu",
+    "lines": "Lignes par investisseur",
+    "ownLine": "Votre ligne",
+    "linesCaption": "Montant brut de chaque détenteur à la record date",
+    "noLine": "Aucune ligne : pas encore calculée.",
+    "downloadCsv": "Télécharger le CSV",
+    "fourEyes": "Vous avez soumis cette distribution : un autre administrateur de l’émetteur doit l’approuver.",
+    "paymentFourEyes": "Vous avez préparé ce paiement : un autre administrateur de l’émetteur doit le confirmer.",
+    "instruction": {
+      "GENERATED": "Instruction de paiement fictive générée : {total}, {lines} lignes.",
+      "PREPARED": "Paiement préparé : {total}, en attente de la confirmation d’un autre administrateur.",
+      "CONFIRMED": "Paiement de {total} confirmé.",
+      "FAILED": "Le paiement de {total} n’a pas été reçu : générez une nouvelle instruction."
+    },
+    "columns": {
+      "issuance": "Émission",
+      "type": "Type",
+      "paymentDate": "Date de paiement",
+      "total": "Total",
+      "status": "Statut",
+      "investor": "Investisseur",
+      "quantity": "Unités à la record date",
+      "unrounded": "Avant arrondi",
+      "amount": "Montant brut",
+      "anomaly": "Anomalie"
+    },
+    "fields": {
+      "period": "Période",
+      "recordDate": "Record date",
+      "paymentDate": "Date de paiement",
+      "dayCount": "Convention de calcul",
+      "periodFraction": "Fraction de période",
+      "rate": "Taux",
+      "nominalValue": "Valeur nominale",
+      "total": "Montant brut total",
+      "roundingDifference": "Écart d’arrondi",
+      "beneficiaries": "Bénéficiaires",
+      "calculationVersion": "Version du calcul"
+    },
+    "dayCounts": {
+      "ACT_365F": "ACT/365 Fixed",
+      "30E_360": "30E/360"
+    },
+    "anomalies": {
+      "ZERO_AMOUNT": "Arrondi à zéro"
+    },
+    "recalculation": {
+      "run": "Recalculer depuis la photo du registre",
+      "identical": "Même résultat : le calcul est reproductible.",
+      "different": "{count, plural, one {# ligne diffère} other {# lignes diffèrent}} : vérifiez le registre."
+    },
+    "actions": {
+      "calculate": {
+        "label": "Calculer",
+        "title": "Calculer cette distribution ?",
+        "description": "Une photo du registre est prise à la record date, puis le montant brut de chaque détenteur est calculé."
+      },
+      "submit-for-review": {
+        "label": "Soumettre à l’approbation",
+        "title": "Soumettre cette distribution ?",
+        "description": "Un autre administrateur de l’émetteur l’examinera et l’approuvera."
+      },
+      "approve": {
+        "label": "Approuver",
+        "title": "Approuver cette distribution ?",
+        "description": "Les montants ne pourront plus changer. L’instruction de paiement pourra ensuite être générée."
+      },
+      "payment-instruction": {
+        "label": "Générer l’instruction de paiement",
+        "title": "Générer l’instruction de paiement ?",
+        "description": "Une instruction de paiement fictive et son fichier CSV sont générés. Aucun paiement réel n’a lieu."
+      },
+      "payment-instruction/prepare": {
+        "label": "Préparer le paiement",
+        "title": "Préparer le paiement ?",
+        "description": "L’instruction est transmise à la banque (fictive). Un autre administrateur de l’émetteur la confirme ensuite."
+      },
+      "payment-instruction/confirm": {
+        "label": "Confirmer le paiement",
+        "title": "Confirmer le paiement ?",
+        "description": "Les investisseurs sont informés du versement de la distribution. C’est définitif."
+      },
+      "return-to-draft": {
+        "label": "Renvoyer en brouillon",
+        "title": "Renvoyer cette distribution ?",
+        "description": "Elle devra être recalculée. La personne qui l’a préparée voit votre commentaire."
+      },
+      "cancel": {
+        "label": "Annuler la distribution",
+        "title": "Annuler cette distribution ?",
+        "description": "Le paiement prévu pourra ensuite être distribué à nouveau."
+      },
+      "commentRequired": "Commentaire (obligatoire)"
+    },
+    "schedule": {
+      "caption": "Coupons et principal de l’émission",
+      "empty": "Pas d’échéancier : l’émission n’est pas encore active.",
+      "create": "Créer la distribution",
+      "types": {
+        "COUPON": "Coupon",
+        "PRINCIPAL": "Principal"
+      },
+      "status": {
+        "SCHEDULED": "Prévu",
+        "DISTRIBUTED": "Distribué",
+        "CANCELLED": "Annulé"
+      },
+      "columns": {
+        "type": "Type",
+        "period": "Période",
+        "recordDate": "Record date",
+        "paymentDate": "Date de paiement",
+        "status": "Statut",
+        "actions": "Actions"
+      }
+    },
+    "activation": {
+      "activate": "Activer l’émission",
+      "title": "Activer cette émission ?",
+      "description": "Toutes les souscriptions allouées doivent être payées. L’échéancier des coupons est alors généré à partir des conditions."
     }
   }
 }

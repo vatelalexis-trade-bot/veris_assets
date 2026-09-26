@@ -226,21 +226,22 @@ Refus à l'envoi et à l'approbation : `422` avec le code du premier contrôle �
 | POST | `/transfers/{id}/cancel` (motif obligatoire pour l'émetteur) | `transfer:cancel` (P) | ✓ |
 | GET | `/transfers/{id}/transitions` | `transfer:read` (P) | |
 
-### 2.10 `/distributions` et `/payment-instructions`
+### 2.10 `/distributions` (D-080 à D-082)
 
 | Méthode | Chemin | Permission | IK |
 |---|---|---|---|
-| GET | `/distributions` · `/{id}` · `/{id}/lines` | `distribution:read` (P : ses lignes) | |
-| POST | `/distributions` (depuis une échéance) | `distribution:prepare` | ✓ |
-| POST | `/distributions/{id}/calculate` · `/submit-for-review` | `distribution:prepare` | ✓ |
-| POST | `/distributions/{id}/approve` | `distribution:approve` | ✓ |
-| POST | `/distributions/{id}/cancel` | `distribution:cancel` | ✓ |
-| POST | `/distributions/{id}/recalculate-check` (recalcul depuis le snapshot, sans écriture) | `distribution:read` | |
-| POST | `/distributions/{id}/payment-instruction` | `distribution:prepare` | ✓ |
-| GET | `/payment-instructions/{id}` · `/{id}/csv` | `distribution:read` | |
-| POST | `/payment-instructions/{id}/prepare` | `distribution:prepare` | ✓ |
-| POST | `/payment-instructions/{id}/confirm` | `payment:confirm` | ✓ |
-| POST | `/issuances/{id}/early-redemption` (remboursement total anticipé) | `issuance:operate` | ✓ |
+| POST | `/issuances/{id}/activate` (ALLOCATED → ACTIVE, échéancier ; refus `PENDING_PAYMENTS_REMAINING`) | `issuance:operate` | ✓ |
+| GET | `/issuances/{id}/coupon-schedule` | `distribution:read` | |
+| GET | `/distributions?issuanceId=…&status=…` · `/{id}` · `/{id}/lines` · `/{id}/transitions` | `distribution:read` (P : ses lignes) | |
+| POST | `/distributions` (depuis une échéance ; `DISTRIBUTION_ALREADY_EXISTS`) | `distribution:prepare` | ✓ |
+| POST | `/distributions/{id}/calculate` (photo à la record date) · `/submit-for-review` | `distribution:prepare` | ✓ |
+| POST | `/distributions/{id}/approve` (quatre yeux) · `/return-to-draft` (commentaire) | `distribution:approve` | ✓ |
+| POST | `/distributions/{id}/cancel` (commentaire) | `distribution:cancel` | ✓ |
+| POST | `/distributions/{id}/recalculate-check` (recalcul depuis la photo, sans écriture ; émetteur seulement) | `distribution:read` | |
+| POST | `/distributions/{id}/payment-instruction` (génération, aussi après un échec) · `/payment-instruction/prepare` | `distribution:prepare` | ✓ |
+| POST | `/distributions/{id}/payment-instruction/confirm` (quatre yeux ; non reçu → FAILED) | `payment:confirm` | ✓ |
+| GET | `/distributions/{id}/payment-instruction/csv` (mention démonstration) | `distribution:prepare` | |
+| POST | `/issuances/{id}/early-redemption` (remboursement total anticipé, phase 14b) | `issuance:operate` | ✓ |
 
 ### 2.11 `/documents`
 

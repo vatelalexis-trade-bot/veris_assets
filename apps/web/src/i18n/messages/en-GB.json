@@ -357,7 +357,9 @@
     "ALREADY_CORRECTED": "This movement has already been corrected.",
     "CORRECTION_PENDING": "A correction of this movement is already waiting for a decision.",
     "REPLACEMENT_WITHOUT_ACCOUNT": "A replacement movement needs at least one account.",
-    "ACCOUNT_NOT_OF_ISSUANCE": "The accounts must belong to this issuance."
+    "ACCOUNT_NOT_OF_ISSUANCE": "The accounts must belong to this issuance.",
+    "RECORD_DATE_NOT_REACHED": "The record date is not reached yet: the holders are not known.",
+    "PRINCIPAL_REPAYMENT_NOT_AVAILABLE_YET": "The repayment of the principal is not available yet."
   },
   "organizationTypes": {
     "ISSUER": "Issuer",
@@ -520,7 +522,8 @@
       "subscription": "Subscription",
       "allocation_round": "Allocation",
       "correction_request": "Registry correction",
-      "transfer": "Transfer"
+      "transfer": "Transfer",
+      "distribution": "Distribution"
     },
     "sources": {
       "WEB": "Web application",
@@ -626,7 +629,19 @@
       "TRANSFER_APPROVED": "Transfer approved",
       "TRANSFER_EXECUTED": "Transfer executed",
       "TRANSFER_REJECTED": "Transfer rejected",
-      "TRANSFER_CANCELLED": "Transfer cancelled"
+      "TRANSFER_CANCELLED": "Transfer cancelled",
+      "COUPON_SCHEDULE_GENERATED": "Coupon schedule generated",
+      "ISSUANCE_ACTIVE": "Issuance activated",
+      "DISTRIBUTION_CREATED": "Distribution created",
+      "DISTRIBUTION_CALCULATED": "Distribution calculated",
+      "DISTRIBUTION_UNDER_REVIEW": "Distribution submitted",
+      "DISTRIBUTION_APPROVED": "Distribution approved",
+      "DISTRIBUTION_DRAFT": "Distribution sent back to draft",
+      "DISTRIBUTION_CANCELLED": "Distribution cancelled",
+      "DISTRIBUTION_PAYMENT_INSTRUCTION_GENERATED": "Payment instruction generated",
+      "DISTRIBUTION_PAYMENT_PREPARED": "Distribution payment prepared",
+      "DISTRIBUTION_PAID": "Distribution paid",
+      "DISTRIBUTION_FAILED": "Distribution payment failed"
     }
   },
   "investors": {
@@ -1070,7 +1085,8 @@
       "documents": "Documents",
       "history": "History",
       "allocation": "Allocation",
-      "registry": "Registry"
+      "registry": "Registry",
+      "coupons": "Coupons"
     },
     "invitations": {
       "investor": "Investor",
@@ -1398,6 +1414,142 @@
       "priceInvalid": "Enter a positive amount, e.g. 1010.50.",
       "submit": "Submit the request",
       "back": "Back to the portfolio"
+    }
+  },
+  "distributions": {
+    "title": "Distributions",
+    "description": "Coupons and repayments of the issuances: calculated on a snapshot of the registry, approved with four eyes, paid through a fictitious instruction.",
+    "ownTitle": "Distributions",
+    "ownDescription": "The coupons paid to you.",
+    "caption": "Distributions, newest payment first",
+    "empty": "No distribution yet.",
+    "allStatuses": "All statuses",
+    "back": "Back to the distributions",
+    "detailTitle": "{code} — payment no. {sequence}",
+    "statusComment": "Comment:",
+    "figures": "Calculation",
+    "history": "History",
+    "system": "System",
+    "unknownUser": "Unknown user",
+    "lines": "Lines per investor",
+    "ownLine": "Your line",
+    "linesCaption": "Gross amount of each holder at the record date",
+    "noLine": "No line: not calculated yet.",
+    "downloadCsv": "Download the CSV",
+    "fourEyes": "You submitted this distribution: another Issuer Administrator must approve it.",
+    "paymentFourEyes": "You prepared this payment: another Issuer Administrator must confirm it.",
+    "instruction": {
+      "GENERATED": "Fictitious payment instruction generated: {total}, {lines} lines.",
+      "PREPARED": "Payment prepared: {total}, waiting for the confirmation of another administrator.",
+      "CONFIRMED": "Payment of {total} confirmed.",
+      "FAILED": "The payment of {total} was not received: generate a new instruction."
+    },
+    "columns": {
+      "issuance": "Issuance",
+      "type": "Type",
+      "paymentDate": "Payment date",
+      "total": "Total",
+      "status": "Status",
+      "investor": "Investor",
+      "quantity": "Units at the record date",
+      "unrounded": "Before rounding",
+      "amount": "Gross amount",
+      "anomaly": "Anomaly"
+    },
+    "fields": {
+      "period": "Period",
+      "recordDate": "Record date",
+      "paymentDate": "Payment date",
+      "dayCount": "Day count",
+      "periodFraction": "Period fraction",
+      "rate": "Rate",
+      "nominalValue": "Nominal value",
+      "total": "Total gross amount",
+      "roundingDifference": "Rounding difference",
+      "beneficiaries": "Beneficiaries",
+      "calculationVersion": "Calculation version"
+    },
+    "dayCounts": {
+      "ACT_365F": "ACT/365 Fixed",
+      "30E_360": "30E/360"
+    },
+    "anomalies": {
+      "ZERO_AMOUNT": "Rounded to zero"
+    },
+    "recalculation": {
+      "run": "Calculate again from the snapshot",
+      "identical": "Same result: the calculation is reproducible.",
+      "different": "{count, plural, one {# line differs} other {# lines differ}}: check the registry."
+    },
+    "actions": {
+      "calculate": {
+        "label": "Calculate",
+        "title": "Calculate this distribution?",
+        "description": "A snapshot of the registry is taken at the record date, then the gross amount of each holder is calculated."
+      },
+      "submit-for-review": {
+        "label": "Submit for approval",
+        "title": "Submit this distribution?",
+        "description": "Another Issuer Administrator will review and approve it."
+      },
+      "approve": {
+        "label": "Approve",
+        "title": "Approve this distribution?",
+        "description": "The amounts can no longer change. The payment instruction can then be generated."
+      },
+      "payment-instruction": {
+        "label": "Generate the payment instruction",
+        "title": "Generate the payment instruction?",
+        "description": "A fictitious payment instruction and its CSV file are generated. No real payment is made."
+      },
+      "payment-instruction/prepare": {
+        "label": "Prepare the payment",
+        "title": "Prepare the payment?",
+        "description": "The instruction is sent to the (fictitious) bank. Another Issuer Administrator then confirms it."
+      },
+      "payment-instruction/confirm": {
+        "label": "Confirm the payment",
+        "title": "Confirm the payment?",
+        "description": "The investors are told that the distribution was paid. This cannot be undone."
+      },
+      "return-to-draft": {
+        "label": "Send back to draft",
+        "title": "Send this distribution back?",
+        "description": "It will have to be calculated again. The preparer sees your comment."
+      },
+      "cancel": {
+        "label": "Cancel the distribution",
+        "title": "Cancel this distribution?",
+        "description": "The scheduled payment can then be distributed again."
+      },
+      "commentRequired": "Comment (required)"
+    },
+    "schedule": {
+      "caption": "Coupons and principal of the issuance",
+      "empty": "No schedule: the issuance is not active yet.",
+      "create": "Create the distribution",
+      "types": {
+        "COUPON": "Coupon",
+        "PRINCIPAL": "Principal"
+      },
+      "status": {
+        "SCHEDULED": "Scheduled",
+        "DISTRIBUTED": "Distributed",
+        "CANCELLED": "Cancelled"
+      },
+      "columns": {
+        "type": "Type",
+        "period": "Period",
+        "recordDate": "Record date",
+        "paymentDate": "Payment date",
+        "status": "Status",
+        "actions": "Actions"
+      }
+    },
+    "activation": {
+      "activate": "Activate the issuance",
+      "title": "Activate this issuance?",
+      "description": "Every allocated subscription must be paid. The coupon schedule is then generated from the terms."
     }
   }
 }

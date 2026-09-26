@@ -64,6 +64,7 @@ const VALID_BODIES: [RegExp, object][] = [
   [/^POST \/api\/v1\/allocations\/:id\/reject$/, { comment: 'Probe' }],
   [/^POST \/api\/v1\/ledger\/corrections\/:id\/reject$/, { comment: 'Probe' }],
   [/^POST \/api\/v1\/transfers\/:id\/(reject|cancel)$/, { reason: 'Probe' }],
+  [/^POST \/api\/v1\/distributions\/:id\/(return-to-draft|cancel)$/, { comment: 'Probe' }],
   [
     /^POST \/api\/v1\/issuances\/:id\/invitations$/,
     { investorId: '0192a000-0000-7000-8000-000000000000' },
@@ -254,6 +255,20 @@ describe('scenario 5 — tenant isolation (SPEC §20, §29)', () => {
            WHERE q.legal_name LIKE 'Quarry%' AND r.legal_name LIKE 'Reed%'
              AND u.email = 'contoso.operator@example.com'
            RETURNING id`,
+        ),
+    ],
+    [
+      /^\/api\/v1\/distributions\/:id/,
+      () =>
+        idOf(
+          `${CONTOSO_ISSUANCE}, coupon AS (
+             INSERT INTO servicing.coupon_schedule (tenant_id, issuance_id, sequence, type,
+               period_start, period_end, payment_date, record_date)
+             SELECT tenant_id, id, 1, 'COUPON', '2026-01-01', '2026-07-01', '2026-07-01', '2026-06-30'
+             FROM created RETURNING id, tenant_id, issuance_id
+           )
+           INSERT INTO servicing.distribution (tenant_id, issuance_id, coupon_schedule_id, type, currency)
+           SELECT tenant_id, issuance_id, id, 'COUPON', 'EUR' FROM coupon RETURNING id`,
         ),
     ],
     [
