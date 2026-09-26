@@ -40,6 +40,8 @@ const envSchema = z.object({
   SMTP_HOST: required.default('127.0.0.1'),
   SMTP_PORT: port.default(1025),
   MAIL_FROM: required.default('Virtus Assets <no-reply@virtus-assets.example>'),
+  // Recipient of the public contact form (Mailpit captures it in the demonstration).
+  CONTACT_EMAIL: z.email().default('contact@virtus-assets.example'),
 
   REDIS_HOST: required.default('127.0.0.1'),
   REDIS_PORT: port.default(6379),

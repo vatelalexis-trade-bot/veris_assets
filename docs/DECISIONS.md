@@ -592,3 +592,32 @@ Validée par le porteur de projet (« ok pour tout »).
 2. Écarté : les plateformes gérées (Clever Cloud : un seul utilisateur de base ; Scaleway : pas de PostgreSQL 18) et les offres gratuites (mise en veille, expiration des données, ou fournisseur non européen).
 3. Modifie docs/ARCHITECTURE.md §2.1 (« PaaS européen à confirmer ») : un VPS demande plus d'administration ; la phase 16 livre les scripts (installation en une commande, mises à jour de sécurité automatiques, sauvegarde quotidienne de la base, déploiement depuis GitHub) et un guide en français.
 4. Le porteur de projet commande le serveur et le nom de domaine ; aucun secret n'est commité.
+
+## 2026-09-26 — Phase 15c (page d'accueil et calculateur)
+
+Proposée par Claude, à valider par le porteur de projet.
+
+**D-096 — Proposée. Page d'accueil et calculateur sans prototype (P15-5).** *Modifie D-019 (reprise du prototype HTML).*
+1. Le porteur de projet n'a pas de prototype : la page d'accueil est une proposition, « style fintech professionnel et moderne, aux couleurs du logo », à améliorer ensuite. Sections :
+   - en-tête avec ancres, choix de la langue et connexion ;
+   - accroche avec un aperçu du produit sur des données fictives, signalées comme telles ;
+   - quatre points forts ;
+   - le cycle de vie en six étapes ;
+   - les trois publics ;
+   - la sécurité dès la conception ;
+   - le calculateur ;
+   - le contact, avec l'accès à la démo ;
+   - un pied de page portant la mention de démonstration.
+2. Formulations : aucune revendication de conformité ou de certification. Seules les formulations admises par la spec 19.1 sont utilisées (« architecture conçue pour intégrer vos contrôles de conformité », « compatible avec une future intégration ERC-3643 »).
+3. Calculateur (spec 19) :
+   - les dix entrées de la spec ;
+   - hypothèses modifiables, affichées en pourcentage, regroupées dans `apps/web/src/features/calculator/assumptions.ts` : temps économisé 60 %, outils remplacés 50 %, frais de prestataires remplacés 30 %, incidents évités 50 %, abonnement 24 000 € par an, part variable 0,05 % du volume par an. Ces valeurs de départ sont des illustrations, pas des prix ;
+   - « opérations manuelles » = souscriptions + transferts + un paiement par investisseur pour chaque distribution ;
+   - calculs en décimal exact, dans le navigateur uniquement ;
+   - avertissement « estimations indicatives ».
+4. Graphiques : barres horizontales en SVG construites à partir des montants décimaux, au lieu de la bibliothèque Recharts prévue dans docs/ARCHITECTURE.md. Une dépendance de moins, et aucun passage par des nombres flottants.
+5. Formulaire de contact (`POST /public/contact`) :
+   - message envoyé par email à `CONTACT_EMAIL` (Mailpit dans la démo), jamais conservé ;
+   - consentement obligatoire ;
+   - champ caché anti-robots (un robot reçoit la réponse habituelle, rien n'est envoyé) ;
+   - au plus 5 messages par heure et par adresse IP.

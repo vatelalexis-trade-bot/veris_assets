@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { LoggerModule } from 'nestjs-pino';
 import { AuditModule } from './audit/audit.module.js';
 import { ConfigModule } from './config/config.module.js';
+import { ContactController, ContactService } from './contact/contact.controller.js';
 import { ENV, type Env } from './config/env.js';
 import { DatabaseModule } from './database/database.module.js';
 import { DocumentsModule } from './documents/documents.module.js';
@@ -38,6 +39,7 @@ import { SecurityModule } from './security/security.module.js';
     DocumentsModule,
     HealthModule,
   ],
-  controllers: [ReferenceController],
+  providers: [ContactService],
+  controllers: [ReferenceController, ContactController],
 })
 export class CoreModule {}

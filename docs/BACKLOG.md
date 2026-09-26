@@ -189,7 +189,7 @@ Vérifiable par : démo complète jouable. Livrée en trois fois (D-086) : 15a =
 | P15-2 | Portail investisseur complet (14) : portefeuille, détail de position, transactions, distributions, documents | M |
 | P15-3 | Exports CSV asynchrones (registre, souscriptions, distributions, audit) — **livré (D-093)** | M |
 | P15-4 | Indicateurs plateforme (vues agrégées) | S |
-| P15-5 | Landing page depuis le prototype (D-019) + calculateur (hypothèses centralisées, graphiques, avertissement) | M |
+| P15-5 | Landing page depuis le prototype (D-019) + calculateur (hypothèses centralisées, graphiques, avertissement) — **livré sans prototype (D-096)** | M |
 | P15-6 | Jeu de démo complet (section 28 + D-017), déterministe — **livré (D-094)** | M |
 | P15-7 | Choix de l'hébergement de démo (décision 33.12) — **livré : VPS OVHcloud (D-095, docs/HOSTING.md)** | M |
 | P15-8 | Bulletin de souscription PDF (ex-P11-7, D-063) — **livré (D-091, D-092)** | S |

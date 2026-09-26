@@ -25,7 +25,7 @@ Les décisions référencées `D-xxx` sont dans `docs/DECISIONS.md`. Modèle de 
 | Front | Next.js (App Router), React, Tailwind CSS, shadcn/ui | Landing, portails, console plateforme |
 | Front — données | TanStack Query, client généré depuis OpenAPI (`openapi-typescript` + `openapi-fetch`) | Appels typés à l'API |
 | Front — formulaires | React Hook Form + Zod | Validation en ligne |
-| Front — tableaux / graphiques | `DataTable` maison (tri et pagination faits par l'API, D-027), Recharts | Data tables, KPI, calculateur |
+| Front — tableaux / graphiques | `DataTable` maison (tri et pagination faits par l'API, D-027), barres SVG maison (D-096) | Data tables, KPI, calculateur |
 | Front — i18n | next-intl | en-GB, fr-FR |
 | Back | NestJS | Modules, injection de dépendances, guards, OpenAPI |
 | Validation | Zod (pipe `ZodValidationPipe` maison) ; OpenAPI produit depuis les mêmes schémas via `z.toJSONSchema` | Entrées API, variables d'environnement, documentation. `nestjs-zod` écarté : incompatible avec NestJS 12 |
@@ -346,8 +346,8 @@ Onglets du détail d'une émission (section 13.4) : `overview`, `details`, `term
 
 ### 5.7 Landing et calculateur
 
-- Reprise du prototype HTML (D-019) en composants React, dans l'espace `(public)`, rendue statiquement.
-- Calculateur 100 % navigateur ; hypothèses (gain de temps, coût de la plateforme) centralisées dans `apps/web/src/features/calculator/assumptions.ts`, visibles et modifiables par le visiteur ; calculs en décimal ; avertissement « estimations indicatives ».
+- Sans prototype HTML (D-096) : page d'accueil conçue d'après la spec, en composants React (`apps/web/src/features/landing/`), rendue côté serveur.
+- Calculateur 100 % navigateur ; hypothèses (gain de temps, coût de la plateforme) centralisées dans `apps/web/src/features/calculator/assumptions.ts`, visibles et modifiables par le visiteur ; calculs en décimal ; graphiques en SVG maison (D-096) ; avertissement « estimations indicatives ».
 - Aucune donnée saisie n'est envoyée sans action explicite (formulaire de contact → email vers Mailpit en dev).
 
 ---

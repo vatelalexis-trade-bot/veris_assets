@@ -64,19 +64,6 @@
       "break-glass": "Accès exceptionnel"
     }
   },
-  "home": {
-    "title": "Gestion du cycle de vie des actifs privés numériques",
-    "subtitle": "Émettez, administrez et gérez vos actifs privés depuis une seule plateforme.",
-    "demoNotice": "Ceci est un environnement de démonstration : toutes les données sont fictives et aucun paiement réel n’est effectué.",
-    "choosePortal": "Découvrir les portails",
-    "portalDescriptions": {
-      "issuer": "Créez des émissions, intégrez les investisseurs, gérez souscriptions, registre et distributions.",
-      "investor": "Suivez positions, souscriptions, transactions et distributions.",
-      "platform": "Administrez les organisations et les paramètres de la plateforme."
-    },
-    "signIn": "Se connecter",
-    "openPortal": "Ouvrir mon portail"
-  },
   "placeholder": {
     "title": "Bientôt disponible",
     "description": "Cet écran sera construit dans une prochaine phase du projet."
@@ -1709,5 +1696,238 @@
         "file": "Fichier"
       }
     }
+  },
+  "landing": {
+    "metaTitle": "Plateforme de gestion du cycle de vie des actifs privés",
+    "nav": {
+      "label": "Sections principales",
+      "platform": "Plateforme",
+      "lifecycle": "Cycle de vie",
+      "security": "Sécurité",
+      "calculator": "Calculateur",
+      "contact": "Contact",
+      "signIn": "Se connecter",
+      "openPortal": "Ouvrir mon portail"
+    },
+    "demoNotice": "Environnement de démonstration : toutes les données sont fictives et aucun paiement réel n’est effectué.",
+    "hero": {
+      "eyebrow": "Plateforme de gestion d’actifs privés",
+      "title": "Émettez, administrez et servez vos actifs privés",
+      "titleAccent": "depuis une seule plateforme.",
+      "subtitle": "Virtus Assets prend en charge tout ce qui suit la term sheet : l’onboarding des investisseurs, les souscriptions, l’allocation, le registre, les coupons et le reporting — avec une piste d’audit complète.",
+      "primaryCta": "Estimer vos économies",
+      "secondaryCta": "Découvrir la démo"
+    },
+    "preview": {
+      "label": "Aperçu du produit avec des données fictives",
+      "title": "Northwind Green Notes",
+      "subtitle": "Émission de démo · coupon semestriel de 5 %",
+      "status": "Active",
+      "nominal": "Nominal administré",
+      "holders": "Porteurs",
+      "nextCoupon": "Prochain coupon",
+      "subscribed": "Souscrit",
+      "registry": "Registre",
+      "investor": "Investisseur",
+      "units": "Unités",
+      "coupon": "Dernier coupon",
+      "fourEyes": "Coupon approuvé en quatre yeux",
+      "ledger": "Registre vérifié — chaîne de hachage intacte",
+      "fictitious": "Données fictives"
+    },
+    "strip": {
+      "ledger": {
+        "title": "Registre en ajout seul",
+        "text": "Chaque mouvement est enregistré une fois, chaîné et vérifiable."
+      },
+      "fourEyes": {
+        "title": "Décisions à quatre yeux",
+        "text": "Allocations, distributions et paiements demandent une seconde personne."
+      },
+      "isolation": {
+        "title": "Isolation native",
+        "text": "Les données de chaque organisation sont séparées jusque dans la base."
+      },
+      "bilingual": {
+        "title": "Anglais et français",
+        "text": "Chaque écran, email et document dans les deux langues."
+      },
+      "label": "Points forts"
+    },
+    "lifecycle": {
+      "eyebrow": "Cycle de vie",
+      "title": "Toute la vie d’une émission, au même endroit",
+      "subtitle": "Du premier brouillon au dernier remboursement, chaque étape suit des statuts clairs, et la bonne personne décide au bon moment.",
+      "structure": {
+        "title": "Structurer",
+        "text": "Créez l’émission dans un assistant guidé : conditions, échéancier, règles d’éligibilité et documents, approuvés en quatre yeux."
+      },
+      "onboard": {
+        "title": "Qualifier",
+        "text": "Qualifiez les investisseurs : dossiers KYC/KYB, bénéficiaires effectifs et contrôles d’éligibilité expliqués en clair."
+      },
+      "subscribe": {
+        "title": "Souscrire",
+        "text": "Les investisseurs souscrivent en ligne ; l’émetteur examine, approuve et suit chaque demande."
+      },
+      "allocate": {
+        "title": "Allouer",
+        "text": "Allouez équitablement les émissions sursouscrites, validez en quatre yeux et confirmez des paiements fictifs."
+      },
+      "register": {
+        "title": "Tenir le registre",
+        "text": "Tenez le registre des positions, blocages et transferts, rapproché chaque jour."
+      },
+      "service": {
+        "title": "Servir et rendre compte",
+        "text": "Calculez coupons et remboursements à partir d’une photographie du registre, générez instructions de paiement, avis et exports."
+      }
+    },
+    "audiences": {
+      "eyebrow": "Pour chaque rôle",
+      "title": "Une plateforme, trois points de vue",
+      "issuers": {
+        "title": "Émetteurs et sociétés de gestion",
+        "p1": "Tableaux de bord, file « À traiter » et prochaines échéances",
+        "p2": "Allocation, registre et coupons sans tableur",
+        "p3": "Exports CSV et documents générés"
+      },
+      "investors": {
+        "title": "Investisseurs professionnels",
+        "p1": "Un portefeuille avec positions, transactions et distributions",
+        "p2": "Souscriptions et demandes de transfert en ligne",
+        "p3": "Documents et avis dans leur langue"
+      },
+      "compliance": {
+        "title": "Conformité et audit",
+        "p1": "Revue KYC/KYB avec alertes d’expiration",
+        "p2": "Transferts contrôlés avant exécution",
+        "p3": "Une piste d’audit complète, en lecture seule"
+      }
+    },
+    "security": {
+      "eyebrow": "Sécurité",
+      "title": "Sécurité et traçabilité dès la conception",
+      "subtitle": "Les contrôles font partie de la plateforme, ils ne sont pas ajoutés après coup.",
+      "mfa": {
+        "title": "Authentification forte",
+        "text": "Double authentification pour les administrateurs et la conformité, sessions qui expirent, comptes bloqués après des échecs répétés."
+      },
+      "isolation": {
+        "title": "Isolation des organisations",
+        "text": "L’organisation est toujours déterminée par le serveur, et la base elle-même refuse l’accès aux données d’une autre organisation."
+      },
+      "ledger": {
+        "title": "Registre infalsifiable",
+        "text": "Aucun mouvement n’est modifié : les corrections sont des contre-écritures, et un contrôle quotidien vérifie toute la chaîne."
+      },
+      "audit": {
+        "title": "Piste d’audit complète",
+        "text": "Qui a fait quoi, quand et d’où, avec les valeurs avant et après, données sensibles masquées."
+      },
+      "documents": {
+        "title": "Documents maîtrisés",
+        "text": "Types de fichiers vérifiés sur leur contenu, liens de téléchargement temporaires, fichiers confidentiels tracés."
+      },
+      "hosting": {
+        "title": "Hébergement européen",
+        "text": "La démonstration tourne dans un centre de données européen, avec des sauvegardes quotidiennes."
+      },
+      "note": "Une architecture conçue pour intégrer vos contrôles de conformité, et compatible avec une future intégration ERC-3643. Aucune blockchain n’est nécessaire pour faire fonctionner la plateforme."
+    },
+    "contact": {
+      "eyebrow": "Contact",
+      "title": "Parlons de vos émissions",
+      "subtitle": "Décrivez-nous vos besoins : nous revenons vers vous avec une démonstration fondée sur votre cas.",
+      "name": "Nom",
+      "email": "Email professionnel",
+      "company": "Société",
+      "companyHint": "Facultatif",
+      "message": "Message",
+      "consent": "J’accepte d’être recontacté au sujet de cette demande.",
+      "honeypot": "Laissez ce champ vide",
+      "submit": "Envoyer le message",
+      "sending": "Envoi…",
+      "success": "Merci : votre message a été envoyé. Nous revenons vers vous rapidement.",
+      "privacy": "Votre message est envoyé par email à l’équipe ; la plateforme ne le conserve pas.",
+      "errors": {
+        "name": "Indiquez votre nom.",
+        "email": "Indiquez une adresse email valide.",
+        "message": "Écrivez un message d’au moins 10 caractères.",
+        "consent": "Merci d’accepter d’être recontacté."
+      },
+      "demoTitle": "Découvrez la démonstration dès maintenant",
+      "demoText": "Connectez-vous avec un compte de démo — administrateur émetteur, conformité, auditeur ou investisseur. La page de connexion liste les comptes et leurs rôles.",
+      "demoPoints": {
+        "p1": "Données fictives, réinitialisables à tout moment",
+        "p2": "Aucun paiement réel, aucun KYC réel",
+        "p3": "En anglais et en français"
+      },
+      "demoCta": "Ouvrir la démo"
+    },
+    "footer": {
+      "tagline": "Gestion du cycle de vie des actifs privés pour les sociétés de gestion et les émetteurs.",
+      "demo": "Environnement de démonstration — données fictives, aucun paiement réel, aucune valeur juridique.",
+      "rights": "© {year} Virtus Assets"
+    }
+  },
+  "calculator": {
+    "eyebrow": "Business case",
+    "title": "Estimez ce que la plateforme pourrait vous faire économiser",
+    "subtitle": "Saisissez quelques chiffres sur votre émission. Le calcul se fait dans votre navigateur : rien n’est envoyé.",
+    "groups": {
+      "issuance": "Votre émission",
+      "operations": "Vos opérations chaque année",
+      "costs": "Vos coûts annuels actuels"
+    },
+    "fields": {
+      "issuanceVolume": "Volume de l’émission (€)",
+      "investors": "Nombre d’investisseurs",
+      "subscriptionsPerYear": "Souscriptions",
+      "transfersPerYear": "Transferts",
+      "distributionsPerYear": "Distributions (coupons, remboursements)",
+      "hoursPerOperation": "Temps manuel par opération (heures)",
+      "hourlyCost": "Coût horaire moyen (€)",
+      "toolsCost": "Outils et logiciels (€)",
+      "providersCost": "Prestataires (€)",
+      "incidentsCost": "Incidents et rapprochements (€)"
+    },
+    "assumptions": {
+      "title": "Hypothèses",
+      "hint": "Des estimations à ajuster à votre situation.",
+      "timeSavingRate": "Temps manuel économisé (%)",
+      "toolsReduction": "Outils remplacés (%)",
+      "providersReduction": "Frais de prestataires remplacés (%)",
+      "incidentsReduction": "Incidents évités (%)",
+      "platformAnnualFee": "Abonnement annuel de la plateforme (€)",
+      "platformVolumeRate": "Part variable de la plateforme (% du volume par an)",
+      "reset": "Réinitialiser les chiffres"
+    },
+    "invalid": "Saisissez un nombre positif.",
+    "incomplete": "Complétez les champs signalés pour voir l’estimation.",
+    "results": {
+      "title": "Votre estimation",
+      "currentCost": "Coût annuel actuel",
+      "savings": "Économies brutes par an",
+      "platformCost": "Coût estimé de la plateforme par an",
+      "netSavings": "Économies nettes par an",
+      "roi": "Retour sur investissement indicatif",
+      "payback": "Retour sur coût",
+      "paybackValue": "{months} mois",
+      "hoursSaved": "{hours} heures d’administration économisées par an",
+      "operations": "{count} opérations manuelles par an : souscriptions, transferts et un paiement par investisseur pour chaque distribution.",
+      "none": "—"
+    },
+    "chart": {
+      "compare": "Coût annuel",
+      "today": "Aujourd’hui",
+      "withPlatform": "Avec Virtus Assets",
+      "breakdown": "D’où viennent les économies",
+      "time": "Temps gagné",
+      "tools": "Outils",
+      "providers": "Prestataires",
+      "incidents": "Incidents"
+    },
+    "disclaimer": "Estimations indicatives fondées sur vos chiffres et les hypothèses affichées ; ni engagement contractuel, ni offre de prix."
   }
 }

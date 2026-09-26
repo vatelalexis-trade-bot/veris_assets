@@ -64,19 +64,6 @@
       "break-glass": "Exceptional access"
     }
   },
-  "home": {
-    "title": "Digital private asset lifecycle management",
-    "subtitle": "Issue, administer and service private assets from a single platform.",
-    "demoNotice": "This is a demonstration environment: all data is fictitious and no real payment is made.",
-    "choosePortal": "Explore the portals",
-    "portalDescriptions": {
-      "issuer": "Create issuances, onboard investors, run subscriptions, the registry and distributions.",
-      "investor": "Follow positions, subscriptions, transactions and distributions.",
-      "platform": "Administer organisations and platform settings."
-    },
-    "signIn": "Sign in",
-    "openPortal": "Open my portal"
-  },
   "placeholder": {
     "title": "Coming soon",
     "description": "This screen will be built in a later phase of the project."
@@ -1709,5 +1696,238 @@
         "file": "File"
       }
     }
+  },
+  "landing": {
+    "metaTitle": "Private asset lifecycle platform",
+    "nav": {
+      "label": "Main sections",
+      "platform": "Platform",
+      "lifecycle": "Lifecycle",
+      "security": "Security",
+      "calculator": "Calculator",
+      "contact": "Contact",
+      "signIn": "Sign in",
+      "openPortal": "Open my portal"
+    },
+    "demoNotice": "Demonstration environment: all data is fictitious and no real payment is made.",
+    "hero": {
+      "eyebrow": "Private asset lifecycle platform",
+      "title": "Issue, administer and service private assets",
+      "titleAccent": "from a single platform.",
+      "subtitle": "Virtus Assets gives asset managers and issuers everything after the term sheet: investor onboarding, subscriptions, allocation, the registry, coupons and reporting — with a complete audit trail.",
+      "primaryCta": "Estimate your savings",
+      "secondaryCta": "Explore the demo"
+    },
+    "preview": {
+      "label": "Product preview with fictitious data",
+      "title": "Northwind Green Notes",
+      "subtitle": "Demo issuance · 5 % semi-annual coupon",
+      "status": "Active",
+      "nominal": "Nominal administered",
+      "holders": "Holders",
+      "nextCoupon": "Next coupon",
+      "subscribed": "Subscribed",
+      "registry": "Registry",
+      "investor": "Investor",
+      "units": "Units",
+      "coupon": "Last coupon",
+      "fourEyes": "Coupon approved with four eyes",
+      "ledger": "Ledger verified — hash chain intact",
+      "fictitious": "Fictitious data"
+    },
+    "strip": {
+      "ledger": {
+        "title": "Append-only ledger",
+        "text": "Every movement is recorded once, chained and verifiable."
+      },
+      "fourEyes": {
+        "title": "Four-eyes decisions",
+        "text": "Allocations, distributions and payments need a second person."
+      },
+      "isolation": {
+        "title": "Isolation by design",
+        "text": "Each organisation's data is separated down to the database."
+      },
+      "bilingual": {
+        "title": "English and French",
+        "text": "Every screen, email and document in both languages."
+      },
+      "label": "Key strengths"
+    },
+    "lifecycle": {
+      "eyebrow": "Lifecycle",
+      "title": "The whole life of an issuance, in one place",
+      "subtitle": "From the first draft to the last redemption, every step follows clear statuses, with the right person deciding at the right time.",
+      "structure": {
+        "title": "Structure",
+        "text": "Create the issuance in a guided wizard: terms, schedule, eligibility rules and documents, approved with four eyes."
+      },
+      "onboard": {
+        "title": "Onboard",
+        "text": "Qualify investors with KYC/KYB files, beneficial owners and eligibility checks explained in plain language."
+      },
+      "subscribe": {
+        "title": "Subscribe",
+        "text": "Investors subscribe online; the issuer reviews, approves and follows each request."
+      },
+      "allocate": {
+        "title": "Allocate",
+        "text": "Allocate oversubscribed issuances fairly, validate with four eyes and confirm fictitious payments."
+      },
+      "register": {
+        "title": "Register",
+        "text": "Keep the registry of positions, blockings and transfers, reconciled every day."
+      },
+      "service": {
+        "title": "Service and report",
+        "text": "Calculate coupons and redemptions from a registry snapshot, generate payment instructions, notices and exports."
+      }
+    },
+    "audiences": {
+      "eyebrow": "For every role",
+      "title": "One platform, three points of view",
+      "issuers": {
+        "title": "Issuers and asset managers",
+        "p1": "Dashboards, a \"To do\" queue and upcoming payments",
+        "p2": "Allocation, registry and coupons without spreadsheets",
+        "p3": "CSV exports and generated documents"
+      },
+      "investors": {
+        "title": "Professional investors",
+        "p1": "A portfolio with positions, transactions and distributions",
+        "p2": "Online subscriptions and transfer requests",
+        "p3": "Documents and notices in their language"
+      },
+      "compliance": {
+        "title": "Compliance and audit",
+        "p1": "KYC/KYB review with expiry alerts",
+        "p2": "Transfers checked before execution",
+        "p3": "A complete, read-only audit trail"
+      }
+    },
+    "security": {
+      "eyebrow": "Security",
+      "title": "Security and traceability by design",
+      "subtitle": "Controls are built into the platform, not added afterwards.",
+      "mfa": {
+        "title": "Strong authentication",
+        "text": "Two-factor authentication for administrators and compliance officers, sessions that expire, accounts locked after repeated failures."
+      },
+      "isolation": {
+        "title": "Tenant isolation",
+        "text": "The organisation is always determined by the server, and the database itself refuses access to another organisation's data."
+      },
+      "ledger": {
+        "title": "Tamper-evident registry",
+        "text": "Movements are never modified: corrections are counter-entries, and a daily check verifies the whole chain."
+      },
+      "audit": {
+        "title": "Complete audit trail",
+        "text": "Who did what, when and from where, with values before and after, sensitive data masked."
+      },
+      "documents": {
+        "title": "Controlled documents",
+        "text": "File types checked on their content, temporary download links, confidential files traced."
+      },
+      "hosting": {
+        "title": "European hosting",
+        "text": "The demonstration runs in a European data centre, with daily backups."
+      },
+      "note": "An architecture designed to integrate your compliance controls, and compatible with a future ERC-3643 integration. No blockchain is required to run the platform."
+    },
+    "contact": {
+      "eyebrow": "Contact",
+      "title": "Let's talk about your issuances",
+      "subtitle": "Tell us about your needs: we will come back to you with a demonstration based on your case.",
+      "name": "Name",
+      "email": "Work email",
+      "company": "Company",
+      "companyHint": "Optional",
+      "message": "Message",
+      "consent": "I agree to be contacted about this request.",
+      "honeypot": "Leave this field empty",
+      "submit": "Send the message",
+      "sending": "Sending…",
+      "success": "Thank you: your message has been sent. We will come back to you soon.",
+      "privacy": "Your message is sent by email to the team; the platform does not store it.",
+      "errors": {
+        "name": "Enter your name.",
+        "email": "Enter a valid email address.",
+        "message": "Enter a message of at least 10 characters.",
+        "consent": "Please agree to be contacted."
+      },
+      "demoTitle": "Explore the demonstration now",
+      "demoText": "Sign in with a demo account — issuer administrator, compliance officer, auditor or investor. The sign-in page lists the accounts and their roles.",
+      "demoPoints": {
+        "p1": "Fictitious data, reset at any time",
+        "p2": "No real payment, no real KYC",
+        "p3": "In English and French"
+      },
+      "demoCta": "Open the demo"
+    },
+    "footer": {
+      "tagline": "Private asset lifecycle management for asset managers and issuers.",
+      "demo": "Demonstration environment — fictitious data, no real payment, no legal value.",
+      "rights": "© {year} Virtus Assets"
+    }
+  },
+  "calculator": {
+    "eyebrow": "Business case",
+    "title": "Estimate what the platform could save you",
+    "subtitle": "Enter a few figures about your issuance. The calculation runs in your browser: nothing is sent.",
+    "groups": {
+      "issuance": "Your issuance",
+      "operations": "Your operations each year",
+      "costs": "Your current annual costs"
+    },
+    "fields": {
+      "issuanceVolume": "Issuance volume (€)",
+      "investors": "Number of investors",
+      "subscriptionsPerYear": "Subscriptions",
+      "transfersPerYear": "Transfers",
+      "distributionsPerYear": "Distributions (coupons, redemptions)",
+      "hoursPerOperation": "Manual time per operation (hours)",
+      "hourlyCost": "Average hourly cost (€)",
+      "toolsCost": "Tools and software (€)",
+      "providersCost": "Service providers (€)",
+      "incidentsCost": "Incidents and reconciliations (€)"
+    },
+    "assumptions": {
+      "title": "Assumptions",
+      "hint": "Estimates to adjust to your situation.",
+      "timeSavingRate": "Manual time saved (%)",
+      "toolsReduction": "Tools replaced (%)",
+      "providersReduction": "Provider fees replaced (%)",
+      "incidentsReduction": "Incidents avoided (%)",
+      "platformAnnualFee": "Platform annual fee (€)",
+      "platformVolumeRate": "Platform variable fee (% of volume a year)",
+      "reset": "Reset the figures"
+    },
+    "invalid": "Enter a positive number.",
+    "incomplete": "Complete the highlighted fields to see the estimate.",
+    "results": {
+      "title": "Your estimate",
+      "currentCost": "Current annual cost",
+      "savings": "Gross savings a year",
+      "platformCost": "Estimated platform cost a year",
+      "netSavings": "Net savings a year",
+      "roi": "Indicative return on investment",
+      "payback": "Payback",
+      "paybackValue": "{months} months",
+      "hoursSaved": "{hours} hours of administration saved a year",
+      "operations": "{count} manual operations a year: subscriptions, transfers and one payment per investor for each distribution.",
+      "none": "—"
+    },
+    "chart": {
+      "compare": "Annual cost",
+      "today": "Today",
+      "withPlatform": "With Virtus Assets",
+      "breakdown": "Where the savings come from",
+      "time": "Time saved",
+      "tools": "Tools",
+      "providers": "Providers",
+      "incidents": "Incidents"
+    },
+    "disclaimer": "Indicative estimates based on your figures and the assumptions shown, not a contractual commitment or a price offer."
   }
 }

@@ -36,6 +36,22 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/public/contact': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['ContactController_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/notifications': {
     parameters: {
       query?: never;
@@ -2186,6 +2202,39 @@ export interface operations {
             minorUnits: number;
           }[];
         };
+      };
+    };
+  };
+  ContactController_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          name: string;
+          /** Format: email */
+          email: string;
+          company?: string;
+          message: string;
+          /** @enum {boolean} */
+          consent: true;
+          website?: string;
+          /** @enum {string} */
+          locale?: 'en-GB' | 'fr-FR';
+        };
+      };
+    };
+    responses: {
+      /** @description The message is sent to the team. */
+      202: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
       };
     };
   };

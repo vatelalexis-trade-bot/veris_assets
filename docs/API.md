@@ -284,6 +284,6 @@ Les tableaux de bord et la file « À traiter » sont en 2.10 bis (phase 15a). L
 
 | Méthode | Chemin | Accès |
 |---|---|---|
-| POST | `/public/contact` (formulaire de contact, rate limiting strict) | Public |
+| POST | `/public/contact` (`name`, `email`, `company?`, `message`, `consent: true`, champ caché `website` ; réponse 202 ; message envoyé par email, non conservé ; 5 par heure et par adresse IP, D-096) | Public |
 
 Le calculateur ne fait aucun appel à l'API.

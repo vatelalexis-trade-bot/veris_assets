@@ -53,3 +53,43 @@
     @apply outline-2 outline-offset-2 outline-accent;
   }
 }
+
+/*
+ * Decorative elements of the public site, built on the tokens above. The brand gradient is kept
+ * for thin lines, rings and glows, never behind text (SPEC §23.1).
+ */
+@utility bg-brand-gradient {
+  background-image: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+}
+
+@utility bg-grid {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in oklab, var(--color-border) 55%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--color-border) 55%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 35%, transparent 80%);
+}
+
+@utility bg-glow-primary {
+  background-image: radial-gradient(
+    closest-side,
+    color-mix(in oklab, var(--color-primary) 38%, transparent),
+    transparent
+  );
+}
+
+@utility bg-glow-accent {
+  background-image: radial-gradient(
+    closest-side,
+    color-mix(in oklab, var(--color-accent) 22%, transparent),
+    transparent
+  );
+}

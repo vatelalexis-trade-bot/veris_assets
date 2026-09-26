@@ -1,70 +1,67 @@
-import { ArrowRight, LogIn } from 'lucide-react';
+import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { LanguageSwitcher } from '@/components/app/language-switcher';
-import { Logo } from '@/components/app/logo';
-import { Button } from '@/components/ui/button';
-import { PORTAL_PATHS } from '@/features/auth/destination';
-import { type PortalId } from '@/features/navigation/portals';
-import { Link } from '@/i18n/navigation';
+import { Calculator } from '@/features/calculator/calculator';
+import { Audiences } from '@/features/landing/audiences';
+import { ContactForm } from '@/features/landing/contact-form';
+import { DemoCard } from '@/features/landing/demo-card';
+import { Hero } from '@/features/landing/hero';
+import { Highlights } from '@/features/landing/highlights';
+import { Lifecycle } from '@/features/landing/lifecycle';
+import { Section } from '@/features/landing/section';
+import { Security } from '@/features/landing/security';
+import { SiteFooter } from '@/features/landing/site-footer';
+import { SiteHeader } from '@/features/landing/site-header';
 import { getCurrentUser } from '@/lib/api/server';
 
-const PORTAL_ORDER: PortalId[] = ['issuer', 'investor', 'platform'];
+export async function generateMetadata({ params }: PageProps<'/[locale]'>): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'landing' });
+  return { title: t('metaTitle') };
+}
 
-/** Temporary home page: the landing page and its calculator arrive in phase 15 (D-019). */
+/**
+ * Public site (SPEC §19, §19.1): what the platform does, the business case calculator and the
+ * contact form. Proposal made without the HTML prototype (D-019, D-096), to be refined.
+ */
 export default async function HomePage({ params }: PageProps<'/[locale]'>) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations();
-  const user = await getCurrentUser();
+  const [user, calculator, contact] = await Promise.all([
+    getCurrentUser(),
+    getTranslations('calculator'),
+    getTranslations('landing.contact'),
+  ]);
   return (
-    <div className="mx-auto flex min-h-dvh max-w-5xl flex-col gap-10 px-6 py-8">
-      <header className="flex items-center justify-between">
-        <Logo />
-        <LanguageSwitcher />
-      </header>
-      <main className="flex flex-col gap-8">
-        <div className="flex flex-col gap-3">
-          <h1 className="text-3xl font-semibold md:text-4xl">{t('home.title')}</h1>
-          <p className="max-w-2xl text-lg text-muted">{t('home.subtitle')}</p>
-          <p
-            role="note"
-            className="max-w-2xl rounded-lg border border-warning/30 bg-surface px-4 py-3 text-sm text-warning"
-          >
-            {t('home.demoNotice')}
-          </p>
-        </div>
-        <section aria-labelledby="portals-title" className="flex flex-col gap-4">
-          <h2 id="portals-title" className="text-xl font-semibold">
-            {t('home.choosePortal')}
-          </h2>
-          <div>
-            <Button asChild>
-              {user ? (
-                <Link href={PORTAL_PATHS[user.homePortal]}>
-                  {t('home.openPortal')}
-                  <ArrowRight aria-hidden="true" />
-                </Link>
-              ) : (
-                <Link href="/login">
-                  <LogIn aria-hidden="true" />
-                  {t('home.signIn')}
-                </Link>
-              )}
-            </Button>
+    <>
+      <SiteHeader user={user} />
+      <main>
+        <Hero />
+        <Highlights />
+        <Lifecycle />
+        <Audiences />
+        <Security />
+        <Section
+          id="calculator"
+          eyebrow={calculator('eyebrow')}
+          title={calculator('title')}
+          subtitle={calculator('subtitle')}
+          className="bg-surface/30"
+        >
+          <Calculator />
+        </Section>
+        <Section
+          id="contact"
+          eyebrow={contact('eyebrow')}
+          title={contact('title')}
+          subtitle={contact('subtitle')}
+        >
+          <div className="grid gap-8 lg:grid-cols-[1.5fr_1fr]">
+            <ContactForm />
+            <DemoCard />
           </div>
-          <ul className="grid gap-4 md:grid-cols-3">
-            {PORTAL_ORDER.map((portalId) => (
-              <li
-                key={portalId}
-                className="flex flex-col gap-2 rounded-xl border border-border bg-surface p-5"
-              >
-                <h3 className="font-semibold">{t(`portals.${portalId}`)}</h3>
-                <p className="text-sm text-muted">{t(`home.portalDescriptions.${portalId}`)}</p>
-              </li>
-            ))}
-          </ul>
-        </section>
+        </Section>
       </main>
-    </div>
+      <SiteFooter />
+    </>
   );
 }
