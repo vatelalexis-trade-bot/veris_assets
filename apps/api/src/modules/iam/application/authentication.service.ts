@@ -3,6 +3,7 @@ import type { ErrorDetail, Permission, PermissionScope } from '@virtus/shared';
 import { AuditWriter } from '../../../core/audit/audit-writer.js';
 import { AppError } from '../../../core/errors/app-error.js';
 import { RateLimiter, type RateLimit } from '../../../core/security/rate-limiter.js';
+import { SecurityMonitor } from '../../../core/security/security-monitor.js';
 import { afterFailedSignIn, isLocked } from '../domain/lockout.js';
 import { checkPassword } from '../domain/password-policy.js';
 import {
@@ -80,6 +81,7 @@ export class AuthenticationService {
     private readonly identities: IdentityRepository,
     private readonly audit: AuditWriter,
     private readonly rateLimiter: RateLimiter,
+    private readonly monitor: SecurityMonitor,
   ) {}
 
   /** Email + password. Answers MFA_REQUIRED when a second factor must follow. */
@@ -141,6 +143,8 @@ export class AuthenticationService {
       throw new AppError('ACCOUNT_INACTIVE');
     }
     await this.identities.saveSignInSuccess(identity.id, now);
+    // Before the success is audited: the new address is compared with the earlier ones.
+    await this.monitor.signedIn({ userId: identity.id, tenantId: identity.tenantId }, request.ip);
     const status = signIn.response.twoFactorRedirect ? 'MFA_REQUIRED' : 'SIGNED_IN';
     await this.audit.record({
       ...auditBase,

@@ -37,6 +37,11 @@ jobs:
       - name: Lint (ESLint, module boundaries, forbidden claims, formatting)
         run: pnpm lint
 
+      # Known vulnerabilities of the dependencies shipped in production (SPEC §24): high and
+      # critical ones fail the build; lower ones are followed through Dependabot.
+      - name: Vulnerabilities of production dependencies
+        run: pnpm audit --prod --audit-level high
+
       - name: Typecheck
         run: pnpm typecheck
 

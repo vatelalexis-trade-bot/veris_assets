@@ -14,6 +14,7 @@ import {
   type ErrorResponseBody,
 } from '@virtus/shared';
 import type { AuditWriter } from '../audit/audit-writer.js';
+import type { SecurityMonitor } from '../security/security-monitor.js';
 import { getRequestContext } from '../context/request-context.js';
 import { AppError } from './app-error.js';
 
@@ -44,7 +45,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
     'FOUR_EYES_VIOLATION',
   ]);
 
-  constructor(private readonly audit?: AuditWriter) {}
+  constructor(
+    private readonly audit?: AuditWriter,
+    private readonly monitor?: SecurityMonitor,
+  ) {}
 
   catch(exception: unknown, host: ArgumentsHost): void {
     const http = host.switchToHttp();
@@ -73,6 +77,11 @@ export class AllExceptionsFilter implements ExceptionFilter {
         })
         .catch((error: unknown) =>
           this.logger.error({ err: error }, 'Access denial could not be audited'),
+        );
+      this.monitor
+        ?.accessDenied(user, request.ip ?? null)
+        .catch((error: unknown) =>
+          this.logger.error({ err: error }, 'Access denial could not be counted'),
         );
     }
 

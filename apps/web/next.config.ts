@@ -19,6 +19,28 @@ const nextConfig: NextConfig = {
   rewrites() {
     return Promise.resolve([{ source: '/api/:path*', destination: `${apiUrl}/api/:path*` }]);
   },
+  // Security headers of every response (SPEC §24, P16-1); the Content Security Policy of the
+  // pages is set per request in src/proxy.ts, with its nonce.
+  headers() {
+    return Promise.resolve([
+      {
+        source: '/:path*',
+        headers: [
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=(), payment=(), usb=()',
+          },
+          // Only honoured by browsers over HTTPS (the online demonstration).
+          { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains' },
+        ],
+      },
+    ]);
+  },
+  poweredByHeader: false,
 };
 
 export default withNextIntl(nextConfig);

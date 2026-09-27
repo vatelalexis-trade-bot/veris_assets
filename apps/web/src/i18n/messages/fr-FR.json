@@ -644,7 +644,9 @@
       "ISSUANCE_EARLY_REDEMPTION_SCHEDULED": "Remboursement anticipé prévu",
       "DOCUMENT_GENERATED": "Document généré",
       "EXPORT_REQUESTED": "Export demandé",
-      "EXPORT_GENERATED": "Export généré"
+      "EXPORT_GENERATED": "Export généré",
+      "SECURITY_NEW_SIGN_IN_ADDRESS": "Connexion depuis une nouvelle adresse",
+      "SECURITY_SUSPICIOUS_ACTIVITY": "Activité suspecte"
     }
   },
   "investors": {

@@ -638,3 +638,18 @@ Proposée par Claude, à valider par le porteur de projet.
 4. Les PDF générés gardent le nom en texte (D-091).
 
 **D-099 — Proposée. Commande `pnpm preview`.** Elle construit l'application une fois, puis la sert comme en production : toutes les pages s'ouvrent immédiatement. `pnpm dev` reste la commande de développement (rechargement automatique, mais une compilation lente à la première ouverture de chaque page sur un Codespace à 2 processeurs).
+
+**D-100 — Proposée. Durcissement de sécurité (P16-1).** Le détail contrôle par contrôle est dans `docs/SECURITY_CHECKLIST.md`.
+1. En-têtes du site :
+   - politique de sécurité du contenu (CSP) avec un nonce tiré à chaque requête (`src/proxy.ts`) et `strict-dynamic` : seuls les scripts de la page s'exécutent ;
+   - les styles en ligne restent permis, car les composants React et les images Next.js en utilisent ;
+   - `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy`, `Cross-Origin-Opener-Policy`, HSTS.
+
+   Conséquence : toutes les pages sont rendues à chaque requête (elles l'étaient déjà presque toutes, à cause de la session).
+2. En-têtes de l'API : `nosniff`, `no-store`, `X-Frame-Options: DENY`, et une CSP `default-src 'none'`. L'API ne renvoie que du JSON et des fichiers téléchargés en pièce jointe.
+3. Détection d'accès anormal :
+   - une connexion réussie depuis une adresse jamais utilisée par le compte depuis 180 jours alerte son titulaire (notification et email de sécurité) ;
+   - dix refus d'accès en dix minutes pour un même compte créent une entrée d'audit « activité suspecte » et alertent les administrateurs émetteurs de l'organisation ;
+   - rien n'est signalé à la toute première connexion d'un compte. Les administrateurs de la plateforme, sans organisation, sont tracés dans l'audit mais pas notifiés.
+4. Analyse des dépendances : `pnpm audit --prod --audit-level high` bloque la CI. Une faille modérée d'`esbuild` est acceptée : elle ne concerne que son serveur de développement, que l'application n'utilise pas.
+5. L'analyse des secrets de GitHub n'est pas disponible sur un dépôt privé sans l'option payante « Advanced Security » : le porteur de projet décide s'il rend le dépôt public ou s'il accepte cette limite.

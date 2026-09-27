@@ -51,6 +51,32 @@ export const NOTIFICATION_TYPES = {
       },
     },
   },
+  NEW_SIGN_IN_ADDRESS: {
+    category: 'SECURITY',
+    texts: {
+      'en-GB': {
+        title: 'Sign-in from a new address',
+        body: 'Your account was just used to sign in from an address not seen before. If it was not you, change your password and tell your administrator.',
+      },
+      'fr-FR': {
+        title: 'Connexion depuis une nouvelle adresse',
+        body: 'Votre compte vient d’être utilisé pour se connecter depuis une adresse inconnue. Si ce n’était pas vous, changez votre mot de passe et prévenez votre administrateur.',
+      },
+    },
+  },
+  SUSPICIOUS_ACTIVITY: {
+    category: 'SECURITY',
+    texts: {
+      'en-GB': {
+        title: 'Unusual activity on an account',
+        body: 'An account of your organisation had many requests refused in a short time. Check the audit log and the account’s roles.',
+      },
+      'fr-FR': {
+        title: 'Activité inhabituelle sur un compte',
+        body: 'Un compte de votre organisation a eu de nombreuses demandes refusées en peu de temps. Vérifiez le journal d’audit et les rôles du compte.',
+      },
+    },
+  },
   INVITATION_ACCEPTED: {
     category: 'ORGANISATION',
     texts: {

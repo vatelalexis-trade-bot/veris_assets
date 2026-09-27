@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter, Montserrat } from 'next/font/google';
 import { notFound } from 'next/navigation';
+import { connection } from 'next/server';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { PRODUCT_NAME } from '@virtus/shared';
@@ -27,6 +28,9 @@ export function generateStaticParams() {
 }
 
 export default async function LocaleLayout({ children, params }: LayoutProps<'/[locale]'>) {
+  // Every page is rendered for its request, so that Next.js puts the request's nonce on its
+  // scripts (Content Security Policy, src/proxy.ts).
+  await connection();
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);

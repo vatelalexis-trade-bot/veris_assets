@@ -4,7 +4,9 @@ import type { Env } from './config/env.js';
 import { correlationIdMiddleware } from './context/correlation-id.middleware.js';
 import { AllExceptionsFilter } from './errors/all-exceptions.filter.js';
 import { createOriginCheck } from './security/origin.middleware.js';
-import { setupOpenApi } from './openapi/setup-openapi.js';
+import { OPENAPI_PATH, setupOpenApi } from './openapi/setup-openapi.js';
+import { securityHeaders } from './security/security-headers.middleware.js';
+import { SecurityMonitor } from './security/security-monitor.js';
 
 export const API_PREFIX = 'api/v1';
 
@@ -13,12 +15,13 @@ export function configureApp(app: NestExpressApplication, env: Env): void {
   // Must stay first: every later step relies on the correlation ID and the request context.
   app.use(correlationIdMiddleware);
   app.disable('x-powered-by');
+  app.use(securityHeaders(`/${OPENAPI_PATH}`));
   // The API is only reached through the web app's proxy on the same machine: the client address
   // is taken from X-Forwarded-For only when the request comes from localhost.
   app.set('trust proxy', 'loopback');
   app.use(createOriginCheck([env.WEB_ORIGIN]));
   app.setGlobalPrefix(API_PREFIX, { exclude: ['health', 'health/ready'] });
-  app.useGlobalFilters(new AllExceptionsFilter(app.get(AuditWriter)));
+  app.useGlobalFilters(new AllExceptionsFilter(app.get(AuditWriter), app.get(SecurityMonitor)));
   app.enableShutdownHooks();
   if (env.NODE_ENV !== 'production') setupOpenApi(app);
 }

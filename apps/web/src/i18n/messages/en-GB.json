@@ -644,7 +644,9 @@
       "ISSUANCE_EARLY_REDEMPTION_SCHEDULED": "Early redemption scheduled",
       "DOCUMENT_GENERATED": "Document generated",
       "EXPORT_REQUESTED": "Export requested",
-      "EXPORT_GENERATED": "Export generated"
+      "EXPORT_GENERATED": "Export generated",
+      "SECURITY_NEW_SIGN_IN_ADDRESS": "Sign-in from a new address",
+      "SECURITY_SUSPICIOUS_ACTIVITY": "Suspicious activity"
     }
   },
   "investors": {

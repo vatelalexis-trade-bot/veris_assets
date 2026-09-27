@@ -9,7 +9,9 @@ import {
 } from '../../../core/database/database.js';
 import { NotificationEmails } from '../../../core/notifications/notification-emails.js';
 import { OutboxRelay, type OutboxEventRecord } from '../../../core/outbox/outbox-relay.js';
+import { SECURITY_EVENTS } from '../../../core/security/security-monitor.js';
 import { user, userInvitation } from '../infrastructure/schema.js';
+import { UserDirectory } from './user-directory.js';
 
 /** Business events of the identity module (outbox, SPEC §15). */
 export const IAM_EVENTS = {
@@ -29,6 +31,7 @@ export class IamEvents implements OnModuleInit {
     @Inject(DATABASE) private readonly db: Database,
     private readonly relay: OutboxRelay,
     private readonly emails: NotificationEmails,
+    private readonly users: UserDirectory,
   ) {}
 
   onModuleInit(): void {
@@ -43,6 +46,26 @@ export class IamEvents implements OnModuleInit {
       ]),
     );
     this.relay.on(IAM_EVENTS.invitationAccepted, (tx, event) => this.notifyInviter(tx, event));
+    // Unusual access (SPEC §24): the account holder for a new address; the organisation's
+    // administrators for a burst of refused requests.
+    this.relay.on(SECURITY_EVENTS.newSignInAddress, (_tx, event) =>
+      Promise.resolve([
+        {
+          userId: event.aggregateId,
+          type: 'NEW_SIGN_IN_ADDRESS',
+          resourceType: 'user',
+          resourceId: event.aggregateId,
+        },
+      ]),
+    );
+    this.relay.on(SECURITY_EVENTS.suspiciousActivity, async (tx, event) =>
+      (await this.users.activeUsersWithRole(tx, 'ISSUER_ADMIN')).map((userId) => ({
+        userId,
+        type: 'SUSPICIOUS_ACTIVITY' as const,
+        resourceType: 'user',
+        resourceId: event.aggregateId,
+      })),
+    );
     this.emails.useRecipientLookup((tenantId, userId) => this.recipient(tenantId, userId));
   }
 
