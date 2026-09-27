@@ -49,7 +49,7 @@ export const tenant = iamSchema.table(
 
 // ---------------------------------------------------------------------------------------------
 // Identity tables used by Better Auth (decision D-002). Column names follow what Better Auth
-// expects; Virtus Assets fields are added after them. Only the va_auth role reads and writes the
+// expects; Veris Assets fields are added after them. Only the va_auth role reads and writes the
 // session, account, verification and two_factor tables (decision D-030).
 // ---------------------------------------------------------------------------------------------
 
@@ -212,7 +212,7 @@ export const userInvitation = iamSchema.table(
   ],
 );
 
-/** Permission catalogue (SPEC §4.7), kept equal to @virtus/shared by `pnpm db:migrate`. */
+/** Permission catalogue (SPEC §4.7), kept equal to @veris/shared by `pnpm db:migrate`. */
 export const permission = iamSchema.table('permission', {
   code: text().primaryKey(),
   description: text().notNull(),

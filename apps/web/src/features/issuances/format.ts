@@ -1,4 +1,4 @@
-import { parseDecimal } from '@virtus/shared';
+import { parseDecimal } from '@veris/shared';
 
 /**
  * Amounts arrive as decimal strings ("5000000.00"). They are formatted from the string itself —

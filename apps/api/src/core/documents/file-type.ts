@@ -1,4 +1,4 @@
-import { ALLOWED_DOCUMENT_MIME_TYPES, type DocumentMimeType } from '@virtus/shared';
+import { ALLOWED_DOCUMENT_MIME_TYPES, type DocumentMimeType } from '@veris/shared';
 import { fileTypeFromBuffer } from 'file-type';
 
 const ALLOWED = new Set<string>(ALLOWED_DOCUMENT_MIME_TYPES);

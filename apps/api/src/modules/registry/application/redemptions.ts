@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { parseDecimal } from '@virtus/shared';
+import { parseDecimal } from '@veris/shared';
 import { eq } from 'drizzle-orm';
 import type { Transaction } from '../../../core/database/database.js';
 import { AppError } from '../../../core/errors/app-error.js';

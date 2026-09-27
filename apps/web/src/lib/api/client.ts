@@ -1,4 +1,4 @@
-import type { ErrorResponseBody } from '@virtus/shared';
+import type { ErrorResponseBody } from '@veris/shared';
 import createClient from 'openapi-fetch';
 import type { paths } from './schema';
 

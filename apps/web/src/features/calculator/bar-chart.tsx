@@ -1,4 +1,4 @@
-import { parseDecimal } from '@virtus/shared';
+import { parseDecimal } from '@veris/shared';
 import { cn } from '@/lib/utils';
 
 export interface Bar {

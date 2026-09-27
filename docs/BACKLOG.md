@@ -1,4 +1,4 @@
-# Backlog de développement — Virtus Assets
+# Backlog de développement — Veris Assets
 
 Livrable 8 de `docs/SPEC.md`. Backlog priorisé, organisé selon les 16 phases (ordre modifié par D-006).
 Chaque phase se termine par : résumé, fichiers créés, commande de test, tests verts, commit, puis arrêt en attendant l'accord du porteur de projet.

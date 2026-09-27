@@ -15,7 +15,7 @@ const toolsEnvSchema = z.object({
   POSTGRES_USER: required,
   POSTGRES_PASSWORD: required,
   POSTGRES_DB: required,
-  POSTGRES_TEST_DB: required.default('virtus_assets_test'),
+  POSTGRES_TEST_DB: required.default('veris_assets_test'),
   DB_MIGRATOR_PASSWORD: required,
   DB_APP_PASSWORD: required,
   DB_AUTH_PASSWORD: required,

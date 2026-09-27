@@ -7,7 +7,7 @@ import {
   type InvestorClassification,
   type InvestorType,
   type ProfileStatus,
-} from '@virtus/shared';
+} from '@veris/shared';
 import { useTranslations } from 'next-intl';
 import { FormField } from '@/components/app/form-field';
 import { Input } from '@/components/ui/input';

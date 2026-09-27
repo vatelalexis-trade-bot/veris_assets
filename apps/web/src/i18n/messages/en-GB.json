@@ -1,6 +1,6 @@
 {
   "common": {
-    "productName": "Virtus Assets",
+    "productName": "Veris Assets",
     "skipToContent": "Skip to main content",
     "loading": "Loading…",
     "retry": "Try again",
@@ -289,7 +289,7 @@
       "passwordStep": "Confirm your password to start.",
       "continue": "Continue",
       "scan": "Scan this QR code with your authentication app.",
-      "qrAlt": "QR code to add Virtus Assets to your authentication app",
+      "qrAlt": "QR code to add Veris Assets to your authentication app",
       "manualKey": "Or enter this key manually: {key}",
       "backupCodes": "Backup codes",
       "backupCodesHelp": "Keep these codes in a safe place: each one lets you sign in once if you lose your phone. They will not be shown again.",
@@ -312,7 +312,7 @@
       "missingToken": "This link is incomplete. Request a new one."
     },
     "invitation": {
-      "title": "Join Virtus Assets",
+      "title": "Join Veris Assets",
       "tenantInvitation": "{name}, you are invited to join {tenant} as {role}.",
       "platformInvitation": "{name}, you are invited to join the platform as {role}.",
       "choosePassword": "Choose your password to activate your account ({email}).",
@@ -1719,7 +1719,7 @@
       "eyebrow": "Private asset lifecycle platform",
       "title": "Issue, administer and service private assets",
       "titleAccent": "from a single platform.",
-      "subtitle": "Virtus Assets gives asset managers and issuers everything after the term sheet: investor onboarding, subscriptions, allocation, the registry, coupons and reporting — with a complete audit trail.",
+      "subtitle": "Veris Assets gives asset managers and issuers everything after the term sheet: investor onboarding, subscriptions, allocation, the registry, coupons and reporting — with a complete audit trail.",
       "primaryCta": "Estimate your savings",
       "secondaryCta": "Explore the demo"
     },
@@ -1873,7 +1873,7 @@
     "footer": {
       "tagline": "Private asset lifecycle management for asset managers and issuers.",
       "demo": "Demonstration environment — fictitious data, no real payment, no legal value.",
-      "rights": "© {year} Virtus Assets"
+      "rights": "© {year} Veris Assets"
     }
   },
   "calculator": {
@@ -1926,7 +1926,7 @@
     "chart": {
       "compare": "Annual cost",
       "today": "Today",
-      "withPlatform": "With Virtus Assets",
+      "withPlatform": "With Veris Assets",
       "breakdown": "Where the savings come from",
       "time": "Time saved",
       "tools": "Tools",

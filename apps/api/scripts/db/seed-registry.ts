@@ -3,13 +3,7 @@
 // Notes" is active: its first semi-annual coupon was paid (snapshot, lines, confirmed fictitious
 // instruction) and its second is due (scenario 6). The movements are chained with the
 // application's own hash, so the daily reconciliation finds them consistent.
-import {
-  addDays,
-  addMonths,
-  dateInTimeZone,
-  parseDecimal,
-  type BusinessDate,
-} from '@virtus/shared';
+import { addDays, addMonths, dateInTimeZone, parseDecimal, type BusinessDate } from '@veris/shared';
 import { entryHash } from '../../src/modules/registry/application/ledger-hash.js';
 import { checksumOf } from '../../src/modules/registry/application/snapshots.js';
 import { ZERO_HASH, type LedgerEntryType } from '../../src/modules/registry/domain/ledger.js';

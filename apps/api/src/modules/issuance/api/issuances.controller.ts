@@ -13,7 +13,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { ApiBody, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { ASSET_CATEGORIES, ISSUANCE_STATUSES, type IssuanceStatus } from '@virtus/shared';
+import { ASSET_CATEGORIES, ISSUANCE_STATUSES, type IssuanceStatus } from '@veris/shared';
 import type { Response } from 'express';
 import { z } from 'zod';
 import { etagOf, expectedVersion } from '../../../core/http/if-match.js';

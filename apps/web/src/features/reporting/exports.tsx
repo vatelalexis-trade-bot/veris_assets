@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { EXPORT_KINDS, type ExportKind } from '@virtus/shared';
+import { EXPORT_KINDS, type ExportKind } from '@veris/shared';
 import { useFormatter, useTranslations } from 'next-intl';
 import { useState, type FormEvent } from 'react';
 import { ApiError } from '@/components/app/api-error';

@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { parseDecimal } from '@virtus/shared';
+import { parseDecimal } from '@veris/shared';
 import { useFormatter, useLocale, useTranslations } from 'next-intl';
 import { Dialog } from 'radix-ui';
 import { useState } from 'react';

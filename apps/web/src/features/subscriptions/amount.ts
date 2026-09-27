@@ -1,4 +1,4 @@
-import { CURRENCY_MINOR_UNITS, isCurrencyCode, parseDecimal } from '@virtus/shared';
+import { CURRENCY_MINOR_UNITS, isCurrencyCode, parseDecimal } from '@veris/shared';
 
 /**
  * Amount of a subscription: units × nominal value, in exact decimals, with the minor units of the

@@ -12,7 +12,7 @@ import {
   type ErrorCode,
   type ErrorDetail,
   type ErrorResponseBody,
-} from '@virtus/shared';
+} from '@veris/shared';
 import type { AuditWriter } from '../audit/audit-writer.js';
 import type { SecurityMonitor } from '../security/security-monitor.js';
 import { getRequestContext } from '../context/request-context.js';

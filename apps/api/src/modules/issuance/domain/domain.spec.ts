@@ -1,4 +1,4 @@
-import { checkTransition, type IssuanceTermsRuleCode } from '@virtus/shared';
+import { checkTransition, type IssuanceTermsRuleCode } from '@veris/shared';
 import { describe, expect, it } from 'vitest';
 import { checkIssuance, type IssuanceToCheck } from './issuance-checks.js';
 import { acceptsInvitations, isEditable, issuanceMachine } from './issuance-machine.js';

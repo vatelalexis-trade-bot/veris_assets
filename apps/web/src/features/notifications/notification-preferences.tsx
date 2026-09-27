@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { NotificationCategory } from '@virtus/shared';
+import type { NotificationCategory } from '@veris/shared';
 import { useTranslations } from 'next-intl';
 import { Dialog } from 'radix-ui';
 import { useState } from 'react';

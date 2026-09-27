@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { Injectable } from '@nestjs/common';
-import { parseDecimal, type BusinessDate } from '@virtus/shared';
+import { parseDecimal, type BusinessDate } from '@veris/shared';
 import { and, asc, eq, lte } from 'drizzle-orm';
 import type { Transaction } from '../../../core/database/database.js';
 import { AppError } from '../../../core/errors/app-error.js';

@@ -20,7 +20,7 @@ import {
   Wallet,
   type LucideIcon,
 } from 'lucide-react';
-import type { Permission } from '@virtus/shared';
+import type { Permission } from '@veris/shared';
 
 export interface NavigationItem {
   /** URL segment after the portal path, and translation key `navigation.<portal>.<section>`. */

@@ -1,6 +1,6 @@
-// Keeps iam.permission and iam.role_permission equal to the matrix of @virtus/shared (SPEC §4.7:
+// Keeps iam.permission and iam.role_permission equal to the matrix of @veris/shared (SPEC §4.7:
 // roles are sets of permissions stored in the database). Runs after every migration.
-import { PERMISSIONS, ROLE_PERMISSIONS, type Permission, type RoleCode } from '@virtus/shared';
+import { PERMISSIONS, ROLE_PERMISSIONS, type Permission, type RoleCode } from '@veris/shared';
 import { eq, notInArray } from 'drizzle-orm';
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { permission, role, rolePermission } from '../../src/modules/iam/infrastructure/schema.js';

@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { parseDecimal } from '@virtus/shared';
+import { parseDecimal } from '@veris/shared';
 import { useLocale, useTranslations } from 'next-intl';
 import { ApiError } from '@/components/app/api-error';
 import { DataTable } from '@/components/app/data-table';

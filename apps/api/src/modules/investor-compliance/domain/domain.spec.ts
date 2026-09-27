@@ -1,4 +1,4 @@
-import { checkTransition } from '@virtus/shared';
+import { checkTransition } from '@veris/shared';
 import { describe, expect, it } from 'vitest';
 import { kycCaseMachine, kycExpiryAction, kycValidUntil } from './kyc.js';
 import { normaliseRecipientCode, RECIPIENT_CODE, recipientCodeFrom } from './recipient-code.js';

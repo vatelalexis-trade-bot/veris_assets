@@ -1,4 +1,4 @@
-import { checkTransition, parseDecimal } from '@virtus/shared';
+import { checkTransition, parseDecimal } from '@veris/shared';
 import { describe, expect, it } from 'vitest';
 import { periodFraction } from './day-count.js';
 import {

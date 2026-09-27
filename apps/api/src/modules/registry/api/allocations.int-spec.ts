@@ -2,7 +2,7 @@
 // eyes, the registry entries of D-009 in one transaction, scenario 3 of SPEC §29 through the API,
 // and the append-only ledger enforced by the database.
 import { randomUUID } from 'node:crypto';
-import type { ErrorResponseBody } from '@virtus/shared';
+import type { ErrorResponseBody } from '@veris/shared';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { QUEUES } from '../../../core/jobs/queues.js';

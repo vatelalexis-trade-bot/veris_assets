@@ -1,4 +1,4 @@
-import { ERROR_CATALOG, type ErrorCode, type ErrorDetail } from '@virtus/shared';
+import { ERROR_CATALOG, type ErrorCode, type ErrorDetail } from '@veris/shared';
 
 /**
  * Error with a stable code from the shared catalog. Throw it anywhere; the global exception

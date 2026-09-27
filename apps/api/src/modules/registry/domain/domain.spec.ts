@@ -1,4 +1,4 @@
-import { checkTransition } from '@virtus/shared';
+import { checkTransition } from '@veris/shared';
 import { describe, expect, it } from 'vitest';
 import { checkSubscription, type SubscriptionCheckInput } from './subscription-checks.js';
 import { subscriptionMachine } from './subscription-machine.js';

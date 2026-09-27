@@ -17,7 +17,7 @@ import {
   parseDecimal,
   type IssuanceStatus,
   type IssuanceWizardStep,
-} from '@virtus/shared';
+} from '@veris/shared';
 import { z } from 'zod';
 import { paginationQuery } from '../../../core/http/pagination.js';
 import type { IssuanceDetail } from '../application/issuances.service.js';

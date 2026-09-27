@@ -1,4 +1,4 @@
-import type { DocumentConfidentiality, DocumentType } from '@virtus/shared';
+import type { DocumentConfidentiality, DocumentType } from '@veris/shared';
 import { api } from '@/lib/api/client';
 import type { operations } from '@/lib/api/schema';
 

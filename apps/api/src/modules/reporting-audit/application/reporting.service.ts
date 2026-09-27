@@ -5,7 +5,7 @@ import {
   isCurrencyCode,
   parseDecimal,
   type Decimal,
-} from '@virtus/shared';
+} from '@veris/shared';
 import { and, asc, desc, eq, gt, inArray, isNull, lte, ne, or, sql } from 'drizzle-orm';
 import { currentUser, type RequestUser } from '../../../core/context/request-context.js';
 import {

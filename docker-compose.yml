@@ -1,7 +1,7 @@
 # Local services for development and demo only. Values come from .env (created by `pnpm dev`).
 # Every port is bound to 127.0.0.1: nothing is reachable from outside the Codespace
 # except through GitHub's private port forwarding.
-name: virtus-assets
+name: veris-assets
 
 services:
   postgres:

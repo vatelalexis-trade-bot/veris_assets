@@ -17,7 +17,7 @@ import {
   DOCUMENT_TYPES,
   type DocumentConfidentiality,
   type DocumentType,
-} from '@virtus/shared';
+} from '@veris/shared';
 import type { Response } from 'express';
 import { z } from 'zod';
 import { ApiPageQuery, pageSchema, paginationQuery } from '../http/pagination.js';

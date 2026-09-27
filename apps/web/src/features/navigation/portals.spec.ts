@@ -1,4 +1,4 @@
-import { PERMISSION_CODES, ROLE_PERMISSIONS } from '@virtus/shared';
+import { PERMISSION_CODES, ROLE_PERMISSIONS } from '@veris/shared';
 import { describe, expect, it } from 'vitest';
 import { PORTALS, visibleItems } from './portals';
 

@@ -1,7 +1,7 @@
 import { applyDecorators, SetMetadata } from '@nestjs/common';
 import { ApiHeader } from '@nestjs/swagger';
 
-export const IDEMPOTENT = 'virtus:idempotent';
+export const IDEMPOTENT = 'veris:idempotent';
 export const IDEMPOTENCY_KEY_HEADER = 'Idempotency-Key';
 
 /**

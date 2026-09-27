@@ -15,16 +15,16 @@ export DEMO_MODE=true
 export WEB_ORIGIN=http://localhost:3000
 export LOG_LEVEL="${LOG_LEVEL:-warn}"
 
-pnpm --filter @virtus/shared build
+pnpm --filter @veris/shared build
 pnpm db:setup
-pnpm --filter @virtus/api build
+pnpm --filter @veris/api build
 # Next.js builds and serves a production bundle only with NODE_ENV=production (.env says
 # development for the API).
-NODE_ENV=production pnpm --filter @virtus/web build
-pnpm --filter @virtus/api run start &
+NODE_ENV=production pnpm --filter @veris/web build
+pnpm --filter @veris/api run start &
 # The web app starts once the API answers, so that its first pages never meet a closed port.
 for _ in $(seq 1 60); do
   curl -sf -o /dev/null "http://${API_HOST:-127.0.0.1}:${API_PORT:-4000}/health" && break
   sleep 1
 done
-NODE_ENV=production exec pnpm --filter @virtus/web run start
+NODE_ENV=production exec pnpm --filter @veris/web run start

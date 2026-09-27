@@ -2,7 +2,7 @@
 // covering every KYC situation (approved, expiring soon, expired, pending review, in preparation,
 // rejected, not started) and a country the demo issuances will exclude; 2 in Contoso.
 import { createHash } from 'node:crypto';
-import { addDays, dateInTimeZone, type KycCaseStatus } from '@virtus/shared';
+import { addDays, dateInTimeZone, type KycCaseStatus } from '@veris/shared';
 import { ELIGIBILITY_ENGINE_VERSION } from '../../src/modules/investor-compliance/domain/eligibility.js';
 import { kycValidUntil } from '../../src/modules/investor-compliance/domain/kyc.js';
 import { recipientCodeFrom } from '../../src/modules/investor-compliance/domain/recipient-code.js';

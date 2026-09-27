@@ -1,8 +1,8 @@
-// Roles of SPEC §4; the role × permission matrix is in @virtus/shared.
+// Roles of SPEC §4; the role × permission matrix is in @veris/shared.
 
-import type { RoleCode } from '@virtus/shared';
+import type { RoleCode } from '@veris/shared';
 
-export { ROLE_CODES, type RoleCode } from '@virtus/shared';
+export { ROLE_CODES, type RoleCode } from '@veris/shared';
 
 /** Roles for which two-factor authentication is mandatory (SPEC §24, decision D-001). */
 export const MFA_REQUIRED_ROLES: readonly RoleCode[] = [

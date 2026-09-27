@@ -1,6 +1,6 @@
 // Transfers (phase 13, docs/BACKLOG.md P13-1 to P13-3) and scenario 4 of SPEC §29 through the API.
 import { randomUUID } from 'node:crypto';
-import type { ErrorResponseBody } from '@virtus/shared';
+import type { ErrorResponseBody } from '@veris/shared';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { QUEUES } from '../../../core/jobs/queues.js';

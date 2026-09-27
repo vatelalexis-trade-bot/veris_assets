@@ -6,7 +6,7 @@ import {
   type BusinessDate,
   type BusinessDayConvention,
   type DistributionFrequency,
-} from '@virtus/shared';
+} from '@veris/shared';
 
 const MONTHS: Record<Exclude<DistributionFrequency, 'BULLET'>, number> = {
   MONTHLY: 1,

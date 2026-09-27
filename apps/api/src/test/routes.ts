@@ -4,7 +4,7 @@
 import { RequestMethod, type INestApplication, type Type } from '@nestjs/common';
 import { METHOD_METADATA, PATH_METADATA } from '@nestjs/common/constants.js';
 import { ModulesContainer } from '@nestjs/core';
-import type { Permission } from '@virtus/shared';
+import type { Permission } from '@veris/shared';
 import {
   ALLOW_PENDING_MFA,
   IS_PUBLIC,

@@ -12,7 +12,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { ApiBody, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { KYC_STATUSES, PROFILE_STATUSES } from '@virtus/shared';
+import { KYC_STATUSES, PROFILE_STATUSES } from '@veris/shared';
 import type { Response } from 'express';
 import { z } from 'zod';
 import { etagOf, expectedVersion } from '../../../core/http/if-match.js';

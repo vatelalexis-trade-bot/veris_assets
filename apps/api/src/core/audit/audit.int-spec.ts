@@ -1,7 +1,7 @@
 // Audit log (phase 7, docs/BACKLOG.md P7-1 and P7-4): entries written in the business transaction,
 // masking, consultation by the Auditor, status transitions (P7-5).
 import { randomUUID } from 'node:crypto';
-import type { ErrorResponseBody } from '@virtus/shared';
+import type { ErrorResponseBody } from '@veris/shared';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { startIntegrationApp, type IntegrationApp } from '../../test/integration-app.js';

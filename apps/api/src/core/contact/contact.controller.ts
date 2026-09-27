@@ -68,7 +68,7 @@ export class ContactService {
       await this.email.send({
         to: this.env.CONTACT_EMAIL,
         subject: `Contact request — ${request.company || request.name}`,
-        ...renderEmail('en-GB', lines, { url: this.env.WEB_ORIGIN, label: 'Virtus Assets' }),
+        ...renderEmail('en-GB', lines, { url: this.env.WEB_ORIGIN, label: 'Veris Assets' }),
       });
     } catch (error) {
       this.logger.error({ err: error }, 'Contact message not sent');

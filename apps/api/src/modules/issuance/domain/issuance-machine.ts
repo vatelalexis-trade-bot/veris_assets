@@ -1,4 +1,4 @@
-import { defineStateMachine, ISSUANCE_STATUSES, type IssuanceStatus } from '@virtus/shared';
+import { defineStateMachine, ISSUANCE_STATUSES, type IssuanceStatus } from '@veris/shared';
 
 /**
  * Life cycle of an issuance (SPEC §7.1, §4.8). The business preconditions (checks of §6.3 before

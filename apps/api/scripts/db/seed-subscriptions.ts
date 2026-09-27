@@ -1,7 +1,7 @@
 // Demonstration subscriptions (SPEC §28): the infrastructure notes are oversubscribed — 1 200 units
 // approved for 1 000 available — and wait for their allocation (scenario 3); on the senior debt,
 // one subscription waits for review and one was rejected.
-import { addDays, dateInTimeZone } from '@virtus/shared';
+import { addDays, dateInTimeZone } from '@veris/shared';
 import { ELIGIBILITY_ENGINE_VERSION } from '../../src/modules/investor-compliance/domain/eligibility.js';
 import { deterministicUuid } from './deterministic-id.js';
 import { investorId } from './seed-investors.js';

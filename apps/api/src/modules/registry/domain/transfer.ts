@@ -5,7 +5,7 @@ import {
   roundDecimal,
   type BusinessDate,
   type ErrorCode,
-} from '@virtus/shared';
+} from '@veris/shared';
 
 export const TRANSFER_STATUSES = [
   'DRAFT',

@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { parseDecimal } from '@virtus/shared';
+import { parseDecimal } from '@veris/shared';
 import { useTranslations } from 'next-intl';
 import { useState, type FormEvent } from 'react';
 import { ApiError } from '@/components/app/api-error';

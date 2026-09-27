@@ -5,7 +5,7 @@ import {
   type BusinessDate,
   type BusinessDayConvention,
   type DistributionFrequency,
-} from '@virtus/shared';
+} from '@veris/shared';
 import { and, asc, eq, inArray } from 'drizzle-orm';
 import { AuditWriter } from '../../../core/audit/audit-writer.js';
 import {

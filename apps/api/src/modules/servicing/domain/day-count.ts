@@ -6,7 +6,7 @@ import {
   type BusinessDate,
   type DayCount,
   type Decimal,
-} from '@virtus/shared';
+} from '@veris/shared';
 
 /**
  * Fraction of a year between two (unadjusted) period dates:

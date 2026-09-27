@@ -1,4 +1,4 @@
-# Spécification fonctionnelle — Virtus Assets
+# Spécification fonctionnelle — Veris Assets
 
 **Plateforme SaaS de gestion du cycle de vie d'actifs privés numériques**
 
@@ -18,7 +18,7 @@
 
 ## 0. Contexte de travail [v0.2]
 
-Le porteur de projet **n'est pas développeur**. Il travaille depuis un Chromebook, dans **GitHub Codespaces** (VS Code dans le navigateur), avec l'extension **Claude Code**. Le dépôt GitHub s'appelle `virtus-assets`.
+Le porteur de projet **n'est pas développeur**. Il travaille depuis un Chromebook, dans **GitHub Codespaces** (VS Code dans le navigateur), avec l'extension **Claude Code**. Le dépôt GitHub s'appelle `veris-assets`.
 
 Conséquences pour la façon de travailler :
 
@@ -32,7 +32,7 @@ Conséquences pour la façon de travailler :
 
 ## 1. Contexte
 
-Virtus Assets est une plateforme SaaS B2B permettant à un émetteur ou à une société de gestion de créer, gérer et administrer des actifs privés numériques.
+Veris Assets est une plateforme SaaS B2B permettant à un émetteur ou à une société de gestion de créer, gérer et administrer des actifs privés numériques.
 
 L'objectif n'est pas uniquement de créer des tokens sur une blockchain. La plateforme doit gérer l'ensemble du cycle de vie opérationnel d'un actif privé : création d'une émission, définition de ses caractéristiques financières, onboarding des investisseurs, contrôle de leur éligibilité, collecte des souscriptions, allocation des positions, tenue du registre, suivi des mouvements, calcul des coupons ou distributions, génération d'instructions de paiement, reporting émetteur et investisseurs, traçabilité et audit.
 
@@ -54,8 +54,8 @@ Simple à utiliser ; orientée utilisateurs non techniques ; configurable ; séc
 
 ### 2.4 Identité visuelle [v0.2]
 
-- **Nom** : Virtus Assets. Le nom de travail antérieur « Astraea RWA » est abandonné et ne doit apparaître nulle part.
-- **Logo** : monogramme « VA » en traits pleins avec un dégradé indigo → cyan, suivi du texte « VIRTUS » (gras) et « ASSETS » (léger). Fichier fourni : `brand/virtus-assets-logo.jpg` (fond sombre). À placer dans `apps/web/public/brand/`. Une version vectorielle (SVG) à fond transparent sera à produire plus tard ; en attendant, utiliser l'image fournie sans la déformer ni la recolorer.
+- **Nom** : Veris Assets (décision D-105 du porteur de projet ; nom précédent : « Virtus Assets »). Le nom de travail antérieur « Astraea RWA » est abandonné et ne doit apparaître nulle part.
+- **Logo** : monogramme « VA » en traits pleins avec un dégradé indigo → cyan, suivi du texte « VERIS » (gras) et « ASSETS » (léger). Fichier : `apps/web/public/brand/veris-assets-logo.svg` (vectoriel, fond transparent, D-098 et D-105) ; le fichier d'origine au nom de « Virtus Assets » est archivé dans `docs/brand/virtus-assets-logo-archive.jpg`. Le logo ne doit être ni déformé ni recoloré.
 - **Typographie proposée [À valider]** : Montserrat pour les titres (proche du logo), Inter pour le texte courant et les tableaux, avec chiffres tabulaires pour les montants.
 - **Palette** : voir section 23.1, alignée sur les couleurs relevées dans le logo.
 
@@ -667,7 +667,7 @@ Le code est produit en **16 phases courtes**, une par réponse ou par session. *
 
 > Tu interviens comme architecte logiciel senior, product engineer, architecte sécurité et tech lead full-stack.
 >
-> Je construis une plateforme SaaS B2B appelée Virtus Assets, qui gère le cycle de vie d'actifs privés numériques pour des sociétés de gestion, des fonds de dette privée et des investisseurs professionnels. Le fichier `docs/SPEC.md` est la source de vérité. Je ne suis pas développeur : explique simplement, en français.
+> Je construis une plateforme SaaS B2B appelée Veris Assets, qui gère le cycle de vie d'actifs privés numériques pour des sociétés de gestion, des fonds de dette privée et des investisseurs professionnels. Le fichier `docs/SPEC.md` est la source de vérité. Je ne suis pas développeur : explique simplement, en français.
 >
 > Ton objectif n'est pas de générer toute l'application maintenant. Travaille dans cet ordre :
 > 1. Analyse la spécification.
@@ -692,7 +692,7 @@ Le code est produit en **16 phases courtes**, une par réponse ou par session. *
 >
 > Pour chaque recommandation technologique, précise : option recommandée ; alternatives considérées ; raisons du choix ; avantages ; limites ; implications de sécurité ; implications de scalabilité ; impact attendu sur la vitesse de développement.
 >
-> Pas de conseils génériques : applique chaque recommandation à la spécification Virtus Assets. N'écris aucun fichier de code dans cette première réponse.
+> Pas de conseils génériques : applique chaque recommandation à la spécification Veris Assets. N'écris aucun fichier de code dans cette première réponse.
 
 ## 33. Décisions ouvertes à trancher par le porteur de projet [v0.2]
 

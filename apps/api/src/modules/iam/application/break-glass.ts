@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { ROLE_PERMISSIONS, type Permission } from '@virtus/shared';
+import { ROLE_PERMISSIONS, type Permission } from '@veris/shared';
 import type { Redis } from 'ioredis';
 import { AuditWriter } from '../../../core/audit/audit-writer.js';
 import { DATABASE, type Database, withTenantTransaction } from '../../../core/database/database.js';

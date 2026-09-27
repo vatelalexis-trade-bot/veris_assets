@@ -7,7 +7,7 @@ import {
   KYC_VALIDITY_MONTHS,
   type BusinessDate,
   type KycCaseStatus,
-} from '@virtus/shared';
+} from '@veris/shared';
 
 /**
  * Life cycle of a KYC/KYB case (SPEC §8.2, §4.8): prepared by the issuer's staff, decided by a

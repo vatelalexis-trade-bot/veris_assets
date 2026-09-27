@@ -1,6 +1,6 @@
 'use client';
 
-import { parseDecimal } from '@virtus/shared';
+import { parseDecimal } from '@veris/shared';
 import { ChevronDown, Info, RotateCcw } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { EXPORT_KINDS, EXPORT_STATUSES } from '@virtus/shared';
+import { EXPORT_KINDS, EXPORT_STATUSES } from '@veris/shared';
 import { ledgerEntryView } from '../../registry/index.js';
 
 /** Amounts per currency, e.g. `{ "EUR": "1250000.00" }`. */

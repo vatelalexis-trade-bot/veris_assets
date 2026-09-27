@@ -29,7 +29,7 @@ export function createBetterAuth({
   sendResetPassword,
 }: BetterAuthDependencies) {
   return betterAuth({
-    appName: 'Virtus Assets',
+    appName: 'Veris Assets',
     secret,
     baseURL: webOrigin,
     trustedOrigins: [webOrigin],
@@ -68,7 +68,7 @@ export function createBetterAuth({
     },
     plugins: [
       twoFactor({
-        issuer: 'Virtus Assets',
+        issuer: 'Veris Assets',
         totpOptions: { digits: 6, period: 30 },
         backupCodeOptions: { amount: 10 },
       }),

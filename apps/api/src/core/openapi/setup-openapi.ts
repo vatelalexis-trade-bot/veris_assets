@@ -1,6 +1,6 @@
 import type { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule, type OpenAPIObject } from '@nestjs/swagger';
-import { PRODUCT_NAME } from '@virtus/shared';
+import { PRODUCT_NAME } from '@veris/shared';
 
 export const OPENAPI_PATH = 'api/v1/docs';
 

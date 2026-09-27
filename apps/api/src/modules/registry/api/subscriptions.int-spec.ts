@@ -1,7 +1,7 @@
 // Subscriptions (phase 11, docs/BACKLOG.md P11-1 to P11-3, P11-6): the complete subscription, the
 // checks of SPEC §9.3 and scenario 2 of SPEC §29 (investor not eligible).
 import { randomUUID } from 'node:crypto';
-import type { ErrorResponseBody } from '@virtus/shared';
+import type { ErrorResponseBody } from '@veris/shared';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { QUEUES } from '../../../core/jobs/queues.js';

@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { KYC_STATUSES, type KycStatus } from '@virtus/shared';
+import { KYC_STATUSES, type KycStatus } from '@veris/shared';
 import { Plus, Search } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState, type FormEvent } from 'react';

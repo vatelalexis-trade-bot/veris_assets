@@ -1,5 +1,5 @@
 import type { PipeTransform } from '@nestjs/common';
-import type { ErrorDetail } from '@virtus/shared';
+import type { ErrorDetail } from '@veris/shared';
 import type { z } from 'zod';
 import { AppError } from '../errors/app-error.js';
 

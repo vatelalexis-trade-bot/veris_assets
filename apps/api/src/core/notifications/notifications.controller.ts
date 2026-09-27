@@ -14,7 +14,7 @@ import {
   NOTIFICATION_CATEGORIES,
   NOTIFICATION_TYPE_CODES,
   type NotificationType,
-} from '@virtus/shared';
+} from '@veris/shared';
 import { z } from 'zod';
 import { currentUser } from '../context/request-context.js';
 import { ApiPageQuery, pageSchema, paginationQuery } from '../http/pagination.js';
@@ -28,7 +28,7 @@ const category = z.enum(NOTIFICATION_CATEGORIES);
 const notificationView = z.object({
   id: z.uuid(),
   category,
-  /** Notification type of the catalogue of @virtus/shared, which holds its texts. */
+  /** Notification type of the catalogue of @veris/shared, which holds its texts. */
   type: z.enum(NOTIFICATION_TYPE_CODES as [NotificationType, ...NotificationType[]]),
   params: z.record(z.string(), z.string()),
   resourceType: z.string().nullable(),

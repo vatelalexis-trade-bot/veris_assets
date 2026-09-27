@@ -14,7 +14,7 @@ import {
   type KycStatus,
   type ProfileStatus,
   type RiskLevel,
-} from '@virtus/shared';
+} from '@veris/shared';
 import { z } from 'zod';
 import { paginationQuery } from '../../../core/http/pagination.js';
 import type {

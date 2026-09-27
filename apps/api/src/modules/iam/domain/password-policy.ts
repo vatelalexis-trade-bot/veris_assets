@@ -1,4 +1,4 @@
-import type { PasswordRuleCode } from '@virtus/shared';
+import type { PasswordRuleCode } from '@veris/shared';
 
 // SPEC §24: minimum length and a check against common passwords, no arbitrary complexity rules.
 export const PASSWORD_MIN_LENGTH = 12;

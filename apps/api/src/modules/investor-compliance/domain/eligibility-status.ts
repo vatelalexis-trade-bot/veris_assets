@@ -1,4 +1,4 @@
-import { defineStateMachine, ELIGIBILITY_STATUSES, type EligibilityStatus } from '@virtus/shared';
+import { defineStateMachine, ELIGIBILITY_STATUSES, type EligibilityStatus } from '@veris/shared';
 
 /**
  * Eligibility status of an investor, decided by a Compliance Officer (SPEC §4.4, §8.3), always

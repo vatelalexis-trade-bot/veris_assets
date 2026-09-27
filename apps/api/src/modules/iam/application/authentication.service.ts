@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import type { ErrorDetail, Permission, PermissionScope } from '@virtus/shared';
+import type { ErrorDetail, Permission, PermissionScope } from '@veris/shared';
 import { AuditWriter } from '../../../core/audit/audit-writer.js';
 import { AppError } from '../../../core/errors/app-error.js';
 import { RateLimiter, type RateLimit } from '../../../core/security/rate-limiter.js';

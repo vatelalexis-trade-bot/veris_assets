@@ -1,4 +1,4 @@
-import { parseDecimal, type Decimal } from '@virtus/shared';
+import { parseDecimal, type Decimal } from '@veris/shared';
 import type { CalculatorAssumptions, CalculatorInputs } from './assumptions';
 
 export interface CalculatorResult {

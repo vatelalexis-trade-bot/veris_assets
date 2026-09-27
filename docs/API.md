@@ -1,4 +1,4 @@
-# Contrats d'API — Virtus Assets
+# Contrats d'API — Veris Assets
 
 Livrable 5 de `docs/SPEC.md` : structure de l'API REST et de sa documentation OpenAPI.
 La spécification OpenAPI exacte est **générée depuis le code** (NestJS) à partir de la phase 2 et publiée sur `/api/v1/docs` en développement. Ce document fixe les conventions et la liste des endpoints ; il est tenu à jour à chaque phase.

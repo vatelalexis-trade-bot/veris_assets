@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import type { ExportKind, ExportStatus } from '@virtus/shared';
+import type { ExportKind, ExportStatus } from '@veris/shared';
 import { z } from 'zod';
 import { Idempotent } from '../../../core/idempotency/idempotent.decorator.js';
 import { toOpenApiSchema } from '../../../core/openapi/zod-openapi.js';

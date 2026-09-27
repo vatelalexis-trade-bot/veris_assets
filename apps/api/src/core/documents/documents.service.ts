@@ -1,6 +1,6 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { Inject, Injectable } from '@nestjs/common';
-import type { DocumentConfidentiality, DocumentMimeType, DocumentType } from '@virtus/shared';
+import type { DocumentConfidentiality, DocumentMimeType, DocumentType } from '@veris/shared';
 import { and, count, desc, eq, ne, sql, type SQL } from 'drizzle-orm';
 import { AuditWriter } from '../audit/audit-writer.js';
 import { ENV, type Env } from '../config/env.js';

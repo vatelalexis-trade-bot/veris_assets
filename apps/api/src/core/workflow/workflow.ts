@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { checkTransition, type StateMachine } from '@virtus/shared';
+import { checkTransition, type StateMachine } from '@veris/shared';
 import { getRequestContext } from '../context/request-context.js';
 import type { Transaction } from '../database/database.js';
 import { workflowTransition } from '../database/schema.js';

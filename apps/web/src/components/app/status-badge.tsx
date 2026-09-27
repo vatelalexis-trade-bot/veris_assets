@@ -4,7 +4,7 @@ import {
   type StatusDomain,
   type StatusOf,
   type StatusTone,
-} from '@virtus/shared';
+} from '@veris/shared';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 
@@ -22,7 +22,7 @@ interface StatusBadgeProps<Domain extends StatusDomain> {
   className?: string;
 }
 
-/** Translated, coloured label of a business status (single mapping in @virtus/shared). */
+/** Translated, coloured label of a business status (single mapping in @veris/shared). */
 export function StatusBadge<Domain extends StatusDomain>({
   domain,
   status,

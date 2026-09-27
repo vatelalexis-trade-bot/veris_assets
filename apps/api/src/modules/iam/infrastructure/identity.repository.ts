@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { and, eq, gt, inArray, isNull } from 'drizzle-orm';
-import type { Permission, PermissionScope } from '@virtus/shared';
+import type { Permission, PermissionScope } from '@veris/shared';
 import type { RoleCode } from '../domain/roles.js';
 import { AUTH_DATABASE, type AuthDatabase } from './auth-database.js';
 import {

@@ -1,5 +1,5 @@
 {
-  "name": "@virtus/shared",
+  "name": "@veris/shared",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@types/node": "24.13.6",
-    "@virtus/config": "workspace:*",
+    "@veris/config": "workspace:*",
     "eslint": "9.39.5",
     "typescript": "6.0.3",
     "vitest": "5.0.1"

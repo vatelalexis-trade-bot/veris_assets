@@ -1,15 +1,15 @@
 import { SetMetadata } from '@nestjs/common';
-import type { Permission } from '@virtus/shared';
+import type { Permission } from '@veris/shared';
 
 // Access rules of the routes (docs/ARCHITECTURE.md §4.4). Every route declares exactly one:
 // @Public(), @SessionOnly(), @AllowPendingMfa() or @RequirePermission(). A route that declares
 // none is refused (deny by default) and a test lists such routes.
 
-export const IS_PUBLIC = 'virtus:isPublic';
-export const ALLOW_PENDING_MFA = 'virtus:allowPendingMfa';
-export const SESSION_ONLY = 'virtus:sessionOnly';
-export const REQUIRED_PERMISSION = 'virtus:requiredPermission';
-export const ACCEPTS_TENANT_PARAMETER = 'virtus:acceptsTenantParameter';
+export const IS_PUBLIC = 'veris:isPublic';
+export const ALLOW_PENDING_MFA = 'veris:allowPendingMfa';
+export const SESSION_ONLY = 'veris:sessionOnly';
+export const REQUIRED_PERMISSION = 'veris:requiredPermission';
+export const ACCEPTS_TENANT_PARAMETER = 'veris:acceptsTenantParameter';
 
 /** The route is reachable without a session (sign-in, health probes…). */
 export const Public = () => SetMetadata(IS_PUBLIC, true);

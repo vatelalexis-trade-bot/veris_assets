@@ -14,7 +14,7 @@ set -a
 source .env
 set +a
 
-pnpm --filter @virtus/shared build
+pnpm --filter @veris/shared build
 
 if [[ -n "${CODESPACE_NAME:-}" && -n "${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN:-}" ]]; then
   base="https://${CODESPACE_NAME}"
@@ -31,7 +31,7 @@ export WEB_ORIGIN="${web_url}"
 
 cat <<EOF
 
-  Virtus Assets — development environment
+  Veris Assets — development environment
   Web app ........ ${web_url}
   API docs ....... ${web_url}/api/v1/docs
   Test emails .... ${mail_url}
@@ -39,4 +39,4 @@ cat <<EOF
 
 EOF
 
-exec pnpm --parallel --filter @virtus/shared --filter @virtus/api --filter @virtus/web run dev
+exec pnpm --parallel --filter @veris/shared --filter @veris/api --filter @veris/web run dev

@@ -5,7 +5,7 @@ import {
   parseDecimal,
   type DayCount,
   type RoundingMethod,
-} from '@virtus/shared';
+} from '@veris/shared';
 import { and, asc, count, desc, eq, exists, lte, sql, type SQL } from 'drizzle-orm';
 import { AuditWriter } from '../../../core/audit/audit-writer.js';
 import { currentUser, type RequestUser } from '../../../core/context/request-context.js';

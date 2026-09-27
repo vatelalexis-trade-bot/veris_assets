@@ -1,7 +1,7 @@
 // Activation, coupon schedule and distributions (phase 14a, docs/BACKLOG.md P14-1 to P14-4), and
 // scenario 6 of SPEC §29 through the API.
 import { randomUUID } from 'node:crypto';
-import { dateInTimeZone, type ErrorResponseBody } from '@virtus/shared';
+import { dateInTimeZone, type ErrorResponseBody } from '@veris/shared';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { QUEUES } from '../../../core/jobs/queues.js';

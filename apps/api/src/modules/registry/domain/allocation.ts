@@ -1,6 +1,6 @@
 // Manual allocation (SPEC §10.1, §9.4; docs/DATA_MODEL.md §4.6): life cycle of a round and the
 // checks of its totals, pure.
-import { defineStateMachine, parseDecimal } from '@virtus/shared';
+import { defineStateMachine, parseDecimal } from '@veris/shared';
 
 export const ALLOCATION_ROUND_STATUSES = ['DRAFT', 'PROPOSED', 'VALIDATED', 'REJECTED'] as const;
 export type AllocationRoundStatus = (typeof ALLOCATION_ROUND_STATUSES)[number];

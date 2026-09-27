@@ -7,7 +7,7 @@ import {
   MAX_DOCUMENT_SIZE_BYTES,
   type DocumentConfidentiality,
   type DocumentType,
-} from '@virtus/shared';
+} from '@veris/shared';
 import { useTranslations } from 'next-intl';
 import { useRef, useState, type FormEvent } from 'react';
 import { ApiError } from '@/components/app/api-error';

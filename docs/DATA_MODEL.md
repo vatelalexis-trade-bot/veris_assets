@@ -1,4 +1,4 @@
-# Modèle de données — Virtus Assets
+# Modèle de données — Veris Assets
 
 Livrable 4 de `docs/SPEC.md` : modèle conceptuel et logique, machines à états, matrice rôles × permissions.
 Les noms de tables et de colonnes sont indicatifs ; ils sont finalisés dans les migrations de la phase 3 et des phases suivantes. Toute modification de fond est signalée.

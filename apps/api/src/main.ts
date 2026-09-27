@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
 import type { NestExpressApplication } from '@nestjs/platform-express';
-import { PRODUCT_NAME } from '@virtus/shared';
+import { PRODUCT_NAME } from '@veris/shared';
 import { Logger } from 'nestjs-pino';
 import { AppModule } from './app.module.js';
 import { ENV, type Env } from './core/config/env.js';

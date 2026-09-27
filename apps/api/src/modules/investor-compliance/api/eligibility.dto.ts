@@ -1,4 +1,4 @@
-import { ELIGIBILITY_RULE_CODES, INVESTOR_CLASSIFICATIONS, INVESTOR_TYPES } from '@virtus/shared';
+import { ELIGIBILITY_RULE_CODES, INVESTOR_CLASSIFICATIONS, INVESTOR_TYPES } from '@veris/shared';
 import { z } from 'zod';
 import { paginationQuery } from '../../../core/http/pagination.js';
 import type { EligibilityAssessmentRow } from '../application/eligibility.service.js';

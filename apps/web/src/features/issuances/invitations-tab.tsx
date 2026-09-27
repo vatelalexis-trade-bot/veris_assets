@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { ErrorResponseBody } from '@virtus/shared';
+import type { ErrorResponseBody } from '@veris/shared';
 import { useFormatter, useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { ApiError } from '@/components/app/api-error';

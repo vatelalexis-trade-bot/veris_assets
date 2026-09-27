@@ -28,7 +28,7 @@ export function pdfText(value: string): string {
 }
 
 /**
- * Renders a simple A4 document: the Virtus Assets wordmark, a title, key/value sections, tables,
+ * Renders a simple A4 document: the Veris Assets wordmark, a title, key/value sections, tables,
  * paragraphs, and the demonstration mention in the footer of every page. Only the standard
  * Helvetica font is used: nothing to install, nothing downloaded.
  */
@@ -36,7 +36,7 @@ export function renderPdf(spec: PdfSpec): Promise<Buffer> {
   const doc = new PDFDocument({
     size: 'A4',
     margins: { top: 56, bottom: 64, left: 56, right: 56 },
-    info: { Title: pdfText(spec.title), Author: 'Virtus Assets (demo)' },
+    info: { Title: pdfText(spec.title), Author: 'Veris Assets (demo)' },
     bufferPages: true,
   });
   const chunks: Buffer[] = [];
@@ -47,7 +47,7 @@ export function renderPdf(spec: PdfSpec): Promise<Buffer> {
   });
   const width = doc.page.width - doc.page.margins.left - doc.page.margins.right;
 
-  doc.font('Helvetica-Bold').fontSize(11).fillColor(BRAND).text('VIRTUS ASSETS');
+  doc.font('Helvetica-Bold').fontSize(11).fillColor(BRAND).text('VERIS ASSETS');
   doc.moveDown(1.2);
   doc.font('Helvetica-Bold').fontSize(18).fillColor('#111111').text(pdfText(spec.title));
   if (spec.subtitle)

@@ -1,5 +1,5 @@
 // Corrections of the ledger (SPEC §10.3, §4.8): never a change of an entry, always new entries.
-import { defineStateMachine, parseDecimal } from '@virtus/shared';
+import { defineStateMachine, parseDecimal } from '@veris/shared';
 import type { LedgerEntryType } from './ledger.js';
 
 export const CORRECTION_STATUSES = ['PROPOSED', 'APPROVED', 'REJECTED'] as const;

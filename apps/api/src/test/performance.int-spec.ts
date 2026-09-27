@@ -1,7 +1,7 @@
 // Performance budget of SPEC §25 (P16-2): every read route of the API answers in less than
 // 500 ms on the demonstration data, for the role that uses it.
-import type { RoleCode } from '@virtus/shared';
-import { ROLE_PERMISSIONS } from '@virtus/shared';
+import type { RoleCode } from '@veris/shared';
+import { ROLE_PERMISSIONS } from '@veris/shared';
 import type request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { startIntegrationApp, type IntegrationApp } from './integration-app.js';

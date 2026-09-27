@@ -6,7 +6,7 @@ import {
   ISSUANCE_STATUSES,
   type AssetCategory,
   type IssuanceStatus,
-} from '@virtus/shared';
+} from '@veris/shared';
 import { Plus, Search } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';

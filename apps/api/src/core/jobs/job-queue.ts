@@ -42,7 +42,7 @@ export class JobQueue implements OnModuleInit, OnApplicationShutdown {
       schedule: env.JOBS_ENABLED,
       useListenNotify: env.JOBS_ENABLED,
       max: 4,
-      application_name: 'virtus-assets-jobs',
+      application_name: 'veris-assets-jobs',
     });
   }
 

@@ -1,4 +1,4 @@
-import { nodeTypeScriptConfig } from '@virtus/config/eslint';
+import { nodeTypeScriptConfig } from '@veris/config/eslint';
 
 export default nodeTypeScriptConfig({
   tsconfigRootDir: import.meta.dirname,

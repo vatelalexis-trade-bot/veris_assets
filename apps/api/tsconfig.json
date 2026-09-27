@@ -1,5 +1,5 @@
 {
-  "extends": "@virtus/config/tsconfig/node-library.json",
+  "extends": "@veris/config/tsconfig/node-library.json",
   "compilerOptions": {
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,

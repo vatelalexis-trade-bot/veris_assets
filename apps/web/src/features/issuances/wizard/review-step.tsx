@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import type { IssuanceWizardStep } from '@virtus/shared';
+import type { IssuanceWizardStep } from '@veris/shared';
 import { CircleAlert, CircleCheck } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect } from 'react';

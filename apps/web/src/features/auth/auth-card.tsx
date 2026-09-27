@@ -20,7 +20,7 @@ export function AuthCard({
       <DemoBanner />
       <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-8 px-6 py-8">
         <header className="flex items-center justify-between">
-          <Link href="/" aria-label="Virtus Assets">
+          <Link href="/" aria-label="Veris Assets">
             <Logo />
           </Link>
           <LanguageSwitcher />

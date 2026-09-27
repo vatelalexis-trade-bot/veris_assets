@@ -76,7 +76,7 @@ export async function bootstrapDatabase(env: ToolsEnv, target: DatabaseTarget): 
 
 /**
  * Applies the pending migrations as va_migrator (already applied ones are skipped), aligns the
- * permission catalogue on the matrix of @virtus/shared, then installs the job queues.
+ * permission catalogue on the matrix of @veris/shared, then installs the job queues.
  */
 export async function migrateDatabase(env: ToolsEnv, target: DatabaseTarget): Promise<void> {
   await withClient(connectionConfig(env, databaseName(env, target), 'migrator'), async (client) => {
@@ -104,7 +104,7 @@ async function installJobQueues(env: ToolsEnv, database: string): Promise<void> 
     createSchema: false,
     supervise: false,
     schedule: false,
-    application_name: 'virtus-assets-setup',
+    application_name: 'veris-assets-setup',
   });
   boss.on('error', (error) => console.error(error));
   await boss.start();

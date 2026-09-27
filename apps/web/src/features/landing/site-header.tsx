@@ -15,7 +15,7 @@ export async function SiteHeader({ user }: { user: Awaited<ReturnType<typeof get
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
       <div className="mx-auto flex h-18 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-        <Link href="/" aria-label="Virtus Assets">
+        <Link href="/" aria-label="Veris Assets">
           <Logo className="h-11 sm:h-12" />
         </Link>
         <nav aria-label={t('label')} className="hidden items-center gap-7 text-sm lg:flex">

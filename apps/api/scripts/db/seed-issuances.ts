@@ -2,7 +2,7 @@
 // investors, a solar project approved but not yet open, and infrastructure notes whose
 // subscriptions are closed and oversubscribed, ready to be allocated (scenario 3). "Helios Solar
 // SPV 2027" is left to scenario 1, which creates it.
-import { addDays, addMonths, dateInTimeZone } from '@virtus/shared';
+import { addDays, addMonths, dateInTimeZone } from '@veris/shared';
 import { ELIGIBILITY_ENGINE_VERSION } from '../../src/modules/investor-compliance/domain/eligibility.js';
 import { deterministicUuid } from './deterministic-id.js';
 import { investorId } from './seed-investors.js';

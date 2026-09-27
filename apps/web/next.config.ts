@@ -14,7 +14,7 @@ const apiUrl = `http://${process.env.API_HOST ?? '127.0.0.1'}:${process.env.API_
 
 const nextConfig: NextConfig = {
   // Workspace packages are compiled by Next.js like local code.
-  transpilePackages: ['@virtus/shared'],
+  transpilePackages: ['@veris/shared'],
   allowedDevOrigins: codespacesDomain ? [`*.${codespacesDomain}`] : [],
   rewrites() {
     return Promise.resolve([{ source: '/api/:path*', destination: `${apiUrl}/api/:path*` }]);

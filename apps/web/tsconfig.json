@@ -1,5 +1,5 @@
 {
-  "extends": "@virtus/config/tsconfig/base.json",
+  "extends": "@veris/config/tsconfig/base.json",
   "compilerOptions": {
     "target": "ES2022",
     "lib": ["dom", "dom.iterable", "esnext"],

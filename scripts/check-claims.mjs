@@ -19,6 +19,8 @@ export const FORBIDDEN_PATTERNS = [
   { id: 'regulator-approved', regex: word(String.raw`(AMF|ACPR|ESMA)[-\s]*(approved|agréée?)`) },
   { id: 'agree-par', regex: word(String.raw`agréée?s?\s+par\s+(l'|la\s+|le\s+)?(AMF|ACPR|ESMA)`) },
   { id: 'old-name', regex: word('Astraea') },
+  // Former name of the product (decision D-105).
+  { id: 'former-name', regex: word('Virtus') },
 ];
 
 const SCANNED_ROOTS = ['apps', 'packages', 'README.md'];

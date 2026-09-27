@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CURRENCY_MINOR_UNITS, isCurrencyCode, parseDecimal } from '@virtus/shared';
+import { CURRENCY_MINOR_UNITS, isCurrencyCode, parseDecimal } from '@veris/shared';
 import { and, asc, count, desc, eq, gt, isNotNull, sql, type SQL } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/pg-core';
 import { AuditWriter } from '../../../core/audit/audit-writer.js';

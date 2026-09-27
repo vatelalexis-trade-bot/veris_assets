@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { STATUS_TONES } from '@virtus/shared';
+import { STATUS_TONES } from '@veris/shared';
 import { useSearchParams } from 'next/navigation';
 import { useFormatter, useLocale, useTranslations } from 'next-intl';
 import { ApiError } from '@/components/app/api-error';

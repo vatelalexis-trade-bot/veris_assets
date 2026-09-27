@@ -4,7 +4,7 @@ import {
   isDecimalString,
   parseDecimal,
   type IssuanceTermsRuleCode,
-} from '@virtus/shared';
+} from '@veris/shared';
 
 /** Terms as stored: decimals as strings, dates as `YYYY-MM-DD`, null while not filled in. */
 export interface TermsToCheck {

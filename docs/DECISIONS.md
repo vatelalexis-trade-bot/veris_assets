@@ -1,4 +1,4 @@
-# Registre des décisions — Virtus Assets
+# Registre des décisions — Veris Assets
 
 Décisions écrites du porteur de projet. Conformément à l'en-tête de `docs/SPEC.md`, une décision écrite du porteur de projet prime sur le passage correspondant de la spécification. Chaque entrée indique ce qu'elle modifie.
 
@@ -61,7 +61,7 @@ Les versions exactes sont figées en phase 1.
 
 **D-019 — Acceptée.** Le porteur de projet ajoute le prototype HTML de la landing page dans `docs/prototype/` avant la phase 15.
 
-**D-020 — Acceptée.** Le dépôt s'appelle `virtus_assets` (la spec dit `virtus-assets`) ; sans conséquence.
+**D-020 — Acceptée.** Le dépôt s'appelle `veris_assets` (la spec dit `veris-assets`) ; sans conséquence.
 
 ---
 
@@ -159,7 +159,7 @@ Validées par le porteur de projet (« ok let's go »).
 
 **D-042 — Acceptée. Fonctionnement de l'idempotence.** Toute requête d'une route « IK » s'exécute dans **une seule transaction** : la clé, l'opération, son audit et ses événements sont validés ensemble, ou pas du tout. Conséquences : seule une réponse réussie est mémorisée (une requête refusée peut être renvoyée avec la même clé) ; une seconde requête avec la même clé attend la première jusqu'à 3 secondes, puis reçoit la même réponse (en-tête `Idempotent-Replayed: true`), un `422 IDEMPOTENCY_KEY_REUSED` si son contenu diffère, ou un `409 IDEMPOTENCY_IN_PROGRESS`. Clé absente : `428`. Côté site web, la clé d'une action reste la même tant que le serveur n'a pas répondu (nouvel essai après une coupure réseau = même clé). *Précise `docs/ARCHITECTURE.md` §4.8.*
 
-**D-043 — Acceptée. Catégories et textes des notifications.** Catégories : sécurité et workflow (toujours actives), organisation, émissions, souscriptions et transferts, distributions, documents, conformité. Par défaut, les autres catégories sont actives dans l'application et par email. Les textes (anglais et français) sont dans un catalogue unique de `@virtus/shared`, utilisé par la cloche du site et par les emails. La table `core.notification_template` et l'écran « Modèles » de la console plateforme sont reportés (priorité faible, phase 15).
+**D-043 — Acceptée. Catégories et textes des notifications.** Catégories : sécurité et workflow (toujours actives), organisation, émissions, souscriptions et transferts, distributions, documents, conformité. Par défaut, les autres catégories sont actives dans l'application et par email. Les textes (anglais et français) sont dans un catalogue unique de `@veris/shared`, utilisé par la cloche du site et par les emails. La table `core.notification_template` et l'écran « Modèles » de la console plateforme sont reportés (priorité faible, phase 15).
 
 **D-044 — Acceptée. Règles du journal d'audit.**
 1. Les valeurs avant/après ne contiennent que les champs modifiés. Les champs sensibles (liste commune avec les logs : email, téléphone, identifiants fiscaux, date de naissance, adresse, IBAN, secrets…) et le nom des personnes sont remplacés par `[MASKED]` : on voit qu'ils ont changé, pas leur valeur.
@@ -552,7 +552,7 @@ Validées par le porteur de projet (« Oui, toutes validées »).
 
 **D-091 — Acceptée. Bibliothèque PDF : pdfkit 0.20.2.**
 1. Les PDF sont produits par le serveur avec pdfkit, maintenue et sans navigateur à installer. pdf-lib n'est plus maintenue depuis 2022 ; un navigateur sans interface (Playwright) serait lourd à faire tourner en production.
-2. Mise en page sobre : mot-symbole « VIRTUS ASSETS » en couleur primaire, titre, blocs libellé / valeur, tableaux, paragraphe. Police Helvetica standard (pas de fichier de police à embarquer). Le logo image n'y figure pas, en attendant sa version SVG.
+2. Mise en page sobre : mot-symbole « VERIS ASSETS » en couleur primaire, titre, blocs libellé / valeur, tableaux, paragraphe. Police Helvetica standard (pas de fichier de police à embarquer). Le logo image n'y figure pas, en attendant sa version SVG.
 3. Chaque page porte la mention « DÉMONSTRATION — données fictives, sans valeur juridique » (spec 3.3).
 
 **D-092 — Acceptée. Documents générés aux événements (spec 16).**
@@ -632,9 +632,9 @@ Proposée par Claude, à valider par le porteur de projet.
 ## 2026-09-27 — Phase 16a (durcissement)
 
 **D-098 — Proposée. Logo vectoriel (SVG).** À la demande du porteur de projet.
-1. `apps/web/public/brand/virtus-assets-logo.svg` (logo complet) et `virtus-assets-mark.svg` (monogramme seul, aussi utilisé comme icône d'onglet `apps/web/src/app/icon.svg`) sont obtenus par vectorisation automatique du fichier officiel `virtus-assets-logo.jpg` (tracé des contours). Le dégradé de marque de la spec 23.1 (#4F52D6 → #45D6E6) est appliqué au monogramme, et le texte garde la couleur relevée sur l'original.
+1. `apps/web/public/brand/veris-assets-logo.svg` (logo complet) et `veris-assets-mark.svg` (monogramme seul, aussi utilisé comme icône d'onglet `apps/web/src/app/icon.svg`) sont obtenus par vectorisation automatique du fichier officiel de l'époque (tracé des contours ; archivé dans `docs/brand/virtus-assets-logo-archive.jpg`, D-105). Le dégradé de marque de la spec 23.1 (#4F52D6 → #45D6E6) est appliqué au monogramme, et le texte garde la couleur relevée sur l'original.
 2. Fond transparent, aucune déformation : le composant `Logo` fixe la hauteur, la largeur suit les proportions.
-3. Le JPEG reste la référence. Une version dessinée par un graphiste pourra remplacer ces fichiers sans autre changement.
+3. Le JPEG restait la référence jusqu'au changement de nom (D-105). Une version dessinée par un graphiste pourra remplacer ces fichiers sans autre changement.
 4. Les PDF générés gardent le nom en texte (D-091).
 
 **D-099 — Proposée. Commande `pnpm preview`.** Elle construit l'application une fois, puis la sert comme en production : toutes les pages s'ouvrent immédiatement. `pnpm dev` reste la commande de développement (rechargement automatique, mais une compilation lente à la première ouverture de chaque page sur un Codespace à 2 processeurs).
@@ -674,3 +674,16 @@ Proposée par Claude, à valider par le porteur de projet.
 3. Traçabilité dans le journal d'audit de l'organisation : ouverture (avec le motif), chaque requête (sauf la lecture de la session et du compteur de notifications), fin. Les administrateurs émetteurs de l'organisation sont prévenus à l'ouverture (notification et email de sécurité).
 4. L'autorisation est gardée dans Redis avec une durée de vie d'une heure : elle expire d'elle-même, sans tâche de nettoyage. L'historique durable est celui du journal d'audit. Écart avec docs/ARCHITECTURE.md §4.1, qui rangeait l'accès dans le module `iam` : c'est bien le cas, mais sans table en base.
 5. Routes : `POST /tenants/{id}/break-glass` (motif ; clé d'idempotence) et `DELETE /break-glass`, avec la permission `break-glass:request`. `GET /auth/me` indique l'accès en cours.
+
+## 2026-09-27 — Changement de nom et dépôt
+
+Décisions du porteur de projet.
+
+**D-104 — Acceptée. Le dépôt GitHub reste privé.** Conséquence acceptée : l'analyse automatique des secrets de GitHub n'est pas disponible (option payante sur un dépôt privé, D-100). Les protections restantes : `.env` ignoré par git, `.env.example` factice, revue des changements avant chaque commit.
+
+**D-105 — Acceptée. Le produit s'appelle désormais « Veris Assets » (anciennement « Virtus Assets »).** *Modifie la spec 2.4 et CLAUDE.md.*
+1. Tout est renommé : textes affichés en anglais et en français, emails, documents PDF, page d'accueil, documentation, et noms techniques (paquets `@veris/*`, bases `veris_assets` et `veris_assets_test`, projet Docker `veris-assets`, dépôt GitHub `veris_assets`).
+2. Logo : le monogramme « VA » reste valable. Le texte devient « VERIS ASSETS », composé en Montserrat (gras pour « VERIS », normal pour « ASSETS »), dans les mêmes couleurs. Le fichier d'origine est archivé dans `docs/brand/virtus-assets-logo-archive.jpg`. Une version dessinée par un graphiste pourra remplacer le SVG.
+3. Les identifiants des données de démo sont recalculés (ils dérivent du nom) : il faut réinitialiser la démo une fois (`pnpm db:reset`). Les liens de téléchargement en cours deviennent invalides.
+4. La vérification automatique des formulations refuse désormais aussi l'ancien nom « Virtus » dans le code et les textes affichés.
+5. Le dossier du Codespace garde son ancien nom (`/workspaces/virtus_assets`) : GitHub le fixe à la création du Codespace. Un nouveau Codespace, créé après le renommage du dépôt, portera le nouveau nom.

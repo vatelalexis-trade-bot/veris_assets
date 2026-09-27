@@ -1,4 +1,4 @@
-export const PRODUCT_NAME = 'Virtus Assets';
+export const PRODUCT_NAME = 'Veris Assets';
 
 export * from './decimal/decimal.js';
 export * from './decimal/money.js';

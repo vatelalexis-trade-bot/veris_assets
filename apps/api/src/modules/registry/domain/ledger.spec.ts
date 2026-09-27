@@ -1,4 +1,4 @@
-import { checkTransition } from '@virtus/shared';
+import { checkTransition } from '@veris/shared';
 import { describe, expect, it } from 'vitest';
 import { allocationAmount, allocationRoundMachine, checkAllocation } from './allocation.js';
 import { correctionMachine, correctionRefusal, counterEntry } from './correction.js';

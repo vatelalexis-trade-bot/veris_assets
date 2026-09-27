@@ -1,5 +1,5 @@
 import { Inject, Injectable, Logger, type OnApplicationBootstrap } from '@nestjs/common';
-import { notificationText } from '@virtus/shared';
+import { notificationText } from '@veris/shared';
 import { ENV, type Env } from '../config/env.js';
 import { EMAIL_PROVIDER, type EmailProvider } from '../email/email.provider.js';
 import { LOCALE_PATH, renderEmail, type EmailLocale } from '../email/layout.js';
@@ -20,8 +20,8 @@ export type RecipientLookup = (
 ) => Promise<NotificationRecipient | null>;
 
 const OPEN_APP: Record<EmailLocale, string> = {
-  'en-GB': 'Open Virtus Assets',
-  'fr-FR': 'Ouvrir Virtus Assets',
+  'en-GB': 'Open Veris Assets',
+  'fr-FR': 'Ouvrir Veris Assets',
 };
 
 /**

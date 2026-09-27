@@ -12,19 +12,19 @@ export function invitationEmail(
   const content =
     locale === 'fr-FR'
       ? {
-          subject: 'Votre invitation à Virtus Assets',
+          subject: 'Votre invitation à Veris Assets',
           lines: [
             `Bonjour ${data.name},`,
-            'Vous êtes invité(e) à rejoindre Virtus Assets.',
+            'Vous êtes invité(e) à rejoindre Veris Assets.',
             `Ce lien est valable ${data.validDays} jours et ne peut servir qu’une fois.`,
           ],
           label: 'Accepter l’invitation',
         }
       : {
-          subject: 'Your invitation to Virtus Assets',
+          subject: 'Your invitation to Veris Assets',
           lines: [
             `Hello ${data.name},`,
-            'You have been invited to join Virtus Assets.',
+            'You have been invited to join Veris Assets.',
             `This link is valid for ${data.validDays} days and can be used only once.`,
           ],
           label: 'Accept the invitation',
@@ -43,7 +43,7 @@ export function passwordResetEmail(
   const content =
     locale === 'fr-FR'
       ? {
-          subject: 'Réinitialisation de votre mot de passe Virtus Assets',
+          subject: 'Réinitialisation de votre mot de passe Veris Assets',
           lines: [
             `Bonjour ${data.name},`,
             'Une réinitialisation de votre mot de passe a été demandée.',
@@ -52,7 +52,7 @@ export function passwordResetEmail(
           label: 'Choisir un nouveau mot de passe',
         }
       : {
-          subject: 'Reset your Virtus Assets password',
+          subject: 'Reset your Veris Assets password',
           lines: [
             `Hello ${data.name},`,
             'A password reset was requested for your account.',

@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import type { RiskLevel } from '@virtus/shared';
+import type { RiskLevel } from '@veris/shared';
 import { AppError } from '../errors/app-error.js';
 
 export interface KycCheckRequest {

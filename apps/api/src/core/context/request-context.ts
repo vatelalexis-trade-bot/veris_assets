@@ -1,5 +1,5 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
-import type { Permission, PermissionScope } from '@virtus/shared';
+import type { Permission, PermissionScope } from '@veris/shared';
 
 /** The signed-in user of the request, set by the authentication guard. */
 export interface RequestUser {

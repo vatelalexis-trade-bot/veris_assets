@@ -6,7 +6,7 @@ import {
   STATUS_DOMAINS,
   STATUS_TONES,
   statusLabelKey,
-} from '@virtus/shared';
+} from '@veris/shared';
 import { describe, expect, it } from 'vitest';
 import { PORTALS } from '@/features/navigation/portals';
 import { MESSAGES } from '@/test/render';

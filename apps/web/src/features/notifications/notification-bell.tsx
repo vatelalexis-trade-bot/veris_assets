@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { notificationText, type NotificationType } from '@virtus/shared';
+import { notificationText, type NotificationType } from '@veris/shared';
 import { Bell } from 'lucide-react';
 import { useFormatter, useLocale, useTranslations } from 'next-intl';
 import { Popover } from 'radix-ui';

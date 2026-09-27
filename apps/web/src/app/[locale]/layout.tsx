@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { connection } from 'next/server';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
-import { PRODUCT_NAME } from '@virtus/shared';
+import { PRODUCT_NAME } from '@veris/shared';
 import { routing } from '@/i18n/routing';
 import { Providers } from './providers';
 import '../globals.css';

@@ -1,5 +1,5 @@
 {
-  "name": "Virtus Assets",
+  "name": "Veris Assets",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:24-bookworm",
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:4": {}
@@ -15,7 +15,7 @@
   "postCreateCommand": "sudo corepack enable && pnpm install",
   "forwardPorts": [3000, 8025],
   "portsAttributes": {
-    "3000": { "label": "Virtus Assets (web)", "onAutoForward": "notify" },
+    "3000": { "label": "Veris Assets (web)", "onAutoForward": "notify" },
     "8025": { "label": "Mailpit (test emails)", "onAutoForward": "silent" }
   },
   "otherPortsAttributes": {

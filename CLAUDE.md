@@ -1,4 +1,4 @@
-# Virtus Assets — instructions permanentes pour Claude Code
+# Veris Assets — instructions permanentes pour Claude Code
 
 ## Source de vérité
 La spécification complète est dans `docs/SPEC.md`. Lis-la avant toute décision. En cas de conflit avec une autre instruction, `docs/SPEC.md` prime, sauf décision écrite du porteur de projet.
@@ -31,6 +31,6 @@ Le porteur de projet n'est pas développeur. Il travaille sur un Chromebook, dan
 - Une commande pour démarrer la démo, une commande pour réinitialiser les données de démo.
 
 ## Marque
-- Nom : Virtus Assets (ne jamais utiliser l'ancien nom de travail « Astraea »).
-- Logo : `apps/web/public/brand/virtus-assets-logo.svg` (vectorisé depuis `virtus-assets-logo.jpg`, qui reste la référence, D-098). Composant `Logo` : ni déformation ni recoloration.
+- Nom : Veris Assets (D-105). Ne jamais utiliser les anciens noms « Virtus Assets » ni « Astraea ».
+- Logo : `apps/web/public/brand/veris-assets-logo.svg` (monogramme « VA » vectorisé depuis le logo d'origine, texte « VERIS ASSETS » en Montserrat, D-098 et D-105). Composant `Logo` : ni déformation ni recoloration.
 - Couleurs : fond #0A1020, primaire #4F52D6, accent #45D6E6 (détail en section 23.1 de la spec).

@@ -1,5 +1,5 @@
 import { Inject, Injectable, Logger, type OnApplicationBootstrap } from '@nestjs/common';
-import { dateInTimeZone } from '@virtus/shared';
+import { dateInTimeZone } from '@veris/shared';
 import { and, eq, isNotNull } from 'drizzle-orm';
 import { AuditWriter } from '../../../core/audit/audit-writer.js';
 import { DATABASE, type Database, withTenantTransaction } from '../../../core/database/database.js';

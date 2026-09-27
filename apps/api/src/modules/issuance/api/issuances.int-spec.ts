@@ -1,7 +1,7 @@
 // Issuances (phase 10, docs/BACKLOG.md P10-1 to P10-5) and scenario 1 of SPEC §29 at the API level
 // (the browser version runs with Playwright, tests/e2e).
 import { randomUUID } from 'node:crypto';
-import type { ErrorResponseBody } from '@virtus/shared';
+import type { ErrorResponseBody } from '@veris/shared';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { startIntegrationApp, type IntegrationApp } from '../../../test/integration-app.js';

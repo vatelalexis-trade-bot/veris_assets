@@ -1,4 +1,4 @@
-# Architecture technique — Virtus Assets
+# Architecture technique — Veris Assets
 
 Livrables 2 (architecture technique), 3 (comparaison des technologies, synthèse), 6 (architecture front-end) et 7 (architecture back-end) de `docs/SPEC.md`.
 Les décisions référencées `D-xxx` sont dans `docs/DECISIONS.md`. Modèle de données : `docs/DATA_MODEL.md`. API : `docs/API.md`.
@@ -64,7 +64,7 @@ Points de vigilance : Drizzle est en 0.x et Better Auth en 1.x → versions fig�
 ## 3. Organisation du dépôt
 
 ```
-virtus_assets/
+veris_assets/
 ├─ .devcontainer/            Codespaces : image, services, ports, 4 cœurs (D-008)
 ├─ .github/workflows/        CI : lint, typecheck, tests, e2e, contrôles de frontières
 ├─ docker-compose.yml        PostgreSQL, Redis, stockage S3, Mailpit (+ profil observability)

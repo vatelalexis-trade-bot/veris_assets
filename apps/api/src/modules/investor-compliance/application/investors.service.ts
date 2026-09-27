@@ -1,11 +1,6 @@
 import { randomInt } from 'node:crypto';
 import { Inject, Injectable } from '@nestjs/common';
-import type {
-  InvestorClassification,
-  InvestorType,
-  KycStatus,
-  ProfileStatus,
-} from '@virtus/shared';
+import type { InvestorClassification, InvestorType, KycStatus, ProfileStatus } from '@veris/shared';
 import { and, asc, count, desc, eq, ilike, or, sql, type SQL } from 'drizzle-orm';
 import { AuditWriter } from '../../../core/audit/audit-writer.js';
 import { changedValues } from '../../../core/audit/changed-values.js';

@@ -10,7 +10,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { ROLE_PERMISSIONS } from '@virtus/shared';
+import { ROLE_PERMISSIONS } from '@veris/shared';
 import { z } from 'zod';
 import { toOpenApiSchema } from '../../../core/openapi/zod-openapi.js';
 import { Idempotent } from '../../../core/idempotency/idempotent.decorator.js';

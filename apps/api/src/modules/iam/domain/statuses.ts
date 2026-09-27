@@ -1,4 +1,4 @@
-import { defineStateMachine } from '@virtus/shared';
+import { defineStateMachine } from '@veris/shared';
 
 export const ACCOUNT_STATUSES = ['ACTIVE', 'INACTIVE'] as const;
 export type AccountStatus = (typeof ACCOUNT_STATUSES)[number];

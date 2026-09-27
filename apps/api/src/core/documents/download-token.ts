@@ -21,7 +21,7 @@ export class DownloadTokens {
 
   constructor(secret: string) {
     // A key of its own, derived from the application secret.
-    this.key = createHmac('sha256', secret).update('virtus:document-download').digest();
+    this.key = createHmac('sha256', secret).update('veris:document-download').digest();
   }
 
   issue(

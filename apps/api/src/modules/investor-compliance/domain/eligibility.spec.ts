@@ -1,4 +1,4 @@
-import { ELIGIBILITY_RULE_CODES, type EligibilityRuleCode } from '@virtus/shared';
+import { ELIGIBILITY_RULE_CODES, type EligibilityRuleCode } from '@veris/shared';
 import { describe, expect, it } from 'vitest';
 import {
   evaluateEligibility,

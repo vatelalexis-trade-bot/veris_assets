@@ -11,7 +11,7 @@ import {
   ISSUANCE_DOCUMENT_KINDS,
   ROUNDING_METHODS,
   type IssuanceDocumentKind,
-} from '@virtus/shared';
+} from '@veris/shared';
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState, type ReactElement } from 'react';
 import { ApiError } from '@/components/app/api-error';

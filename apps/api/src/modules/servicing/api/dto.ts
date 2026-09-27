@@ -1,4 +1,4 @@
-import { CURRENCY_MINOR_UNITS, isCurrencyCode, parseDecimal } from '@virtus/shared';
+import { CURRENCY_MINOR_UNITS, isCurrencyCode, parseDecimal } from '@veris/shared';
 import { z } from 'zod';
 import { paginationQuery } from '../../../core/http/pagination.js';
 import type {

@@ -1,6 +1,6 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query } from '@nestjs/common';
 import { ApiBody, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { KYC_CASE_STATUSES } from '@virtus/shared';
+import { KYC_CASE_STATUSES } from '@veris/shared';
 import { z } from 'zod';
 import { ApiPageQuery, pageSchema } from '../../../core/http/pagination.js';
 import { Idempotent } from '../../../core/idempotency/idempotent.decorator.js';

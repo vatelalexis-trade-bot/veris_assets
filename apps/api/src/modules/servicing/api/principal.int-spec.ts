@@ -2,7 +2,7 @@
 // total early redemption. REDEMPTION movements bring every position to zero, then the issuance
 // is MATURED.
 import { randomUUID } from 'node:crypto';
-import { dateInTimeZone, type ErrorResponseBody } from '@virtus/shared';
+import { dateInTimeZone, type ErrorResponseBody } from '@veris/shared';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { startIntegrationApp, type IntegrationApp } from '../../../test/integration-app.js';

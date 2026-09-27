@@ -5,7 +5,7 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 const USE_DECIMAL =
-  'Amounts, quantities and rates use Decimal from @virtus/shared, never JavaScript numbers (SPEC rule 7).';
+  'Amounts, quantities and rates use Decimal from @veris/shared, never JavaScript numbers (SPEC rule 7).';
 
 /**
  * Forbids the usual ways of turning amounts into floating-point numbers. Arithmetic operators on

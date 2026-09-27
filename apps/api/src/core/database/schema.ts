@@ -148,7 +148,7 @@ export const auditEvent = auditSchema.table(
 
 // Notifications (SPEC §15)
 
-/** In-app notification of one user. Texts come from the catalogue of @virtus/shared. */
+/** In-app notification of one user. Texts come from the catalogue of @veris/shared. */
 export const notification = coreSchema.table(
   'notification',
   {

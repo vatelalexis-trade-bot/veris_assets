@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { ISSUANCE_WIZARD_STEPS, type IssuanceWizardStep } from '@virtus/shared';
+import { ISSUANCE_WIZARD_STEPS, type IssuanceWizardStep } from '@veris/shared';
 import { Check } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useCallback, useMemo, useRef, useState } from 'react';

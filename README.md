@@ -1,4 +1,4 @@
-# Virtus Assets
+# Veris Assets
 
 Plateforme SaaS B2B de gestion du cycle de vie d'actifs privés numériques — **MVP de démonstration, données fictives uniquement**.
 
@@ -20,7 +20,7 @@ Cette commande unique :
 2. démarre les services Docker : PostgreSQL (base de données), Redis (cache), Garage (stockage des documents) et Mailpit (boîte email de test) ;
 3. lance l'API et l'application web.
 
-Quand le terminal affiche `Virtus Assets — development environment`, ouvrez l'adresse indiquée après **Web app** (Ctrl + clic). Codespaces propose aussi d'ouvrir le port 3000 dans une notification.
+Quand le terminal affiche `Veris Assets — development environment`, ouvrez l'adresse indiquée après **Web app** (Ctrl + clic). Codespaces propose aussi d'ouvrir le port 3000 dans une notification.
 
 Pour arrêter l'application : **Ctrl + C** dans le terminal. Les services Docker continuent de tourner ; pour les arrêter aussi : `pnpm services:down`.
 

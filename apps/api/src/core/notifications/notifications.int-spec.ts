@@ -1,6 +1,6 @@
 // Outbox, notifications and their emails (phase 7, docs/BACKLOG.md P7-2 and P7-4).
 import { randomUUID } from 'node:crypto';
-import type { ErrorResponseBody } from '@virtus/shared';
+import type { ErrorResponseBody } from '@veris/shared';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { startIntegrationApp, type IntegrationApp } from '../../test/integration-app.js';

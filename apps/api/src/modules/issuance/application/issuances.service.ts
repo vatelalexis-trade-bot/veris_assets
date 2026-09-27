@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import type { IssuanceStatus, IssuanceWizardStep } from '@virtus/shared';
+import type { IssuanceStatus, IssuanceWizardStep } from '@veris/shared';
 import {
   and,
   asc,

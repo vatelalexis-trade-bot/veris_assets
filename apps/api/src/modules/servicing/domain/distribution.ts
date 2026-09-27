@@ -5,7 +5,7 @@ import {
   roundDecimal,
   type Decimal,
   type RoundingMethod,
-} from '@virtus/shared';
+} from '@veris/shared';
 
 export const DISTRIBUTION_STATUSES = [
   'DRAFT',

@@ -1,6 +1,6 @@
 // Pure rules of the append-only ledger (SPEC §10.3, §10.4; docs/ARCHITECTURE.md §4.6): what each
 // movement does to the positions, the chained hash, and the invariants recomputed from the entries.
-import { parseDecimal, type Decimal } from '@virtus/shared';
+import { parseDecimal, type Decimal } from '@veris/shared';
 
 export const LEDGER_ENTRY_TYPES = [
   'ISSUANCE',

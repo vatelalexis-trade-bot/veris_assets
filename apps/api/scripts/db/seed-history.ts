@@ -4,7 +4,7 @@
 // - An invitation refused because the investor's country is excluded (Juniper, US, solar project).
 // - Notifications of the demo users about the work that waits for them and what they received.
 // - The audit log of every seeded change of status, as the application would have written it.
-import { addDays, addMonths, dateInTimeZone } from '@virtus/shared';
+import { addDays, addMonths, dateInTimeZone } from '@veris/shared';
 import { ELIGIBILITY_ENGINE_VERSION } from '../../src/modules/investor-compliance/domain/eligibility.js';
 import { deterministicUuid } from './deterministic-id.js';
 import { investorId } from './seed-investors.js';

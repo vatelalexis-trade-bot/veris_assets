@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { EligibilityStatus } from '@virtus/shared';
+import type { EligibilityStatus } from '@veris/shared';
 import { useFormatter, useLocale, useTranslations } from 'next-intl';
 import { useState, type FormEvent } from 'react';
 import { ApiError } from '@/components/app/api-error';

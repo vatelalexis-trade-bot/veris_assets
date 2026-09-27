@@ -5,7 +5,7 @@ import {
   NOTIFICATION_TYPES,
   type NotificationCategory,
   type NotificationType,
-} from '@virtus/shared';
+} from '@veris/shared';
 import { and, count, desc, eq, isNull, type SQL } from 'drizzle-orm';
 import type { RequestUser } from '../context/request-context.js';
 import {

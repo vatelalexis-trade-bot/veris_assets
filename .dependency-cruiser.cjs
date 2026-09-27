@@ -73,7 +73,7 @@ module.exports = {
     {
       name: 'domain-is-pure',
       comment:
-        'Domain code (state machines, calculations, eligibility) is pure: it only uses its own domain folder and @virtus/shared.',
+        'Domain code (state machines, calculations, eligibility) is pure: it only uses its own domain folder and @veris/shared.',
       severity: 'error',
       from: { path: `^${MODULES}/([^/]+)/domain/` },
       to: {

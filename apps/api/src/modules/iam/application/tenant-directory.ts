@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { dateInTimeZone, type BusinessDate } from '@virtus/shared';
+import { dateInTimeZone, type BusinessDate } from '@veris/shared';
 import { eq } from 'drizzle-orm';
 import {
   DATABASE,

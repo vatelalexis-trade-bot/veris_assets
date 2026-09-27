@@ -26,14 +26,14 @@ fi
 export WEB_ORIGIN="${web_url}"
 
 echo "Building the application (a few minutes)…"
-pnpm --filter @virtus/shared build
-pnpm --filter @virtus/api build
+pnpm --filter @veris/shared build
+pnpm --filter @veris/api build
 # Next.js builds and serves a production bundle only with NODE_ENV=production.
-NODE_ENV=production pnpm --filter @virtus/web build
+NODE_ENV=production pnpm --filter @veris/web build
 
 cat <<INFO
 
-  Virtus Assets — preview (built version)
+  Veris Assets — preview (built version)
   Web app ........ ${web_url}
   Test emails .... ${mail_url}
 
@@ -41,9 +41,9 @@ INFO
 
 # Both processes stop together on Ctrl+C. The web app starts once the API answers.
 trap 'kill 0' EXIT
-pnpm --filter @virtus/api run start &
+pnpm --filter @veris/api run start &
 for _ in $(seq 1 60); do
   curl -sf -o /dev/null "http://${API_HOST}:${API_PORT}/health" && break
   sleep 1
 done
-NODE_ENV=production pnpm --filter @virtus/web run start
+NODE_ENV=production pnpm --filter @veris/web run start

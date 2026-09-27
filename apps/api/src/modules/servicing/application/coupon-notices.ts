@@ -1,5 +1,5 @@
 import { Injectable, type OnModuleInit } from '@nestjs/common';
-import { parseDecimal } from '@virtus/shared';
+import { parseDecimal } from '@veris/shared';
 import { and, eq } from 'drizzle-orm';
 import type { Transaction } from '../../../core/database/database.js';
 import { DocumentsService } from '../../../core/documents/documents.service.js';

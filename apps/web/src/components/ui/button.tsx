@@ -3,7 +3,7 @@ import { Slot } from 'radix-ui';
 import type { ComponentProps } from 'react';
 import { cn } from '@/lib/utils';
 
-// Adapted from shadcn/ui (radix-nova style) to the Virtus Assets theme tokens.
+// Adapted from shadcn/ui (radix-nova style) to the Veris Assets theme tokens.
 const buttonVariants = cva(
   'inline-flex shrink-0 items-center justify-center gap-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
   {

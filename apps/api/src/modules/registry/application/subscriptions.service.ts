@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { parseDecimal } from '@virtus/shared';
+import { parseDecimal } from '@veris/shared';
 import { and, asc, count, desc, eq, inArray, ne, sql, sum, type SQL } from 'drizzle-orm';
 import { AuditWriter } from '../../../core/audit/audit-writer.js';
 import { currentUser, type RequestUser } from '../../../core/context/request-context.js';

@@ -24,7 +24,7 @@ export function createPool(env: Env): pg.Pool {
     password: env.DB_APP_PASSWORD,
     max: 10,
     connectionTimeoutMillis: 2000,
-    application_name: 'virtus-assets-api',
+    application_name: 'veris-assets-api',
   });
 }
 

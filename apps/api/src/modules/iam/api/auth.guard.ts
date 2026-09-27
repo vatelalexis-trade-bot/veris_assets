@@ -1,6 +1,6 @@
 import { type CanActivate, type ExecutionContext, Injectable, Logger } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import type { Permission } from '@virtus/shared';
+import type { Permission } from '@veris/shared';
 import { setRequestUser } from '../../../core/context/request-context.js';
 import { AppError } from '../../../core/errors/app-error.js';
 import {

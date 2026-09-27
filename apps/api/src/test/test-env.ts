@@ -2,7 +2,7 @@
 export const TEST_ENV_SOURCE: Record<string, string> = {
   NODE_ENV: 'test',
   LOG_LEVEL: 'silent',
-  POSTGRES_DB: 'virtus_assets_test',
+  POSTGRES_DB: 'veris_assets_test',
   DB_APP_PASSWORD: 'test-password',
   DB_AUTH_PASSWORD: 'test-auth-password',
   DB_JOBS_PASSWORD: 'test-jobs-password',

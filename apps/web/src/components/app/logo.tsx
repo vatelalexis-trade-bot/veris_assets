@@ -8,8 +8,8 @@ import { cn } from '@/lib/utils';
 export function Logo({ className }: { className?: string }) {
   return (
     <Image
-      src="/brand/virtus-assets-logo.svg"
-      alt="Virtus Assets"
+      src="/brand/veris-assets-logo.svg"
+      alt="Veris Assets"
       width={736}
       height={441}
       priority

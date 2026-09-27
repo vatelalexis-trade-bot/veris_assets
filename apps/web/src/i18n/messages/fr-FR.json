@@ -1,6 +1,6 @@
 {
   "common": {
-    "productName": "Virtus Assets",
+    "productName": "Veris Assets",
     "skipToContent": "Aller au contenu principal",
     "loading": "Chargement…",
     "retry": "Réessayer",
@@ -289,7 +289,7 @@
       "passwordStep": "Confirmez votre mot de passe pour commencer.",
       "continue": "Continuer",
       "scan": "Scannez ce QR code avec votre application d’authentification.",
-      "qrAlt": "QR code pour ajouter Virtus Assets à votre application d’authentification",
+      "qrAlt": "QR code pour ajouter Veris Assets à votre application d’authentification",
       "manualKey": "Ou saisissez cette clé manuellement : {key}",
       "backupCodes": "Codes de secours",
       "backupCodesHelp": "Conservez ces codes en lieu sûr : chacun permet de se connecter une fois en cas de perte du téléphone. Ils ne seront plus affichés.",
@@ -312,7 +312,7 @@
       "missingToken": "Ce lien est incomplet. Demandez-en un nouveau."
     },
     "invitation": {
-      "title": "Rejoindre Virtus Assets",
+      "title": "Rejoindre Veris Assets",
       "tenantInvitation": "{name}, vous êtes invité(e) à rejoindre {tenant} en tant que {role}.",
       "platformInvitation": "{name}, vous êtes invité(e) à rejoindre la plateforme en tant que {role}.",
       "choosePassword": "Choisissez votre mot de passe pour activer votre compte ({email}).",
@@ -1719,7 +1719,7 @@
       "eyebrow": "Plateforme de gestion d’actifs privés",
       "title": "Émettez, administrez et servez vos actifs privés",
       "titleAccent": "depuis une seule plateforme.",
-      "subtitle": "Virtus Assets prend en charge tout ce qui suit la term sheet : l’onboarding des investisseurs, les souscriptions, l’allocation, le registre, les coupons et le reporting — avec une piste d’audit complète.",
+      "subtitle": "Veris Assets prend en charge tout ce qui suit la term sheet : l’onboarding des investisseurs, les souscriptions, l’allocation, le registre, les coupons et le reporting — avec une piste d’audit complète.",
       "primaryCta": "Estimer vos économies",
       "secondaryCta": "Découvrir la démo"
     },
@@ -1873,7 +1873,7 @@
     "footer": {
       "tagline": "Gestion du cycle de vie des actifs privés pour les sociétés de gestion et les émetteurs.",
       "demo": "Environnement de démonstration — données fictives, aucun paiement réel, aucune valeur juridique.",
-      "rights": "© {year} Virtus Assets"
+      "rights": "© {year} Veris Assets"
     }
   },
   "calculator": {
@@ -1926,7 +1926,7 @@
     "chart": {
       "compare": "Coût annuel",
       "today": "Aujourd’hui",
-      "withPlatform": "Avec Virtus Assets",
+      "withPlatform": "Avec Veris Assets",
       "breakdown": "D’où viennent les économies",
       "time": "Temps gagné",
       "tools": "Outils",

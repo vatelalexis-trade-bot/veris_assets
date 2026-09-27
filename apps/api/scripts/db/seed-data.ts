@@ -1,5 +1,5 @@
 // Minimal deterministic demonstration data (phase 3). Every name is fictitious (SPEC §3.3, §28).
-import { CURRENCY_MINOR_UNITS } from '@virtus/shared';
+import { CURRENCY_MINOR_UNITS } from '@veris/shared';
 import { deterministicUuid } from './deterministic-id.js';
 
 /** EU and EEA countries, plus the other countries used by the demonstration scenarios. */

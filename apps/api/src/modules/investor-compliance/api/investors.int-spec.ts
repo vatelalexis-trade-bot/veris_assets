@@ -1,6 +1,6 @@
 // Investors and KYC/KYB (phase 8, docs/BACKLOG.md P8-1, P8-2, P8-4, P8-5): the complete KYC journey.
 import { randomUUID } from 'node:crypto';
-import type { ErrorResponseBody } from '@virtus/shared';
+import type { ErrorResponseBody } from '@veris/shared';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { QUEUES } from '../../../core/jobs/queues.js';

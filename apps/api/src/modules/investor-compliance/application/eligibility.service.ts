@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import type { EligibilityStatus } from '@virtus/shared';
+import type { EligibilityStatus } from '@veris/shared';
 import { and, count, desc, eq, type SQL } from 'drizzle-orm';
 import { AuditWriter } from '../../../core/audit/audit-writer.js';
 import { currentUser } from '../../../core/context/request-context.js';

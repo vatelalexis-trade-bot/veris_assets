@@ -8,14 +8,14 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiConsumes } from '@nestjs/swagger';
-import { MAX_DOCUMENT_SIZE_BYTES } from '@virtus/shared';
+import { MAX_DOCUMENT_SIZE_BYTES } from '@veris/shared';
 import { createHash } from 'node:crypto';
 import type { Request, Response } from 'express';
 import multer from 'multer';
 import type { Observable } from 'rxjs';
 import { AppError } from '../errors/app-error.js';
 
-export const UPLOAD = 'virtus:upload';
+export const UPLOAD = 'veris:upload';
 
 const parse = multer({
   storage: multer.memoryStorage(),

@@ -7,7 +7,7 @@ import {
   type InvestorType,
   type KycStatus,
   type ProfileStatus,
-} from '@virtus/shared';
+} from '@veris/shared';
 
 /**
  * Eligibility engine (SPEC §8.4): a pure function — the same facts always give the same result —

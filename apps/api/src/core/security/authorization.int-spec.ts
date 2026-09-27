@@ -1,8 +1,8 @@
 // Authorisation tests generated from the routes and the role × permission matrix (docs/BACKLOG.md
 // P6-5), and scenario 5 of SPEC §29 (tenant isolation) on every route with an identifier.
 import { randomUUID } from 'node:crypto';
-import type { ErrorResponseBody, RoleCode } from '@virtus/shared';
-import { ROLE_PERMISSIONS } from '@virtus/shared';
+import type { ErrorResponseBody, RoleCode } from '@veris/shared';
+import { ROLE_PERMISSIONS } from '@veris/shared';
 import type request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { startIntegrationApp, type IntegrationApp } from '../../test/integration-app.js';

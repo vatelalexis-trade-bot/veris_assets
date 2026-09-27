@@ -1,7 +1,7 @@
 // Eligibility engine and decisions (phase 9, docs/BACKLOG.md P9-2 and P9-4): scenario 2 of SPEC §29
 // for its eligibility part (the subscription attempt itself is completed in phase 11).
 import { randomUUID } from 'node:crypto';
-import type { ErrorResponseBody } from '@virtus/shared';
+import type { ErrorResponseBody } from '@veris/shared';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { DATABASE, type Database, withTenantTransaction } from '../../../core/database/database.js';

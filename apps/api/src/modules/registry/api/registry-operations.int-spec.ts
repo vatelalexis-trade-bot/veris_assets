@@ -1,7 +1,7 @@
 // Phase 12b (docs/BACKLOG.md P12-4 to P12-9): fictitious payment with four eyes, corrections by
 // counter-entry, the daily reconciliation, the token registry abstraction and concurrent writes.
 import { randomUUID } from 'node:crypto';
-import type { ErrorResponseBody } from '@virtus/shared';
+import type { ErrorResponseBody } from '@veris/shared';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { withTenantTransaction, type Database, DATABASE } from '../../../core/database/database.js';

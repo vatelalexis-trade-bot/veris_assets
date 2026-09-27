@@ -1,4 +1,4 @@
-import { isDecimalString, parseDecimal, type BusinessDate } from '@virtus/shared';
+import { isDecimalString, parseDecimal, type BusinessDate } from '@veris/shared';
 
 export type SubscriptionCheckCode =
   | 'SUBSCRIPTION_WINDOW_NOT_STARTED'

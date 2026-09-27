@@ -1,4 +1,4 @@
-import { isErrorCode, type ErrorCode } from '@virtus/shared';
+import { isErrorCode, type ErrorCode } from '@veris/shared';
 import { TriangleAlert } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';

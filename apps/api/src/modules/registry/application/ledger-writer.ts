@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { parseDecimal } from '@virtus/shared';
+import { parseDecimal } from '@veris/shared';
 import { and, asc, eq, isNull, sql } from 'drizzle-orm';
 import { getRequestContext } from '../../../core/context/request-context.js';
 import {

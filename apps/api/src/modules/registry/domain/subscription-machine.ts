@@ -1,4 +1,4 @@
-import { defineStateMachine } from '@virtus/shared';
+import { defineStateMachine } from '@veris/shared';
 
 export const SUBSCRIPTION_STATUSES = [
   'DRAFT',
