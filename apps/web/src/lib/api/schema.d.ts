@@ -644,6 +644,38 @@ export interface paths {
     patch: operations['SettingsController_update'];
     trace?: never;
   };
+  '/api/v1/tenants/{id}/break-glass': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['BreakGlassController_start'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/break-glass': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete: operations['BreakGlassController_end'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/investors': {
     parameters: {
       query?: never;
@@ -2274,6 +2306,7 @@ export interface operations {
               type:
                 | 'ROLES_CHANGED'
                 | 'NEW_SIGN_IN_ADDRESS'
+                | 'BREAK_GLASS_STARTED'
                 | 'SUSPICIOUS_ACTIVITY'
                 | 'INVITATION_ACCEPTED'
                 | 'KYC_REVIEW_REQUESTED'
@@ -3026,6 +3059,13 @@ export interface operations {
             };
             /** Format: date-time */
             sessionExpiresAt: string;
+            breakGlass: {
+              /** Format: uuid */
+              tenantId: string;
+              reason: string;
+              /** Format: date-time */
+              expiresAt: string;
+            } | null;
           };
         };
       };
@@ -4066,6 +4106,63 @@ export interface operations {
             createdAt: string;
           };
         };
+      };
+    };
+  };
+  BreakGlassController_start: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description UUID chosen by the client for this action. Repeating the request with the same key returns the first answer. */
+        'Idempotency-Key': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          reason: string;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            tenantId: string;
+            reason: string;
+            /** Format: date-time */
+            startedAt: string;
+            /** Format: date-time */
+            expiresAt: string;
+          };
+        };
+      };
+    };
+  };
+  BreakGlassController_end: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
       };
     };
   };

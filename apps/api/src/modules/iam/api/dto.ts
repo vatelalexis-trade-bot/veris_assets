@@ -45,6 +45,10 @@ export const meResult = z.object({
   homePortal: portal,
   mfa: z.object({ enabled: z.boolean(), required: z.boolean() }),
   sessionExpiresAt: z.iso.datetime(),
+  /** Emergency access in progress (read-only, one organisation), or null. */
+  breakGlass: z
+    .object({ tenantId: z.uuid(), reason: z.string(), expiresAt: z.iso.datetime() })
+    .nullable(),
 });
 export const mfaEnrollmentResult = z.object({
   totpUri: z.string(),

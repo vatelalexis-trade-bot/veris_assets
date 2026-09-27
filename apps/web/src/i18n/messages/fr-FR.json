@@ -61,7 +61,7 @@
       "metrics": "Indicateurs",
       "templates": "Modèles d’emails",
       "settings": "Paramètres",
-      "break-glass": "Accès exceptionnel"
+      "break-glass": "Accès d’urgence"
     }
   },
   "placeholder": {
@@ -646,7 +646,10 @@
       "EXPORT_REQUESTED": "Export demandé",
       "EXPORT_GENERATED": "Export généré",
       "SECURITY_NEW_SIGN_IN_ADDRESS": "Connexion depuis une nouvelle adresse",
-      "SECURITY_SUSPICIOUS_ACTIVITY": "Activité suspecte"
+      "SECURITY_SUSPICIOUS_ACTIVITY": "Activité suspecte",
+      "BREAK_GLASS_STARTED": "Accès d’urgence ouvert",
+      "BREAK_GLASS_ACCESS": "Page consultée en accès d’urgence",
+      "BREAK_GLASS_ENDED": "Accès d’urgence terminé"
     }
   },
   "investors": {
@@ -1931,5 +1934,26 @@
       "incidents": "Incidents"
     },
     "disclaimer": "Estimations indicatives fondées sur vos chiffres et les hypothèses affichées ; ni engagement contractuel, ni offre de prix."
+  },
+  "breakGlass": {
+    "title": "Accès d’urgence",
+    "description": "Accès en lecture seule aux données d’une organisation, quand le support l’exige. À n’utiliser qu’avec un motif documenté.",
+    "rules": {
+      "readOnly": "Lecture seule : vous voyez les écrans de l’organisation, sans pouvoir rien modifier, approuver ni exporter.",
+      "duration": "Une heure au plus ; vous pouvez y mettre fin à tout moment.",
+      "traced": "Le motif et chaque page consultée sont inscrits dans le journal d’audit de l’organisation.",
+      "notified": "Les administrateurs de l’organisation sont prévenus immédiatement."
+    },
+    "tenant": "Organisation",
+    "chooseTenant": "Choisissez une organisation",
+    "reason": "Motif",
+    "reasonHint": "Par exemple le ticket de support et ce que vous devez vérifier (10 caractères au moins).",
+    "start": "Ouvrir l’accès d’urgence",
+    "errors": {
+      "tenant": "Choisissez une organisation.",
+      "reason": "Indiquez un motif d’au moins 10 caractères."
+    },
+    "banner": "Accès d’urgence en lecture seule à {tenant} — prend fin à {time}.",
+    "end": "Mettre fin à l’accès"
   }
 }

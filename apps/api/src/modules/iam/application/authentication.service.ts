@@ -4,6 +4,7 @@ import { AuditWriter } from '../../../core/audit/audit-writer.js';
 import { AppError } from '../../../core/errors/app-error.js';
 import { RateLimiter, type RateLimit } from '../../../core/security/rate-limiter.js';
 import { SecurityMonitor } from '../../../core/security/security-monitor.js';
+import { BREAK_GLASS_PERMISSIONS, BreakGlass, type BreakGlassGrant } from './break-glass.js';
 import { afterFailedSignIn, isLocked } from '../domain/lockout.js';
 import { checkPassword } from '../domain/password-policy.js';
 import {
@@ -33,6 +34,8 @@ export interface AuthContext {
   homePortal: Portal;
   portals: Portal[];
   sessionExpiresAt: Date;
+  /** Emergency access of a Platform Administrator to one organisation (D-103), if open. */
+  breakGlass: BreakGlassGrant | null;
 }
 
 /** Request data passed to Better Auth: cookies, client address and user agent. */
@@ -82,6 +85,7 @@ export class AuthenticationService {
     private readonly audit: AuditWriter,
     private readonly rateLimiter: RateLimiter,
     private readonly monitor: SecurityMonitor,
+    private readonly breakGlass: BreakGlass,
   ) {}
 
   /** Email + password. Answers MFA_REQUIRED when a second factor must follow. */
@@ -219,6 +223,28 @@ export class AuthenticationService {
     if (!identity || identity.status !== 'ACTIVE' || !identity.tenantActive) return null;
     const roles = await this.identities.rolesOf(identity.id);
     const permissions = await this.identities.permissionsOf(identity.id);
+    const breakGlass = roles.includes('PLATFORM_ADMIN')
+      ? await this.breakGlass.active(identity.id)
+      : null;
+    if (breakGlass) {
+      // Read-only within one organisation, for the time of the access only.
+      return {
+        userId: identity.id,
+        email: identity.email,
+        name: identity.name,
+        tenantId: breakGlass.tenantId,
+        investorId: null,
+        locale: identity.locale,
+        roles,
+        permissions: new Map(BREAK_GLASS_PERMISSIONS.map((permission) => [permission, 'all'])),
+        mfaEnabled: identity.twoFactorEnabled,
+        mfaRequired: requiresMfa(roles),
+        homePortal: 'issuer',
+        portals: ['issuer'],
+        sessionExpiresAt: new Date(found.session.expiresAt),
+        breakGlass,
+      };
+    }
     return {
       userId: identity.id,
       email: identity.email,
@@ -233,6 +259,7 @@ export class AuthenticationService {
       homePortal: homePortal(roles),
       portals: allowedPortals(roles),
       sessionExpiresAt: new Date(found.session.expiresAt),
+      breakGlass: null,
     };
   }
 

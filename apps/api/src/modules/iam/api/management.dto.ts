@@ -11,6 +11,15 @@ const timezone = z.string().refine((value) => Intl.supportedValuesOf('timeZone')
 const organizationType = z.enum(['ISSUER', 'ASSET_MANAGER', 'FUND']);
 
 export const idParam = z.uuid();
+
+/** An emergency access of a Platform Administrator (D-103). */
+export const breakGlassView = z.object({
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  reason: z.string(),
+  startedAt: z.iso.datetime(),
+  expiresAt: z.iso.datetime(),
+});
 export const listQuery = z.object({
   page: z.coerce.number().int().min(1).default(1),
   pageSize: z.coerce.number().int().min(1).max(100).default(25),

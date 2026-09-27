@@ -11,6 +11,7 @@ import { NotificationEmails } from '../../../core/notifications/notification-ema
 import { OutboxRelay, type OutboxEventRecord } from '../../../core/outbox/outbox-relay.js';
 import { SECURITY_EVENTS } from '../../../core/security/security-monitor.js';
 import { user, userInvitation } from '../infrastructure/schema.js';
+import { BREAK_GLASS_EVENTS } from './break-glass.js';
 import { UserDirectory } from './user-directory.js';
 
 /** Business events of the identity module (outbox, SPEC §15). */
@@ -57,6 +58,14 @@ export class IamEvents implements OnModuleInit {
           resourceId: event.aggregateId,
         },
       ]),
+    );
+    this.relay.on(BREAK_GLASS_EVENTS.started, async (tx, event) =>
+      (await this.users.activeUsersWithRole(tx, 'ISSUER_ADMIN')).map((userId) => ({
+        userId,
+        type: 'BREAK_GLASS_STARTED' as const,
+        resourceType: 'tenant',
+        resourceId: event.aggregateId,
+      })),
     );
     this.relay.on(SECURITY_EVENTS.suspiciousActivity, async (tx, event) =>
       (await this.users.activeUsersWithRole(tx, 'ISSUER_ADMIN')).map((userId) => ({

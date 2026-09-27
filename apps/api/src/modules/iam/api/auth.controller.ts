@@ -102,6 +102,13 @@ export class AuthController {
       homePortal: auth.homePortal,
       mfa: { enabled: auth.mfaEnabled, required: auth.mfaRequired },
       sessionExpiresAt: auth.sessionExpiresAt.toISOString(),
+      breakGlass: auth.breakGlass
+        ? {
+            tenantId: auth.breakGlass.tenantId,
+            reason: auth.breakGlass.reason,
+            expiresAt: auth.breakGlass.expiresAt,
+          }
+        : null,
     };
   }
 

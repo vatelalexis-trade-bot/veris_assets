@@ -667,3 +667,10 @@ Proposée par Claude, à valider par le porteur de projet.
 2. `pnpm db:restore` restaure la dernière sauvegarde dans une base à part (`<base>_restore`) et la compare au manifeste : les tables et la chaîne du registre doivent être identiques. `--replace` la remet à la place de la base de démo, avec les documents ; c'est refusé en production.
 3. La CI sauvegarde et restaure la base de démo à chaque push.
 4. En ligne (phase 16b) : sauvegardes automatiques des volumes Railway (D-097), plus cette sauvegarde logique, planifiée et copiée hors de Railway. Les modalités seront précisées en 16b.
+
+**D-103 — Proposée. Accès d'urgence (« break-glass ») de l'administrateur de la plateforme (P16-6, spec 4.1).**
+1. L'accès est ouvert depuis la console plateforme (« Accès d'urgence »). Il faut choisir une organisation active et donner un motif d'au moins 10 caractères. Il dure une heure (valeur par défaut de la spec) et peut être terminé à tout moment.
+2. Pendant l'accès, l'administrateur est dans le portail émetteur de cette organisation, avec les permissions de lecture de l'Auditeur, sauf les exports (qui créent des données) et sauf les documents confidentiels (le rôle Auditeur n'y a pas accès). Il n'a plus ses droits de plateforme : il doit terminer l'accès pour les retrouver. Un bandeau rouge le rappelle sur chaque page.
+3. Traçabilité dans le journal d'audit de l'organisation : ouverture (avec le motif), chaque requête (sauf la lecture de la session et du compteur de notifications), fin. Les administrateurs émetteurs de l'organisation sont prévenus à l'ouverture (notification et email de sécurité).
+4. L'autorisation est gardée dans Redis avec une durée de vie d'une heure : elle expire d'elle-même, sans tâche de nettoyage. L'historique durable est celui du journal d'audit. Écart avec docs/ARCHITECTURE.md §4.1, qui rangeait l'accès dans le module `iam` : c'est bien le cas, mais sans table en base.
+5. Routes : `POST /tenants/{id}/break-glass` (motif ; clé d'idempotence) et `DELETE /break-glass`, avec la permission `break-glass:request`. `GET /auth/me` indique l'accès en cours.

@@ -119,7 +119,7 @@ Ces routes sont celles de l'API ; Better Auth n'est pas exposé directement (D-0
 | PATCH | `/tenants/{id}` | `tenant:manage` | |
 | POST | `/tenants/{id}/activate` · `/deactivate` (la désactivation coupe les sessions) | `tenant:manage` | ✓ |
 | POST | `/tenants/{id}/administrators` (inviter un autre Issuer Administrator, D-037) | `tenant:manage` | ✓ |
-| POST | `/tenants/{id}/break-glass` (motif obligatoire ; phase 16, D-034) | `break-glass:request` | ✓ |
+| POST | `/tenants/{id}/break-glass` (`reason` de 10 caractères au moins ; une heure, lecture seule, D-103) · DELETE `/break-glass` (fin de l'accès) | `break-glass:request` | ✓ (POST) |
 | GET | `/platform/metrics` | `platform-metrics:read` | |
 | GET / PUT | `/platform/notification-templates` | `notification-template:manage` | |
 | GET / PUT | `/platform/reference-data` | `reference-data:manage` | |

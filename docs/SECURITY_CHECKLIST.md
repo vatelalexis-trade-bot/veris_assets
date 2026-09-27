@@ -35,6 +35,7 @@ Légende :
 | Analyse des secrets (*secret scanning*) | 🟡 | Non disponible sur un dépôt GitHub privé sans l'option payante « Advanced Security ». Elle devient gratuite si le dépôt passe en public | décision du porteur de projet |
 | Masquage des données sensibles | ✅ | Masquage dans l'audit (`masking.ts`) et les journaux techniques ; l'export d'audit n'a ni adresse IP ni valeurs (D-093) | `masking.spec.ts` |
 | En-têtes de sécurité | ✅ | Site : CSP avec nonce, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`, `Cross-Origin-Opener-Policy`, HSTS. API : `nosniff`, `no-store`, CSP `default-src 'none'` | `security-headers.int-spec.ts`, `content-security-policy.spec.ts` |
+| Accès exceptionnel de la plateforme | ✅ | Accès d'urgence d'une heure, en lecture seule, avec motif, tracé requête par requête dans l'audit de l'organisation, qui est prévenue (D-103) | `break-glass.int-spec.ts`, `break-glass.spec.ts` (navigateur) |
 | Aucune clé privée blockchain | ✅ | Aucun fournisseur blockchain actif ; `InternalLedgerProvider` seul | revue |
 
 ## Vulnérabilités connues acceptées

@@ -22,4 +22,9 @@ pnpm --filter @virtus/api build
 # development for the API).
 NODE_ENV=production pnpm --filter @virtus/web build
 pnpm --filter @virtus/api run start &
+# The web app starts once the API answers, so that its first pages never meet a closed port.
+for _ in $(seq 1 60); do
+  curl -sf -o /dev/null "http://${API_HOST:-127.0.0.1}:${API_PORT:-4000}/health" && break
+  sleep 1
+done
 NODE_ENV=production exec pnpm --filter @virtus/web run start

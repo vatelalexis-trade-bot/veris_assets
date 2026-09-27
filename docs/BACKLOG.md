@@ -197,16 +197,16 @@ Vérifiable par : démo complète jouable. Livrée en trois fois (D-086) : 15a =
 | P15-10 | Avis de coupon PDF (ex-P14-6, D-079) — **livré (D-092)** | S |
 
 ## Phase 16 — Durcissement et déploiement de démonstration
-Vérifiable par : checklist de la section 24 cochée.
+Vérifiable par : checklist de la section 24 cochée. Livrée en deux fois : 16a = P16-1, P16-2, P16-4, P16-6 (Codespace) ; 16b = P16-3, P16-5, fin de P16-4 et P2-8 (Railway, D-097).
 
 | ID | Élément | Prio |
 |---|---|:-:|
-| P16-1 | Revue sécurité (checklist section 24), en-têtes de sécurité, analyse des dépendances | M |
-| P16-2 | Performances : pagination partout, index, API < 500 ms sur le jeu de démo | M |
+| P16-1 | Revue sécurité (checklist section 24), en-têtes de sécurité, analyse des dépendances — **livré en 16a (D-100, docs/SECURITY_CHECKLIST.md)** | M |
+| P16-2 | Performances : pagination partout, index, API < 500 ms sur le jeu de démo — **livré en 16a (D-101)** | M |
 | P16-3 | Images Docker ; déploiement sur l'hébergement choisi ; Sentry | M |
-| P16-4 | Sauvegardes et restauration testées | M |
+| P16-4 | Sauvegardes et restauration testées — **livré en 16a (D-102)** ; planification en ligne en 16b | M |
 | P16-5 | Documentation d'exploitation et guide de démo en français | M |
-| P16-6 | Accès break-glass (ex-P6-6, D-034) | S |
+| P16-6 | Accès break-glass (ex-P6-6, D-034) — **livré en 16a (D-103)** | S |
 
 ---
 

@@ -61,7 +61,7 @@
       "metrics": "Metrics",
       "templates": "Email templates",
       "settings": "Settings",
-      "break-glass": "Exceptional access"
+      "break-glass": "Emergency access"
     }
   },
   "placeholder": {
@@ -646,7 +646,10 @@
       "EXPORT_REQUESTED": "Export requested",
       "EXPORT_GENERATED": "Export generated",
       "SECURITY_NEW_SIGN_IN_ADDRESS": "Sign-in from a new address",
-      "SECURITY_SUSPICIOUS_ACTIVITY": "Suspicious activity"
+      "SECURITY_SUSPICIOUS_ACTIVITY": "Suspicious activity",
+      "BREAK_GLASS_STARTED": "Emergency access opened",
+      "BREAK_GLASS_ACCESS": "Page viewed under emergency access",
+      "BREAK_GLASS_ENDED": "Emergency access ended"
     }
   },
   "investors": {
@@ -1931,5 +1934,26 @@
       "incidents": "Incidents"
     },
     "disclaimer": "Indicative estimates based on your figures and the assumptions shown, not a contractual commitment or a price offer."
+  },
+  "breakGlass": {
+    "title": "Emergency access",
+    "description": "Read-only access to one organisation's data, when support requires it. Use it only with a documented reason.",
+    "rules": {
+      "readOnly": "Read-only: you can view the organisation's screens, but you cannot change, approve or export anything.",
+      "duration": "One hour at most; you can end it at any time.",
+      "traced": "The reason and every page you view are written in the organisation's audit log.",
+      "notified": "The organisation's administrators are told at once."
+    },
+    "tenant": "Organisation",
+    "chooseTenant": "Choose an organisation",
+    "reason": "Reason",
+    "reasonHint": "For example the support ticket and what you need to check (at least 10 characters).",
+    "start": "Open the emergency access",
+    "errors": {
+      "tenant": "Choose an organisation.",
+      "reason": "Give a reason of at least 10 characters."
+    },
+    "banner": "Emergency read-only access to {tenant} — ends at {time}.",
+    "end": "End the access"
   }
 }

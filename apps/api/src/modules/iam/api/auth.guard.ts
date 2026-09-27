@@ -11,6 +11,7 @@ import {
   SESSION_ONLY,
 } from '../../../core/security/public.decorator.js';
 import { AuthenticationService, type AuthContext } from '../application/authentication.service.js';
+import { BreakGlass } from '../application/break-glass.js';
 import { requestInfo, type AuthenticatedRequest } from './http.js';
 
 const TENANT_KEYS = ['tenantId', 'tenant_id'] as const;
@@ -34,6 +35,7 @@ export class AuthGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
     private readonly authentication: AuthenticationService,
+    private readonly breakGlass: BreakGlass,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -52,6 +54,9 @@ export class AuthGuard implements CanActivate {
       roles: auth.roles,
       permissions: auth.permissions,
     });
+    if (auth.breakGlass) {
+      this.breakGlass.traceRequest(auth.userId, auth.breakGlass, request.method, request.path);
+    }
 
     const allowPendingMfa = read<boolean>(ALLOW_PENDING_MFA);
     if (auth.mfaRequired && !auth.mfaEnabled && !allowPendingMfa) {

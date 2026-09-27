@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 import type { PortalId } from '@/features/navigation/portals';
 import { SignOutButton } from '@/features/auth/sign-out-button';
+import { BreakGlassBanner } from '@/features/break-glass/break-glass-banner';
 import { NotificationBell } from '@/features/notifications/notification-bell';
 import { Link } from '@/i18n/navigation';
 import { DemoBanner } from './demo-banner';
@@ -15,6 +16,8 @@ export interface ShellUser {
   tenantName: string | null;
   /** Permissions of the user, to show only the menu entries it may use. */
   permissions: string[];
+  /** Emergency access of a Platform Administrator in progress (D-103). */
+  breakGlass?: { tenantName: string; expiresAt: string } | null;
 }
 
 export function AppShell({
@@ -36,6 +39,12 @@ export function AppShell({
         {t('common.skipToContent')}
       </a>
       <DemoBanner />
+      {user.breakGlass ? (
+        <BreakGlassBanner
+          tenantName={user.breakGlass.tenantName}
+          expiresAt={user.breakGlass.expiresAt}
+        />
+      ) : null}
       <div className="flex flex-1 flex-col md:flex-row">
         <aside className="flex flex-wrap items-center justify-between border-b border-border bg-surface md:w-64 md:flex-col md:flex-nowrap md:items-stretch md:justify-start md:border-r md:border-b-0">
           <Link

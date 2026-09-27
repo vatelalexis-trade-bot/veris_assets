@@ -4,6 +4,8 @@ import type pg from 'pg';
 import { ENV, type Env } from '../../core/config/env.js';
 import { AuthController } from './api/auth.controller.js';
 import { AuthGuard } from './api/auth.guard.js';
+import { BreakGlassController } from './api/break-glass.controller.js';
+import { BreakGlass } from './application/break-glass.js';
 import { InvitationAcceptanceController } from './api/invitations.controller.js';
 import { SettingsController } from './api/settings.controller.js';
 import { TenantsController } from './api/tenants.controller.js';
@@ -39,6 +41,7 @@ import { IdentityRepository } from './infrastructure/identity.repository.js';
     UsersController,
     RolesController,
     SettingsController,
+    BreakGlassController,
   ],
   providers: [
     { provide: AUTH_POOL, inject: [ENV], useFactory: (env: Env) => createAuthPool(env) },
@@ -73,6 +76,7 @@ import { IdentityRepository } from './infrastructure/identity.repository.js';
     IamEvents,
     UserDirectory,
     TenantDirectory,
+    BreakGlass,
     { provide: APP_GUARD, useClass: AuthGuard },
   ],
   exports: [UserDirectory, TenantDirectory],

@@ -13,6 +13,9 @@ export default async function Layout({ children, params }: LayoutProps<'/[locale
         name: user.user.name,
         tenantName: user.tenant?.legalName ?? null,
         permissions: Object.keys(user.permissions),
+        breakGlass: user.breakGlass
+          ? { tenantName: user.tenant?.legalName ?? '—', expiresAt: user.breakGlass.expiresAt }
+          : null,
       }}
     >
       {children}

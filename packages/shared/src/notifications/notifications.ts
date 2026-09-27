@@ -64,6 +64,19 @@ export const NOTIFICATION_TYPES = {
       },
     },
   },
+  BREAK_GLASS_STARTED: {
+    category: 'SECURITY',
+    texts: {
+      'en-GB': {
+        title: 'Emergency access to your organisation',
+        body: 'A Platform Administrator opened a read-only emergency access to your organisation, for one hour at most. Its reason and every page viewed are in the audit log.',
+      },
+      'fr-FR': {
+        title: 'Accès d’urgence à votre organisation',
+        body: 'Un administrateur de la plateforme a ouvert un accès d’urgence en lecture seule à votre organisation, pour une heure au plus. Son motif et chaque page consultée figurent dans le journal d’audit.',
+      },
+    },
+  },
   SUSPICIOUS_ACTIVITY: {
     category: 'SECURITY',
     texts: {
