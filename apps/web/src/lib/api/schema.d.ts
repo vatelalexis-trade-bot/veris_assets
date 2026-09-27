@@ -2273,6 +2273,8 @@ export interface operations {
               /** @enum {string} */
               type:
                 | 'ROLES_CHANGED'
+                | 'NEW_SIGN_IN_ADDRESS'
+                | 'SUSPICIOUS_ACTIVITY'
                 | 'INVITATION_ACCEPTED'
                 | 'KYC_REVIEW_REQUESTED'
                 | 'KYC_RETURNED'
