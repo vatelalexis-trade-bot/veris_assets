@@ -9,16 +9,15 @@ Tout tourne dans le projet Railway `6bb97b26-059a-4e3a-b018-98072a93391b`, envir
 | Service | Rôle | Accès |
 |---|---|---|
 | `web` | Le site et les portails (image `apps/web/Dockerfile`) | Adresse publique en HTTPS |
-| `api` | L'API ; elle prépare la base avant chaque mise en ligne (`pnpm db:setup`) | Réseau privé seulement (`api.railway.internal:4000`) |
+| `api` | L'API ; elle prépare la base avant chaque mise en ligne (`pnpm db:setup`) et fait la sauvegarde de chaque nuit, à 2 h 30 UTC | Réseau privé seulement (`api.railway.internal:4000`) |
 | `postgres` | PostgreSQL 18.6, avec ses données sur un volume | Réseau privé |
 | `redis` | Limites de débit et cache | Réseau privé |
 | `veris-documents` | Stockage des documents, compatible S3 (« Bucket » Railway) | Réservé à l'API (identifiants) |
 | `mailpit` | Boîte des emails de test : aucun email ne part vraiment | Adresse publique, protégée par un mot de passe (utilisateur `demo`) |
-| `backup` | Sauvegarde chaque nuit à 2 h 30 (UTC) ; les 14 dernières sont gardées dans le stockage | Tâche planifiée |
 
 ## Mettre à jour la démo
 
-Chaque push sur `main` redéploie les services `web`, `api` et `backup`. Avant de démarrer, l'API applique les migrations et complète les données de démo.
+Chaque push sur `main` redéploie les services `web`, `mailpit` et `api`. Avant de démarrer, l'API applique les migrations et complète les données de démo.
 
 ## Réinitialiser les données de démo
 
@@ -56,8 +55,10 @@ Offre « Hobby » : 5 $ par mois, 5 $ d'usage inclus. Au-delà, facturation à l
 3. Lancer :
 
    ```
-   bash scripts/railway/setup.sh 6bb97b26-059a-4e3a-b018-98072a93391b vatelalexis-trade-bot/veris_assets
+   node scripts/railway/setup.mjs
    ```
+
+   Le script passe par l'API publique de Railway : l'outil en ligne de commande de Railway n'accepte pas les jetons d'espace de travail pour se lier à un projet. Relancé, il ne crée que ce qui manque.
 
 4. Railway doit avoir accès au dépôt GitHub privé : lors de la première connexion, autoriser l'application GitHub de Railway sur `veris_assets`.
 5. Une fois tout en ligne, le jeton peut être révoqué ; il suffit d'en recréer un pour une prochaine intervention.

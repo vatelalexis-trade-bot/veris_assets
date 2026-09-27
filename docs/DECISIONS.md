@@ -699,7 +699,6 @@ Décisions du porteur de projet.
    - `api` : sur le réseau privé ;
    - `postgres` 18.6 avec un volume, et `redis` ;
    - `mailpit`, protégé par un mot de passe ;
-   - `backup` : tâche planifiée chaque nuit.
 2. Documents : le stockage S3 de Railway (« Buckets », région Amsterdam) remplace Garage en ligne. Garage reste le stockage du Codespace (D-005). Une option `S3_FORCE_PATH_STYLE` choisit le format d'adresse S3 : `true` pour Garage, `false` pour Railway.
 3. Images Docker :
    - `apps/api/Dockerfile` : garde les outils de migration et de sauvegarde, et `pg_dump` 18 ;
@@ -709,6 +708,6 @@ Décisions du porteur de projet.
    - l'API écoute en IPv4 et IPv6 (`API_HOST=::`) ;
    - elle ne fait confiance à l'en-tête `X-Forwarded-For` que depuis le réseau privé (`TRUST_PROXY=loopback,uniquelocal`), pour que les limites de débit voient la vraie adresse des visiteurs.
 5. Avant chaque mise en ligne, l'API exécute `pnpm db:setup` (rôles, migrations, données de démo complétées). En ligne, la réinitialisation de la démo est permise uniquement si `DEMO_MODE=true`.
-6. Sauvegarde nocturne avec `pnpm db:backup --database-only --upload` : la base est copiée dans le stockage (`backups/`), et les 14 dernières copies sont gardées.
+6. Sauvegarde nocturne avec `pnpm db:backup --database-only --upload` : la base est copiée dans le stockage (`backups/`), et les 14 dernières copies sont gardées. Elle tourne dans l'API, comme tâche planifiée (`BACKUP_SCHEDULE=30 2 * * *`, en UTC), et non dans un service à part : l'essai gratuit de Railway limite le projet à 5 services.
 7. **Point d'attention** : en mode démo, la page de connexion affiche le mot de passe des comptes de démo et leurs codes de double authentification. Quiconque connaît l'adresse du site peut donc entrer avec ces comptes. C'est voulu pour une démonstration à des prospects : les données sont fictives et aucun email ne part vraiment. Pour une démo réservée, il suffira de mettre `DEMO_MODE=false` et de communiquer les accès à la main.
 8. Sentry (suivi des erreurs) et OpenTelemetry (P2-8) ne sont pas branchés pour la démonstration : les journaux de Railway et le journal d'audit suffisent. Ils restent à faire avant un usage réel.
