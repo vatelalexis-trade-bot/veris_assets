@@ -59,6 +59,16 @@ Pour quelques euros par mois, un VPS évite ces limites (mise en veille, expirat
 
 Dans tous les cas, il faudra un nom de domaine (quelques euros à une quinzaine d'euros par an selon l'extension), acheté par le porteur de projet.
 
+## Décision finale : Railway (D-097)
+
+Le porteur de projet a retenu **Railway** (société américaine, région européenne d'Amsterdam) : PostgreSQL 18 y tourne dans un conteneur avec un superutilisateur, ce qui garde les quatre rôles ; sauvegardes automatiques des volumes ; facturation à l'usage. Les options ci-dessus restent la référence si la démo doit un jour être hébergée par une société européenne.
+
+- [Railway — régions](https://docs.railway.com/reference/regions)
+- [Railway — PostgreSQL](https://docs.railway.com/guides/postgresql)
+- [Railway — modèle PostgreSQL 18](https://railway.com/deploy/postgresql-18)
+- [Railway — sauvegardes des volumes](https://docs.railway.com/volumes/backups)
+- [Railway — tarifs](https://railway.com/pricing)
+
 ## Sources
 
 - [OVHcloud — offres VPS](https://www.ovhcloud.com/fr/vps/)

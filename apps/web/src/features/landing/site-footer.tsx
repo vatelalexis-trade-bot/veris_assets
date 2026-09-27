@@ -9,7 +9,7 @@ export async function SiteFooter() {
     <footer className="border-t border-border bg-surface/40">
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-12 md:flex-row md:items-start md:justify-between">
         <div className="flex max-w-sm flex-col gap-3">
-          <Logo className="h-14 w-40" />
+          <Logo className="h-14" />
           <p className="text-sm text-muted">{t('footer.tagline')}</p>
         </div>
         <nav aria-label={t('nav.label')} className="flex flex-wrap gap-x-6 gap-y-2 text-sm">

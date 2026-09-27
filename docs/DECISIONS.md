@@ -587,7 +587,7 @@ Validée par le porteur de projet (« ok pour tout »).
 3. Pas de PDF pour l'historique semé : le chargement des données n'écrit pas de fichiers dans le stockage. Les documents générés (D-092) apparaissent pour toute nouvelle opération faite pendant la démo.
 4. « Helios Solar SPV 2027 », cité en exemple par la spec, reste créé par le scénario 1 (assistant de création), pour ne pas doublonner.
 
-**D-095 — Acceptée. Hébergement de la démo : un VPS OVHcloud (spec 33.12, P15-7).** Choix du porteur de projet, sur la comparaison de `docs/HOSTING.md`.
+**D-095 — Remplacée par D-097. Hébergement de la démo : un VPS OVHcloud (spec 33.12, P15-7).** Choix du porteur de projet, sur la comparaison de `docs/HOSTING.md`.
 1. La démo tourne sur un serveur virtuel OVHcloud (VPS-2 visé : 4 vCPU, 8 Go, sauvegarde quotidienne incluse ; offre et prix confirmés à la commande), dans un centre de données européen, avec la même configuration Docker que le Codespace : PostgreSQL 18 et ses quatre rôles, Redis, Garage, Mailpit protégé par mot de passe, HTTPS automatique.
 2. Écarté : les plateformes gérées (Clever Cloud : un seul utilisateur de base ; Scaleway : pas de PostgreSQL 18) et les offres gratuites (mise en veille, expiration des données, ou fournisseur non européen).
 3. Modifie docs/ARCHITECTURE.md §2.1 (« PaaS européen à confirmer ») : un VPS demande plus d'administration ; la phase 16 livre les scripts (installation en une commande, mises à jour de sécurité automatiques, sauvegarde quotidienne de la base, déploiement depuis GitHub) et un guide en français.
@@ -621,3 +621,20 @@ Proposée par Claude, à valider par le porteur de projet.
    - consentement obligatoire ;
    - champ caché anti-robots (un robot reçoit la réponse habituelle, rien n'est envoyé) ;
    - au plus 5 messages par heure et par adresse IP.
+
+**D-097 — Acceptée. Hébergement de la démo : Railway (remplace D-095).** Choix du porteur de projet (« pour la phase 16b on va faire avec Railway »).
+1. **Écart signalé** : Railway est une société américaine ; la spec 33.12 demande de privilégier un hébergement européen. Tous les services sont déployés dans la région européenne « EU West Metal » (Amsterdam, Pays-Bas).
+2. Compatibilité vérifiée (documentation Railway, 27 septembre 2026) : PostgreSQL tourne dans un conteneur à partir de l'image officielle, version 18 disponible, avec un compte superutilisateur. Les quatre rôles (D-039) et les migrations restent donc inchangés. Redis, le stockage compatible S3 (Garage) et Mailpit tournent comme services Docker avec leurs volumes.
+3. Sauvegardes : sauvegardes automatiques des volumes Railway (quotidiennes gardées 6 jours, hebdomadaires 27 jours, mensuelles 89 jours), plus une sauvegarde logique de la base par nos scripts (phase 16a), dont la restauration est testée.
+4. Coût : facturation à l'usage (offre « Hobby » à 5 $ par mois, 5 $ d'usage inclus ; environ 10 $ par Go de mémoire et 20 $ par vCPU par mois). Estimation à confirmer : quelques dizaines de dollars par mois pour la démo complète.
+5. Déploiement depuis GitHub, avec les images Docker livrées en phase 16a/16b ; le porteur de projet crée le compte Railway et, s'il le souhaite, achète un nom de domaine.
+
+## 2026-09-27 — Phase 16a (durcissement)
+
+**D-098 — Proposée. Logo vectoriel (SVG).** À la demande du porteur de projet.
+1. `apps/web/public/brand/virtus-assets-logo.svg` (logo complet) et `virtus-assets-mark.svg` (monogramme seul, aussi utilisé comme icône d'onglet `apps/web/src/app/icon.svg`) sont obtenus par vectorisation automatique du fichier officiel `virtus-assets-logo.jpg` (tracé des contours). Le dégradé de marque de la spec 23.1 (#4F52D6 → #45D6E6) est appliqué au monogramme, et le texte garde la couleur relevée sur l'original.
+2. Fond transparent, aucune déformation : le composant `Logo` fixe la hauteur, la largeur suit les proportions.
+3. Le JPEG reste la référence. Une version dessinée par un graphiste pourra remplacer ces fichiers sans autre changement.
+4. Les PDF générés gardent le nom en texte (D-091).
+
+**D-099 — Proposée. Commande `pnpm preview`.** Elle construit l'application une fois, puis la sert comme en production : toutes les pages s'ouvrent immédiatement. `pnpm dev` reste la commande de développement (rechargement automatique, mais une compilation lente à la première ouverture de chaque page sur un Codespace à 2 processeurs).
