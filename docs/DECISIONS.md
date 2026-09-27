@@ -687,3 +687,25 @@ Décisions du porteur de projet.
 3. Les identifiants des données de démo sont recalculés (ils dérivent du nom) : il faut réinitialiser la démo une fois (`pnpm db:reset`). Les liens de téléchargement en cours deviennent invalides.
 4. La vérification automatique des formulations refuse désormais aussi l'ancien nom « Virtus » dans le code et les textes affichés.
 5. Le dossier du Codespace garde son ancien nom (`/workspaces/virtus_assets`) : GitHub le fixe à la création du Codespace. Un nouveau Codespace, créé après le renommage du dépôt, portera le nouveau nom.
+
+## 2026-09-27 — Phase 16b (mise en ligne sur Railway)
+
+**D-106 — Proposée. Architecture de la démonstration en ligne.** Détail d'exploitation dans `docs/DEPLOYMENT.md`.
+1. Services Railway, tous dans la région EU West (Amsterdam) :
+   - `web` : seul service public, en HTTPS ;
+   - `api` : sur le réseau privé ;
+   - `postgres` 18.6 avec un volume, et `redis` ;
+   - `mailpit`, protégé par un mot de passe ;
+   - `backup` : tâche planifiée chaque nuit.
+2. Documents : le stockage S3 de Railway (« Buckets », région Amsterdam) remplace Garage en ligne. Garage reste le stockage du Codespace (D-005). Une option `S3_FORCE_PATH_STYLE` choisit le format d'adresse S3 : `true` pour Garage, `false` pour Railway.
+3. Images Docker :
+   - `apps/api/Dockerfile` : garde les outils de migration et de sauvegarde, et `pg_dump` 18 ;
+   - `apps/web/Dockerfile` : l'adresse privée de l'API (`API_INTERNAL_URL`) y est fixée à la construction ;
+   - `infra/mailpit/Dockerfile` : ajoute le mot de passe de la boîte de test.
+4. Réseau :
+   - l'API écoute en IPv4 et IPv6 (`API_HOST=::`) ;
+   - elle ne fait confiance à l'en-tête `X-Forwarded-For` que depuis le réseau privé (`TRUST_PROXY=loopback,uniquelocal`), pour que les limites de débit voient la vraie adresse des visiteurs.
+5. Avant chaque mise en ligne, l'API exécute `pnpm db:setup` (rôles, migrations, données de démo complétées). En ligne, la réinitialisation de la démo est permise uniquement si `DEMO_MODE=true`.
+6. Sauvegarde nocturne avec `pnpm db:backup --database-only --upload` : la base est copiée dans le stockage (`backups/`), et les 14 dernières copies sont gardées.
+7. **Point d'attention** : en mode démo, la page de connexion affiche le mot de passe des comptes de démo et leurs codes de double authentification. Quiconque connaît l'adresse du site peut donc entrer avec ces comptes. C'est voulu pour une démonstration à des prospects : les données sont fictives et aucun email ne part vraiment. Pour une démo réservée, il suffira de mettre `DEMO_MODE=false` et de communiquer les accès à la main.
+8. Sentry (suivi des erreurs) et OpenTelemetry (P2-8) ne sont pas branchés pour la démonstration : les journaux de Railway et le journal d'audit suffisent. Ils restent à faire avant un usage réel.

@@ -53,6 +53,14 @@ const envSchema = z.object({
   S3_BUCKET: required,
   S3_ACCESS_KEY_ID: required,
   S3_SECRET_ACCESS_KEY: required,
+  // Garage (development) needs path-style URLs; Railway buckets use virtual-hosted URLs (D-106).
+  S3_FORCE_PATH_STYLE: z
+    .enum(['true', 'false'])
+    .default('true')
+    .transform((value) => value === 'true'),
+  // Proxies whose X-Forwarded-For is trusted (Express "trust proxy"): the web app on the same
+  // machine in development; on Railway, the web service on the private network (D-106).
+  TRUST_PROXY: required.default('loopback'),
 
   // Fictitious external providers (SPEC §27, docs/ARCHITECTURE.md §4.10): success, reject or
   // outage, to play every scenario of the demonstration.

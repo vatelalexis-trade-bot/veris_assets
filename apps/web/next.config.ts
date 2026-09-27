@@ -10,7 +10,11 @@ const codespacesDomain = process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN;
 
 // The browser only talks to this app; /api/* is relayed to the NestJS API (decision D-004),
 // so that session cookies stay on a single origin.
-const apiUrl = `http://${process.env.API_HOST ?? '127.0.0.1'}:${process.env.API_PORT ?? '4000'}`;
+// On Railway, API_INTERNAL_URL is the API's private address (http://api.railway.internal:4000);
+// it is read when the app is built, so it is passed to the build as well (D-106).
+const apiUrl =
+  process.env.API_INTERNAL_URL ??
+  `http://${process.env.API_HOST ?? '127.0.0.1'}:${process.env.API_PORT ?? '4000'}`;
 
 const nextConfig: NextConfig = {
   // Workspace packages are compiled by Next.js like local code.

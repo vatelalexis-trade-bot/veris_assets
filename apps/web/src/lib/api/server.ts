@@ -3,7 +3,9 @@ import { cache } from 'react';
 import type { operations } from './schema';
 
 // The web server calls the API directly on the machine (not through the public address).
-const API_URL = `http://${process.env.API_HOST ?? '127.0.0.1'}:${process.env.API_PORT ?? '4000'}`;
+const API_URL =
+  process.env.API_INTERNAL_URL ??
+  `http://${process.env.API_HOST ?? '127.0.0.1'}:${process.env.API_PORT ?? '4000'}`;
 
 /** Answer of GET /auth/me, generated from the API's OpenAPI document. */
 export type CurrentUser =

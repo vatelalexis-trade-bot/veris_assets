@@ -1,0 +1,17 @@
+# Build context of the images (apps/api/Dockerfile, apps/web/Dockerfile): the repository, without
+# local installs, builds, secrets and data.
+**/node_modules
+**/dist
+**/.next
+**/coverage
+**/*.tsbuildinfo
+.env
+.env.*
+!.env.example
+backups
+playwright-report
+test-results
+.git
+.devcontainer
+docs
+tests

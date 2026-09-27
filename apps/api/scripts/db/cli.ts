@@ -3,12 +3,13 @@
 //   pnpm db:migrate — apply pending migrations only
 //   pnpm db:seed   — load demo data only
 //   pnpm db:reset  — delete the demo database and rebuild it from scratch (fictitious data only)
-//   pnpm db:backup — dump of the database and copy of the documents into backups/ (--database-only)
+//   pnpm db:backup — dump of the database and copy of the documents into backups/ (--database-only);
+//                    --upload also copies it to the S3 storage and keeps the last 14 there
 //   pnpm db:restore — restores the latest backup into <database>_restore and checks it; with
 //                     --replace, puts it in place of the demo database and its documents
 // Add --test to work on the integration test database instead of the demo one.
 import { bootstrapDatabase, dropDatabase, migrateDatabase } from './admin.js';
-import { backupDatabase, restoreDatabase } from './backup.js';
+import { backupDatabase, restoreDatabase, uploadBackup } from './backup.js';
 import { seedDatabase } from './seed.js';
 import { databaseName, loadToolsEnv, type DatabaseTarget, type ToolsEnv } from './tools-env.js';
 
@@ -31,12 +32,16 @@ const COMMANDS = {
       !flags.includes('--database-only'),
     );
     console.log(`Backup written to ${directory} (${manifest.documents} documents).`);
+    if (flags.includes('--upload')) {
+      const kept = await uploadBackup(directory);
+      console.log(`Backup copied to the storage; ${kept} backups kept there.`);
+    }
   },
   async restore(env: ToolsEnv, target: DatabaseTarget, flags: string[]) {
     const replace = flags.includes('--replace');
     const database = databaseName(env, target);
-    if (replace && env.NODE_ENV === 'production') {
-      throw new Error('Refusing to replace a database when NODE_ENV=production: restore it aside.');
+    if (replace && env.NODE_ENV === 'production' && env.DEMO_MODE !== 'true') {
+      throw new Error('Refusing to replace a database in production outside a demonstration.');
     }
     const result = await restoreDatabase(env, replace ? database : `${database}_restore`, {
       documents: replace,

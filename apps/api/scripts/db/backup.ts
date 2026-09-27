@@ -11,6 +11,7 @@ import { dirname, join } from 'node:path';
 import { pipeline } from 'node:stream/promises';
 import { fileURLToPath } from 'node:url';
 import {
+  DeleteObjectsCommand,
   GetObjectCommand,
   ListObjectsV2Command,
   PutObjectCommand,
@@ -128,7 +129,7 @@ function storageOf(env: NodeJS.ProcessEnv) {
   const client = new S3Client({
     endpoint: S3_ENDPOINT,
     region: S3_REGION,
-    forcePathStyle: true,
+    forcePathStyle: env.S3_FORCE_PATH_STYLE !== 'false',
     credentials: { accessKeyId: S3_ACCESS_KEY_ID, secretAccessKey: S3_SECRET_ACCESS_KEY },
   });
   return { client, bucket: S3_BUCKET };
@@ -144,6 +145,8 @@ async function copyDocuments(directory: string): Promise<number> {
       new ListObjectsV2Command({ Bucket: storage.bucket, ContinuationToken: token }),
     );
     for (const object of page.Contents ?? []) {
+      // Earlier backups kept in the same storage are not documents.
+      if (object.Key!.startsWith(BACKUP_PREFIX)) continue;
       const target = join(directory, 'documents', object.Key!);
       mkdirSync(dirname(target), { recursive: true });
       const body = await storage.client.send(
@@ -170,6 +173,54 @@ export async function backupDatabase(env: ToolsEnv, database: string, withDocume
   const manifest = await manifestOf(env, database, documents);
   await writeFile(join(directory, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
   return { directory, manifest };
+}
+
+/** Backups kept in the storage by `--upload`: the most recent ones (D-102). */
+const KEPT_BACKUPS = 14;
+const BACKUP_PREFIX = 'backups/';
+
+/**
+ * Copies a backup's dump and manifest to the S3 storage (`backups/<date>/`) and deletes the
+ * oldest ones beyond the last 14. Used online, where the machine's disk is not kept.
+ */
+export async function uploadBackup(directory: string): Promise<number> {
+  const storage = storageOf(process.env);
+  if (!storage) throw new Error('S3 storage is not configured: cannot upload the backup.');
+  const name = directory.split('/').at(-1)!;
+  for (const file of ['database.dump', 'manifest.json']) {
+    await storage.client.send(
+      new PutObjectCommand({
+        Bucket: storage.bucket,
+        Key: `${BACKUP_PREFIX}${name}/${file}`,
+        Body: await readFile(join(directory, file)),
+      }),
+    );
+  }
+  const keys: string[] = [];
+  let token: string | undefined;
+  do {
+    const page = await storage.client.send(
+      new ListObjectsV2Command({
+        Bucket: storage.bucket,
+        Prefix: BACKUP_PREFIX,
+        ContinuationToken: token,
+      }),
+    );
+    keys.push(...(page.Contents ?? []).map((object) => object.Key!));
+    token = page.NextContinuationToken;
+  } while (token);
+  const backups = [...new Set(keys.map((key) => key.split('/')[1]!))].sort();
+  const expired = backups.slice(0, Math.max(0, backups.length - KEPT_BACKUPS));
+  const doomed = keys.filter((key) => expired.includes(key.split('/')[1]!));
+  if (doomed.length > 0) {
+    await storage.client.send(
+      new DeleteObjectsCommand({
+        Bucket: storage.bucket,
+        Delete: { Objects: doomed.map((Key) => ({ Key })) },
+      }),
+    );
+  }
+  return backups.length - expired.length;
 }
 
 function latestBackup(): string {

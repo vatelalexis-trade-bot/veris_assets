@@ -24,6 +24,8 @@ const toolsEnvSchema = z.object({
   DEMO_ACCOUNTS_PASSWORD: z.string().min(12).optional(),
   BETTER_AUTH_SECRET: z.string().min(32).optional(),
   WEB_ORIGIN: z.url().default('http://localhost:3000'),
+  // An online demonstration (fictitious data only) may be reset despite NODE_ENV=production.
+  DEMO_MODE: z.enum(['true', 'false']).default('false'),
 });
 
 export type ToolsEnv = z.infer<typeof toolsEnvSchema>;

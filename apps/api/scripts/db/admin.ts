@@ -132,8 +132,10 @@ async function installJobQueues(env: ToolsEnv, database: string): Promise<void> 
  * test one: this command is meant for fictitious data only.
  */
 export async function dropDatabase(env: ToolsEnv, target: DatabaseTarget): Promise<void> {
-  if (env.NODE_ENV === 'production') {
-    throw new Error('Refusing to drop a database when NODE_ENV=production.');
+  if (env.NODE_ENV === 'production' && env.DEMO_MODE !== 'true') {
+    throw new Error(
+      'Refusing to drop a database when NODE_ENV=production outside a demonstration.',
+    );
   }
   const database = databaseName(env, target);
   await withClient(connectionConfig(env, 'postgres', 'admin'), async (admin) => {

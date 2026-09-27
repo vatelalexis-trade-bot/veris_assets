@@ -16,9 +16,12 @@ export function configureApp(app: NestExpressApplication, env: Env): void {
   app.use(correlationIdMiddleware);
   app.disable('x-powered-by');
   app.use(securityHeaders(`/${OPENAPI_PATH}`));
-  // The API is only reached through the web app's proxy on the same machine: the client address
-  // is taken from X-Forwarded-For only when the request comes from localhost.
-  app.set('trust proxy', 'loopback');
+  // The API is only reached through the web app's proxy: the client address is taken from
+  // X-Forwarded-For only when the request comes from it (localhost, or Railway's private network).
+  app.set(
+    'trust proxy',
+    env.TRUST_PROXY.split(',').map((value) => value.trim()),
+  );
   app.use(createOriginCheck([env.WEB_ORIGIN]));
   app.setGlobalPrefix(API_PREFIX, { exclude: ['health', 'health/ready'] });
   app.useGlobalFilters(new AllExceptionsFilter(app.get(AuditWriter), app.get(SecurityMonitor)));
