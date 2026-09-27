@@ -185,5 +185,7 @@ export const investorInvitation = issuanceSchema.table(
   (table) => [
     unique('investor_invitation_once').on(table.issuanceId, table.investorId),
     check('investor_invitation_status', sql`${table.status} IN ('INVITED', 'REVOKED')`),
+    // The opportunities of an investor (SPEC §14.2).
+    index('investor_invitation_investor').on(table.investorId),
   ],
 );

@@ -120,6 +120,11 @@ jobs:
       - name: Demo database can be reset twice in a row
         run: pnpm db:reset && pnpm db:reset
 
+      # SPEC §24 "sauvegardes et restauration" (P16-4): a backup is restored into a separate
+      # database and compared with it, table by table and down to the ledger's hash chain.
+      - name: Backup and restoration of the demo database
+        run: pnpm db:backup --database-only && pnpm db:restore
+
   e2e:
     name: End-to-end scenarios (Playwright)
     runs-on: ubuntu-latest

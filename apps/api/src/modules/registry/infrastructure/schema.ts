@@ -132,6 +132,7 @@ export const allocation = registrySchema.table(
   (table) => [
     check('allocation_units_not_negative', sql`${table.allocatedUnits} >= 0`),
     unique('allocation_round_subscription').on(table.allocationRoundId, table.subscriptionId),
+    index('allocation_subscription').on(table.subscriptionId),
   ],
 );
 
@@ -161,6 +162,8 @@ export const logicalAccount = registrySchema.table(
     unique('logical_account_owner_unique')
       .on(table.issuanceId, table.investorId)
       .nullsNotDistinct(),
+    // The accounts of an investor across issuances (portfolio, SPEC §14.1).
+    index('logical_account_investor').on(table.investorId),
   ],
 );
 
@@ -380,6 +383,7 @@ export const transferRequest = registrySchema.table(
     check('transfer_request_not_to_self', sql`${table.fromInvestorId} <> ${table.toInvestorId}`),
     index('transfer_request_issuance_status').on(table.tenantId, table.issuanceId, table.status),
     index('transfer_request_from').on(table.tenantId, table.fromInvestorId),
+    index('transfer_request_to').on(table.tenantId, table.toInvestorId),
   ],
 );
 
@@ -388,18 +392,22 @@ export const transferRequest = registrySchema.table(
  * an effective date on or before it and a sequence up to `last_sequence_included`. Append-only:
  * a distribution calculated again from its snapshot gives the same result.
  */
-export const registrySnapshot = registrySchema.table('registry_snapshot', {
-  id: id(),
-  tenantId: tenantId().references(() => tenant.id),
-  issuanceId: uuid()
-    .notNull()
-    .references(() => issuance.id),
-  recordDate: date().notNull(),
-  lastSequenceIncluded: bigint({ mode: 'number' }).notNull(),
-  takenAt: utcTimestamp().notNull().defaultNow(),
-  /** SHA-256 of the lines, to prove the snapshot can be rebuilt identically. */
-  checksum: text().notNull(),
-});
+export const registrySnapshot = registrySchema.table(
+  'registry_snapshot',
+  {
+    id: id(),
+    tenantId: tenantId().references(() => tenant.id),
+    issuanceId: uuid()
+      .notNull()
+      .references(() => issuance.id),
+    recordDate: date().notNull(),
+    lastSequenceIncluded: bigint({ mode: 'number' }).notNull(),
+    takenAt: utcTimestamp().notNull().defaultNow(),
+    /** SHA-256 of the lines, to prove the snapshot can be rebuilt identically. */
+    checksum: text().notNull(),
+  },
+  (table) => [index('registry_snapshot_issuance').on(table.issuanceId, table.recordDate)],
+);
 
 export const registrySnapshotLine = registrySchema.table(
   'registry_snapshot_line',

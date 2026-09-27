@@ -6,7 +6,7 @@ import {
   parseDecimal,
   type Decimal,
 } from '@virtus/shared';
-import { and, asc, desc, eq, gt, inArray, lte, sql } from 'drizzle-orm';
+import { and, asc, desc, eq, gt, inArray, isNull, lte, ne, or, sql } from 'drizzle-orm';
 import { currentUser, type RequestUser } from '../../../core/context/request-context.js';
 import {
   DATABASE,
@@ -33,6 +33,9 @@ import { AuditLogService } from './audit-log.service.js';
 export type Amounts = Record<string, string>;
 
 /** Issuances that have terms worth counting (neither drafts nor cancelled ones). */
+/** Longest "To do" queue returned at once (D-101). */
+const TASKS_LIMIT = 200;
+
 const LIVE = [
   'UNDER_REVIEW',
   'APPROVED',
@@ -195,12 +198,20 @@ export class ReportingService {
       .map(([code]) => code);
     return withCurrentTenant(this.db, async (tx) => {
       if (allowed.length === 0) return [];
-      const rows = await tx
-        .select()
-        .from(task)
-        .where(inArray(task.permission, allowed))
-        .orderBy(sql`${task.dueDate} ASC NULLS LAST`, asc(task.waitingSince));
-      return rows.filter((row) => row.initiatedBy !== user.userId);
+      return (
+        tx
+          .select()
+          .from(task)
+          .where(
+            and(
+              inArray(task.permission, allowed),
+              or(isNull(task.initiatedBy), ne(task.initiatedBy, user.userId)),
+            ),
+          )
+          .orderBy(sql`${task.dueDate} ASC NULLS LAST`, asc(task.waitingSince))
+          // The most urgent ones: a queue longer than this is handled screen by screen (D-101).
+          .limit(TASKS_LIMIT)
+      );
     });
   }
 

@@ -16,6 +16,8 @@
     "db:migrate": "tsx scripts/db/cli.ts migrate",
     "db:seed": "tsx scripts/db/cli.ts seed",
     "db:reset": "tsx scripts/db/cli.ts reset",
+    "db:backup": "tsx scripts/db/cli.ts backup",
+    "db:restore": "tsx scripts/db/cli.ts restore",
     "db:generate": "drizzle-kit generate",
     "openapi:export": "nest build && node dist/openapi.js ../web/src/lib/api/openapi.json"
   },

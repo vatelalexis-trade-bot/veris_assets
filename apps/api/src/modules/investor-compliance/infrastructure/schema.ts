@@ -76,21 +76,25 @@ export const investor = investorSchema.table(
 );
 
 /** Legal representative of a legal entity [DP]. */
-export const investorRepresentative = investorSchema.table('investor_representative', {
-  id: id(),
-  tenantId: tenantId(),
-  investorId: uuid()
-    .notNull()
-    .references(() => investor.id),
-  fullName: text().notNull(),
-  title: text(),
-  email: text(),
-  phone: text(),
-  dateOfBirth: date(),
-  /** Set when the person's data has been replaced by a pseudonym (SPEC §8.5). */
-  pseudonymizedAt: utcTimestamp(),
-  ...auditColumns(),
-});
+export const investorRepresentative = investorSchema.table(
+  'investor_representative',
+  {
+    id: id(),
+    tenantId: tenantId(),
+    investorId: uuid()
+      .notNull()
+      .references(() => investor.id),
+    fullName: text().notNull(),
+    title: text(),
+    email: text(),
+    phone: text(),
+    dateOfBirth: date(),
+    /** Set when the person's data has been replaced by a pseudonym (SPEC §8.5). */
+    pseudonymizedAt: utcTimestamp(),
+    ...auditColumns(),
+  },
+  (table) => [index('investor_representative_investor').on(table.investorId)],
+);
 
 /** Beneficial owner (fictitious) [DP]. */
 export const beneficialOwner = investorSchema.table(
@@ -114,6 +118,7 @@ export const beneficialOwner = investorSchema.table(
       'beneficial_owner_percentage',
       sql`${table.ownershipPercentage} > 0 AND ${table.ownershipPercentage} <= 100`,
     ),
+    index('beneficial_owner_investor').on(table.investorId),
   ],
 );
 
@@ -180,18 +185,22 @@ export const kycDocument = investorSchema.table(
 );
 
 /** Comment of a Compliance Officer on an investor or one of its cases. Append-only. */
-export const complianceComment = investorSchema.table('compliance_comment', {
-  id: id(),
-  tenantId: tenantId(),
-  investorId: uuid()
-    .notNull()
-    .references(() => investor.id),
-  resourceType: text().notNull(),
-  resourceId: uuid().notNull(),
-  authorUserId: uuid().notNull(),
-  body: text().notNull(),
-  createdAt: utcTimestamp().notNull().defaultNow(),
-});
+export const complianceComment = investorSchema.table(
+  'compliance_comment',
+  {
+    id: id(),
+    tenantId: tenantId(),
+    investorId: uuid()
+      .notNull()
+      .references(() => investor.id),
+    resourceType: text().notNull(),
+    resourceId: uuid().notNull(),
+    authorUserId: uuid().notNull(),
+    body: text().notNull(),
+    createdAt: utcTimestamp().notNull().defaultNow(),
+  },
+  (table) => [index('compliance_comment_investor').on(table.investorId, table.createdAt)],
+);
 
 /**
  * Every eligibility decision (SPEC §8.4): the engine's at invitation, subscription and transfer

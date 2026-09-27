@@ -3,8 +3,12 @@
 //   pnpm db:migrate — apply pending migrations only
 //   pnpm db:seed   — load demo data only
 //   pnpm db:reset  — delete the demo database and rebuild it from scratch (fictitious data only)
+//   pnpm db:backup — dump of the database and copy of the documents into backups/ (--database-only)
+//   pnpm db:restore — restores the latest backup into <database>_restore and checks it; with
+//                     --replace, puts it in place of the demo database and its documents
 // Add --test to work on the integration test database instead of the demo one.
 import { bootstrapDatabase, dropDatabase, migrateDatabase } from './admin.js';
+import { backupDatabase, restoreDatabase } from './backup.js';
 import { seedDatabase } from './seed.js';
 import { databaseName, loadToolsEnv, type DatabaseTarget, type ToolsEnv } from './tools-env.js';
 
@@ -19,6 +23,28 @@ const COMMANDS = {
   async reset(env: ToolsEnv, target: DatabaseTarget) {
     await dropDatabase(env, target);
     await COMMANDS.setup(env, target);
+  },
+  async backup(env: ToolsEnv, target: DatabaseTarget, flags: string[]) {
+    const { directory, manifest } = await backupDatabase(
+      env,
+      databaseName(env, target),
+      !flags.includes('--database-only'),
+    );
+    console.log(`Backup written to ${directory} (${manifest.documents} documents).`);
+  },
+  async restore(env: ToolsEnv, target: DatabaseTarget, flags: string[]) {
+    const replace = flags.includes('--replace');
+    const database = databaseName(env, target);
+    if (replace && env.NODE_ENV === 'production') {
+      throw new Error('Refusing to replace a database when NODE_ENV=production: restore it aside.');
+    }
+    const result = await restoreDatabase(env, replace ? database : `${database}_restore`, {
+      documents: replace,
+    });
+    console.log(
+      `Backup ${result.directory} restored into ${replace ? database : `${database}_restore`}: ` +
+        `${result.tables} tables identical to the backup, ledger chain identical.`,
+    );
   },
 } as const;
 
@@ -35,7 +61,7 @@ async function main(): Promise<void> {
   }
   const target: DatabaseTarget = flags.includes('--test') ? 'test' : 'demo';
   const env = loadToolsEnv();
-  await COMMANDS[command](env, target);
+  await COMMANDS[command](env, target, flags);
   console.log(`Database "${databaseName(env, target)}": ${command} done.`);
 }
 

@@ -653,3 +653,17 @@ Proposée par Claude, à valider par le porteur de projet.
    - rien n'est signalé à la toute première connexion d'un compte. Les administrateurs de la plateforme, sans organisation, sont tracés dans l'audit mais pas notifiés.
 4. Analyse des dépendances : `pnpm audit --prod --audit-level high` bloque la CI. Une faille modérée d'`esbuild` est acceptée : elle ne concerne que son serveur de développement, que l'application n'utilise pas.
 5. L'analyse des secrets de GitHub n'est pas disponible sur un dépôt privé sans l'option payante « Advanced Security » : le porteur de projet décide s'il rend le dépôt public ou s'il accepte cette limite.
+
+**D-101 — Proposée. Performances (P16-2).**
+1. Un test d'intégration appelle chaque route de lecture de l'API, avec le rôle qui l'utilise, sur les données de démo, et échoue au-delà de 500 ms. Mesure du 27 septembre 2026 : la plus lente répond en 26 ms.
+2. Huit index sont ajoutés sur des liens entre tables utilisés dans les recherches courantes : représentants, bénéficiaires effectifs et commentaires d'un investisseur, invitations d'un investisseur, allocation d'une souscription, comptes d'un investisseur, photographies du registre, transferts reçus. Les liens vers les petites tables de référence (pays, devises, rôles) n'en ont pas besoin.
+3. Pagination : toutes les listes qui peuvent grandir sont paginées. Restent en liste simple celles qui sont bornées par nature : l'historique d'un dossier, les lignes d'une distribution (une par porteur), l'échéancier d'une émission, les invitations en attente, les rôles, les listes de référence, les utilisateurs d'une organisation. La file « À traiter » est limitée à ses 200 éléments les plus urgents ; les exports aux 50 derniers ; les corrections du registre aux 100 dernières.
+
+**D-102 — Proposée. Sauvegardes et restauration (P16-4).**
+1. `pnpm db:backup` écrit dans `backups/<date>/` (ignoré par git) :
+   - la copie de la base (`pg_dump`, format compressé) ;
+   - les documents du stockage S3 ;
+   - un manifeste : nombre de lignes de chaque table et empreinte de la chaîne du registre.
+2. `pnpm db:restore` restaure la dernière sauvegarde dans une base à part (`<base>_restore`) et la compare au manifeste : les tables et la chaîne du registre doivent être identiques. `--replace` la remet à la place de la base de démo, avec les documents ; c'est refusé en production.
+3. La CI sauvegarde et restaure la base de démo à chaque push.
+4. En ligne (phase 16b) : sauvegardes automatiques des volumes Railway (D-097), plus cette sauvegarde logique, planifiée et copiée hors de Railway. Les modalités seront précisées en 16b.

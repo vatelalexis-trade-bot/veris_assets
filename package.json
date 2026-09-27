@@ -26,6 +26,8 @@
     "db:migrate": "pnpm --filter @virtus/api db:migrate",
     "db:seed": "pnpm --filter @virtus/api db:seed",
     "db:reset": "pnpm --filter @virtus/api db:reset",
+    "db:backup": "pnpm --filter @virtus/api db:backup",
+    "db:restore": "pnpm --filter @virtus/api db:restore",
     "db:generate": "pnpm --filter @virtus/api db:generate",
     "services:up": "bash scripts/services-up.sh",
     "services:down": "docker compose down",

@@ -211,6 +211,13 @@
       "when": 1790444778940,
       "tag": "0029_exports_security",
       "breakpoints": true
+    },
+    {
+      "idx": 30,
+      "version": "7",
+      "when": 1790539088571,
+      "tag": "0030_performance_indexes",
+      "breakpoints": true
     }
   ]
 }
