@@ -32,7 +32,7 @@ Légende :
 | Journalisation de sécurité | ✅ | Journal d'audit en ajout seul : connexions, refus, décisions, téléchargements confidentiels, alertes ; données sensibles masquées | `masking.spec.ts`, `authorization.int-spec.ts` |
 | Sauvegardes et restauration | ⏳ | Sauvegarde logique et restauration testée (P16-4) ; sauvegardes des volumes Railway (16b) | voir P16-4 |
 | Analyse de vulnérabilités | ✅ | Dependabot chaque semaine ; `pnpm audit --prod --audit-level high` bloque la CI | CI |
-| Analyse des secrets (*secret scanning*) | 🟡 | Non disponible sur un dépôt GitHub privé sans l'option payante « Advanced Security ». Elle devient gratuite si le dépôt passe en public | décision du porteur de projet |
+| Analyse des secrets (*secret scanning*) | 🟡 | Dépôt public (D-104) : l'analyse gratuite de GitHub est à activer par le porteur de projet dans *Settings → Code security* ; aucun secret dans l'historique | décision du porteur de projet |
 | Masquage des données sensibles | ✅ | Masquage dans l'audit (`masking.ts`) et les journaux techniques ; l'export d'audit n'a ni adresse IP ni valeurs (D-093) | `masking.spec.ts` |
 | En-têtes de sécurité | ✅ | Site : CSP avec nonce, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`, `Cross-Origin-Opener-Policy`, HSTS. API : `nosniff`, `no-store`, CSP `default-src 'none'` | `security-headers.int-spec.ts`, `content-security-policy.spec.ts` |
 | Accès exceptionnel de la plateforme | ✅ | Accès d'urgence d'une heure, en lecture seule, avec motif, tracé requête par requête dans l'audit de l'organisation, qui est prévenue (D-103) | `break-glass.int-spec.ts`, `break-glass.spec.ts` (navigateur) |

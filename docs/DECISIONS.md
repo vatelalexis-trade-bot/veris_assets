@@ -679,7 +679,10 @@ Proposée par Claude, à valider par le porteur de projet.
 
 Décisions du porteur de projet.
 
-**D-104 — Acceptée. Le dépôt GitHub reste privé.** Conséquence acceptée : l'analyse automatique des secrets de GitHub n'est pas disponible (option payante sur un dépôt privé, D-100). Les protections restantes : `.env` ignoré par git, `.env.example` factice, revue des changements avant chaque commit.
+**D-104 — Acceptée. Le dépôt GitHub est public** (choix du porteur de projet, 27 septembre 2026, pour le relier à Railway ; il était privé jusque-là). Conséquences :
+- le code et la documentation sont lisibles par tous ;
+- aucun secret n'a été trouvé dans l'historique (`.env` n'a jamais été commité, `.env.example` n'a que des valeurs factices) ;
+- l'analyse automatique des secrets de GitHub devient gratuite : à activer dans *Settings → Code security*, le Codespace n'ayant pas les droits d'administration du dépôt.
 
 **D-105 — Acceptée. Le produit s'appelle désormais « Veris Assets » (anciennement « Virtus Assets »).** *Modifie la spec 2.4 et CLAUDE.md.*
 1. Tout est renommé : textes affichés en anglais et en français, emails, documents PDF, page d'accueil, documentation, et noms techniques (paquets `@veris/*`, bases `veris_assets` et `veris_assets_test`, projet Docker `veris-assets`, dépôt GitHub `veris_assets`).
