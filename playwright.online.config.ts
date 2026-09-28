@@ -9,7 +9,7 @@ export default defineConfig({
   retries: 1,
   reporter: [['list']],
   use: {
-    baseURL: process.env.ONLINE_URL ?? 'https://web-production-c379a.up.railway.app',
+    baseURL: process.env.ONLINE_URL ?? 'https://veris-assets.com',
     trace: 'retain-on-failure',
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
