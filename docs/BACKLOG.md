@@ -203,9 +203,9 @@ Vérifiable par : checklist de la section 24 cochée. Livrée en deux fois : 16a
 |---|---|:-:|
 | P16-1 | Revue sécurité (checklist section 24), en-têtes de sécurité, analyse des dépendances — **livré en 16a (D-100, docs/SECURITY_CHECKLIST.md)** | M |
 | P16-2 | Performances : pagination partout, index, API < 500 ms sur le jeu de démo — **livré en 16a (D-101)** | M |
-| P16-3 | Images Docker ; déploiement sur l'hébergement choisi ; Sentry | M |
-| P16-4 | Sauvegardes et restauration testées — **livré en 16a (D-102)** ; planification en ligne en 16b | M |
-| P16-5 | Documentation d'exploitation et guide de démo en français | M |
+| P16-3 | Images Docker ; déploiement sur l'hébergement choisi ; Sentry — **livré en 16b sur Railway (D-106) ; Sentry reporté** | M |
+| P16-4 | Sauvegardes et restauration testées — **livré (D-102) ; sauvegarde nocturne en ligne vérifiée (D-106)** | M |
+| P16-5 | Documentation d'exploitation et guide de démo en français — **guide d'exploitation livré (docs/DEPLOYMENT.md)** | M |
 | P16-6 | Accès break-glass (ex-P6-6, D-034) — **livré en 16a (D-103)** | S |
 
 ---

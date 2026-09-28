@@ -11,6 +11,8 @@
     "postinstall": "pnpm --filter @veris/shared build",
     "dev": "bash scripts/dev.sh",
     "preview": "bash scripts/preview.sh",
+    "online:deploy": "node scripts/railway/deploy.mjs",
+    "online:reset": "node scripts/railway/reset-demo.mjs",
     "build": "pnpm -r build",
     "api:generate": "pnpm --filter @veris/api openapi:export && pnpm --filter @veris/web api:generate && prettier --write apps/web/src/lib/api",
     "lint": "eslint . && pnpm -r lint && pnpm depcruise && pnpm check:claims && pnpm format:check",
