@@ -1,7 +1,7 @@
 // Emergency ("break-glass") access of a Platform Administrator (SPEC §4.1, P16-6, D-103).
 import { randomUUID } from 'node:crypto';
 import request from 'supertest';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { QUEUES } from '../../../core/jobs/queues.js';
 import type { OutboxJob } from '../../../core/outbox/outbox.js';
 import { OutboxRelay } from '../../../core/outbox/outbox-relay.js';
@@ -87,13 +87,19 @@ describe('emergency access of a Platform Administrator', () => {
       .expect(403);
     await platform.get('/api/v1/tenants').expect(403);
 
-    const audit = await rows<{ action: string; reason: string | null }>(
-      `SELECT action, reason FROM audit.audit_event
-       WHERE tenant_id = $1 AND action LIKE 'BREAK_GLASS%' ORDER BY occurred_at`,
-      [northwind],
-    );
-    expect(audit[0]).toMatchObject({ action: 'BREAK_GLASS_STARTED' });
-    expect(audit).toContainEqual({ action: 'BREAK_GLASS_ACCESS', reason: 'GET /api/v1/issuances' });
+    // Each request is written in the audit log just after it is answered.
+    await vi.waitFor(async () => {
+      const audit = await rows<{ action: string; reason: string | null }>(
+        `SELECT action, reason FROM audit.audit_event
+         WHERE tenant_id = $1 AND action LIKE 'BREAK_GLASS%' ORDER BY occurred_at`,
+        [northwind],
+      );
+      expect(audit[0]).toMatchObject({ action: 'BREAK_GLASS_STARTED' });
+      expect(audit).toContainEqual({
+        action: 'BREAK_GLASS_ACCESS',
+        reason: 'GET /api/v1/issuances',
+      });
+    });
 
     await deliverEvents();
     const told = await rows<{ email: string }>(
