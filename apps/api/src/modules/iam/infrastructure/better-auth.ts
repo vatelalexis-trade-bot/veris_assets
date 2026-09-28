@@ -12,6 +12,8 @@ export interface BetterAuthDependencies {
   secret: string;
   /** Address of the web app as seen by the browser (WEB_ORIGIN). */
   webOrigin: string;
+  /** Other addresses of the same web app (WEB_ALTERNATE_ORIGINS). */
+  alternateOrigins?: readonly string[];
   db: AuthDatabase;
   /** Sends the password reset email; Better Auth only provides the one-time token. */
   sendResetPassword: (data: { userId: string; email: string; token: string }) => Promise<void>;
@@ -25,6 +27,7 @@ export interface BetterAuthDependencies {
 export function createBetterAuth({
   secret,
   webOrigin,
+  alternateOrigins = [],
   db,
   sendResetPassword,
 }: BetterAuthDependencies) {
@@ -32,7 +35,7 @@ export function createBetterAuth({
     appName: 'Veris Assets',
     secret,
     baseURL: webOrigin,
-    trustedOrigins: [webOrigin],
+    trustedOrigins: [webOrigin, ...alternateOrigins],
     telemetry: { enabled: false },
     database: drizzleAdapter(db, {
       provider: 'pg',

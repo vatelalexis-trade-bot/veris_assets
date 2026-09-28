@@ -202,6 +202,7 @@ if (!api) {
     API_HOST: '::',
     API_PORT: '4000',
     WEB_ORIGIN: `https://${webDomain}`,
+    WEB_ALTERNATE_ORIGINS: '',
     TRUST_PROXY: 'loopback,uniquelocal',
     CLIENT_IP_HEADER: 'x-real-ip',
     PORT: '4000',

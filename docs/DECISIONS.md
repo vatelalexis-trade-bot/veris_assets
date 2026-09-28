@@ -713,3 +713,8 @@ Décisions du porteur de projet.
 6. Sauvegarde nocturne avec `pnpm db:backup --database-only --upload` : la base est copiée dans le stockage (`backups/`), et les 14 dernières copies sont gardées. Elle tourne dans l'API, comme tâche planifiée (`BACKUP_SCHEDULE=30 2 * * *`, en UTC), et non dans un service à part : l'essai gratuit de Railway limite le projet à 5 services.
 7. **Point d'attention** : en mode démo, la page de connexion affiche le mot de passe des comptes de démo et leurs codes de double authentification. Quiconque connaît l'adresse du site peut donc entrer avec ces comptes. C'est voulu pour une démonstration à des prospects : les données sont fictives et aucun email ne part vraiment. Pour une démo réservée, il suffira de mettre `DEMO_MODE=false` et de communiquer les accès à la main.
 8. Sentry (suivi des erreurs) et OpenTelemetry (P2-8) ne sont pas branchés pour la démonstration : les journaux de Railway et le journal d'audit suffisent. Ils restent à faire avant un usage réel.
+
+**D-107 — Proposée. Nom de domaine `veris-assets.com`.** Acheté par le porteur de projet chez Cloudflare le 28 septembre 2026.
+1. Le domaine est rattaché au service `web` de Railway, qui fournit le certificat HTTPS.
+2. Chez Cloudflare, deux enregistrements DNS, en mode « DNS only » (nuage gris), pour que Railway puisse émettre le certificat : un CNAME `@` vers l'adresse donnée par Railway, et un TXT `_railway-verify` pour prouver la propriété.
+3. `https://veris-assets.com` devient l'adresse officielle (`WEB_ORIGIN`, liens des emails). L'adresse Railway reste acceptée par le contrôle d'origine et l'authentification (`WEB_ALTERNATE_ORIGINS`), pour que rien ne casse pendant la bascule.

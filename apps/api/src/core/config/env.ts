@@ -25,6 +25,18 @@ const envSchema = z.object({
   DB_JOBS_PASSWORD: required,
   BETTER_AUTH_SECRET: z.string().min(32),
   WEB_ORIGIN: z.url().default('http://localhost:3000'),
+  // Other addresses of the same web app that browsers may use (e.g. the hosting's own address
+  // next to the custom domain), comma separated. Links in emails always use WEB_ORIGIN.
+  WEB_ALTERNATE_ORIGINS: z
+    .string()
+    .default('')
+    .transform((value) =>
+      value
+        .split(',')
+        .map((origin) => origin.trim())
+        .filter(Boolean),
+    )
+    .pipe(z.array(z.url())),
   DEMO_MODE: z
     .enum(['true', 'false'])
     .default('false')

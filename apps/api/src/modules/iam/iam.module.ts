@@ -63,6 +63,7 @@ import { IdentityRepository } from './infrastructure/identity.repository.js';
         createBetterAuth({
           secret: env.BETTER_AUTH_SECRET,
           webOrigin: env.WEB_ORIGIN,
+          alternateOrigins: env.WEB_ALTERNATE_ORIGINS,
           db,
           sendResetPassword: (data) => mailer.send(data),
         }),

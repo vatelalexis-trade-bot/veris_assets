@@ -25,7 +25,7 @@ export function configureApp(app: NestExpressApplication, env: Env): void {
     'trust proxy',
     env.TRUST_PROXY.split(',').map((value) => value.trim()),
   );
-  app.use(createOriginCheck([env.WEB_ORIGIN]));
+  app.use(createOriginCheck([env.WEB_ORIGIN, ...env.WEB_ALTERNATE_ORIGINS]));
   app.setGlobalPrefix(API_PREFIX, { exclude: ['health', 'health/ready'] });
   app.useGlobalFilters(new AllExceptionsFilter(app.get(AuditWriter), app.get(SecurityMonitor)));
   app.enableShutdownHooks();

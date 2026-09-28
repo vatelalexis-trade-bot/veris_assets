@@ -17,7 +17,7 @@ Tout tourne dans le projet Railway `6bb97b26-059a-4e3a-b018-98072a93391b`, envir
 
 ## Adresses
 
-- Site : https://web-production-c379a.up.railway.app
+- Site : https://veris-assets.com (domaine acheté chez Cloudflare ; adresse officielle, `WEB_ORIGIN`). L'adresse Railway https://web-production-c379a.up.railway.app reste acceptée (`WEB_ALTERNATE_ORIGINS`).
 - Boîte des emails de test : https://mailpit-production-cb96.up.railway.app (utilisateur `demo` ; mot de passe dans la variable `MAILPIT_UI_PASSWORD` du service `mailpit`)
 
 ## Mettre à jour la démo
