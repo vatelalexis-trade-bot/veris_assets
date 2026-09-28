@@ -32,7 +32,8 @@
     "services:up": "bash scripts/services-up.sh",
     "services:down": "docker compose down",
     "services:logs": "docker compose logs -f",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:online": "playwright test --config playwright.online.config.ts"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",

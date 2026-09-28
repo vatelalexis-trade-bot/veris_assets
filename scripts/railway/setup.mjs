@@ -90,7 +90,19 @@ async function patch(config, message) {
 }
 
 const state = await project();
-const europe = { multiRegionConfig: { [REGION]: { numReplicas: 1 } } };
+const europe = {};
+
+/**
+ * EU West only. A new service gets a default region (US West): the environment patch would add
+ * Amsterdam next to it, which the trial plan refuses, so the whole setting is replaced here.
+ */
+async function inEurope(serviceId) {
+  await gql(
+    `mutation($s: String!, $e: String!, $i: ServiceInstanceUpdateInput!) {
+       serviceInstanceUpdate(serviceId: $s, environmentId: $e, input: $i) }`,
+    { s: serviceId, e: ENVIRONMENT, i: { multiRegionConfig: { [REGION]: { numReplicas: 1 } } } },
+  );
+}
 
 // 1. Documents bucket, in Amsterdam.
 let bucketId = state.buckets.get('veris-documents');
@@ -191,6 +203,8 @@ if (!api) {
     API_PORT: '4000',
     WEB_ORIGIN: `https://${webDomain}`,
     TRUST_PROXY: 'loopback,uniquelocal',
+    CLIENT_IP_HEADER: 'x-real-ip',
+    PORT: '4000',
     POSTGRES_HOST: 'postgres.railway.internal',
     POSTGRES_PORT: '5432',
     POSTGRES_USER: 'va_admin',
@@ -245,7 +259,8 @@ await patch(
   },
   'Veris Assets: build and start-up settings',
 );
-log('settings committed; deployments start');
+for (const serviceId of [postgres, redis, web, mailpit, api]) await inEurope(serviceId);
+log('settings committed, every service in EU West');
 console.log(
   `\nWeb app ....... https://${webDomain}\nTest emails ... https://${mailDomain} (user "demo")`,
 );

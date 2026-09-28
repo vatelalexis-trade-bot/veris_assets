@@ -3,6 +3,7 @@ import { AuditWriter } from './audit/audit-writer.js';
 import type { Env } from './config/env.js';
 import { correlationIdMiddleware } from './context/correlation-id.middleware.js';
 import { AllExceptionsFilter } from './errors/all-exceptions.filter.js';
+import { clientIpFromHeader } from './security/client-ip.middleware.js';
 import { createOriginCheck } from './security/origin.middleware.js';
 import { OPENAPI_PATH, setupOpenApi } from './openapi/setup-openapi.js';
 import { securityHeaders } from './security/security-headers.middleware.js';
@@ -12,7 +13,9 @@ export const API_PREFIX = 'api/v1';
 
 /** Application-wide setup, shared by main.ts and the tests so that both run the same app. */
 export function configureApp(app: NestExpressApplication, env: Env): void {
-  // Must stay first: every later step relies on the correlation ID and the request context.
+  // Before anything reads the client address (request context, rate limits, audit).
+  if (env.CLIENT_IP_HEADER) app.use(clientIpFromHeader(env.CLIENT_IP_HEADER));
+  // Every later step relies on the correlation ID and the request context.
   app.use(correlationIdMiddleware);
   app.disable('x-powered-by');
   app.use(securityHeaders(`/${OPENAPI_PATH}`));

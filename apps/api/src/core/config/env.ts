@@ -61,6 +61,9 @@ const envSchema = z.object({
   // Proxies whose X-Forwarded-For is trusted (Express "trust proxy"): the web app on the same
   // machine in development; on Railway, the web service on the private network (D-106).
   TRUST_PROXY: required.default('loopback'),
+  // Header in which the hosting's edge proxy gives the visitor's address, overwriting any value
+  // the visitor sent: X-Real-IP on Railway (D-106). Unset in development.
+  CLIENT_IP_HEADER: z.string().min(1).optional(),
   // Cron schedule (UTC) of the nightly backup job; unset in development (D-106).
   BACKUP_SCHEDULE: z.string().min(9).optional(),
 

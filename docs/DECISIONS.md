@@ -706,7 +706,9 @@ Décisions du porteur de projet.
    - `infra/mailpit/Dockerfile` : ajoute le mot de passe de la boîte de test.
 4. Réseau :
    - l'API écoute en IPv4 et IPv6 (`API_HOST=::`) ;
-   - elle ne fait confiance à l'en-tête `X-Forwarded-For` que depuis le réseau privé (`TRUST_PROXY=loopback,uniquelocal`), pour que les limites de débit voient la vraie adresse des visiteurs.
+   - elle ne fait confiance à l'en-tête `X-Forwarded-For` que depuis le réseau privé (`TRUST_PROXY=loopback,uniquelocal`) ;
+   - l'adresse du visiteur est lue dans `X-Real-IP` (`CLIENT_IP_HEADER`). Mesure en ligne : sans ce réglage, l'API voyait l'adresse du relais de Railway (réseau CDN77, New York), commune à tous les visiteurs. Selon Railway, son relais réécrit toujours `X-Real-IP`, que le visiteur ne peut donc pas falsifier. Les limites de débit et la détection d'accès anormal voient ainsi la vraie adresse ;
+   - Railway vérifie la santé de l'API sur le port de sa variable `PORT` (4000).
 5. Avant chaque mise en ligne, l'API exécute `pnpm db:setup` (rôles, migrations, données de démo complétées). En ligne, la réinitialisation de la démo est permise uniquement si `DEMO_MODE=true`.
 6. Sauvegarde nocturne avec `pnpm db:backup --database-only --upload` : la base est copiée dans le stockage (`backups/`), et les 14 dernières copies sont gardées. Elle tourne dans l'API, comme tâche planifiée (`BACKUP_SCHEDULE=30 2 * * *`, en UTC), et non dans un service à part : l'essai gratuit de Railway limite le projet à 5 services.
 7. **Point d'attention** : en mode démo, la page de connexion affiche le mot de passe des comptes de démo et leurs codes de double authentification. Quiconque connaît l'adresse du site peut donc entrer avec ces comptes. C'est voulu pour une démonstration à des prospects : les données sont fictives et aucun email ne part vraiment. Pour une démo réservée, il suffira de mettre `DEMO_MODE=false` et de communiquer les accès à la main.
