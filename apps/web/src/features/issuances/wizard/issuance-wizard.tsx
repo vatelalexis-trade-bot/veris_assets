@@ -23,8 +23,8 @@ export interface StepProps {
   save: Savers;
   /** Consistency failures of SPEC §6.3 for a field (e.g. `terms.targetAmount`). */
   failuresOf: (field: string) => IssuanceCheck[];
-  /** Lets the wizard save the step at once before leaving it. */
-  registerFlush: (flush: () => Promise<void>) => void;
+  /** Lets the wizard save the step at once before leaving it (outcome of the last save, if any). */
+  registerFlush: (flush: () => Promise<SaveState | undefined>) => void;
   onState: (state: SaveState) => void;
 }
 
@@ -59,8 +59,8 @@ export function IssuanceWizard({ id, canSubmit }: { id: string; canSubmit: boole
   });
   const [step, setStep] = useState<IssuanceWizardStep | null>(null);
   const [saveState, setSaveState] = useState<SaveState>('idle');
-  const flush = useRef<() => Promise<void>>(() => Promise.resolve());
-  const registerFlush = useCallback((fn: () => Promise<void>) => {
+  const flush = useRef<() => Promise<SaveState | undefined>>(() => Promise.resolve(undefined));
+  const registerFlush = useCallback((fn: () => Promise<SaveState | undefined>) => {
     flush.current = fn;
   }, []);
 
@@ -121,7 +121,9 @@ export function IssuanceWizard({ id, canSubmit }: { id: string; canSubmit: boole
   const failuresOf = (field: string) =>
     (checks.data?.failures ?? []).filter((failure) => failure.field === field);
   const goTo = async (next: IssuanceWizardStep) => {
-    await flush.current();
+    // The step left unmounts at once: its last save is reported here, or "Saving…" would stay.
+    const outcome = await flush.current();
+    if (outcome) setSaveState(outcome);
     setStep(next);
     if (next !== current.wizardStep)
       await save.general({ wizardStep: next }).catch(() => undefined);

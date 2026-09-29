@@ -16,7 +16,8 @@ function changesOf<T extends object>(values: T, saved: T): Partial<T> {
 /**
  * Automatic saving of a wizard step (SPEC §6.2 "sauvegarde automatique du brouillon"): a short
  * while after the last change, only the changed fields are sent. `flush` saves at once (before
- * leaving the step).
+ * leaving the step) and gives the outcome of the last save, if any: the step may be gone before
+ * it can report it.
  */
 export function useAutosave<T extends object>(
   values: T,
@@ -25,29 +26,31 @@ export function useAutosave<T extends object>(
   delayMs = 800,
 ) {
   const saved = useRef(initial);
-  const running = useRef<Promise<void> | null>(null);
+  const running = useRef<Promise<SaveState> | null>(null);
   const [state, setState] = useState<SaveState>('idle');
   const [error, setError] = useState<unknown>(null);
 
-  const flush = useCallback(async () => {
-    if (running.current) await running.current;
+  const flush = useCallback(async (): Promise<SaveState | undefined> => {
+    const previous = running.current ? await running.current : undefined;
     const changes = changesOf(values, saved.current);
-    if (Object.keys(changes).length === 0) return;
+    if (Object.keys(changes).length === 0) return previous;
     setState('saving');
     running.current = save(changes)
       .then(() => {
         saved.current = values;
         setState('saved');
         setError(null);
+        return 'saved' as const;
       })
       .catch((reason: unknown) => {
         setState('error');
         setError(reason);
+        return 'error' as const;
       })
       .finally(() => {
         running.current = null;
       });
-    await running.current;
+    return running.current;
   }, [values, save]);
 
   useEffect(() => {

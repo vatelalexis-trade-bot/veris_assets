@@ -52,7 +52,9 @@ test('scenario 1 — issuance creation with the wizard, four-eyes approval', asy
   await operator.getByLabel('Day count convention').selectOption({ label: '30E/360' });
   await operator.getByRole('button', { name: 'Next step' }).click();
 
-  // Step 5 — documents (none in this scenario), step 6 — review and submission.
+  // Step 5 — documents (none in this scenario), step 6 — review and submission. The wizard saves
+  // the step left before showing the next one: the documents step must be on screen first.
+  await expect(operator.getByRole('heading', { name: 'Documents', level: 2 })).toBeVisible();
   await operator.getByRole('button', { name: 'Next step' }).click();
   await expect(
     operator.getByText('Everything is consistent: the issuance can be submitted.'),

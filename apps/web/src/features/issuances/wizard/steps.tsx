@@ -519,7 +519,7 @@ export function DocumentsStep(props: StepProps) {
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['issuance', id, 'documents'] }),
   });
-  useEffect(() => props.registerFlush(() => Promise.resolve()), [props]);
+  useEffect(() => props.registerFlush(() => Promise.resolve(undefined)), [props]);
   return (
     <div className="flex flex-col gap-4">
       <h2 className="font-heading text-lg font-semibold">{t('wizard.stepNames.DOCUMENTS')}</h2>

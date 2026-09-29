@@ -21,9 +21,9 @@ describe('useAutosave', () => {
     expect(save).toHaveBeenCalledTimes(1);
     expect(save).toHaveBeenCalledWith({ name: 'Helios Solar' });
     expect(result.current.state).toBe('saved');
-    // Nothing changed since: nothing more is sent.
+    // Nothing changed since: nothing more is sent, and there is no new outcome to report.
     await act(async () => {
-      await result.current.flush();
+      expect(await result.current.flush()).toBeUndefined();
     });
     expect(save).toHaveBeenCalledTimes(1);
   });
@@ -39,8 +39,9 @@ describe('useAutosave', () => {
       await vi.advanceTimersByTimeAsync(800);
     });
     expect(result.current.state).toBe('error');
+    // The outcome is given back to the wizard, which reports it once the step is left.
     await act(async () => {
-      await result.current.flush();
+      expect(await result.current.flush()).toBe('saved');
     });
     expect(save).toHaveBeenLastCalledWith({ rate: '6' });
     expect(result.current.state).toBe('saved');

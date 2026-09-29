@@ -40,7 +40,7 @@ export function ReviewStep(
   const idempotency = useIdempotencyKey();
   const { issuance, checks } = props;
   const { terms, eligibilityRules: rules } = issuance;
-  useEffect(() => props.registerFlush(() => Promise.resolve()), [props]);
+  useEffect(() => props.registerFlush(() => Promise.resolve(undefined)), [props]);
 
   const submit = useMutation({
     mutationFn: async () => {
