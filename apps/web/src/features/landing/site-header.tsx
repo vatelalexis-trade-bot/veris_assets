@@ -6,8 +6,7 @@ import { Button } from '@/components/ui/button';
 import { PORTAL_PATHS } from '@/features/auth/destination';
 import { Link } from '@/i18n/navigation';
 import type { getCurrentUser } from '@/lib/api/server';
-
-const SECTIONS = ['platform', 'lifecycle', 'security', 'calculator', 'contact'] as const;
+import { SectionNav } from './section-nav';
 
 /** Header of the public site: anchors to the sections, language, and the way into the portals. */
 export async function SiteHeader({ user }: { user: Awaited<ReturnType<typeof getCurrentUser>> }) {
@@ -16,19 +15,10 @@ export async function SiteHeader({ user }: { user: Awaited<ReturnType<typeof get
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
       <div className="mx-auto flex h-18 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link href="/" aria-label="Veris Assets">
-          <Logo className="h-11 sm:h-12" />
+          {/* About 10 % larger than before (2.75 and 3 rem). */}
+          <Logo className="h-[3.025rem] sm:h-[3.3rem]" />
         </Link>
-        <nav aria-label={t('label')} className="hidden items-center gap-7 text-sm lg:flex">
-          {SECTIONS.map((section) => (
-            <a
-              key={section}
-              href={`#${section}`}
-              className="text-muted transition-colors hover:text-foreground"
-            >
-              {t(section)}
-            </a>
-          ))}
-        </nav>
+        <SectionNav />
         <div className="flex items-center gap-2 sm:gap-3">
           <LanguageSwitcher />
           <Button asChild size="sm">
