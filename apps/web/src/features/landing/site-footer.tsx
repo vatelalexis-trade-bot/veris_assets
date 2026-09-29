@@ -1,6 +1,7 @@
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 import { Logo } from '@/components/app/logo';
 import { Link } from '@/i18n/navigation';
+import { technologyPath } from './technology-path';
 
 /** Footer: what the platform is, the demonstration notice (SPEC §3.3) and the main links. */
 export async function SiteFooter() {
@@ -14,10 +15,20 @@ export async function SiteFooter() {
         </div>
         <nav aria-label={t('nav.label')} className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
           {(['lifecycle', 'security', 'calculator', 'contact'] as const).map((section) => (
-            <a key={section} href={`#${section}`} className="text-muted hover:text-foreground">
+            <Link
+              key={section}
+              href={{ pathname: '/', hash: section }}
+              className="text-muted hover:text-foreground"
+            >
               {t(`nav.${section}`)}
-            </a>
+            </Link>
           ))}
+          <Link
+            href={technologyPath(await getLocale())}
+            className="text-muted hover:text-foreground"
+          >
+            {t('nav.technology')}
+          </Link>
           <Link href="/login" className="text-muted hover:text-foreground">
             {t('nav.signIn')}
           </Link>

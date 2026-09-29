@@ -1,6 +1,9 @@
-import { Building2, Check, ShieldCheck, Wallet } from 'lucide-react';
-import { getTranslations } from 'next-intl/server';
+import { ArrowRight, Building2, Check, Cpu, LogIn, ShieldCheck, Wallet } from 'lucide-react';
+import { getLocale, getTranslations } from 'next-intl/server';
+import { Button } from '@/components/ui/button';
+import { Link } from '@/i18n/navigation';
 import { Section } from './section';
+import { technologyPath } from './technology-path';
 
 const AUDIENCES = [
   ['issuers', Building2],
@@ -11,6 +14,7 @@ const AUDIENCES = [
 /** What each kind of user gets (SPEC §4). */
 export async function Audiences() {
   const t = await getTranslations('landing.audiences');
+  const locale = await getLocale();
   return (
     <Section id="roles" eyebrow={t('eyebrow')} title={t('title')} className="bg-surface/30">
       <ul className="grid gap-4 lg:grid-cols-3">
@@ -32,6 +36,21 @@ export async function Audiences() {
           </li>
         ))}
       </ul>
+      <div className="flex flex-wrap gap-3">
+        <Button asChild className="h-11 px-5">
+          <Link href="/login">
+            <LogIn aria-hidden="true" />
+            {t('signIn')}
+          </Link>
+        </Button>
+        <Button asChild variant="secondary" className="h-11 px-5">
+          <Link href={technologyPath(locale)}>
+            <Cpu aria-hidden="true" />
+            {t('technology')}
+            <ArrowRight aria-hidden="true" />
+          </Link>
+        </Button>
+      </div>
     </Section>
   );
 }

@@ -1,7 +1,23 @@
 import { act, fireEvent, screen } from '@testing-library/react';
+import type { ReactNode } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { renderWithIntl } from '@/test/render';
 import { NAV_SECTIONS, SectionNav } from './section-nav';
+
+vi.mock('@/i18n/navigation', () => ({
+  Link: ({
+    children,
+    href,
+    ...props
+  }: {
+    children: ReactNode;
+    href: string | { pathname: string; hash: string };
+  }) => (
+    <a href={typeof href === 'string' ? href : `${href.pathname}#${href.hash}`} {...props}>
+      {children}
+    </a>
+  ),
+}));
 
 /** Stand-in for the browser's IntersectionObserver (jsdom has none): the test says what is seen. */
 let report: (id: string) => void = () => {};
@@ -77,5 +93,21 @@ describe('navigation of the public site', () => {
     vi.advanceTimersByTime(1100);
     act(() => report('calculator'));
     expect(current()).toEqual(['Calculator']);
+  });
+
+  it('leads to the technology page, highlighted when it is shown', () => {
+    const { unmount } = renderWithIntl(<SectionNav />);
+    expect(screen.getByRole('link', { name: 'Technology' }).getAttribute('href')).toBe(
+      '/technology',
+    );
+    unmount();
+
+    renderWithIntl(<SectionNav page="technology" />, 'fr-FR');
+    const technology = screen.getByRole('link', { name: 'Technologie' });
+    expect(technology.getAttribute('href')).toBe('/technologie');
+    expect(technology.getAttribute('aria-current')).toBe('page');
+    expect(technology.className).toContain('text-accent');
+    // From the technology page, the sections are those of the home page.
+    expect(screen.getByRole('link', { name: 'Sécurité' }).getAttribute('href')).toBe('/#security');
   });
 });

@@ -9,7 +9,13 @@ import type { getCurrentUser } from '@/lib/api/server';
 import { SectionNav } from './section-nav';
 
 /** Header of the public site: anchors to the sections, language, and the way into the portals. */
-export async function SiteHeader({ user }: { user: Awaited<ReturnType<typeof getCurrentUser>> }) {
+export async function SiteHeader({
+  user,
+  page = 'home',
+}: {
+  user: Awaited<ReturnType<typeof getCurrentUser>>;
+  page?: 'home' | 'technology';
+}) {
   const t = await getTranslations('landing.nav');
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
@@ -18,7 +24,7 @@ export async function SiteHeader({ user }: { user: Awaited<ReturnType<typeof get
           {/* About 10 % larger than before (2.75 and 3 rem). */}
           <Logo className="h-[3.025rem] sm:h-[3.3rem]" />
         </Link>
-        <SectionNav />
+        <SectionNav page={page} />
         <div className="flex items-center gap-2 sm:gap-3">
           <LanguageSwitcher />
           <Button asChild size="sm">

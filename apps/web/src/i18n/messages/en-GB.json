@@ -1712,7 +1712,8 @@
       "calculator": "Calculator",
       "contact": "Contact",
       "signIn": "Sign in",
-      "openPortal": "Open my portal"
+      "openPortal": "Open my portal",
+      "technology": "Technology"
     },
     "demoNotice": "Demonstration environment: all data is fictitious and no real payment is made.",
     "hero": {
@@ -1808,7 +1809,9 @@
         "p1": "KYC/KYB review with expiry alerts",
         "p2": "Transfers checked before execution",
         "p3": "A complete, read-only audit trail"
-      }
+      },
+      "signIn": "Sign in to the demo",
+      "technology": "How the platform is built"
     },
     "security": {
       "eyebrow": "Security",
@@ -1955,5 +1958,103 @@
     },
     "banner": "Emergency read-only access to {tenant} — ends at {time}.",
     "end": "End the access"
+  },
+  "technology": {
+    "metaTitle": "Technology and reliability",
+    "eyebrow": "Technology",
+    "title": "An architecture built so that the registry can be trusted",
+    "subtitle": "How Veris Assets keeps an exact, traceable and isolated record of every private asset it administers — and what it deliberately does not claim.",
+    "cta": {
+      "demo": "Explore the demo",
+      "contact": "Talk to us"
+    },
+    "overview": {
+      "eyebrow": "Overview",
+      "title": "Four layers, each with one job",
+      "subtitle": "Every request goes through the same path. Nothing reaches the data without passing the checks of each layer.",
+      "browser": {
+        "title": "Your browser",
+        "text": "Encrypted connection (HTTPS), strict content security policy, session cookie unreadable by scripts."
+      },
+      "web": {
+        "title": "Web application",
+        "text": "Screens in English and French. It holds no data: it relays each request to the API."
+      },
+      "api": {
+        "title": "API",
+        "text": "Identity, permissions, four-eyes rules and business checks, then one database transaction per operation."
+      },
+      "database": {
+        "title": "Database",
+        "text": "PostgreSQL with row-level isolation per organisation and an append-only ledger protected by the database itself."
+      }
+    },
+    "ledger": {
+      "eyebrow": "Registry",
+      "title": "An append-only ledger",
+      "p1": "The registry of positions is rebuilt from a ledger of movements: issuance, allocation, blocking, transfer, redemption. The ledger is the source of truth; positions are only its result.",
+      "p2": "A movement is never modified nor deleted. The database refuses it, whoever asks — the application included. A mistake is corrected by a counter-entry, approved by a second person, so the history always shows what happened and how it was put right.",
+      "points": {
+        "p1": "Positions always equal the sum of their movements",
+        "p2": "No negative holding, no unit created out of nothing",
+        "p3": "Corrections by counter-entry, with four eyes"
+      }
+    },
+    "hash": {
+      "eyebrow": "Integrity",
+      "title": "Movements chained by hash",
+      "p1": "Each movement carries a SHA-256 fingerprint of its content and of the fingerprint of the movement before it. Changing one movement, even by one digit, would break every fingerprint that follows.",
+      "p2": "Every night, a check recomputes the whole chain and rebuilds the positions from the ledger. Any difference is written in the audit log and reported to the administrators; nothing is repaired automatically.",
+      "example": "Movement n + 1 = SHA-256(content + fingerprint of movement n)"
+    },
+    "isolation": {
+      "eyebrow": "Isolation",
+      "title": "Each organisation sees only its own data",
+      "p1": "The organisation of a user is always determined by the server from the identity, never from what the browser sends. An attempt to reach another organisation's data answers as if it did not exist, and is logged.",
+      "p2": "Isolation does not rely on the application alone: the database applies it to every row, and the application connects with a role that has only the rights it needs.",
+      "points": {
+        "p1": "Row-level isolation enforced by PostgreSQL",
+        "p2": "Separate database roles, least privilege",
+        "p3": "Every route tested against every role on each change"
+      }
+    },
+    "hosting": {
+      "eyebrow": "Hosting",
+      "title": "European hosting",
+      "p1": "The demonstration runs in a European data centre (Amsterdam, Netherlands): application, database, documents and backups.",
+      "p2": "The database is backed up every night; each backup is checked against a manifest (row counts and ledger fingerprint), and restoring it is tested automatically."
+    },
+    "reliability": {
+      "eyebrow": "Reliability",
+      "title": "Why the platform can be relied on",
+      "fourEyes": {
+        "title": "Four eyes",
+        "text": "Allocations, distributions, payments and corrections need a second person: nobody validates their own operation."
+      },
+      "audit": {
+        "title": "Complete audit trail",
+        "text": "Who did what, when and from where, with values before and after; sensitive data masked."
+      },
+      "exact": {
+        "title": "Exact amounts",
+        "text": "Every amount is computed in exact decimals, never in floating point: a coupon of €2,500.00 is exactly €2,500.00."
+      },
+      "idempotent": {
+        "title": "No double operation",
+        "text": "A request sent twice — a double click, a network retry — is executed once."
+      },
+      "tests": {
+        "title": "Tested on every change",
+        "text": "Several hundred automated tests, including real browser scenarios, run before any change is accepted."
+      },
+      "access": {
+        "title": "Protected access",
+        "text": "Two-factor authentication for administrators and compliance officers, alerts on unusual access, emergency access traced."
+      }
+    },
+    "scope": {
+      "title": "What Veris Assets does not claim",
+      "text": "Veris Assets is a demonstration: fictitious data, fictitious payments and identity checks, no blockchain required. It makes no claim of regulatory approval or authorisation. Its architecture is designed to integrate your compliance controls and is compatible with a future ERC-3643 integration."
+    }
   }
 }

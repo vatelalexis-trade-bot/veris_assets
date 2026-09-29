@@ -718,3 +718,15 @@ Décisions du porteur de projet.
 1. Le domaine est rattaché au service `web` de Railway, qui fournit le certificat HTTPS.
 2. Chez Cloudflare, deux enregistrements DNS, en mode « DNS only » (nuage gris), pour que Railway puisse émettre le certificat : un CNAME `@` vers l'adresse donnée par Railway, et un TXT `_railway-verify` pour prouver la propriété.
 3. `https://veris-assets.com` devient l'adresse officielle (`WEB_ORIGIN`, liens des emails). L'adresse Railway reste acceptée par le contrôle d'origine et l'authentification (`WEB_ALTERNATE_ORIGINS`), pour que rien ne casse pendant la bascule.
+
+**D-108 — Proposée. Page « Technologie » et liens de la page d'accueil.** Demande du porteur de projet.
+1. Nouvelle page `/en/technology` et `/fr/technologie`. Chaque langue a sa propre adresse : la version d'une langue à l'adresse de l'autre y redirige, ce qui garde le sélecteur de langue fonctionnel sans changer le reste de la navigation.
+2. La page approfondit la section Sécurité :
+   - le chemin d'une requête en quatre couches ;
+   - le registre en ajout seul et les corrections par contre-écriture ;
+   - le chaînage des mouvements par empreinte SHA-256 et le contrôle de chaque nuit ;
+   - l'isolation par organisation (RLS, rôles séparés, tests de chaque route) ;
+   - l'hébergement européen et les sauvegardes vérifiées ;
+   - six raisons de fiabilité (quatre yeux, audit, montants exacts, pas d'opération en double, tests, accès protégés).
+3. Aucune revendication de conformité ou de certification (spec 31.2, règle 1) : un encadré « Ce que Veris Assets ne revendique pas » reprend uniquement les formulations admises par la spec 19.1. La vérification automatique des formulations passe.
+4. Le lien « Technologie » est ajouté au menu (mis en évidence sur sa page, avec `aria-current="page"`) et au pied de page. La section « Pour chaque rôle » gagne deux boutons : « Se connecter à la démo » (page de connexion dans la langue du visiteur) et « Comment la plateforme est construite ». Depuis la page Technologie, les entrées du menu ramènent aux sections de la page d'accueil.

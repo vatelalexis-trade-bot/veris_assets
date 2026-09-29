@@ -1712,7 +1712,8 @@
       "calculator": "Calculateur",
       "contact": "Contact",
       "signIn": "Se connecter",
-      "openPortal": "Ouvrir mon portail"
+      "openPortal": "Ouvrir mon portail",
+      "technology": "Technologie"
     },
     "demoNotice": "Environnement de démonstration : toutes les données sont fictives et aucun paiement réel n’est effectué.",
     "hero": {
@@ -1808,7 +1809,9 @@
         "p1": "Revue KYC/KYB avec alertes d’expiration",
         "p2": "Transferts contrôlés avant exécution",
         "p3": "Une piste d’audit complète, en lecture seule"
-      }
+      },
+      "signIn": "Se connecter à la démo",
+      "technology": "Comment la plateforme est construite"
     },
     "security": {
       "eyebrow": "Sécurité",
@@ -1955,5 +1958,103 @@
     },
     "banner": "Accès d’urgence en lecture seule à {tenant} — prend fin à {time}.",
     "end": "Mettre fin à l’accès"
+  },
+  "technology": {
+    "metaTitle": "Technologie et fiabilité",
+    "eyebrow": "Technologie",
+    "title": "Une architecture pensée pour qu’on puisse faire confiance au registre",
+    "subtitle": "Comment Veris Assets tient un enregistrement exact, traçable et isolé de chaque actif privé qu’elle administre — et ce qu’elle ne revendique volontairement pas.",
+    "cta": {
+      "demo": "Découvrir la démo",
+      "contact": "Nous contacter"
+    },
+    "overview": {
+      "eyebrow": "Vue d’ensemble",
+      "title": "Quatre couches, chacune avec un rôle",
+      "subtitle": "Chaque requête suit le même chemin. Rien n’atteint les données sans passer les contrôles de chaque couche.",
+      "browser": {
+        "title": "Votre navigateur",
+        "text": "Connexion chiffrée (HTTPS), politique de sécurité des contenus stricte, cookie de session illisible par les scripts."
+      },
+      "web": {
+        "title": "Application web",
+        "text": "Écrans en anglais et en français. Elle ne détient aucune donnée : elle transmet chaque demande à l’API."
+      },
+      "api": {
+        "title": "API",
+        "text": "Identité, permissions, règle des quatre yeux et contrôles métier, puis une transaction en base par opération."
+      },
+      "database": {
+        "title": "Base de données",
+        "text": "PostgreSQL, avec une isolation ligne à ligne par organisation et un registre en ajout seul protégé par la base elle-même."
+      }
+    },
+    "ledger": {
+      "eyebrow": "Registre",
+      "title": "Un registre en ajout seul",
+      "p1": "Le registre des positions est reconstruit à partir d’un journal de mouvements : émission, allocation, blocage, transfert, remboursement. Ce journal fait foi ; les positions n’en sont que le résultat.",
+      "p2": "Un mouvement n’est jamais modifié ni supprimé. La base de données le refuse, quel que soit le demandeur — l’application comprise. Une erreur se corrige par une contre-écriture, approuvée par une seconde personne : l’historique montre toujours ce qui s’est passé et comment cela a été rectifié.",
+      "points": {
+        "p1": "Les positions égalent toujours la somme de leurs mouvements",
+        "p2": "Aucune détention négative, aucune unité créée à partir de rien",
+        "p3": "Corrections par contre-écriture, en quatre yeux"
+      }
+    },
+    "hash": {
+      "eyebrow": "Intégrité",
+      "title": "Des mouvements chaînés par empreinte",
+      "p1": "Chaque mouvement porte une empreinte SHA-256 de son contenu et de l’empreinte du mouvement précédent. Modifier un mouvement, même d’un chiffre, casserait toutes les empreintes qui suivent.",
+      "p2": "Chaque nuit, un contrôle recalcule toute la chaîne et reconstruit les positions à partir du journal. Toute différence est inscrite au journal d’audit et signalée aux administrateurs ; rien n’est réparé automatiquement.",
+      "example": "Mouvement n + 1 = SHA-256(contenu + empreinte du mouvement n)"
+    },
+    "isolation": {
+      "eyebrow": "Isolation",
+      "title": "Chaque organisation ne voit que ses données",
+      "p1": "L’organisation d’un utilisateur est toujours déterminée par le serveur à partir de son identité, jamais d’après ce qu’envoie le navigateur. Une tentative d’accès aux données d’une autre organisation reçoit la même réponse que si elles n’existaient pas, et elle est tracée.",
+      "p2": "L’isolation ne repose pas sur l’application seule : la base de données l’applique à chaque ligne, et l’application s’y connecte avec un rôle qui n’a que les droits nécessaires.",
+      "points": {
+        "p1": "Isolation ligne à ligne imposée par PostgreSQL",
+        "p2": "Rôles de base séparés, moindre privilège",
+        "p3": "Chaque route testée pour chaque rôle à chaque changement"
+      }
+    },
+    "hosting": {
+      "eyebrow": "Hébergement",
+      "title": "Un hébergement européen",
+      "p1": "La démonstration tourne dans un centre de données européen (Amsterdam, Pays-Bas) : application, base de données, documents et sauvegardes.",
+      "p2": "La base est sauvegardée chaque nuit ; chaque sauvegarde est vérifiée par un manifeste (nombre de lignes et empreinte du registre), et sa restauration est testée automatiquement."
+    },
+    "reliability": {
+      "eyebrow": "Fiabilité",
+      "title": "Pourquoi on peut s’appuyer sur la plateforme",
+      "fourEyes": {
+        "title": "Quatre yeux",
+        "text": "Allocations, distributions, paiements et corrections demandent une seconde personne : personne ne valide sa propre opération."
+      },
+      "audit": {
+        "title": "Piste d’audit complète",
+        "text": "Qui a fait quoi, quand et d’où, avec les valeurs avant et après ; données sensibles masquées."
+      },
+      "exact": {
+        "title": "Montants exacts",
+        "text": "Chaque montant est calculé en décimal exact, jamais en virgule flottante : un coupon de 2 500,00 € fait exactement 2 500,00 €."
+      },
+      "idempotent": {
+        "title": "Aucune opération en double",
+        "text": "Une demande envoyée deux fois — double clic, nouvelle tentative réseau — n’est exécutée qu’une fois."
+      },
+      "tests": {
+        "title": "Testée à chaque changement",
+        "text": "Plusieurs centaines de tests automatiques, dont des scénarios dans un vrai navigateur, passent avant qu’un changement soit accepté."
+      },
+      "access": {
+        "title": "Accès protégés",
+        "text": "Double authentification pour les administrateurs et la conformité, alertes en cas d’accès inhabituel, accès d’urgence tracé."
+      }
+    },
+    "scope": {
+      "title": "Ce que Veris Assets ne revendique pas",
+      "text": "Veris Assets est une démonstration : données fictives, paiements et contrôles d’identité fictifs, aucune blockchain nécessaire. Elle ne revendique aucun agrément ni aucune autorisation réglementaire. Son architecture est conçue pour intégrer vos contrôles de conformité et est compatible avec une future intégration ERC-3643."
+    }
   }
 }
