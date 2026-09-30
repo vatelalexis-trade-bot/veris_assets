@@ -1827,7 +1827,8 @@
         "title": "European hosting",
         "text": "The demonstration runs in a European data centre, with daily backups."
       },
-      "note": "An architecture designed to integrate your compliance controls, and compatible with a future ERC-3643 integration. No blockchain is required to run the platform."
+      "note": "An architecture designed to integrate your compliance controls, and compatible with a future ERC-3643 integration. No blockchain is required to run the platform.",
+      "learnMore": "Learn more about the technology"
     },
     "contact": {
       "eyebrow": "Contact",

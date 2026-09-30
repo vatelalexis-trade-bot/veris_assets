@@ -1827,7 +1827,8 @@
         "title": "Hébergement européen",
         "text": "La démonstration tourne dans un centre de données européen, avec des sauvegardes quotidiennes."
       },
-      "note": "Une architecture conçue pour intégrer vos contrôles de conformité, et compatible avec une future intégration ERC-3643. Aucune blockchain n’est nécessaire pour faire fonctionner la plateforme."
+      "note": "Une architecture conçue pour intégrer vos contrôles de conformité, et compatible avec une future intégration ERC-3643. Aucune blockchain n’est nécessaire pour faire fonctionner la plateforme.",
+      "learnMore": "En savoir plus sur la technologie"
     },
     "contact": {
       "eyebrow": "Contact",
