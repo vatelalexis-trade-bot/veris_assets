@@ -1744,8 +1744,8 @@
     },
     "lifecycle": {
       "eyebrow": "Lifecycle",
-      "title": "The whole life of an issuance, in one place",
-      "subtitle": "From the first draft to the last redemption, every step follows clear statuses, with the right person deciding at the right time.",
+      "title": "Two journeys, one registry",
+      "subtitle": "From the first draft to the last redemption, every step follows clear statuses, and the right person decides at the right time.",
       "structure": {
         "title": "Structure",
         "text": "Create the issuance in a guided wizard: terms, schedule, eligibility rules and documents, approved with four eyes."
@@ -1769,6 +1769,35 @@
       "service": {
         "title": "Service and report",
         "text": "Calculate coupons and redemptions from a registry snapshot, generate payment instructions, notices and exports."
+      },
+      "journeys": "Journeys",
+      "investor": {
+        "tab": "Investor",
+        "lead": "Subscribing without the paperwork: five steps, all online.",
+        "invitation": {
+          "title": "Accept the invitation and verify your identity",
+          "text": "Your issuer invites you. Create your account and upload your KYC/KYB file; the issuer's compliance team reviews it."
+        },
+        "status": {
+          "title": "Confirm your professional investor status",
+          "text": "Your classification is checked against the eligibility rules of the issuance before you can subscribe."
+        },
+        "documents": {
+          "title": "Read the documents and enter your amount",
+          "text": "Term sheet, memorandum and terms are in your space. Choose the amount you wish to subscribe."
+        },
+        "signature": {
+          "title": "Sign your subscription form electronically",
+          "text": "Sign online in a few clicks (simulated in the demo). The issuer then reviews and allocates."
+        },
+        "follow": {
+          "title": "Track positions, coupons and documents",
+          "text": "Follow your holdings, coupon payments and notices from your investor space."
+        }
+      },
+      "issuer": {
+        "tab": "Issuer and asset manager",
+        "lead": "Six steps, each with its statuses, its controls and its audit trail."
       }
     },
     "audiences": {

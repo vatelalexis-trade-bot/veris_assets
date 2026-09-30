@@ -1744,7 +1744,7 @@
     },
     "lifecycle": {
       "eyebrow": "Cycle de vie",
-      "title": "Toute la vie d’une émission, au même endroit",
+      "title": "Deux parcours, un seul registre",
       "subtitle": "Du premier brouillon au dernier remboursement, chaque étape suit des statuts clairs, et la bonne personne décide au bon moment.",
       "structure": {
         "title": "Structurer",
@@ -1769,6 +1769,35 @@
       "service": {
         "title": "Servir et rendre compte",
         "text": "Calculez coupons et remboursements à partir d’une photographie du registre, générez instructions de paiement, avis et exports."
+      },
+      "journeys": "Parcours",
+      "investor": {
+        "tab": "Investisseur",
+        "lead": "Souscrire sans prise de tête : cinq étapes, toutes en ligne.",
+        "invitation": {
+          "title": "Accepter l’invitation et valider son identité",
+          "text": "Votre émetteur vous invite. Créez votre compte et déposez votre dossier KYC/KYB ; la conformité de l’émetteur l’examine."
+        },
+        "status": {
+          "title": "Confirmer son statut d’investisseur professionnel",
+          "text": "Votre classification est contrôlée au regard des règles d’éligibilité de l’émission avant toute souscription."
+        },
+        "documents": {
+          "title": "Consulter la documentation et indiquer son montant",
+          "text": "Term sheet, mémorandum et conditions sont dans votre espace. Choisissez le montant que vous souhaitez souscrire."
+        },
+        "signature": {
+          "title": "Signer électroniquement le bulletin de souscription",
+          "text": "Signez en ligne en quelques clics (simulée dans la démo). L’émetteur examine ensuite et alloue."
+        },
+        "follow": {
+          "title": "Suivre positions, coupons et documents",
+          "text": "Suivez vos positions, le versement des coupons et les avis depuis votre espace investisseur."
+        }
+      },
+      "issuer": {
+        "tab": "Émetteur et société de gestion",
+        "lead": "Six étapes, chacune avec ses statuts, ses contrôles et sa piste d’audit."
       }
     },
     "audiences": {
