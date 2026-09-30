@@ -95,28 +95,28 @@ export function Calculator() {
   };
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[1fr_1.1fr]">
-      <form className="flex flex-col gap-8" onSubmit={(event) => event.preventDefault()} noValidate>
+    <div className="grid gap-6 lg:grid-cols-[1.35fr_1fr]">
+      <form className="flex flex-col gap-5" onSubmit={(event) => event.preventDefault()} noValidate>
         {GROUPS.map(([group, keys]) => (
-          <fieldset key={group} className="flex flex-col gap-4">
-            <legend className="mb-3 font-heading text-sm font-semibold tracking-wider text-muted uppercase">
+          <fieldset key={group} className="flex flex-col gap-3">
+            <legend className="mb-2 font-heading text-xs font-semibold tracking-wider text-muted uppercase">
               {t(`groups.${group}`)}
             </legend>
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid grid-cols-2 items-end gap-3">
               {keys.map((key) => (
                 <FormField key={key} label={t(`fields.${key}`)} error={invalid(inputs[key])}>
                   <Input
                     inputMode="decimal"
                     value={inputs[key]}
                     onChange={(event) => setInputs({ ...inputs, [key]: event.target.value })}
-                    className="tabular-nums"
+                    className="h-8 tabular-nums"
                   />
                 </FormField>
               ))}
             </div>
           </fieldset>
         ))}
-        <details className="group rounded-2xl border border-border bg-surface p-5">
+        <details className="group rounded-2xl border border-border bg-surface p-4">
           <summary className="flex cursor-pointer list-none items-center justify-between gap-3 font-heading font-semibold">
             <span className="flex items-center gap-2">
               <ChevronDown
@@ -127,7 +127,7 @@ export function Calculator() {
             </span>
             <span className="text-xs font-normal text-muted">{t('assumptions.hint')}</span>
           </summary>
-          <div className="mt-5 grid gap-4 sm:grid-cols-2">
+          <div className="mt-4 grid grid-cols-2 items-end gap-3">
             {(Object.keys(DEFAULT_ASSUMPTIONS) as (keyof CalculatorAssumptions)[]).map((key) => (
               <FormField
                 key={key}
@@ -140,14 +140,14 @@ export function Calculator() {
                   onChange={(event) =>
                     setAssumptions({ ...assumptions, [key]: event.target.value })
                   }
-                  className="tabular-nums"
+                  className="h-8 tabular-nums"
                 />
               </FormField>
             ))}
           </div>
         </details>
         <div>
-          <Button type="button" variant="ghost" onClick={reset}>
+          <Button type="button" variant="ghost" size="sm" onClick={reset}>
             <RotateCcw aria-hidden="true" />
             {t('assumptions.reset')}
           </Button>
@@ -163,14 +163,14 @@ export function Calculator() {
           <section
             aria-labelledby="estimate-title"
             aria-live="polite"
-            className="relative flex flex-col gap-6 rounded-2xl bg-surface p-6 md:p-8"
+            className="relative flex flex-col gap-4 rounded-2xl bg-surface p-5"
           >
-            <h3 id="estimate-title" className="text-xl font-semibold">
+            <h3 id="estimate-title" className="text-base font-semibold">
               {t('results.title')}
             </h3>
             {result ? (
               <>
-                <dl className="grid gap-3 sm:grid-cols-2">
+                <dl className="grid grid-cols-2 gap-2.5">
                   <Figure
                     label={t('results.currentCost')}
                     value={euros(result.currentAnnualCost)}
@@ -220,23 +220,34 @@ export function Calculator() {
                     },
                   ]}
                 />
-                <BarChart
-                  title={t('chart.breakdown')}
-                  bars={(['time', 'tools', 'providers', 'incidents'] as const).map((key) => ({
-                    label: t(`chart.${key}`),
-                    value: result.savings[key],
-                    display: euros(result.savings[key]),
-                    tone: 'accent' as const,
-                  }))}
-                />
-                <p className="text-xs text-muted">
-                  {t('results.operations', { count: number(result.operationsPerYear) })}
-                </p>
+                <details className="group rounded-xl border border-border p-3">
+                  <summary className="flex cursor-pointer list-none items-center gap-2 text-sm font-medium">
+                    <ChevronDown
+                      aria-hidden="true"
+                      className="size-4 text-accent transition-transform group-open:rotate-180"
+                    />
+                    {t('chart.breakdown')}
+                  </summary>
+                  <div className="mt-3 flex flex-col gap-3">
+                    <BarChart
+                      title={t('chart.breakdownTitle')}
+                      bars={(['time', 'tools', 'providers', 'incidents'] as const).map((key) => ({
+                        label: t(`chart.${key}`),
+                        value: result.savings[key],
+                        display: euros(result.savings[key]),
+                        tone: 'accent' as const,
+                      }))}
+                    />
+                    <p className="text-xs text-muted">
+                      {t('results.operations', { count: number(result.operationsPerYear) })}
+                    </p>
+                  </div>
+                </details>
               </>
             ) : (
               <p className="text-sm text-warning">{t('incomplete')}</p>
             )}
-            <p className="flex gap-2 border-t border-border pt-4 text-xs text-muted">
+            <p className="flex gap-2 border-t border-border pt-3 text-xs text-muted">
               <Info aria-hidden="true" className="mt-0.5 size-3.5 shrink-0" />
               {t('disclaimer')}
             </p>
@@ -265,14 +276,14 @@ function Figure({
   return (
     <div
       className={cn(
-        'rounded-xl p-4',
+        'rounded-xl p-3',
         highlight ? 'border border-border bg-background' : 'bg-surface-raised',
       )}
     >
       <dt className="text-xs text-muted">{label}</dt>
       <dd
         className={cn(
-          'mt-1 font-heading text-2xl font-semibold tabular-nums',
+          'mt-0.5 font-heading text-lg font-semibold tabular-nums',
           tone === 'success' && 'text-success',
           tone === 'error' && 'text-error-text',
         )}

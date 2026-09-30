@@ -1706,28 +1706,29 @@
     "metaTitle": "Plateforme de gestion du cycle de vie des actifs privés",
     "nav": {
       "label": "Sections principales",
-      "platform": "Plateforme",
       "lifecycle": "Cycle de vie",
       "security": "Sécurité",
-      "calculator": "Calculateur",
+      "calculator": "Business case",
       "contact": "Contact",
       "signIn": "Se connecter",
       "openPortal": "Ouvrir mon portail",
-      "technology": "Technologie"
+      "technology": "Technologie",
+      "solution": "Solution",
+      "projects": "Projets"
     },
     "demoNotice": "Environnement de démonstration : toutes les données sont fictives et aucun paiement réel n’est effectué.",
     "hero": {
-      "eyebrow": "Plateforme de gestion d’actifs privés",
-      "title": "Émettez, administrez et servez vos actifs privés",
-      "titleAccent": "depuis une seule plateforme.",
-      "subtitle": "Veris Assets prend en charge tout ce qui suit la term sheet : l’onboarding des investisseurs, les souscriptions, l’allocation, le registre, les coupons et le reporting — avec une piste d’audit complète.",
-      "primaryCta": "Estimer vos économies",
-      "secondaryCta": "Découvrir la démo"
+      "eyebrow": "Logiciel pour émetteurs d’obligations privées et sociétés de gestion",
+      "title": "Émettez et gérez vos obligations privées,",
+      "titleAccent": "du premier projet au dernier remboursement.",
+      "subtitle": "Veris Assets structure vos obligations et notes, qualifie vos investisseurs professionnels, recueille les souscriptions et tient le registre. Coupons, remboursements et reporting suivent — sans tableur.",
+      "primaryCta": "Voir la démo",
+      "secondaryCta": "Parler à l’équipe"
     },
     "preview": {
-      "label": "Aperçu du produit avec des données fictives",
+      "label": "Une émission illustrative, telle qu’affichée dans le produit",
       "title": "Northwind Green Notes",
-      "subtitle": "Émission de démo · coupon semestriel de 5 %",
+      "subtitle": "Obligations à 5 ans · coupon semestriel de 5 %",
       "status": "Active",
       "nominal": "Nominal administré",
       "holders": "Porteurs",
@@ -1739,30 +1740,11 @@
       "coupon": "Dernier coupon",
       "fourEyes": "Coupon approuvé en quatre yeux",
       "ledger": "Registre vérifié — chaîne de hachage intacte",
-      "fictitious": "Données fictives"
-    },
-    "strip": {
-      "ledger": {
-        "title": "Registre en ajout seul",
-        "text": "Chaque mouvement est enregistré une fois, chaîné et vérifiable."
-      },
-      "fourEyes": {
-        "title": "Décisions à quatre yeux",
-        "text": "Allocations, distributions et paiements demandent une seconde personne."
-      },
-      "isolation": {
-        "title": "Isolation native",
-        "text": "Les données de chaque organisation sont séparées jusque dans la base."
-      },
-      "bilingual": {
-        "title": "Anglais et français",
-        "text": "Chaque écran, email et document dans les deux langues."
-      },
-      "label": "Points forts"
+      "description": "Participe au financement d’une centrale solaire de 12 MWc sur une friche industrielle près de Toulouse."
     },
     "lifecycle": {
       "eyebrow": "Cycle de vie",
-      "title": "Toute la vie d’une émission, au même endroit",
+      "title": "Deux parcours, un seul registre",
       "subtitle": "Du premier brouillon au dernier remboursement, chaque étape suit des statuts clairs, et la bonne personne décide au bon moment.",
       "structure": {
         "title": "Structurer",
@@ -1787,6 +1769,35 @@
       "service": {
         "title": "Servir et rendre compte",
         "text": "Calculez coupons et remboursements à partir d’une photographie du registre, générez instructions de paiement, avis et exports."
+      },
+      "journeys": "Parcours",
+      "investor": {
+        "tab": "Investisseur",
+        "lead": "Souscrire sans prise de tête : cinq étapes, toutes en ligne.",
+        "invitation": {
+          "title": "Accepter l’invitation et valider son identité",
+          "text": "Votre émetteur vous invite. Créez votre compte et déposez votre dossier KYC/KYB ; la conformité de l’émetteur l’examine."
+        },
+        "status": {
+          "title": "Confirmer son statut d’investisseur professionnel",
+          "text": "Votre classification est contrôlée au regard des règles d’éligibilité de l’émission avant toute souscription."
+        },
+        "documents": {
+          "title": "Consulter la documentation et indiquer son montant",
+          "text": "Term sheet, mémorandum et conditions sont dans votre espace. Choisissez le montant que vous souhaitez souscrire."
+        },
+        "signature": {
+          "title": "Signer électroniquement le bulletin de souscription",
+          "text": "Signez en ligne en quelques clics (simulée dans la démo). L’émetteur examine ensuite et alloue."
+        },
+        "follow": {
+          "title": "Suivre positions, coupons et documents",
+          "text": "Suivez vos positions, le versement des coupons et les avis depuis votre espace investisseur."
+        }
+      },
+      "issuer": {
+        "tab": "Émetteur et société de gestion",
+        "lead": "Six étapes, chacune avec ses statuts, ses contrôles et sa piste d’audit."
       }
     },
     "audiences": {
@@ -1794,24 +1805,28 @@
       "title": "Une plateforme, trois points de vue",
       "issuers": {
         "title": "Émetteurs et sociétés de gestion",
-        "p1": "Tableaux de bord, file « À traiter » et prochaines échéances",
-        "p2": "Allocation, registre et coupons sans tableur",
-        "p3": "Exports CSV et documents générés"
+        "p1": "Un tableau de bord et une file « À faire » au lieu des tableurs",
+        "p2": "Allocation, registre et coupons sans rapprochement manuel",
+        "p3": "Exports CSV et documents générés, prêts à envoyer",
+        "lead": "Levez et administrez de la dette privée sans le poids du back-office."
       },
       "investors": {
         "title": "Investisseurs professionnels",
-        "p1": "Un portefeuille avec positions, transactions et distributions",
-        "p2": "Souscriptions et demandes de transfert en ligne",
-        "p3": "Documents et avis dans leur langue"
+        "p1": "Une vue portefeuille : positions, coupons et documents",
+        "p2": "Souscriptions et transferts en ligne, contrôlés avant exécution",
+        "p3": "Avis et documents dans leur langue",
+        "lead": "Retrouvez les émissions d’actifs réels auxquelles vous êtes invité, et suivez-les au même endroit."
       },
       "compliance": {
         "title": "Conformité et audit",
         "p1": "Revue KYC/KYB avec alertes d’expiration",
-        "p2": "Transferts contrôlés avant exécution",
-        "p3": "Une piste d’audit complète, en lecture seule"
+        "p2": "Éligibilité contrôlée avant chaque souscription et chaque transfert",
+        "p3": "Une piste d’audit complète, en lecture seule",
+        "lead": "Contrôlez chaque étape, et montrez comment elle a été faite."
       },
       "signIn": "Se connecter à la démo",
-      "technology": "Comment la plateforme est construite"
+      "technology": "Comment la plateforme est construite",
+      "subtitle": "Chacun travaille sur le même registre, et ne voit que ce qui le concerne."
     },
     "security": {
       "eyebrow": "Sécurité",
@@ -1841,7 +1856,8 @@
         "title": "Hébergement européen",
         "text": "La démonstration tourne dans un centre de données européen, avec des sauvegardes quotidiennes."
       },
-      "note": "Une architecture conçue pour intégrer vos contrôles de conformité, et compatible avec une future intégration ERC-3643. Aucune blockchain n’est nécessaire pour faire fonctionner la plateforme."
+      "note": "Une architecture conçue pour intégrer vos contrôles de conformité, et compatible avec une future intégration ERC-3643. Aucune blockchain n’est nécessaire pour faire fonctionner la plateforme.",
+      "learnMore": "En savoir plus sur la technologie"
     },
     "contact": {
       "eyebrow": "Contact",
@@ -1877,12 +1893,89 @@
       "tagline": "Gestion du cycle de vie des actifs privés pour les sociétés de gestion et les émetteurs.",
       "demo": "Environnement de démonstration — données fictives, aucun paiement réel, aucune valeur juridique.",
       "rights": "© {year} Veris Assets"
+    },
+    "professionalOnly": "Réservé aux investisseurs professionnels.",
+    "illustrative": {
+      "badge": "Exemple illustratif",
+      "yieldNotice": "Rendement cible illustratif, non garanti. Investir dans des actifs privés comporte un risque de perte en capital et d’illiquidité."
+    },
+    "solution": {
+      "eyebrow": "Ce que fait Veris Assets",
+      "title": "Un système de référence unique pour vos obligations privées",
+      "subtitle": "Conçu pour les émetteurs et sociétés de gestion qui structurent, émettent et administrent de la dette privée : immobilier, énergie verte et autres actifs réels.",
+      "problem": {
+        "title": "Le problème",
+        "text": "Les marchés illiquides — dette privée, immobilier, obligations vertes — supportent des coûts d’intermédiation élevés, des règlements lents et un back-office lourd, fait de tableurs et d’emails."
+      },
+      "approach": {
+        "title": "Notre approche",
+        "text": "Veris Assets remplace tableurs et rapprochements manuels par un parcours guidé : structurer, qualifier, souscrire, allouer, enregistrer, servir."
+      },
+      "goal": {
+        "title": "L’objectif",
+        "text": "Un système de référence unique pour émetteurs et sociétés de gestion, avec contrôle quatre yeux et piste d’audit complète. Sans blockchain obligatoire."
+      },
+      "assets": {
+        "title": "Pour les projets qui financent l’économie réelle",
+        "realEstate": {
+          "title": "Immobilier",
+          "text": "Résidentiel, logistique, reconversion de bureaux et rénovation énergétique."
+        },
+        "greenEnergy": {
+          "title": "Énergie verte",
+          "text": "Photovoltaïque, éolien, stockage et efficacité énergétique."
+        },
+        "realAssets": {
+          "title": "Autres actifs réels",
+          "text": "Réseaux de recharge, infrastructures locales et autres actifs générateurs de revenus."
+        }
+      }
+    },
+    "projects": {
+      "eyebrow": "Exemples illustratifs",
+      "title": "Le type de projets que les émetteurs gèrent avec Veris Assets",
+      "subtitle": "Toitures solaires, logistique, rénovation énergétique, éolien : chaque émission suit le même parcours contrôlé, de la souscription au dernier coupon.",
+      "notice": {
+        "title": "Projets fictifs, présentés pour illustrer le logiciel.",
+        "text": "Veris Assets est un éditeur de logiciel : il ne propose, ne commercialise ni ne conseille aucun investissement, et ne détient jamais les fonds des investisseurs. Les émissions sont proposées par leurs émetteurs aux investisseurs qu’ils invitent ; les fonds de souscription vont à l’émetteur ou au séquestre ou agent payeur qu’il désigne.",
+        "professional": "Les émissions de la plateforme sont réservées aux investisseurs professionnels."
+      },
+      "filters": {
+        "label": "Filtrer les projets",
+        "tab": "{name} ({count})",
+        "all": "Tous",
+        "open": "Ouverts",
+        "upcoming": "À venir",
+        "closed": "Terminés"
+      },
+      "status": {
+        "open": "Ouvert",
+        "upcoming": "À venir",
+        "closed": "Terminé"
+      },
+      "kinds": {
+        "solar": "Photovoltaïque",
+        "wind": "Éolien",
+        "storage": "Stockage d’énergie",
+        "residential": "Résidentiel",
+        "logistics": "Logistique",
+        "renovation": "Rénovation énergétique",
+        "charging": "Recharge électrique"
+      },
+      "amount": "Émission",
+      "targetYield": "Rendement cible",
+      "term": "Durée",
+      "years": "{count, plural, one {# an} other {# ans}}",
+      "months": "{count} mois",
+      "carousel": "carrousel",
+      "previous": "Projets précédents",
+      "next": "Projets suivants"
     }
   },
   "calculator": {
     "eyebrow": "Business case",
-    "title": "Estimez ce que la plateforme pourrait vous faire économiser",
-    "subtitle": "Saisissez quelques chiffres sur votre émission. Le calcul se fait dans votre navigateur : rien n’est envoyé.",
+    "title": "Estimez vos économies, ou vos coupons",
+    "subtitle": "Deux simulations rapides. Le calcul se fait dans votre navigateur : rien n’est envoyé.",
     "groups": {
       "issuance": "Votre émission",
       "operations": "Vos opérations chaque année",
@@ -1934,9 +2027,48 @@
       "time": "Temps gagné",
       "tools": "Outils",
       "providers": "Prestataires",
-      "incidents": "Incidents"
+      "incidents": "Incidents",
+      "breakdownTitle": "Économies brutes par an, par source"
     },
-    "disclaimer": "Estimations indicatives fondées sur vos chiffres et les hypothèses affichées ; ni engagement contractuel, ni offre de prix."
+    "disclaimer": "Estimations indicatives fondées sur vos chiffres et les hypothèses affichées ; ni engagement contractuel, ni offre de prix.",
+    "tabs": {
+      "label": "Simulations",
+      "issuer": "Émetteur",
+      "investor": "Investisseur"
+    },
+    "investor": {
+      "title": "Votre simulation",
+      "fields": {
+        "amount": "Montant investi (€)",
+        "ratePercent": "Taux de coupon cible (% par an)",
+        "years": "Durée (années)",
+        "frequency": "Fréquence des coupons"
+      },
+      "frequencies": {
+        "1": "Annuelle",
+        "2": "Semestrielle",
+        "4": "Trimestrielle"
+      },
+      "invalid": {
+        "amount": "Saisissez un montant supérieur à zéro.",
+        "ratePercent": "Saisissez un taux entre 0 et 100.",
+        "years": "Saisissez un nombre entier d’années, de 1 à 30."
+      },
+      "incomplete": "Complétez les champs signalés pour voir la simulation.",
+      "reset": "Réinitialiser les chiffres",
+      "couponPerPeriod": "Coupon par versement",
+      "payments": "Nombre de versements",
+      "totalCoupons": "Total des coupons bruts",
+      "totalReceived": "Coupons et capital",
+      "schedule": {
+        "title": "Échéancier",
+        "payment": "Versement",
+        "month": "N° {number} · mois {month}",
+        "coupon": "Coupon",
+        "principal": "Capital"
+      },
+      "disclaimer": "Simulation illustrative, avant fiscalité, non garantie : coupon identique à chaque période et capital remboursé à l’échéance, sans convention de décompte des jours. Investir dans des actifs privés comporte un risque de perte en capital et d’illiquidité."
+    }
   },
   "breakGlass": {
     "title": "Accès d’urgence",

@@ -1,17 +1,25 @@
-import { ArrowRight, BadgeCheck, Calculator, FlaskConical, Link2 } from 'lucide-react';
+import {
+  BadgeCheck,
+  Briefcase,
+  FlaskConical,
+  Link2,
+  MessagesSquare,
+  PlayCircle,
+} from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { Button } from '@/components/ui/button';
 import { Link } from '@/i18n/navigation';
+import { IllustrativeBadge, YieldNotice } from './illustrative';
+import { ProjectIllustration } from './project-illustration';
 
-/** First screen: the promise, two ways in, and a preview of the product with fictitious data. */
+/**
+ * First screen: what Veris Assets does in one sentence, the demo and the team as ways in, and an
+ * illustrative issuance as seen in the product. Professional investors only (SPEC §4).
+ */
 export async function Hero() {
   const t = await getTranslations('landing');
   return (
-    <section
-      id="platform"
-      aria-labelledby="hero-title"
-      className="relative isolate overflow-hidden"
-    >
+    <section aria-labelledby="hero-title" className="relative isolate overflow-hidden">
       <div aria-hidden="true" className="bg-grid absolute inset-0 -z-10" />
       <div
         aria-hidden="true"
@@ -36,18 +44,22 @@ export async function Hero() {
           <p className="max-w-xl text-lg text-pretty text-muted">{t('hero.subtitle')}</p>
           <div className="flex flex-wrap gap-3">
             <Button asChild className="h-11 px-5">
-              <a href="#calculator">
-                <Calculator aria-hidden="true" />
-                {t('hero.primaryCta')}
-              </a>
-            </Button>
-            <Button asChild variant="secondary" className="h-11 px-5">
               <Link href="/login">
-                {t('hero.secondaryCta')}
-                <ArrowRight aria-hidden="true" />
+                <PlayCircle aria-hidden="true" />
+                {t('hero.primaryCta')}
               </Link>
             </Button>
+            <Button asChild variant="secondary" className="h-11 px-5">
+              <a href="#contact">
+                <MessagesSquare aria-hidden="true" />
+                {t('hero.secondaryCta')}
+              </a>
+            </Button>
           </div>
+          <p className="flex items-center gap-2 text-sm font-medium">
+            <Briefcase aria-hidden="true" className="size-4 shrink-0 text-accent" />
+            {t('professionalOnly')}
+          </p>
           <p role="note" className="flex max-w-xl items-start gap-2 text-sm text-warning">
             <FlaskConical aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
             {t('demoNotice')}
@@ -87,11 +99,16 @@ async function ProductPreview() {
         aria-hidden="true"
         className="bg-brand-gradient absolute -inset-px rounded-2xl opacity-60 blur-sm"
       />
-      <div className="relative flex flex-col gap-5 rounded-2xl border border-border bg-surface p-6 shadow-2xl">
+      <div className="relative flex flex-col gap-5 overflow-hidden rounded-2xl border border-border bg-surface p-6 shadow-2xl">
+        <div className="relative -mx-6 -mt-6">
+          <ProjectIllustration kind="solar" className="h-32 w-full sm:h-36" />
+          <IllustrativeBadge className="absolute top-3 left-3" />
+        </div>
         <div className="flex items-start justify-between gap-4">
-          <div>
+          <div className="flex flex-col gap-1">
             <p className="font-heading text-lg font-semibold">{t('title')}</p>
             <p className="text-sm text-muted">{t('subtitle')}</p>
+            <p className="text-sm text-pretty">{t('description')}</p>
           </div>
           <span className="rounded-full border border-success/40 px-2.5 py-0.5 text-xs font-medium text-success">
             {t('status')}
@@ -150,8 +167,8 @@ async function ProductPreview() {
             {t('ledger')}
           </li>
         </ul>
-        <figcaption className="text-right text-[11px] tracking-wider text-muted uppercase">
-          {t('fictitious')}
+        <figcaption className="border-t border-border pt-3">
+          <YieldNotice />
         </figcaption>
       </div>
     </figure>

@@ -1,16 +1,17 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { Calculator } from '@/features/calculator/calculator';
+import { BusinessCase } from '@/features/calculator/business-case';
 import { Audiences } from '@/features/landing/audiences';
 import { ContactForm } from '@/features/landing/contact-form';
 import { DemoCard } from '@/features/landing/demo-card';
 import { Hero } from '@/features/landing/hero';
-import { Highlights } from '@/features/landing/highlights';
 import { Lifecycle } from '@/features/landing/lifecycle';
+import { ProjectsSection } from '@/features/landing/projects-section';
 import { Section } from '@/features/landing/section';
 import { Security } from '@/features/landing/security';
 import { SiteFooter } from '@/features/landing/site-footer';
 import { SiteHeader } from '@/features/landing/site-header';
+import { Solution } from '@/features/landing/solution';
 import { getCurrentUser } from '@/lib/api/server';
 
 export async function generateMetadata({ params }: PageProps<'/[locale]'>): Promise<Metadata> {
@@ -36,10 +37,11 @@ export default async function HomePage({ params }: PageProps<'/[locale]'>) {
       <SiteHeader user={user} />
       <main>
         <Hero />
-        <Highlights />
-        <Lifecycle />
+        <Solution />
         <Audiences />
         <Security />
+        <ProjectsSection />
+        <Lifecycle />
         <Section
           id="calculator"
           eyebrow={calculator('eyebrow')}
@@ -47,7 +49,7 @@ export default async function HomePage({ params }: PageProps<'/[locale]'>) {
           subtitle={calculator('subtitle')}
           className="bg-surface/30"
         >
-          <Calculator />
+          <BusinessCase />
         </Section>
         <Section
           id="contact"

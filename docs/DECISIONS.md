@@ -597,7 +597,7 @@ Validée par le porteur de projet (« ok pour tout »).
 
 Proposée par Claude, à valider par le porteur de projet.
 
-**D-096 — Proposée. Page d'accueil et calculateur sans prototype (P15-5).** *Modifie D-019 (reprise du prototype HTML).*
+**D-096 — Acceptée. Page d'accueil et calculateur sans prototype (P15-5).** *Modifie D-019 (reprise du prototype HTML).*
 1. Le porteur de projet n'a pas de prototype : la page d'accueil est une proposition, « style fintech professionnel et moderne, aux couleurs du logo », à améliorer ensuite. Sections :
    - en-tête avec ancres, choix de la langue et connexion ;
    - accroche avec un aperçu du produit sur des données fictives, signalées comme telles ;
@@ -631,15 +631,15 @@ Proposée par Claude, à valider par le porteur de projet.
 
 ## 2026-09-27 — Phase 16a (durcissement)
 
-**D-098 — Proposée. Logo vectoriel (SVG).** À la demande du porteur de projet.
+**D-098 — Acceptée. Logo vectoriel (SVG).** À la demande du porteur de projet.
 1. `apps/web/public/brand/veris-assets-logo.svg` (logo complet) et `veris-assets-mark.svg` (monogramme seul, aussi utilisé comme icône d'onglet `apps/web/src/app/icon.svg`) sont obtenus par vectorisation automatique du fichier officiel de l'époque (tracé des contours ; archivé dans `docs/brand/virtus-assets-logo-archive.jpg`, D-105). Le dégradé de marque de la spec 23.1 (#4F52D6 → #45D6E6) est appliqué au monogramme, et le texte garde la couleur relevée sur l'original.
 2. Fond transparent, aucune déformation : le composant `Logo` fixe la hauteur, la largeur suit les proportions.
 3. Le JPEG restait la référence jusqu'au changement de nom (D-105). Une version dessinée par un graphiste pourra remplacer ces fichiers sans autre changement.
 4. Les PDF générés gardent le nom en texte (D-091).
 
-**D-099 — Proposée. Commande `pnpm preview`.** Elle construit l'application une fois, puis la sert comme en production : toutes les pages s'ouvrent immédiatement. `pnpm dev` reste la commande de développement (rechargement automatique, mais une compilation lente à la première ouverture de chaque page sur un Codespace à 2 processeurs).
+**D-099 — Acceptée. Commande `pnpm preview`.** Elle construit l'application une fois, puis la sert comme en production : toutes les pages s'ouvrent immédiatement. `pnpm dev` reste la commande de développement (rechargement automatique, mais une compilation lente à la première ouverture de chaque page sur un Codespace à 2 processeurs).
 
-**D-100 — Proposée. Durcissement de sécurité (P16-1).** Le détail contrôle par contrôle est dans `docs/SECURITY_CHECKLIST.md`.
+**D-100 — Acceptée. Durcissement de sécurité (P16-1).** Le détail contrôle par contrôle est dans `docs/SECURITY_CHECKLIST.md`.
 1. En-têtes du site :
    - politique de sécurité du contenu (CSP) avec un nonce tiré à chaque requête (`src/proxy.ts`) et `strict-dynamic` : seuls les scripts de la page s'exécutent ;
    - les styles en ligne restent permis, car les composants React et les images Next.js en utilisent ;
@@ -654,12 +654,12 @@ Proposée par Claude, à valider par le porteur de projet.
 4. Analyse des dépendances : `pnpm audit --prod --audit-level high` bloque la CI. Une faille modérée d'`esbuild` est acceptée : elle ne concerne que son serveur de développement, que l'application n'utilise pas.
 5. L'analyse des secrets de GitHub n'est pas disponible sur un dépôt privé sans l'option payante « Advanced Security » : le porteur de projet décide s'il rend le dépôt public ou s'il accepte cette limite.
 
-**D-101 — Proposée. Performances (P16-2).**
+**D-101 — Acceptée. Performances (P16-2).**
 1. Un test d'intégration appelle chaque route de lecture de l'API, avec le rôle qui l'utilise, sur les données de démo, et échoue au-delà de 500 ms. Mesure du 27 septembre 2026 : la plus lente répond en 26 ms.
 2. Huit index sont ajoutés sur des liens entre tables utilisés dans les recherches courantes : représentants, bénéficiaires effectifs et commentaires d'un investisseur, invitations d'un investisseur, allocation d'une souscription, comptes d'un investisseur, photographies du registre, transferts reçus. Les liens vers les petites tables de référence (pays, devises, rôles) n'en ont pas besoin.
 3. Pagination : toutes les listes qui peuvent grandir sont paginées. Restent en liste simple celles qui sont bornées par nature : l'historique d'un dossier, les lignes d'une distribution (une par porteur), l'échéancier d'une émission, les invitations en attente, les rôles, les listes de référence, les utilisateurs d'une organisation. La file « À traiter » est limitée à ses 200 éléments les plus urgents ; les exports aux 50 derniers ; les corrections du registre aux 100 dernières.
 
-**D-102 — Proposée. Sauvegardes et restauration (P16-4).**
+**D-102 — Acceptée. Sauvegardes et restauration (P16-4).**
 1. `pnpm db:backup` écrit dans `backups/<date>/` (ignoré par git) :
    - la copie de la base (`pg_dump`, format compressé) ;
    - les documents du stockage S3 ;
@@ -668,7 +668,7 @@ Proposée par Claude, à valider par le porteur de projet.
 3. La CI sauvegarde et restaure la base de démo à chaque push.
 4. En ligne (phase 16b) : sauvegardes automatiques des volumes Railway (D-097), plus cette sauvegarde logique, planifiée et copiée hors de Railway. Les modalités seront précisées en 16b.
 
-**D-103 — Proposée. Accès d'urgence (« break-glass ») de l'administrateur de la plateforme (P16-6, spec 4.1).**
+**D-103 — Acceptée. Accès d'urgence (« break-glass ») de l'administrateur de la plateforme (P16-6, spec 4.1).**
 1. L'accès est ouvert depuis la console plateforme (« Accès d'urgence »). Il faut choisir une organisation active et donner un motif d'au moins 10 caractères. Il dure une heure (valeur par défaut de la spec) et peut être terminé à tout moment.
 2. Pendant l'accès, l'administrateur est dans le portail émetteur de cette organisation, avec les permissions de lecture de l'Auditeur, sauf les exports (qui créent des données) et sauf les documents confidentiels (le rôle Auditeur n'y a pas accès). Il n'a plus ses droits de plateforme : il doit terminer l'accès pour les retrouver. Un bandeau rouge le rappelle sur chaque page.
 3. Traçabilité dans le journal d'audit de l'organisation : ouverture (avec le motif), chaque requête (sauf la lecture de la session et du compteur de notifications), fin. Les administrateurs émetteurs de l'organisation sont prévenus à l'ouverture (notification et email de sécurité).
@@ -693,7 +693,7 @@ Décisions du porteur de projet.
 
 ## 2026-09-27 — Phase 16b (mise en ligne sur Railway)
 
-**D-106 — Proposée. Architecture de la démonstration en ligne.** Détail d'exploitation dans `docs/DEPLOYMENT.md`.
+**D-106 — Acceptée. Architecture de la démonstration en ligne.** Détail d'exploitation dans `docs/DEPLOYMENT.md`.
 1. Services Railway, tous dans la région EU West (Amsterdam) :
    - `web` : seul service public, en HTTPS ;
    - `api` : sur le réseau privé ;
@@ -714,12 +714,12 @@ Décisions du porteur de projet.
 7. **Point d'attention** : en mode démo, la page de connexion affiche le mot de passe des comptes de démo et leurs codes de double authentification. Quiconque connaît l'adresse du site peut donc entrer avec ces comptes. C'est voulu pour une démonstration à des prospects : les données sont fictives et aucun email ne part vraiment. Pour une démo réservée, il suffira de mettre `DEMO_MODE=false` et de communiquer les accès à la main.
 8. Sentry (suivi des erreurs) et OpenTelemetry (P2-8) ne sont pas branchés pour la démonstration : les journaux de Railway et le journal d'audit suffisent. Ils restent à faire avant un usage réel.
 
-**D-107 — Proposée. Nom de domaine `veris-assets.com`.** Acheté par le porteur de projet chez Cloudflare le 28 septembre 2026.
+**D-107 — Acceptée. Nom de domaine `veris-assets.com`.** Acheté par le porteur de projet chez Cloudflare le 28 septembre 2026.
 1. Le domaine est rattaché au service `web` de Railway, qui fournit le certificat HTTPS.
 2. Chez Cloudflare, deux enregistrements DNS, en mode « DNS only » (nuage gris), pour que Railway puisse émettre le certificat : un CNAME `@` vers l'adresse donnée par Railway, et un TXT `_railway-verify` pour prouver la propriété.
 3. `https://veris-assets.com` devient l'adresse officielle (`WEB_ORIGIN`, liens des emails). L'adresse Railway reste acceptée par le contrôle d'origine et l'authentification (`WEB_ALTERNATE_ORIGINS`), pour que rien ne casse pendant la bascule.
 
-**D-108 — Proposée. Page « Technologie » et liens de la page d'accueil.** Demande du porteur de projet.
+**D-108 — Acceptée. Page « Technologie » et liens de la page d'accueil.** Demande du porteur de projet.
 1. Nouvelle page `/en/technology` et `/fr/technologie`. Chaque langue a sa propre adresse : la version d'une langue à l'adresse de l'autre y redirige, ce qui garde le sélecteur de langue fonctionnel sans changer le reste de la navigation.
 2. La page approfondit la section Sécurité :
    - le chemin d'une requête en quatre couches ;
@@ -730,3 +730,13 @@ Décisions du porteur de projet.
    - six raisons de fiabilité (quatre yeux, audit, montants exacts, pas d'opération en double, tests, accès protégés).
 3. Aucune revendication de conformité ou de certification (spec 31.2, règle 1) : un encadré « Ce que Veris Assets ne revendique pas » reprend uniquement les formulations admises par la spec 19.1. La vérification automatique des formulations passe.
 4. Le lien « Technologie » est ajouté au menu (mis en évidence sur sa page, avec `aria-current="page"`) et au pied de page. La section « Pour chaque rôle » gagne deux boutons : « Se connecter à la démo » (page de connexion dans la langue du visiteur) et « Comment la plateforme est construite ». Depuis la page Technologie, les entrées du menu ramènent aux sections de la page d'accueil.
+
+**D-109 — Acceptée. Refonte de la page d'accueil.** Demande du porteur de projet (brief du 30 septembre 2026), branche `refonte-landing`.
+1. Ordre des sections : accueil (hero), « Ce que fait Veris Assets » (problème, approche, objectif, types de projets), « Une plateforme, trois points de vue », Sécurité (inchangée, plus un lien vers la page Technologie), projets illustratifs, cycle de vie en deux parcours, business case en deux simulations, contact (inchangé). La bande des quatre points forts sous le hero est retirée : son contenu est repris par la section Sécurité et le bloc « approche ». Menu : Solution, Sécurité, Projets, Cycle de vie, Business case, Contact, Technologie.
+2. Hero : « Émettez et gérez vos obligations privées, du premier projet au dernier remboursement ». Deux boutons, « Voir la démo » (page de connexion) et « Parler à l'équipe » (formulaire de contact). Mention « Réservé aux investisseurs professionnels ». La carte Northwind Green Notes gagne une illustration de centrale solaire, deux lignes de description, le badge « Exemple illustratif » et la mention de risque.
+3. Garde-fous : tous les projets, montants et rendements sont fictifs et portent le badge « Exemple illustratif » ; chaque rendement est accompagné de la mention « Rendement cible illustratif, non garanti… risque de perte en capital et d'illiquidité ». Un encadré rappelle que Veris Assets est un éditeur de logiciel, qui ne propose, ne commercialise ni ne conseille aucun investissement et ne détient pas les fonds. Aucun bouton « Investir », aucun compteur de montants levés ou d'investisseurs. Textes à faire relire par un avocat avant tout usage commercial.
+4. Projets : 9 exemples dans `apps/web/src/features/landing/projects.ts`, seul fichier à modifier pour de vrais projets (champ `image` facultatif pour une photo). Onglets Tous, Ouverts, À venir, Terminés (« Tous » ajouté au brief). Carrousel sans bibliothèque (défilement natif, boutons précédent/suivant, clavier, mouvement réduit respecté).
+5. Illustrations : dessins SVG faits pour le projet, aux couleurs de la charte (choix du porteur de projet) ; aucune photo, donc aucune licence à gérer.
+6. Parcours investisseur : fidèle au produit, l'investisseur est invité par l'émetteur et son statut professionnel est vérifié par la conformité de l'émetteur. L'étape 4 dit « Signer électroniquement le bulletin de souscription (simulée dans la démo) » : la signature électronique n'est pas dans le MVP (spec section 2).
+7. Simulation investisseur : même coupon à chaque période (montant × taux ÷ nombre de coupons par an, arrondi au centime, arrondi bancaire comme sur la plateforme), capital remboursé à l'échéance, sans décompte des jours ni fiscalité. Calcul dans le navigateur, en décimal exact.
+8. Pas de mode clair (choix du porteur de projet) : le site reste en mode sombre, comme le prévoit la section 23.1.

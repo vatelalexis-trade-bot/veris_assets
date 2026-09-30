@@ -1,6 +1,17 @@
-import { Database, FileLock2, Fingerprint, History, KeyRound, ServerCog } from 'lucide-react';
-import { getTranslations } from 'next-intl/server';
+import {
+  ArrowRight,
+  Database,
+  FileLock2,
+  Fingerprint,
+  History,
+  KeyRound,
+  ServerCog,
+} from 'lucide-react';
+import { getLocale, getTranslations } from 'next-intl/server';
+import { Button } from '@/components/ui/button';
+import { Link } from '@/i18n/navigation';
 import { Section } from './section';
+import { technologyPath } from './technology-path';
 
 const ITEMS = [
   ['mfa', KeyRound],
@@ -13,7 +24,7 @@ const ITEMS = [
 
 /**
  * Security by design (SPEC §24). Wording allowed by SPEC §19.1: no claim of compliance or
- * certification, only what the architecture does.
+ * certification, only what the architecture does. The technology page tells more.
  */
 export async function Security() {
   const t = await getTranslations('landing.security');
@@ -35,6 +46,12 @@ export async function Security() {
       <p className="rounded-2xl border border-border bg-surface px-6 py-5 text-sm text-muted">
         {t('note')}
       </p>
+      <Button asChild variant="secondary" className="h-11 w-fit px-5">
+        <Link href={technologyPath(await getLocale())}>
+          {t('learnMore')}
+          <ArrowRight aria-hidden="true" />
+        </Link>
+      </Button>
     </Section>
   );
 }

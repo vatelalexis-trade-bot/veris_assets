@@ -14,7 +14,9 @@ export async function SiteFooter() {
           <p className="text-sm text-muted">{t('footer.tagline')}</p>
         </div>
         <nav aria-label={t('nav.label')} className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
-          {(['lifecycle', 'security', 'calculator', 'contact'] as const).map((section) => (
+          {(
+            ['solution', 'projects', 'lifecycle', 'security', 'calculator', 'contact'] as const
+          ).map((section) => (
             <Link
               key={section}
               href={{ pathname: '/', hash: section }}

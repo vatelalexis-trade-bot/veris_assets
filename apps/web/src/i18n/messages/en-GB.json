@@ -1706,28 +1706,29 @@
     "metaTitle": "Private asset lifecycle platform",
     "nav": {
       "label": "Main sections",
-      "platform": "Platform",
       "lifecycle": "Lifecycle",
       "security": "Security",
-      "calculator": "Calculator",
+      "calculator": "Business case",
       "contact": "Contact",
       "signIn": "Sign in",
       "openPortal": "Open my portal",
-      "technology": "Technology"
+      "technology": "Technology",
+      "solution": "Solution",
+      "projects": "Projects"
     },
     "demoNotice": "Demonstration environment: all data is fictitious and no real payment is made.",
     "hero": {
-      "eyebrow": "Private asset lifecycle platform",
-      "title": "Issue, administer and service private assets",
-      "titleAccent": "from a single platform.",
-      "subtitle": "Veris Assets gives asset managers and issuers everything after the term sheet: investor onboarding, subscriptions, allocation, the registry, coupons and reporting — with a complete audit trail.",
-      "primaryCta": "Estimate your savings",
-      "secondaryCta": "Explore the demo"
+      "eyebrow": "Software for private bond issuers and asset managers",
+      "title": "Issue and manage private bonds,",
+      "titleAccent": "from first draft to final redemption.",
+      "subtitle": "Veris Assets structures your bonds and notes, qualifies your professional investors, collects subscriptions and keeps the registry. Coupons, redemptions and reporting follow — with no spreadsheet.",
+      "primaryCta": "See the demo",
+      "secondaryCta": "Talk to the team"
     },
     "preview": {
-      "label": "Product preview with fictitious data",
+      "label": "An illustrative issuance, as shown in the product",
       "title": "Northwind Green Notes",
-      "subtitle": "Demo issuance · 5 % semi-annual coupon",
+      "subtitle": "5-year notes · 5 % semi-annual coupon",
       "status": "Active",
       "nominal": "Nominal administered",
       "holders": "Holders",
@@ -1739,31 +1740,12 @@
       "coupon": "Last coupon",
       "fourEyes": "Coupon approved with four eyes",
       "ledger": "Ledger verified — hash chain intact",
-      "fictitious": "Fictitious data"
-    },
-    "strip": {
-      "ledger": {
-        "title": "Append-only ledger",
-        "text": "Every movement is recorded once, chained and verifiable."
-      },
-      "fourEyes": {
-        "title": "Four-eyes decisions",
-        "text": "Allocations, distributions and payments need a second person."
-      },
-      "isolation": {
-        "title": "Isolation by design",
-        "text": "Each organisation's data is separated down to the database."
-      },
-      "bilingual": {
-        "title": "English and French",
-        "text": "Every screen, email and document in both languages."
-      },
-      "label": "Key strengths"
+      "description": "Helps finance a 12 MWp solar farm on former industrial land near Toulouse, France."
     },
     "lifecycle": {
       "eyebrow": "Lifecycle",
-      "title": "The whole life of an issuance, in one place",
-      "subtitle": "From the first draft to the last redemption, every step follows clear statuses, with the right person deciding at the right time.",
+      "title": "Two journeys, one registry",
+      "subtitle": "From the first draft to the last redemption, every step follows clear statuses, and the right person decides at the right time.",
       "structure": {
         "title": "Structure",
         "text": "Create the issuance in a guided wizard: terms, schedule, eligibility rules and documents, approved with four eyes."
@@ -1787,6 +1769,35 @@
       "service": {
         "title": "Service and report",
         "text": "Calculate coupons and redemptions from a registry snapshot, generate payment instructions, notices and exports."
+      },
+      "journeys": "Journeys",
+      "investor": {
+        "tab": "Investor",
+        "lead": "Subscribing without the paperwork: five steps, all online.",
+        "invitation": {
+          "title": "Accept the invitation and verify your identity",
+          "text": "Your issuer invites you. Create your account and upload your KYC/KYB file; the issuer's compliance team reviews it."
+        },
+        "status": {
+          "title": "Confirm your professional investor status",
+          "text": "Your classification is checked against the eligibility rules of the issuance before you can subscribe."
+        },
+        "documents": {
+          "title": "Read the documents and enter your amount",
+          "text": "Term sheet, memorandum and terms are in your space. Choose the amount you wish to subscribe."
+        },
+        "signature": {
+          "title": "Sign your subscription form electronically",
+          "text": "Sign online in a few clicks (simulated in the demo). The issuer then reviews and allocates."
+        },
+        "follow": {
+          "title": "Track positions, coupons and documents",
+          "text": "Follow your holdings, coupon payments and notices from your investor space."
+        }
+      },
+      "issuer": {
+        "tab": "Issuer and asset manager",
+        "lead": "Six steps, each with its statuses, its controls and its audit trail."
       }
     },
     "audiences": {
@@ -1794,24 +1805,28 @@
       "title": "One platform, three points of view",
       "issuers": {
         "title": "Issuers and asset managers",
-        "p1": "Dashboards, a \"To do\" queue and upcoming payments",
-        "p2": "Allocation, registry and coupons without spreadsheets",
-        "p3": "CSV exports and generated documents"
+        "p1": "A dashboard and a \"To do\" queue instead of spreadsheets",
+        "p2": "Allocation, registry and coupons with no manual reconciliation",
+        "p3": "CSV exports and generated documents, ready to send",
+        "lead": "Raise and service private debt without the back-office burden."
       },
       "investors": {
         "title": "Professional investors",
-        "p1": "A portfolio with positions, transactions and distributions",
-        "p2": "Online subscriptions and transfer requests",
-        "p3": "Documents and notices in their language"
+        "p1": "One portfolio view: positions, coupons and documents",
+        "p2": "Subscriptions and transfers online, checked before execution",
+        "p3": "Notices and documents in their language",
+        "lead": "Find the real-asset issuances you are invited to, and follow them in one place."
       },
       "compliance": {
         "title": "Compliance and audit",
         "p1": "KYC/KYB review with expiry alerts",
-        "p2": "Transfers checked before execution",
-        "p3": "A complete, read-only audit trail"
+        "p2": "Eligibility checked before every subscription and transfer",
+        "p3": "A complete, read-only audit trail",
+        "lead": "Control every step, and show how it was done."
       },
       "signIn": "Sign in to the demo",
-      "technology": "How the platform is built"
+      "technology": "How the platform is built",
+      "subtitle": "Everyone works from the same registry, and sees only what they should."
     },
     "security": {
       "eyebrow": "Security",
@@ -1841,7 +1856,8 @@
         "title": "European hosting",
         "text": "The demonstration runs in a European data centre, with daily backups."
       },
-      "note": "An architecture designed to integrate your compliance controls, and compatible with a future ERC-3643 integration. No blockchain is required to run the platform."
+      "note": "An architecture designed to integrate your compliance controls, and compatible with a future ERC-3643 integration. No blockchain is required to run the platform.",
+      "learnMore": "Learn more about the technology"
     },
     "contact": {
       "eyebrow": "Contact",
@@ -1877,12 +1893,89 @@
       "tagline": "Private asset lifecycle management for asset managers and issuers.",
       "demo": "Demonstration environment — fictitious data, no real payment, no legal value.",
       "rights": "© {year} Veris Assets"
+    },
+    "professionalOnly": "For professional investors only.",
+    "illustrative": {
+      "badge": "Illustrative example",
+      "yieldNotice": "Illustrative target yield, not guaranteed. Investing in private assets carries a risk of capital loss and illiquidity."
+    },
+    "solution": {
+      "eyebrow": "What Veris Assets does",
+      "title": "One system of record for your private bonds",
+      "subtitle": "Built for issuers and asset managers who structure, issue and service private debt: real estate, green energy and other real assets.",
+      "problem": {
+        "title": "The problem",
+        "text": "Illiquid markets — private debt, real estate, green bonds — carry high intermediation costs, slow settlement and a heavy back office run on spreadsheets and emails."
+      },
+      "approach": {
+        "title": "Our approach",
+        "text": "Veris Assets replaces spreadsheets and manual reconciliations with one guided journey: structure, qualify, subscribe, allocate, register, service."
+      },
+      "goal": {
+        "title": "The goal",
+        "text": "A single system of record for issuers and asset managers, with four-eyes control and a complete audit trail. No blockchain required."
+      },
+      "assets": {
+        "title": "For the projects that finance the real economy",
+        "realEstate": {
+          "title": "Real estate",
+          "text": "Residential, logistics, office conversions and energy renovation."
+        },
+        "greenEnergy": {
+          "title": "Green energy",
+          "text": "Solar, wind, storage and energy efficiency."
+        },
+        "realAssets": {
+          "title": "Other real assets",
+          "text": "Charging networks, local infrastructure and other income-producing assets."
+        }
+      }
+    },
+    "projects": {
+      "eyebrow": "Illustrative examples",
+      "title": "The kind of projects issuers run on Veris Assets",
+      "subtitle": "Solar roofs, logistics, energy renovation, wind: each issuance follows the same controlled journey, from subscription to the last coupon.",
+      "notice": {
+        "title": "Fictitious projects, shown to illustrate the software.",
+        "text": "Veris Assets is a software provider: it does not offer, market or advise on any investment, and never holds investors' funds. Issuances are proposed by their issuers to the investors they invite; subscription funds go to the issuer or to the escrow or paying agent it appoints.",
+        "professional": "Issuances on the platform are for professional investors only."
+      },
+      "filters": {
+        "label": "Filter the projects",
+        "tab": "{name} ({count})",
+        "all": "All",
+        "open": "Open",
+        "upcoming": "Upcoming",
+        "closed": "Closed"
+      },
+      "status": {
+        "open": "Open",
+        "upcoming": "Upcoming",
+        "closed": "Closed"
+      },
+      "kinds": {
+        "solar": "Solar",
+        "wind": "Wind",
+        "storage": "Energy storage",
+        "residential": "Residential",
+        "logistics": "Logistics",
+        "renovation": "Energy renovation",
+        "charging": "EV charging"
+      },
+      "amount": "Issuance",
+      "targetYield": "Target yield",
+      "term": "Term",
+      "years": "{count, plural, one {# year} other {# years}}",
+      "months": "{count} months",
+      "carousel": "carousel",
+      "previous": "Previous projects",
+      "next": "Next projects"
     }
   },
   "calculator": {
     "eyebrow": "Business case",
-    "title": "Estimate what the platform could save you",
-    "subtitle": "Enter a few figures about your issuance. The calculation runs in your browser: nothing is sent.",
+    "title": "Estimate your savings, or your coupons",
+    "subtitle": "Two quick simulations. The calculation runs in your browser: nothing is sent.",
     "groups": {
       "issuance": "Your issuance",
       "operations": "Your operations each year",
@@ -1934,9 +2027,48 @@
       "time": "Time saved",
       "tools": "Tools",
       "providers": "Providers",
-      "incidents": "Incidents"
+      "incidents": "Incidents",
+      "breakdownTitle": "Gross savings a year, by source"
     },
-    "disclaimer": "Indicative estimates based on your figures and the assumptions shown, not a contractual commitment or a price offer."
+    "disclaimer": "Indicative estimates based on your figures and the assumptions shown, not a contractual commitment or a price offer.",
+    "tabs": {
+      "label": "Simulations",
+      "issuer": "Issuer",
+      "investor": "Investor"
+    },
+    "investor": {
+      "title": "Your simulation",
+      "fields": {
+        "amount": "Amount invested (€)",
+        "ratePercent": "Target coupon rate (% a year)",
+        "years": "Term (years)",
+        "frequency": "Coupon frequency"
+      },
+      "frequencies": {
+        "1": "Annual",
+        "2": "Semi-annual",
+        "4": "Quarterly"
+      },
+      "invalid": {
+        "amount": "Enter an amount above zero.",
+        "ratePercent": "Enter a rate from 0 to 100.",
+        "years": "Enter a whole number of years, from 1 to 30."
+      },
+      "incomplete": "Complete the highlighted fields to see the simulation.",
+      "reset": "Reset the figures",
+      "couponPerPeriod": "Coupon per payment",
+      "payments": "Number of payments",
+      "totalCoupons": "Total gross coupons",
+      "totalReceived": "Coupons and principal",
+      "schedule": {
+        "title": "Payment schedule",
+        "payment": "Payment",
+        "month": "No. {number} · month {month}",
+        "coupon": "Coupon",
+        "principal": "Principal"
+      },
+      "disclaimer": "Illustrative simulation, before tax, not guaranteed: the same coupon each period and the principal repaid at maturity, without day count. Investing in private assets carries a risk of capital loss and illiquidity."
+    }
   },
   "breakGlass": {
     "title": "Emergency access",

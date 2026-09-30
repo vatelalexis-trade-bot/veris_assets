@@ -75,7 +75,7 @@ describe('navigation of the public site', () => {
     expect(current()).toEqual(['Security']);
     expect(screen.getByRole('link', { name: 'Security' }).className).toContain('text-accent');
     expect(screen.getByRole('link', { name: 'Security' }).className).toContain('font-semibold');
-    expect(screen.getByRole('link', { name: 'Platform' }).className).toContain('text-muted');
+    expect(screen.getByRole('link', { name: 'Solution' }).className).toContain('text-muted');
 
     // A section without a menu entry keeps the last highlighted one.
     act(() => report('roles'));
@@ -92,7 +92,7 @@ describe('navigation of the public site', () => {
 
     vi.advanceTimersByTime(1100);
     act(() => report('calculator'));
-    expect(current()).toEqual(['Calculator']);
+    expect(current()).toEqual(['Business case']);
   });
 
   it('leads to the technology page, highlighted when it is shown', () => {
