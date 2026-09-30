@@ -1717,17 +1717,17 @@
     },
     "demoNotice": "Demonstration environment: all data is fictitious and no real payment is made.",
     "hero": {
-      "eyebrow": "Private asset lifecycle platform",
-      "title": "Issue, administer and service private assets",
-      "titleAccent": "from a single platform.",
-      "subtitle": "Veris Assets gives asset managers and issuers everything after the term sheet: investor onboarding, subscriptions, allocation, the registry, coupons and reporting — with a complete audit trail.",
-      "primaryCta": "Estimate your savings",
-      "secondaryCta": "Explore the demo"
+      "eyebrow": "Software for private bond issuers and asset managers",
+      "title": "Issue and manage private bonds,",
+      "titleAccent": "from first draft to final redemption.",
+      "subtitle": "Veris Assets structures your bonds and notes, qualifies your professional investors, collects subscriptions and keeps the registry. Coupons, redemptions and reporting follow — with no spreadsheet.",
+      "primaryCta": "See the demo",
+      "secondaryCta": "Talk to the team"
     },
     "preview": {
-      "label": "Product preview with fictitious data",
+      "label": "An illustrative issuance, as shown in the product",
       "title": "Northwind Green Notes",
-      "subtitle": "Demo issuance · 5 % semi-annual coupon",
+      "subtitle": "5-year notes · 5 % semi-annual coupon",
       "status": "Active",
       "nominal": "Nominal administered",
       "holders": "Holders",
@@ -1739,7 +1739,7 @@
       "coupon": "Last coupon",
       "fourEyes": "Coupon approved with four eyes",
       "ledger": "Ledger verified — hash chain intact",
-      "fictitious": "Fictitious data"
+      "description": "Helps finance a 12 MWp solar farm on former industrial land near Toulouse, France."
     },
     "strip": {
       "ledger": {
@@ -1877,6 +1877,11 @@
       "tagline": "Private asset lifecycle management for asset managers and issuers.",
       "demo": "Demonstration environment — fictitious data, no real payment, no legal value.",
       "rights": "© {year} Veris Assets"
+    },
+    "professionalOnly": "For professional investors only.",
+    "illustrative": {
+      "badge": "Illustrative example",
+      "yieldNotice": "Illustrative target yield, not guaranteed. Investing in private assets carries a risk of capital loss and illiquidity."
     }
   },
   "calculator": {

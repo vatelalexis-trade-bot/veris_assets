@@ -1717,17 +1717,17 @@
     },
     "demoNotice": "Environnement de démonstration : toutes les données sont fictives et aucun paiement réel n’est effectué.",
     "hero": {
-      "eyebrow": "Plateforme de gestion d’actifs privés",
-      "title": "Émettez, administrez et servez vos actifs privés",
-      "titleAccent": "depuis une seule plateforme.",
-      "subtitle": "Veris Assets prend en charge tout ce qui suit la term sheet : l’onboarding des investisseurs, les souscriptions, l’allocation, le registre, les coupons et le reporting — avec une piste d’audit complète.",
-      "primaryCta": "Estimer vos économies",
-      "secondaryCta": "Découvrir la démo"
+      "eyebrow": "Logiciel pour émetteurs d’obligations privées et sociétés de gestion",
+      "title": "Émettez et gérez vos obligations privées,",
+      "titleAccent": "du premier projet au dernier remboursement.",
+      "subtitle": "Veris Assets structure vos obligations et notes, qualifie vos investisseurs professionnels, recueille les souscriptions et tient le registre. Coupons, remboursements et reporting suivent — sans tableur.",
+      "primaryCta": "Voir la démo",
+      "secondaryCta": "Parler à l’équipe"
     },
     "preview": {
-      "label": "Aperçu du produit avec des données fictives",
+      "label": "Une émission illustrative, telle qu’affichée dans le produit",
       "title": "Northwind Green Notes",
-      "subtitle": "Émission de démo · coupon semestriel de 5 %",
+      "subtitle": "Obligations à 5 ans · coupon semestriel de 5 %",
       "status": "Active",
       "nominal": "Nominal administré",
       "holders": "Porteurs",
@@ -1739,7 +1739,7 @@
       "coupon": "Dernier coupon",
       "fourEyes": "Coupon approuvé en quatre yeux",
       "ledger": "Registre vérifié — chaîne de hachage intacte",
-      "fictitious": "Données fictives"
+      "description": "Participe au financement d’une centrale solaire de 12 MWc sur une friche industrielle près de Toulouse."
     },
     "strip": {
       "ledger": {
@@ -1877,6 +1877,11 @@
       "tagline": "Gestion du cycle de vie des actifs privés pour les sociétés de gestion et les émetteurs.",
       "demo": "Environnement de démonstration — données fictives, aucun paiement réel, aucune valeur juridique.",
       "rights": "© {year} Veris Assets"
+    },
+    "professionalOnly": "Réservé aux investisseurs professionnels.",
+    "illustrative": {
+      "badge": "Exemple illustratif",
+      "yieldNotice": "Rendement cible illustratif, non garanti. Investir dans des actifs privés comporte un risque de perte en capital et d’illiquidité."
     }
   },
   "calculator": {
