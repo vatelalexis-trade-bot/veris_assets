@@ -6,7 +6,13 @@ import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
 import { technologyPath } from './technology-path';
 
-export const NAV_SECTIONS = ['platform', 'lifecycle', 'security', 'calculator', 'contact'] as const;
+export const NAV_SECTIONS = [
+  'solution',
+  'security',
+  'lifecycle',
+  'calculator',
+  'contact',
+] as const;
 type NavSection = (typeof NAV_SECTIONS)[number];
 
 /**
@@ -50,7 +56,7 @@ export function SectionNav({ page = 'home' }: { page?: 'home' | 'technology' }) 
   }, [page]);
 
   return (
-    <nav aria-label={t('label')} className="hidden items-center gap-7 text-sm lg:flex">
+    <nav aria-label={t('label')} className="hidden items-center gap-5 text-sm lg:flex xl:gap-7">
       {NAV_SECTIONS.map((section) =>
         page === 'home' ? (
           <a

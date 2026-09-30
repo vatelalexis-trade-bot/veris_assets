@@ -5,12 +5,12 @@ import { Audiences } from '@/features/landing/audiences';
 import { ContactForm } from '@/features/landing/contact-form';
 import { DemoCard } from '@/features/landing/demo-card';
 import { Hero } from '@/features/landing/hero';
-import { Highlights } from '@/features/landing/highlights';
 import { Lifecycle } from '@/features/landing/lifecycle';
 import { Section } from '@/features/landing/section';
 import { Security } from '@/features/landing/security';
 import { SiteFooter } from '@/features/landing/site-footer';
 import { SiteHeader } from '@/features/landing/site-header';
+import { Solution } from '@/features/landing/solution';
 import { getCurrentUser } from '@/lib/api/server';
 
 export async function generateMetadata({ params }: PageProps<'/[locale]'>): Promise<Metadata> {
@@ -36,10 +36,10 @@ export default async function HomePage({ params }: PageProps<'/[locale]'>) {
       <SiteHeader user={user} />
       <main>
         <Hero />
-        <Highlights />
-        <Lifecycle />
+        <Solution />
         <Audiences />
         <Security />
+        <Lifecycle />
         <Section
           id="calculator"
           eyebrow={calculator('eyebrow')}

@@ -1706,14 +1706,15 @@
     "metaTitle": "Private asset lifecycle platform",
     "nav": {
       "label": "Main sections",
-      "platform": "Platform",
       "lifecycle": "Lifecycle",
       "security": "Security",
-      "calculator": "Calculator",
+      "calculator": "Business case",
       "contact": "Contact",
       "signIn": "Sign in",
       "openPortal": "Open my portal",
-      "technology": "Technology"
+      "technology": "Technology",
+      "solution": "Solution",
+      "projects": "Projects"
     },
     "demoNotice": "Demonstration environment: all data is fictitious and no real payment is made.",
     "hero": {
@@ -1740,25 +1741,6 @@
       "fourEyes": "Coupon approved with four eyes",
       "ledger": "Ledger verified — hash chain intact",
       "description": "Helps finance a 12 MWp solar farm on former industrial land near Toulouse, France."
-    },
-    "strip": {
-      "ledger": {
-        "title": "Append-only ledger",
-        "text": "Every movement is recorded once, chained and verifiable."
-      },
-      "fourEyes": {
-        "title": "Four-eyes decisions",
-        "text": "Allocations, distributions and payments need a second person."
-      },
-      "isolation": {
-        "title": "Isolation by design",
-        "text": "Each organisation's data is separated down to the database."
-      },
-      "bilingual": {
-        "title": "English and French",
-        "text": "Every screen, email and document in both languages."
-      },
-      "label": "Key strengths"
     },
     "lifecycle": {
       "eyebrow": "Lifecycle",
@@ -1794,24 +1776,28 @@
       "title": "One platform, three points of view",
       "issuers": {
         "title": "Issuers and asset managers",
-        "p1": "Dashboards, a \"To do\" queue and upcoming payments",
-        "p2": "Allocation, registry and coupons without spreadsheets",
-        "p3": "CSV exports and generated documents"
+        "p1": "A dashboard and a \"To do\" queue instead of spreadsheets",
+        "p2": "Allocation, registry and coupons with no manual reconciliation",
+        "p3": "CSV exports and generated documents, ready to send",
+        "lead": "Raise and service private debt without the back-office burden."
       },
       "investors": {
         "title": "Professional investors",
-        "p1": "A portfolio with positions, transactions and distributions",
-        "p2": "Online subscriptions and transfer requests",
-        "p3": "Documents and notices in their language"
+        "p1": "One portfolio view: positions, coupons and documents",
+        "p2": "Subscriptions and transfers online, checked before execution",
+        "p3": "Notices and documents in their language",
+        "lead": "Find the real-asset issuances you are invited to, and follow them in one place."
       },
       "compliance": {
         "title": "Compliance and audit",
         "p1": "KYC/KYB review with expiry alerts",
-        "p2": "Transfers checked before execution",
-        "p3": "A complete, read-only audit trail"
+        "p2": "Eligibility checked before every subscription and transfer",
+        "p3": "A complete, read-only audit trail",
+        "lead": "Control every step, and show how it was done."
       },
       "signIn": "Sign in to the demo",
-      "technology": "How the platform is built"
+      "technology": "How the platform is built",
+      "subtitle": "Everyone works from the same registry, and sees only what they should."
     },
     "security": {
       "eyebrow": "Security",
@@ -1882,6 +1868,38 @@
     "illustrative": {
       "badge": "Illustrative example",
       "yieldNotice": "Illustrative target yield, not guaranteed. Investing in private assets carries a risk of capital loss and illiquidity."
+    },
+    "solution": {
+      "eyebrow": "What Veris Assets does",
+      "title": "One system of record for your private bonds",
+      "subtitle": "Built for issuers and asset managers who structure, issue and service private debt: real estate, green energy and other real assets.",
+      "problem": {
+        "title": "The problem",
+        "text": "Illiquid markets — private debt, real estate, green bonds — carry high intermediation costs, slow settlement and a heavy back office run on spreadsheets and emails."
+      },
+      "approach": {
+        "title": "Our approach",
+        "text": "Veris Assets replaces spreadsheets and manual reconciliations with one guided journey: structure, qualify, subscribe, allocate, register, service."
+      },
+      "goal": {
+        "title": "The goal",
+        "text": "A single system of record for issuers and asset managers, with four-eyes control and a complete audit trail. No blockchain required."
+      },
+      "assets": {
+        "title": "For the projects that finance the real economy",
+        "realEstate": {
+          "title": "Real estate",
+          "text": "Residential, logistics, office conversions and energy renovation."
+        },
+        "greenEnergy": {
+          "title": "Green energy",
+          "text": "Solar, wind, storage and energy efficiency."
+        },
+        "realAssets": {
+          "title": "Other real assets",
+          "text": "Charging networks, local infrastructure and other income-producing assets."
+        }
+      }
     }
   },
   "calculator": {

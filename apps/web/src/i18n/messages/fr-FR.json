@@ -1706,14 +1706,15 @@
     "metaTitle": "Plateforme de gestion du cycle de vie des actifs privés",
     "nav": {
       "label": "Sections principales",
-      "platform": "Plateforme",
       "lifecycle": "Cycle de vie",
       "security": "Sécurité",
-      "calculator": "Calculateur",
+      "calculator": "Business case",
       "contact": "Contact",
       "signIn": "Se connecter",
       "openPortal": "Ouvrir mon portail",
-      "technology": "Technologie"
+      "technology": "Technologie",
+      "solution": "Solution",
+      "projects": "Projets"
     },
     "demoNotice": "Environnement de démonstration : toutes les données sont fictives et aucun paiement réel n’est effectué.",
     "hero": {
@@ -1740,25 +1741,6 @@
       "fourEyes": "Coupon approuvé en quatre yeux",
       "ledger": "Registre vérifié — chaîne de hachage intacte",
       "description": "Participe au financement d’une centrale solaire de 12 MWc sur une friche industrielle près de Toulouse."
-    },
-    "strip": {
-      "ledger": {
-        "title": "Registre en ajout seul",
-        "text": "Chaque mouvement est enregistré une fois, chaîné et vérifiable."
-      },
-      "fourEyes": {
-        "title": "Décisions à quatre yeux",
-        "text": "Allocations, distributions et paiements demandent une seconde personne."
-      },
-      "isolation": {
-        "title": "Isolation native",
-        "text": "Les données de chaque organisation sont séparées jusque dans la base."
-      },
-      "bilingual": {
-        "title": "Anglais et français",
-        "text": "Chaque écran, email et document dans les deux langues."
-      },
-      "label": "Points forts"
     },
     "lifecycle": {
       "eyebrow": "Cycle de vie",
@@ -1794,24 +1776,28 @@
       "title": "Une plateforme, trois points de vue",
       "issuers": {
         "title": "Émetteurs et sociétés de gestion",
-        "p1": "Tableaux de bord, file « À traiter » et prochaines échéances",
-        "p2": "Allocation, registre et coupons sans tableur",
-        "p3": "Exports CSV et documents générés"
+        "p1": "Un tableau de bord et une file « À faire » au lieu des tableurs",
+        "p2": "Allocation, registre et coupons sans rapprochement manuel",
+        "p3": "Exports CSV et documents générés, prêts à envoyer",
+        "lead": "Levez et administrez de la dette privée sans le poids du back-office."
       },
       "investors": {
         "title": "Investisseurs professionnels",
-        "p1": "Un portefeuille avec positions, transactions et distributions",
-        "p2": "Souscriptions et demandes de transfert en ligne",
-        "p3": "Documents et avis dans leur langue"
+        "p1": "Une vue portefeuille : positions, coupons et documents",
+        "p2": "Souscriptions et transferts en ligne, contrôlés avant exécution",
+        "p3": "Avis et documents dans leur langue",
+        "lead": "Retrouvez les émissions d’actifs réels auxquelles vous êtes invité, et suivez-les au même endroit."
       },
       "compliance": {
         "title": "Conformité et audit",
         "p1": "Revue KYC/KYB avec alertes d’expiration",
-        "p2": "Transferts contrôlés avant exécution",
-        "p3": "Une piste d’audit complète, en lecture seule"
+        "p2": "Éligibilité contrôlée avant chaque souscription et chaque transfert",
+        "p3": "Une piste d’audit complète, en lecture seule",
+        "lead": "Contrôlez chaque étape, et montrez comment elle a été faite."
       },
       "signIn": "Se connecter à la démo",
-      "technology": "Comment la plateforme est construite"
+      "technology": "Comment la plateforme est construite",
+      "subtitle": "Chacun travaille sur le même registre, et ne voit que ce qui le concerne."
     },
     "security": {
       "eyebrow": "Sécurité",
@@ -1882,6 +1868,38 @@
     "illustrative": {
       "badge": "Exemple illustratif",
       "yieldNotice": "Rendement cible illustratif, non garanti. Investir dans des actifs privés comporte un risque de perte en capital et d’illiquidité."
+    },
+    "solution": {
+      "eyebrow": "Ce que fait Veris Assets",
+      "title": "Un système de référence unique pour vos obligations privées",
+      "subtitle": "Conçu pour les émetteurs et sociétés de gestion qui structurent, émettent et administrent de la dette privée : immobilier, énergie verte et autres actifs réels.",
+      "problem": {
+        "title": "Le problème",
+        "text": "Les marchés illiquides — dette privée, immobilier, obligations vertes — supportent des coûts d’intermédiation élevés, des règlements lents et un back-office lourd, fait de tableurs et d’emails."
+      },
+      "approach": {
+        "title": "Notre approche",
+        "text": "Veris Assets remplace tableurs et rapprochements manuels par un parcours guidé : structurer, qualifier, souscrire, allouer, enregistrer, servir."
+      },
+      "goal": {
+        "title": "L’objectif",
+        "text": "Un système de référence unique pour émetteurs et sociétés de gestion, avec contrôle quatre yeux et piste d’audit complète. Sans blockchain obligatoire."
+      },
+      "assets": {
+        "title": "Pour les projets qui financent l’économie réelle",
+        "realEstate": {
+          "title": "Immobilier",
+          "text": "Résidentiel, logistique, reconversion de bureaux et rénovation énergétique."
+        },
+        "greenEnergy": {
+          "title": "Énergie verte",
+          "text": "Photovoltaïque, éolien, stockage et efficacité énergétique."
+        },
+        "realAssets": {
+          "title": "Autres actifs réels",
+          "text": "Réseaux de recharge, infrastructures locales et autres actifs générateurs de revenus."
+        }
+      }
     }
   },
   "calculator": {
