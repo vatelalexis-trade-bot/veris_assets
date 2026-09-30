@@ -40,3 +40,30 @@ test('technology page: reached from the header and the roles section, one addres
   await page.getByRole('banner').getByRole('link', { name: 'Security' }).click();
   await expect(page).toHaveURL(/\/en#security$/);
 });
+
+test('illustrative projects: filtered by status, each labelled, none to invest in', async ({
+  page,
+}) => {
+  await page.goto('/en');
+  const projects = page.locator('#projects');
+  await expect(
+    projects.getByText('Fictitious projects, shown to illustrate the software.'),
+  ).toBeVisible();
+  const cards = projects.getByRole('tabpanel').getByRole('article');
+  await expect(cards).toHaveCount(9);
+
+  await projects.getByRole('tab', { name: 'Upcoming (3)' }).click();
+  await expect(cards).toHaveCount(3);
+  for (const card of await cards.all()) {
+    await expect(card.getByText('Illustrative example')).toBeVisible();
+    await expect(card.getByText(/Illustrative target yield, not guaranteed/)).toBeVisible();
+  }
+  // The keyboard moves between the filters too.
+  await page.keyboard.press('ArrowRight');
+  await expect(projects.getByRole('tab', { name: 'Closed (3)' })).toBeFocused();
+  await expect(
+    projects.getByRole('tabpanel').getByRole('heading', { name: 'Rhône Storage Hub' }),
+  ).toBeVisible();
+  // Only the demo and the team as ways forward: no way to invest from the public site.
+  await expect(page.getByRole('link', { name: /invest now|investir/i })).toHaveCount(0);
+});

@@ -6,6 +6,7 @@ import { ContactForm } from '@/features/landing/contact-form';
 import { DemoCard } from '@/features/landing/demo-card';
 import { Hero } from '@/features/landing/hero';
 import { Lifecycle } from '@/features/landing/lifecycle';
+import { ProjectsSection } from '@/features/landing/projects-section';
 import { Section } from '@/features/landing/section';
 import { Security } from '@/features/landing/security';
 import { SiteFooter } from '@/features/landing/site-footer';
@@ -39,6 +40,7 @@ export default async function HomePage({ params }: PageProps<'/[locale]'>) {
         <Solution />
         <Audiences />
         <Security />
+        <ProjectsSection />
         <Lifecycle />
         <Section
           id="calculator"

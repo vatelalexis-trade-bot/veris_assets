@@ -15,7 +15,7 @@ export async function SiteFooter() {
         </div>
         <nav aria-label={t('nav.label')} className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
           {(
-            ['solution', 'lifecycle', 'security', 'calculator', 'contact'] as const
+            ['solution', 'projects', 'lifecycle', 'security', 'calculator', 'contact'] as const
           ).map((section) => (
             <Link
               key={section}

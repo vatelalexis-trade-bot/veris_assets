@@ -1901,6 +1901,46 @@
           "text": "Réseaux de recharge, infrastructures locales et autres actifs générateurs de revenus."
         }
       }
+    },
+    "projects": {
+      "eyebrow": "Exemples illustratifs",
+      "title": "Le type de projets que les émetteurs gèrent avec Veris Assets",
+      "subtitle": "Toitures solaires, logistique, rénovation énergétique, éolien : chaque émission suit le même parcours contrôlé, de la souscription au dernier coupon.",
+      "notice": {
+        "title": "Projets fictifs, présentés pour illustrer le logiciel.",
+        "text": "Veris Assets est un éditeur de logiciel : il ne propose, ne commercialise ni ne conseille aucun investissement, et ne détient jamais les fonds des investisseurs. Les émissions sont proposées par leurs émetteurs aux investisseurs qu’ils invitent ; les fonds de souscription vont à l’émetteur ou au séquestre ou agent payeur qu’il désigne.",
+        "professional": "Les émissions de la plateforme sont réservées aux investisseurs professionnels."
+      },
+      "filters": {
+        "label": "Filtrer les projets",
+        "tab": "{name} ({count})",
+        "all": "Tous",
+        "open": "Ouverts",
+        "upcoming": "À venir",
+        "closed": "Terminés"
+      },
+      "status": {
+        "open": "Ouvert",
+        "upcoming": "À venir",
+        "closed": "Terminé"
+      },
+      "kinds": {
+        "solar": "Photovoltaïque",
+        "wind": "Éolien",
+        "storage": "Stockage d’énergie",
+        "residential": "Résidentiel",
+        "logistics": "Logistique",
+        "renovation": "Rénovation énergétique",
+        "charging": "Recharge électrique"
+      },
+      "amount": "Émission",
+      "targetYield": "Rendement cible",
+      "term": "Durée",
+      "years": "{count, plural, one {# an} other {# ans}}",
+      "months": "{count} mois",
+      "carousel": "carrousel",
+      "previous": "Projets précédents",
+      "next": "Projets suivants"
     }
   },
   "calculator": {

@@ -9,6 +9,7 @@ import { technologyPath } from './technology-path';
 export const NAV_SECTIONS = [
   'solution',
   'security',
+  'projects',
   'lifecycle',
   'calculator',
   'contact',

@@ -1901,6 +1901,46 @@
           "text": "Charging networks, local infrastructure and other income-producing assets."
         }
       }
+    },
+    "projects": {
+      "eyebrow": "Illustrative examples",
+      "title": "The kind of projects issuers run on Veris Assets",
+      "subtitle": "Solar roofs, logistics, energy renovation, wind: each issuance follows the same controlled journey, from subscription to the last coupon.",
+      "notice": {
+        "title": "Fictitious projects, shown to illustrate the software.",
+        "text": "Veris Assets is a software provider: it does not offer, market or advise on any investment, and never holds investors' funds. Issuances are proposed by their issuers to the investors they invite; subscription funds go to the issuer or to the escrow or paying agent it appoints.",
+        "professional": "Issuances on the platform are for professional investors only."
+      },
+      "filters": {
+        "label": "Filter the projects",
+        "tab": "{name} ({count})",
+        "all": "All",
+        "open": "Open",
+        "upcoming": "Upcoming",
+        "closed": "Closed"
+      },
+      "status": {
+        "open": "Open",
+        "upcoming": "Upcoming",
+        "closed": "Closed"
+      },
+      "kinds": {
+        "solar": "Solar",
+        "wind": "Wind",
+        "storage": "Energy storage",
+        "residential": "Residential",
+        "logistics": "Logistics",
+        "renovation": "Energy renovation",
+        "charging": "EV charging"
+      },
+      "amount": "Issuance",
+      "targetYield": "Target yield",
+      "term": "Term",
+      "years": "{count, plural, one {# year} other {# years}}",
+      "months": "{count} months",
+      "carousel": "carousel",
+      "previous": "Previous projects",
+      "next": "Next projects"
     }
   },
   "calculator": {
