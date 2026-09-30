@@ -1974,8 +1974,8 @@
   },
   "calculator": {
     "eyebrow": "Business case",
-    "title": "Estimez ce que la plateforme pourrait vous faire économiser",
-    "subtitle": "Saisissez quelques chiffres sur votre émission. Le calcul se fait dans votre navigateur : rien n’est envoyé.",
+    "title": "Estimez vos économies, ou vos coupons",
+    "subtitle": "Deux simulations rapides. Le calcul se fait dans votre navigateur : rien n’est envoyé.",
     "groups": {
       "issuance": "Votre émission",
       "operations": "Vos opérations chaque année",
@@ -2027,9 +2027,48 @@
       "time": "Temps gagné",
       "tools": "Outils",
       "providers": "Prestataires",
-      "incidents": "Incidents"
+      "incidents": "Incidents",
+      "breakdownTitle": "Économies brutes par an, par source"
     },
-    "disclaimer": "Estimations indicatives fondées sur vos chiffres et les hypothèses affichées ; ni engagement contractuel, ni offre de prix."
+    "disclaimer": "Estimations indicatives fondées sur vos chiffres et les hypothèses affichées ; ni engagement contractuel, ni offre de prix.",
+    "tabs": {
+      "label": "Simulations",
+      "issuer": "Émetteur",
+      "investor": "Investisseur"
+    },
+    "investor": {
+      "title": "Votre simulation",
+      "fields": {
+        "amount": "Montant investi (€)",
+        "ratePercent": "Taux de coupon cible (% par an)",
+        "years": "Durée (années)",
+        "frequency": "Fréquence des coupons"
+      },
+      "frequencies": {
+        "1": "Annuelle",
+        "2": "Semestrielle",
+        "4": "Trimestrielle"
+      },
+      "invalid": {
+        "amount": "Saisissez un montant supérieur à zéro.",
+        "ratePercent": "Saisissez un taux entre 0 et 100.",
+        "years": "Saisissez un nombre entier d’années, de 1 à 30."
+      },
+      "incomplete": "Complétez les champs signalés pour voir la simulation.",
+      "reset": "Réinitialiser les chiffres",
+      "couponPerPeriod": "Coupon par versement",
+      "payments": "Nombre de versements",
+      "totalCoupons": "Total des coupons bruts",
+      "totalReceived": "Coupons et capital",
+      "schedule": {
+        "title": "Échéancier",
+        "payment": "Versement",
+        "month": "N° {number} · mois {month}",
+        "coupon": "Coupon",
+        "principal": "Capital"
+      },
+      "disclaimer": "Simulation illustrative, avant fiscalité, non garantie : coupon identique à chaque période et capital remboursé à l’échéance, sans convention de décompte des jours. Investir dans des actifs privés comporte un risque de perte en capital et d’illiquidité."
+    }
   },
   "breakGlass": {
     "title": "Accès d’urgence",

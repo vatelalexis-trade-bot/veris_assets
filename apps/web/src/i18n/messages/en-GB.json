@@ -1974,8 +1974,8 @@
   },
   "calculator": {
     "eyebrow": "Business case",
-    "title": "Estimate what the platform could save you",
-    "subtitle": "Enter a few figures about your issuance. The calculation runs in your browser: nothing is sent.",
+    "title": "Estimate your savings, or your coupons",
+    "subtitle": "Two quick simulations. The calculation runs in your browser: nothing is sent.",
     "groups": {
       "issuance": "Your issuance",
       "operations": "Your operations each year",
@@ -2027,9 +2027,48 @@
       "time": "Time saved",
       "tools": "Tools",
       "providers": "Providers",
-      "incidents": "Incidents"
+      "incidents": "Incidents",
+      "breakdownTitle": "Gross savings a year, by source"
     },
-    "disclaimer": "Indicative estimates based on your figures and the assumptions shown, not a contractual commitment or a price offer."
+    "disclaimer": "Indicative estimates based on your figures and the assumptions shown, not a contractual commitment or a price offer.",
+    "tabs": {
+      "label": "Simulations",
+      "issuer": "Issuer",
+      "investor": "Investor"
+    },
+    "investor": {
+      "title": "Your simulation",
+      "fields": {
+        "amount": "Amount invested (€)",
+        "ratePercent": "Target coupon rate (% a year)",
+        "years": "Term (years)",
+        "frequency": "Coupon frequency"
+      },
+      "frequencies": {
+        "1": "Annual",
+        "2": "Semi-annual",
+        "4": "Quarterly"
+      },
+      "invalid": {
+        "amount": "Enter an amount above zero.",
+        "ratePercent": "Enter a rate from 0 to 100.",
+        "years": "Enter a whole number of years, from 1 to 30."
+      },
+      "incomplete": "Complete the highlighted fields to see the simulation.",
+      "reset": "Reset the figures",
+      "couponPerPeriod": "Coupon per payment",
+      "payments": "Number of payments",
+      "totalCoupons": "Total gross coupons",
+      "totalReceived": "Coupons and principal",
+      "schedule": {
+        "title": "Payment schedule",
+        "payment": "Payment",
+        "month": "No. {number} · month {month}",
+        "coupon": "Coupon",
+        "principal": "Principal"
+      },
+      "disclaimer": "Illustrative simulation, before tax, not guaranteed: the same coupon each period and the principal repaid at maturity, without day count. Investing in private assets carries a risk of capital loss and illiquidity."
+    }
   },
   "breakGlass": {
     "title": "Emergency access",

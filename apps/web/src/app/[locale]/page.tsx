@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { Calculator } from '@/features/calculator/calculator';
+import { BusinessCase } from '@/features/calculator/business-case';
 import { Audiences } from '@/features/landing/audiences';
 import { ContactForm } from '@/features/landing/contact-form';
 import { DemoCard } from '@/features/landing/demo-card';
@@ -49,7 +49,7 @@ export default async function HomePage({ params }: PageProps<'/[locale]'>) {
           subtitle={calculator('subtitle')}
           className="bg-surface/30"
         >
-          <Calculator />
+          <BusinessCase />
         </Section>
         <Section
           id="contact"
