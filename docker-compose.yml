@@ -59,7 +59,7 @@ services:
 
   # Optional: traces, metrics and logs viewer. Start with `docker compose --profile observability up -d`.
   otel-lgtm:
-    image: grafana/otel-lgtm:0.33.1
+    image: grafana/otel-lgtm:0.34.0
     profiles: ['observability']
     ports:
       - '127.0.0.1:3001:3000'
