@@ -1728,6 +1728,7 @@
     "preview": {
       "label": "Une émission illustrative, telle qu’affichée dans le produit",
       "title": "Northwind Green Notes",
+      "photoAlt": "Une centrale solaire au sol à la campagne, rangées de panneaux sur l’herbe",
       "subtitle": "Obligations à 5 ans · coupon semestriel de 5 %",
       "status": "Active",
       "nominal": "Nominal administré",

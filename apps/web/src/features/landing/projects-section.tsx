@@ -1,11 +1,10 @@
 import { Briefcase, MapPin, ShieldAlert } from 'lucide-react';
-import Image from 'next/image';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { Tabs } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { Carousel } from './carousel';
 import { IllustrativeBadge, YieldNotice } from './illustrative';
-import { ProjectIllustration } from './project-illustration';
+import { ProjectPhoto } from './project-photo';
 import { EXAMPLE_PROJECTS, type ExampleProject, type ProjectStatus } from './projects';
 import { Section } from './section';
 
@@ -108,18 +107,12 @@ function ProjectCard({
       className="flex w-full flex-col overflow-hidden rounded-2xl border border-border bg-background"
     >
       <div className="relative">
-        {project.image ? (
-          <Image
-            src={project.image.src}
-            alt={project.image.alt[locale]}
-            width={800}
-            height={400}
-            loading="lazy"
-            className="h-40 w-full object-cover"
-          />
-        ) : (
-          <ProjectIllustration kind={project.kind} className="h-40 w-full" />
-        )}
+        <ProjectPhoto
+          src={project.image.src}
+          alt={project.image.alt[locale]}
+          sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 85vw"
+          className="h-40 w-full"
+        />
         <span
           className={cn(
             'absolute top-3 left-3 rounded-full border bg-background/90 px-2.5 py-0.5 text-xs font-semibold',

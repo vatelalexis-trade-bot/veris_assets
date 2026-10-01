@@ -10,7 +10,7 @@ import { getLocale, getTranslations } from 'next-intl/server';
 import { Button } from '@/components/ui/button';
 import { Link } from '@/i18n/navigation';
 import { IllustrativeBadge, YieldNotice } from './illustrative';
-import { ProjectIllustration } from './project-illustration';
+import { ProjectPhoto } from './project-photo';
 
 /**
  * First screen: what Veris Assets does in one sentence, the demo and the team as ways in, and an
@@ -101,7 +101,13 @@ async function ProductPreview() {
       />
       <div className="relative flex flex-col gap-5 overflow-hidden rounded-2xl border border-border bg-surface p-6 shadow-2xl">
         <div className="relative -mx-6 -mt-6">
-          <ProjectIllustration kind="solar" className="h-32 w-full sm:h-36" />
+          <ProjectPhoto
+            src="/images/projects/northwind-solar-plant.webp"
+            alt={t('photoAlt')}
+            sizes="(min-width: 1024px) 480px, 100vw"
+            preload
+            className="h-32 w-full sm:h-36"
+          />
           <IllustrativeBadge className="absolute top-3 left-3" />
         </div>
         <div className="flex items-start justify-between gap-4">
