@@ -1728,6 +1728,7 @@
     "preview": {
       "label": "An illustrative issuance, as shown in the product",
       "title": "Northwind Green Notes",
+      "photoAlt": "A ground-mounted solar power plant in the countryside, rows of panels on grass",
       "subtitle": "5-year notes · 5 % semi-annual coupon",
       "status": "Active",
       "nominal": "Nominal administered",

@@ -1,7 +1,10 @@
 // Projects shown on the public site. ALL ARE FICTITIOUS: names, places, amounts and yields are
 // illustrative examples, labelled as such on the page. To show real projects later, replace the
 // entries below (the page reads nothing else), and have the texts reviewed before publishing.
-import type { ProjectKind } from './project-illustration';
+
+/** Kind of asset an issuance finances: drives the label above the name of the project. */
+export type ProjectKind =
+  'solar' | 'wind' | 'storage' | 'residential' | 'logistics' | 'renovation' | 'charging';
 
 export type ProjectStatus = 'open' | 'upcoming' | 'closed';
 
@@ -22,10 +25,10 @@ export interface ExampleProject {
   targetRate: string;
   termMonths: number;
   /**
-   * Optional photo stored in `public/` (WebP, about 800 × 400), shown instead of the drawing.
-   * Only with a licence allowing this use.
+   * Photo stored in `public/images/projects/` (WebP, 1200 × 600), with its text alternative.
+   * For a real project, only a photo of the asset itself, with a licence allowing this use.
    */
-  image?: { src: string; alt: Record<'en-GB' | 'fr-FR', string> };
+  image: { src: string; alt: Record<'en-GB' | 'fr-FR', string> };
   text: Record<'en-GB' | 'fr-FR', ProjectText>;
 }
 
@@ -37,6 +40,14 @@ export const EXAMPLE_PROJECTS: readonly ExampleProject[] = [
     amount: '6000000',
     targetRate: '0.055',
     termMonths: 60,
+    image: {
+      src: '/images/projects/garonne-solar-roofs.webp',
+      alt: {
+        'en-GB': 'Aerial view of logistics warehouses whose roofs are covered with solar panels',
+        'fr-FR':
+          'Vue aérienne d’entrepôts logistiques dont les toits sont couverts de panneaux solaires',
+      },
+    },
     text: {
       'en-GB': {
         name: 'Garonne Solar Roofs',
@@ -59,6 +70,15 @@ export const EXAMPLE_PROJECTS: readonly ExampleProject[] = [
     amount: '8500000',
     targetRate: '0.07',
     termMonths: 36,
+    image: {
+      src: '/images/projects/lys-logistics-park.webp',
+      alt: {
+        'en-GB':
+          'A new last-mile warehouse with its loading docks and car park, in the countryside',
+        'fr-FR':
+          'Un entrepôt du dernier kilomètre neuf, avec ses quais de chargement et son parking, en campagne',
+      },
+    },
     text: {
       'en-GB': {
         name: 'Lys Logistics Park',
@@ -81,6 +101,15 @@ export const EXAMPLE_PROJECTS: readonly ExampleProject[] = [
     amount: '3200000',
     targetRate: '0.0475',
     termMonths: 84,
+    image: {
+      src: '/images/projects/alsace-retrofit.webp',
+      alt: {
+        'en-GB':
+          'A 1970s apartment block under energy renovation, with scaffolding and solar panels on the roof',
+        'fr-FR':
+          'Un immeuble de logements des années 1970 en rénovation énergétique, avec échafaudage et panneaux solaires sur le toit',
+      },
+    },
     text: {
       'en-GB': {
         name: 'Alsace Retrofit Notes',
@@ -103,6 +132,13 @@ export const EXAMPLE_PROJECTS: readonly ExampleProject[] = [
     amount: '12000000',
     targetRate: '0.06',
     termMonths: 96,
+    image: {
+      src: '/images/projects/mistral-wind-repowering.webp',
+      alt: {
+        'en-GB': 'Four wind turbines on a Mediterranean ridge above vineyards',
+        'fr-FR': 'Quatre éoliennes sur une crête méditerranéenne, au-dessus de vignes',
+      },
+    },
     text: {
       'en-GB': {
         name: 'Mistral Wind Repowering',
@@ -125,6 +161,13 @@ export const EXAMPLE_PROJECTS: readonly ExampleProject[] = [
     amount: '5400000',
     targetRate: '0.08',
     termMonths: 30,
+    image: {
+      src: '/images/projects/loire-riverside-homes.webp',
+      alt: {
+        'en-GB': 'A new residential building with balconies, on the bank of a river',
+        'fr-FR': 'Un immeuble de logements neuf avec balcons, au bord d’un fleuve',
+      },
+    },
     text: {
       'en-GB': {
         name: 'Loire Riverside Homes',
@@ -147,6 +190,15 @@ export const EXAMPLE_PROJECTS: readonly ExampleProject[] = [
     amount: '4000000',
     targetRate: '0.065',
     termMonths: 72,
+    image: {
+      src: '/images/projects/hanse-charge-network.webp',
+      alt: {
+        'en-GB':
+          'Fast-charging stations under a solar canopy in a retail car park, two cars charging',
+        'fr-FR':
+          'Bornes de recharge rapide sous une ombrière solaire, sur un parking commercial, deux voitures en charge',
+      },
+    },
     text: {
       'en-GB': {
         name: 'Hanse Charge Network',
@@ -169,6 +221,13 @@ export const EXAMPLE_PROJECTS: readonly ExampleProject[] = [
     amount: '7500000',
     targetRate: '0.0625',
     termMonths: 60,
+    image: {
+      src: '/images/projects/rhone-storage-hub.webp',
+      alt: {
+        'en-GB': 'Rows of battery containers next to an electrical substation, in a river valley',
+        'fr-FR': 'Rangées de conteneurs de batteries à côté d’un poste électrique, dans une vallée',
+      },
+    },
     text: {
       'en-GB': {
         name: 'Rhône Storage Hub',
@@ -191,6 +250,14 @@ export const EXAMPLE_PROJECTS: readonly ExampleProject[] = [
     amount: '9000000',
     targetRate: '0.0575',
     termMonths: 84,
+    image: {
+      src: '/images/projects/alentejo-sun-farms.webp',
+      alt: {
+        'en-GB': 'A ground-mounted solar farm with sheep grazing between the rows of panels',
+        'fr-FR':
+          'Une centrale solaire au sol avec des moutons qui paissent entre les rangées de panneaux',
+      },
+    },
     text: {
       'en-GB': {
         name: 'Alentejo Sun Farms',
@@ -213,6 +280,15 @@ export const EXAMPLE_PROJECTS: readonly ExampleProject[] = [
     amount: '3800000',
     targetRate: '0.075',
     termMonths: 36,
+    image: {
+      src: '/images/projects/gironde-office-conversion.webp',
+      alt: {
+        'en-GB':
+          'A renovated building between stone buildings in a city centre, bicycles parked in front',
+        'fr-FR':
+          'Un immeuble rénové entre des bâtiments en pierre de centre-ville, des vélos garés devant',
+      },
+    },
     text: {
       'en-GB': {
         name: 'Gironde Office Conversion',
