@@ -52,7 +52,7 @@ services:
 
   # Test mail server: captures every email; web interface on port 8025.
   mailpit:
-    image: axllent/mailpit:v1.31.2
+    image: axllent/mailpit:v1.31.3
     ports:
       - '127.0.0.1:${SMTP_PORT:-1025}:1025'
       - '127.0.0.1:${MAILPIT_UI_PORT:-8025}:8025'
